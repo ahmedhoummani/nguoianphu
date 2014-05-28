@@ -31,9 +31,14 @@ var main_state = {
         this.bird.body.gravity.y = 1000;
 
         // call the jump
+        
+        // by pressing SPACE key
         var space_key =
             this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         space_key.onDown.add(this.jump, this);
+
+        // by click
+        this.game.input.onDown.add(this.jump, this);
 
         //Since we are going to handle a lot of pipes in the game, it's easier to use a group of sprites. The group will contain 20 sprites that we will be able to use as we want. 
 
@@ -142,26 +147,26 @@ var main_state = {
         // Kill the pipe when it's no longer visible 
         pipe.outOfBoundsKill = true;
     },
-    
+
     // we have a 400x490px game
     // a pipe is 50x50px
     // good to put 8 pipes in a vertical row
-    
+
     //The previous function displays one pipe, but we need to display 6 pipes in a row with a hole somewhere in the middle. So let's create a new function that does just that. 
 
     add_row_of_pipes: function() {
-        
+
         // The Math.floor(x) function returns the largest integer less than or equal to a number "x".
         // Return a random number between 0 (inclusive) and 1 (exclusive) ( 0.xxxx)
-        
+
         // 5 x 0.xxx + 1
-        
+
         var hole = Math.floor(Math.random() * 5) + 1;
-        
+
         // we have a vertical row with 8 pipes inside. But we remove 2 pipe for the bird to fly. Then we have 6 pipes per row
         for (var i = 0; i < 8; i++)
-//            if ( (i != hole) && (i != hole + 1) && (i != hole + 2) ) // remove 2 pipes 
-            if ( (i != hole) && (i != hole + 1) && (i != hole + 2) ) // remove 3 pipes 
+        //            if ( (i != hole) && (i != hole + 1) && (i != hole + 2) ) // remove 2 pipes 
+            if ((i != hole) && (i != hole + 1) && (i != hole + 2)) // remove 3 pipes 
                 this.add_one_pipe(400, i * 60 + 10); // raw the pipe from top to bottom
 
         this.score += 1;
