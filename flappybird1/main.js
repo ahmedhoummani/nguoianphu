@@ -14,8 +14,8 @@ var main_state = {
         this.game.load.image('bird', 'assets/bird.png');
 
         this.game.load.image('pipe', 'assets/pipe.png');
-        
-        this.game.load.audio('jump', 'assets/jump.wav');  
+
+        this.game.load.audio('jump', 'assets/jump.wav');
     },
 
     create: function() {
@@ -23,8 +23,8 @@ var main_state = {
 
         // show the bird
         this.bird = this.game.add.sprite(100, 254, 'bird');
-        
-        this.jump_sound = this.game.add.audio('jump');  
+
+        this.jump_sound = this.game.add.audio('jump');
 
         // add gravity to the bird
 
@@ -35,9 +35,12 @@ var main_state = {
             this.game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
         space_key.onDown.add(this.jump, this);
 
+        //Since we are going to handle a lot of pipes in the game, it's easier to use a group of sprites. The group will contain 20 sprites that we will be able to use as we want. 
+
         this.pipes = game.add.group();
         this.pipes.createMultiple(20, 'pipe');
 
+        // To actually add pipes in the game, we need to call the add_row_of_pipes() function every 1.5 seconds
         this.timer = this.game.time.events.loop(1500, this.add_row_of_pipes, this);
 
         this.score = 0;
@@ -72,8 +75,8 @@ var main_state = {
             return;
         // Add a vertical velocity to the bird
         this.bird.body.velocity.y = -350;
-        
-        this.jump_sound.play();  
+
+        this.jump_sound.play();
 
 
         // create an animation on the bird
@@ -124,6 +127,8 @@ var main_state = {
         }, this);
     },
 
+    //Now we need a new function to add a pipe in the game. By default, all the pipes contained in the group are dead and not displayed. So we pick a dead pipe, display it, and make sure to automatically kill it when it's no longer visible. This way we never run out of pipes.
+
     add_one_pipe: function(x, y) {
         // Get the first dead pipe of our group
         var pipe = this.pipes.getFirstDead();
@@ -137,13 +142,27 @@ var main_state = {
         // Kill the pipe when it's no longer visible 
         pipe.outOfBoundsKill = true;
     },
+    
+    // we have a 400x490px game
+    // a pipe is 50x50px
+    // good to put 8 pipes in a vertical row
+    
+    //The previous function displays one pipe, but we need to display 6 pipes in a row with a hole somewhere in the middle. So let's create a new function that does just that. 
 
     add_row_of_pipes: function() {
+        
+        // The Math.floor(x) function returns the largest integer less than or equal to a number "x".
+        // Return a random number between 0 (inclusive) and 1 (exclusive) ( 0.xxxx)
+        
+        // 5 x 0.xxx + 1
+        
         var hole = Math.floor(Math.random() * 5) + 1;
-
+        
+        // we have a vertical row with 8 pipes inside. But we remove 2 pipe for the bird to fly. Then we have 6 pipes per row
         for (var i = 0; i < 8; i++)
-            if (i != hole && i != hole + 1)
-                this.add_one_pipe(400, i * 60 + 10);
+//            if ( (i != hole) && (i != hole + 1) && (i != hole + 2) ) // remove 2 pipes 
+            if ( (i != hole) && (i != hole + 1) && (i != hole + 2) ) // remove 3 pipes 
+                this.add_one_pipe(400, i * 60 + 10); // raw the pipe from top to bottom
 
         this.score += 1;
         this.label_score.content = this.score;
