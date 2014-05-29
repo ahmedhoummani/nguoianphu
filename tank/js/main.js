@@ -241,7 +241,7 @@ function update() {
     
     // moveToPointer(displayObject, speed, pointer, maxTime) → {number}
 //    game.physics.arcade.moveToPointer(tank, 60, game.input.activePointer, 500);
-    game.physics.arcade.moveToPointer(tank, 100, game.input.activePointer, currentSpeed);
+    game.physics.arcade.moveToPointer(tank, 150, game.input.activePointer, currentSpeed);
     
     // end follow the pointer
 
