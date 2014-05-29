@@ -236,6 +236,14 @@ function update() {
             currentSpeed -= 4;
         }
     }
+    
+    // follow the poiter
+    
+    // moveToPointer(displayObject, speed, pointer, maxTime) → {number}
+//    game.physics.arcade.moveToPointer(tank, 60, game.input.activePointer, 500);
+    game.physics.arcade.moveToPointer(tank, 100, game.input.activePointer, currentSpeed);
+    
+    // end follow the pointer
 
     if (currentSpeed > 0) {
         game.physics.arcade.velocityFromRotation(tank.rotation, currentSpeed, tank.body.velocity);
