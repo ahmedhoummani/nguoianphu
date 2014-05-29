@@ -11,7 +11,7 @@ var main_state = {
         this.game.stage.backgroundColor = '#71c6cf';
 
         // load the bird sprite
-        this.game.load.image('bird', 'assets/bird.png');
+        this.game.load.image('bird', 'assets/duck-r50.png');
 
         this.game.load.image('pipe', 'assets/pipe.png');
 
@@ -95,16 +95,7 @@ var main_state = {
         animation.to({
             angle: -20
         }, 100);
-        // create an animation on the bird
-        var animation = this.game.add.tween(this.bird);
-
-        // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
-        animation.to({
-            angle: -20
-        }, 100);
-
-        // And start the animation
-        animation.start();
+        
         // And start the animation
         animation.start();
     },
