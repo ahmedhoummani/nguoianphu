@@ -211,7 +211,7 @@ function create() {
     game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
     game.camera.focusOnXY(0, 0);
 
-//    cursors = game.input.keyboard.createCursorKeys();
+    //    cursors = game.input.keyboard.createCursorKeys();
 
 }
 
@@ -256,7 +256,7 @@ function update() {
 
     // moveToPointer(displayObject, speed, pointer, maxTime) → {number}
     //    game.physics.arcade.moveToPointer(tank, 60, game.input.activePointer, 500);
-    game.physics.arcade.moveToPointer(tank, 150, game.input.activePointer, currentSpeed);
+    game.physics.arcade.moveToPointer(tank, 200, game.input.activePointer, currentSpeed);
 
     // end follow the pointer
 
@@ -320,7 +320,7 @@ function fire() {
 
 function render() {
 
-    // game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
-    game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 32);
+    game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
+    game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 52);
 
 }
