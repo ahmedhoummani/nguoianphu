@@ -16,6 +16,8 @@ var main_state = {
         this.game.load.image('pipe', 'assets/pipe.png');
 
         this.game.load.audio('jump', 'assets/jump.wav');
+        this.game.load.audio('hurt', 'assets/hurt.wav');
+        this.game.load.audio('score', 'assets/score.wav');
     },
 
     create: function() {
@@ -25,6 +27,8 @@ var main_state = {
         this.bird = this.game.add.sprite(100, 254, 'bird');
 
         this.jump_sound = this.game.add.audio('jump');
+        this.hurt_sound = this.game.add.audio('hurt');
+        this.score_sound = this.game.add.audio('score');
 
         // add gravity to the bird
 
@@ -122,6 +126,9 @@ var main_state = {
 
         // Set the alive property of the bird to false
         this.bird.alive = false;
+        
+        // play hurt sound
+        this.hurt_sound.play();
 
         // Prevent new pipes from appearing
         this.game.time.events.remove(this.timer);
@@ -171,6 +178,8 @@ var main_state = {
 
         this.score += 1;
         this.label_score.content = this.score;
+        // play score sound
+        this.score_sound.play();
     },
 
 
