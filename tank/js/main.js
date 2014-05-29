@@ -2,7 +2,7 @@
     http://examples.phaser.io/_site/view_full.html?d=games&f=tanks.js&t=tanks 
 */
 
-EnemyTank = function(index, game, player, bullets) {
+EnemyTank = function (index, game, player, bullets) {
 
     var x = game.world.randomX;
     var y = game.world.randomY;
@@ -35,7 +35,7 @@ EnemyTank = function(index, game, player, bullets) {
 
 };
 
-EnemyTank.prototype.damage = function() {
+EnemyTank.prototype.damage = function () {
 
     this.health -= 1;
 
@@ -53,7 +53,7 @@ EnemyTank.prototype.damage = function() {
 
 }
 
-EnemyTank.prototype.update = function() {
+EnemyTank.prototype.update = function () {
 
     this.shadow.x = this.tank.x;
     this.shadow.y = this.tank.y;
@@ -77,7 +77,16 @@ EnemyTank.prototype.update = function() {
 
 };
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser-example', {
+//window.addEventListener('resize', function (event) {
+//    resizeGame();
+//});
+//var resizeGame = function () {
+//    game.scale.setShowAll();
+//    game.scale.refresh();
+//}
+
+
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser_example', {
     preload: preload,
     create: create,
     update: update,
@@ -117,6 +126,12 @@ var fireRate = 100;
 var nextFire = 0;
 
 function create() {
+
+    //    game.stage.fullScreenScaleMode = Phaser.StageScaleMode.SHOW_ALL;
+    //    game.scale.setShowAll();
+    //    game.scale.pageAlignHorizontally = true;
+    //    game.scale.pageAlignVeritcally = true;
+    //    game.scale.refresh();
 
     //  Resize our game world to be a 2000 x 2000 square
     game.world.setBounds(-1000, -1000, 2000, 2000);
@@ -196,7 +211,7 @@ function create() {
     game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
     game.camera.focusOnXY(0, 0);
 
-    cursors = game.input.keyboard.createCursorKeys();
+//    cursors = game.input.keyboard.createCursorKeys();
 
 }
 
@@ -222,27 +237,27 @@ function update() {
         }
     }
 
-    if (cursors.left.isDown) {
-        tank.angle -= 4;
-    } else if (cursors.right.isDown) {
-        tank.angle += 4;
-    }
+    //    if (cursors.left.isDown) {
+    //        tank.angle -= 4;
+    //    } else if (cursors.right.isDown) {
+    //        tank.angle += 4;
+    //    }
+    //
+    //    if (cursors.up.isDown) {
+    //        //  The speed we'll travel at
+    //        currentSpeed = 300;
+    //    } else {
+    //        if (currentSpeed > 0) {
+    //            currentSpeed -= 4;
+    //        }
+    //    }
 
-    if (cursors.up.isDown) {
-        //  The speed we'll travel at
-        currentSpeed = 300;
-    } else {
-        if (currentSpeed > 0) {
-            currentSpeed -= 4;
-        }
-    }
-    
     // follow the poiter
-    
+
     // moveToPointer(displayObject, speed, pointer, maxTime) → {number}
-//    game.physics.arcade.moveToPointer(tank, 60, game.input.activePointer, 500);
+    //    game.physics.arcade.moveToPointer(tank, 60, game.input.activePointer, 500);
     game.physics.arcade.moveToPointer(tank, 150, game.input.activePointer, currentSpeed);
-    
+
     // end follow the pointer
 
     if (currentSpeed > 0) {
