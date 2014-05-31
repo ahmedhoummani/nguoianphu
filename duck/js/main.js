@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser_example', {
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser_example', {
     preload: preload,
     create: create,
     update: update,
@@ -7,53 +7,58 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser_example', {
 
 function preload() {
 
-    //  This sets a limit on the up-scale
-    //    game.scale.maxWidth = 800;
-    //    game.scale.maxHeight = 600;
+    // the duck
+    game.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50);
 
-    //  Then we tell Phaser that we want it to scale up to whatever the browser can handle, but to do it proportionally
-    //    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    //    game.scale.setScreenSize();
-
-    game.load.image('duck', 'assets/duck/duck-r50.png');
-    //    game.load.image('shadow', 'assets/duck/shadow.png');
-    game.load.spritesheet('ducks', 'assets/duck/ducks1.png', 59, 50);
     game.load.audio('jump', 'assets/audio/jump.wav');
+
+    // the bg
+    game.load.image('sea', 'assets/sea/sea.png');
+
+    game.load.image('wave', 'assets/sea/wave80.png');
 }
 
 var duck;
-var ducks;
-var cursors;
+var currentSpeed = 0;
+
+var sea;
+var wave;
 
 function create() {
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    //  Resize our game world to be a 2000 x 2000 square
+    game.world.setBounds(0, 0, 2000, 600);
 
-    game.stage.backgroundColor = '#0072bc';
+    //  Our tiled scrolling background
+    sea = game.add.tileSprite(0, 0, 800, 600, 'sea');
+    sea.fixedToCamera = true;
 
-    duck = game.add.sprite(400, 300, 'duck');
+    duck = game.add.sprite(50, 100, 'duck');
     duck.anchor.setTo(0.5, 0.5);
-
-    ducks = game.add.sprite(game.world.width / 2, game.world.height / 2, 'ducks');
-    ducks.anchor.setTo(0.5, 0.5);
+    duck.bringToTop();
 
     //  Our two animations, walking left and right.
-    ducks.animations.add('left', [0], 5, true);
-    ducks.animations.add('right', [1], 5, true);
-    //    ducks.animations.add('face', [2], 5, true);
-    //    ducks.animations.add('back', [3], 5, true);
+    duck.animations.add('left', [0], 5, true);
+    duck.animations.add('right', [1], 5, true);
+    //    duck.animations.add('face', [2], 5, true);
+    //    duck.animations.add('back', [3], 5, true);
 
     //  This will force it to decelerate and limit its speed
-    game.physics.enable(ducks, Phaser.Physics.ARCADE);
-    ducks.body.drag.set(0.2);
-    ducks.body.maxVelocity.setTo(400, 400);
-    ducks.body.collideWorldBounds = true;
-    ducks.body.bounce.y = 0.2;
-    //    ducks.body.gravity.y = 6;
+    game.physics.enable(duck, Phaser.Physics.ARCADE);
+    duck.body.drag.set(0.2);
+    duck.body.maxVelocity.setTo(500, 500);
+    duck.body.collideWorldBounds = true;
+    duck.body.bounce.y = 0.2;
+    //    duck.body.gravity.y = 6;
 
-    //  A shadow below our ducks
-    //    shadow = game.add.sprite(game.world.width / 2, game.world.height / 2, 'shadow');
-    //    shadow.anchor.setTo(0.5, 0.5);
+
+    wave = game.add.sprite(-100, -100, 'wave');
+    wave.anchor.setTo(0.5, 0.5);
+    wave.bringToTop();
+
+    game.camera.follow(duck);
+    //    game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
+    game.camera.focusOnXY(0, 0);
 
 
 
@@ -63,87 +68,84 @@ function create() {
     game.physics.enable(duck, Phaser.Physics.ARCADE);
 
     //	Tell it we don't want physics to manage the rotation
-    ducks.body.allowRotation = false;
+    duck.body.allowRotation = false;
 
 
     //  Our controls.
-    cursors = game.input.keyboard.createCursorKeys();
-
     game.input.onDown.add(jump, this);
 
 }
 
 function update() {
 
-    game.physics.arcade.moveToPointer(ducks, 100, game.input.activePointer, 1000);
+    // duck faces
 
-    // ducks faces
+    if (duck.x < game.input.worldX) {
 
-    if (ducks.x < game.input.x) {
-
-        ducks.animations.play('right');
-
-        if (ducks.angle > 0) {
-            ducks.angle = 0;
-        }
+        duck.animations.play('right');
 
     }
-    if (ducks.x > game.input.x) {
+    if (duck.x > game.input.worldX) {
 
-        ducks.animations.play('left');
-
-        if (ducks.angle < 0) {
-            ducks.angle = 0;
-        }
+        duck.animations.play('left');
 
     }
-    //    if (ducks.y < game.input.y) {
-    //
-    //        ducks.animations.play('face');
-    //    }
 
-    //    if (ducks.y > game.input.y) {
-    //
-    //        ducks.animations.play('back');
-    //    }
+    if (duck.angle != 0) {
+        duck.angle = 0;
+    }
 
-}
+    sea.tilePosition.x = -game.camera.x;
+    sea.tilePosition.y = -game.camera.y;
 
-function render() {
+    game.physics.arcade.moveToPointer(duck, 100, game.input.activePointer, currentSpeed);
 
-    //    game.debug.spriteInfo(ducks, 32, 32);
-    //    game.debug.text(tan_right, 32, game.world.centerY);
-    //    game.debug.spriteInfo(duck, 32, 100);
-    //    game.debug.inputInfo(32, 42);
+    if (currentSpeed > 0) {
+        game.physics.arcade.velocityFromRotation(duck.rotation, currentSpeed, duck.body.velocity);
+
+    }
+
+//    if (game.physics.arcade.distanceToPointer(duck, game.input) > 10) {
+    if ( (duck.body._dx != 0) || (duck._dy != 0) ) {
+
+        wave.x = duck.x - 0;
+        wave.y = duck.y + 25;
+
+    } else {
+
+        wave.x = -100;
+        wave.y = -100;
+
+    }
 
 }
 
 function jump() {
 
     // Add a vertical velocity to the bird
-    ducks.body.velocity.y = -1000;
+    //    duck.body.velocity.y = -350;
 
     // create an animation on the bird
-    var animation = game.add.tween(ducks);
+    var animation = game.add.tween(duck);
 
     // Set the animation to change the angle of the sprite to -20° in 100 milliseconds
-    // ducks faces
+    // duck faces
 
-    if (ducks.x < game.input.x) {
+    if (duck.x < game.input.worldX) {
 
-        ducks.animations.play('right');
+        duck.animations.play('right');
 
         animation.to({
-            angle: 50
+            angle: 45
         }, 150);
 
     }
-    if (ducks.x > game.input.x) {
+    if (duck.x > game.input.worldX) {
 
-        ducks.animations.play('left');
+        duck.animations.play('left');
 
         animation.to({
-            angle: -50
+            angle: -45
         }, 150);
 
     }
@@ -152,9 +154,18 @@ function jump() {
     // And start the animation
     animation.start();
 
-    jump_sound.play();
+    //    jump_sound.play();
 
 
 
+
+}
+
+function render() {
+
+    game.debug.spriteInfo(duck, 32, 32);
+    //    game.debug.text(tan_right, 32, game.world.centerY);
+    //    game.debug.spriteInfo(duck, 32, 100);
+    game.debug.inputInfo(32, 92);
 
 }
