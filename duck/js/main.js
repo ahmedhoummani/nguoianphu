@@ -15,7 +15,7 @@ function preload() {
     // the bg
     game.load.image('sea', 'assets/sea/sea.png');
 
-    game.load.image('wave', 'assets/sea/wave80.png');
+    game.load.image('wave', 'assets/sea/wave80a.png');
 }
 
 var duck;
@@ -95,6 +95,16 @@ function update() {
         duck.angle = 0;
     }
 
+    if (duck.body.moves) {
+//    if (duck.x != game.input.y) {
+        wave.x = duck.x - 0;
+        wave.y = duck.y + 25;
+
+    } else {
+        wave.x = 100;
+        wave.y = -100;
+    }
+
     sea.tilePosition.x = -game.camera.x;
     sea.tilePosition.y = -game.camera.y;
 
@@ -105,25 +115,12 @@ function update() {
 
     }
 
-//    if (game.physics.arcade.distanceToPointer(duck, game.input) > 10) {
-    if ( (duck.body._dx != 0) || (duck._dy != 0) ) {
-
-        wave.x = duck.x - 0;
-        wave.y = duck.y + 25;
-
-    } else {
-
-        wave.x = -100;
-        wave.y = -100;
-
-    }
-
 }
 
 function jump() {
 
     // Add a vertical velocity to the bird
-    //    duck.body.velocity.y = -350;
+    duck.body.velocity.y = -350;
 
     // create an animation on the bird
     var animation = game.add.tween(duck);
