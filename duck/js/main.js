@@ -259,11 +259,13 @@ function update() {
 	// duck faces
 
     if (tank.x < game.input.worldX) {
+    // if (tank.body.velocity.x > 0) {
 
         tank.animations.play('right');
 
     }
     if (tank.x > game.input.worldX) {
+    // if (tank.body.velocity.x < 0) {
 
         tank.animations.play('left');
 
