@@ -11,7 +11,7 @@ EnemyTank = function (index, game, player, bullets) {
     this.health = 3;
     this.player = player;
     this.bullets = bullets;
-    this.fireRate = 10000;
+    this.fireRate = 15000;
     this.nextFire = 0;
     this.alive = true;
 
@@ -84,7 +84,7 @@ EnemyTank.prototype.update = function () {
 //    this.turret.y = this.tank.y;
 //    this.turret.rotation = this.game.physics.arcade.angleBetween(this.tank, this.player);
 
-    if ( 200 < this.game.physics.arcade.distanceBetween(this.tank, this.player)  && this.game.physics.arcade.distanceBetween(this.tank, this.player) < 250) {
+    if ( 300 < this.game.physics.arcade.distanceBetween(this.tank, this.player)  && this.game.physics.arcade.distanceBetween(this.tank, this.player) < 350) {
         if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
             this.nextFire = this.game.time.now + this.fireRate;
 
@@ -156,7 +156,7 @@ function create() {
     //    game.scale.refresh();
 
     //  Resize our game world to be a 2000 x 2000 square
-    game.world.setBounds(-1000, -1000, 2000, 2000);
+    game.world.setBounds(0, 0, 2000, 600);
 
     //  Our tiled scrolling background
     land = game.add.tileSprite(0, 0, 800, 600, 'earth');
