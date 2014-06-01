@@ -277,16 +277,9 @@ function update() {
 
     game.physics.arcade.overlap(enemyBullets, tank, bulletHitPlayer, null, this);
 
-    enemiesAlive = 0;
+    
 
-    for (var i = 0; i < enemies.length; i++) {
-        if (enemies[i].alive) {
-            enemiesAlive++;
-            game.physics.arcade.collide(tank, enemies[i].tank);
-            game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
-            enemies[i].update();
-        }
-    }
+	createEnemies();
 
     //    if (cursors.left.isDown) {
     //        tank.angle -= 4;
@@ -349,6 +342,7 @@ function update() {
 function bulletHitPlayer(tank, bullet) {
 
     bullet.kill();
+	restart();
 
 }
 
@@ -427,5 +421,37 @@ function render() {
     game.debug.text('Active Bullets: ' + bullets.countLiving() + ' / ' + bullets.length, 32, 32);
     game.debug.text('Enemies: ' + enemiesAlive + ' / ' + enemiesTotal, 32, 52);
     game.debug.spriteInfo(tank, 32, 72);
+
+}
+
+function createEnemies() {
+
+enemiesAlive = 0;
+
+ for (var i = 0; i < enemies.length; i++) {
+        if (enemies[i].alive) {
+            enemiesAlive++;
+            game.physics.arcade.collide(tank, enemies[i].tank);
+            game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
+            enemies[i].update();
+        }
+    }
+	
+	}
+
+function restart () {
+
+    //  A new level starts
+    
+    //resets the life count
+    // lives.callAll('revive');
+    //  And brings the aliens back from the dead :)
+    // aliens.removeAll();
+    // createAliens();
+
+    //revives the player
+    tank.revive();
+    //hides the text
+    // stateText.visible = false;
 
 }
