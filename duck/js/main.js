@@ -11,7 +11,7 @@ EnemyTank = function (index, game, player, bullets) {
     this.health = 3;
     this.player = player;
     this.bullets = bullets;
-    this.fireRate = 5000;
+    this.fireRate = 10000;
     this.nextFire = 0;
     this.alive = true;
 
@@ -84,7 +84,7 @@ EnemyTank.prototype.update = function () {
 //    this.turret.y = this.tank.y;
 //    this.turret.rotation = this.game.physics.arcade.angleBetween(this.tank, this.player);
 
-    if (this.game.physics.arcade.distanceBetween(this.tank, this.player) < 300) {
+    if ( 200 < this.game.physics.arcade.distanceBetween(this.tank, this.player)  && this.game.physics.arcade.distanceBetween(this.tank, this.player) < 250) {
         if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
             this.nextFire = this.game.time.now + this.fireRate;
 
@@ -384,7 +384,7 @@ function fire() {
 function jump() {
 
     // Add a vertical velocity to the bird
-    tank.body.velocity.y = -350;
+    // tank.body.velocity.y = -350;
 
     // create an animation on the bird
     var animation = game.add.tween(tank);
