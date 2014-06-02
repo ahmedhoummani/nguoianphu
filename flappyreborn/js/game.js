@@ -558,6 +558,15 @@ Preload.prototype = {
     this.load.audio('ouch', 'assets/ouch.wav');
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
+	
+	// duck
+	this.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50);
+	// this.load.image('shadow', 'assets/sea/wave80a.png');
+    this.load.spritesheet('ship', 'assets/ship/china.png', 150, 46);
+    // game.load.image('logo', 'assets/logo.png');
+    this.load.image('bullet', 'assets/fire/bullet.png');
+    this.load.image('sea', 'assets/sea/sea.png');
+    this.load.spritesheet('kaboom', 'assets/fire/explosion.png', 64, 64, 23);
 
   },
   create: function() {
