@@ -1,4 +1,4 @@
-var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser_example', {
+var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser_example', {
     preload: preload,
     create: create,
     update: update,
@@ -7,34 +7,20 @@ var game = new Phaser.Game(800, 600, Phaser.CANVAS, 'phaser_example', {
 
 function preload() {
 
-    //  This sets a limit on the up-scale
-    //    game.scale.maxWidth = 800;
-    //    game.scale.maxHeight = 600;
-
-    //  Then we tell Phaser that we want it to scale up to whatever the browser can handle, but to do it proportionally
-    //    game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    //    game.scale.setScreenSize();
-
-    game.load.image('duck', 'assets/duck/duck-r50.png');
-    //    game.load.image('shadow', 'assets/duck/shadow.png');
     game.load.spritesheet('ducks', 'assets/duck/ducks1.png', 59, 50);
     game.load.audio('jump', 'assets/audio/jump.wav');
 }
 
-var duck;
 var ducks;
-var cursors;
 
 function create() {
 
-    game.physics.startSystem(Phaser.Physics.ARCADE);
+    //  Resize our game world to be a 2000 x 2000 square
+    game.world.setBounds(-1000, -1000, 2000, 2000);
 
     game.stage.backgroundColor = '#0072bc';
 
-    duck = game.add.sprite(400, 300, 'duck');
-    duck.anchor.setTo(0.5, 0.5);
-
-    ducks = game.add.sprite(game.world.width / 2, game.world.height / 2, 'ducks');
+    ducks = game.add.sprite(0, 0, 'ducks');
     ducks.anchor.setTo(0.5, 0.5);
 
     //  Our two animations, walking left and right.
@@ -48,26 +34,29 @@ function create() {
     ducks.body.drag.set(0.2);
     ducks.body.maxVelocity.setTo(400, 400);
     ducks.body.collideWorldBounds = true;
-    ducks.body.bounce.y = 0.2;
+        ducks.body.bounce.y = 0.2;
     //    ducks.body.gravity.y = 6;
 
-    //  A shadow below our ducks
-    //    shadow = game.add.sprite(game.world.width / 2, game.world.height / 2, 'shadow');
-    //    shadow.anchor.setTo(0.5, 0.5);
+    ducks.bringToTop();
+
+    //    game.camera.follow(ducks);
+    //    game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
+    //    game.camera.focusOnXY(0, 0);
 
 
-
-    jump_sound = this.game.add.audio('jump');
 
     //	Enable Arcade Physics for the sprite
-    game.physics.enable(duck, Phaser.Physics.ARCADE);
+    //    game.physics.enable(duck, Phaser.Physics.ARCADE);
 
     //	Tell it we don't want physics to manage the rotation
     ducks.body.allowRotation = false;
 
+    jump_sound = this.game.add.audio('jump');
 
     //  Our controls.
-    cursors = game.input.keyboard.createCursorKeys();
+    //    var space_key =
+    //            game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+    //        space_key.onDown.add(jump, this);
 
     game.input.onDown.add(jump, this);
 
@@ -109,15 +98,6 @@ function update() {
 
 }
 
-function render() {
-
-    //    game.debug.spriteInfo(ducks, 32, 32);
-    //    game.debug.text(tan_right, 32, game.world.centerY);
-    //    game.debug.spriteInfo(duck, 32, 100);
-    //    game.debug.inputInfo(32, 42);
-
-}
-
 function jump() {
 
     // Add a vertical velocity to the bird
@@ -156,5 +136,14 @@ function jump() {
 
 
 
+
+}
+
+function render() {
+
+    game.debug.spriteInfo(ducks, 32, 32);
+    //    game.debug.text(tan_right, 32, game.world.centerY);
+    //    game.debug.spriteInfo(duck, 32, 100);
+    //    game.debug.inputInfo(32, 42);
 
 }
