@@ -19,8 +19,16 @@ BasicGame.Boot.prototype = {
     preload: function () {
 
         //  Here we load the assets required for our preloader (in this case a background and a loading bar)
-        this.load.image('preloaderBackground', 'images/preloader_background.jpg');
-        this.load.image('preloaderBar', 'images/preloadr_bar.png');
+        this.load.image('preloaderBackground', 'images/sea.png');
+        this.load.image('preloaderBar', 'images/orientation.jpg');
+		
+		// this.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50);
+		// this.load.image('shadow', 'assets/sea/wave80a.png');
+		// this.load.spritesheet('enemy', 'assets/ship/china2.png', 150, 46);
+		// // this.load.image('logo', 'assets/logo.png');
+		// this.load.image('bullet', 'assets/bullet.png');
+		this.load.image('sea', 'assets/sea/sea.png');
+		// this.load.spritesheet('kaboom', 'assets/explosion.png', 64, 64, 23);
 
     },
 

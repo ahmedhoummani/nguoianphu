@@ -2,7 +2,7 @@
 BasicGame.Preloader = function (game) {
 
 	this.background = null;
-	this.preloadBar = null;
+	// this.preloadBar = null;
 
 	this.ready = false;
 
@@ -14,13 +14,17 @@ BasicGame.Preloader.prototype = {
 
 		//	These are the assets we loaded in Boot.js
 		//	A nice sparkly background and a loading progress bar
-		this.background = this.add.sprite(0, 0, 'preloaderBackground');
-		this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
+		// this.background = this.add.sprite(0, 0, 'preloaderBackground');
+		// this.preloadBar = this.add.sprite(300, 400, 'preloaderBar');
+		
+		this.background = this.add.tileSprite(0, 0, 1024, 768, 'sea');
+		this.background.fixedToCamera = true;
+		
 
 		//	This sets the preloadBar sprite as a loader sprite.
 		//	What that does is automatically crop the sprite from 0 to full-width
 		//	as the files below are loaded in.
-		this.load.setPreloadSprite(this.preloadBar);
+		// this.load.setPreloadSprite(this.preloadBar);
 
 		//	Here we load the rest of the assets our game needs.
 		//	As this is just a Project Template I've not provided these assets, the lines below won't work as the files themselves will 404, they are just an example of use.
@@ -35,7 +39,7 @@ BasicGame.Preloader.prototype = {
 	create: function () {
 
 		//	Once the load has finished we disable the crop because we're going to sit in the update loop for a short while as the music decodes
-		this.preloadBar.cropEnabled = false;
+		// this.preloadBar.cropEnabled = false;
 
 	},
 
