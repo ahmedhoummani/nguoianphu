@@ -98,6 +98,8 @@ EnemyTank.prototype.update = function () {
             bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
         }
     }
+	
+	
 
 };
 
@@ -438,6 +440,15 @@ function createEnemies() {
 				enemiesAlive++;
 				game.physics.arcade.collide(tank, enemies[i].tank);
 				game.physics.arcade.overlap(bullets, enemies[i].tank, bulletHitEnemy, null, this);
+				
+				// if (i > 0 ) {
+					// if (game.physics.arcade.distanceBetween(enemies[i].tank, enemies[i-1].tank) < 10){
+						// // enemies[i].tank.body.acceleration.y = 200;
+						// enemies[i].tank.body.acceleration.x = +10;
+						// enemies[i-1].tank.body.acceleration.y = -10;
+					// }
+				// }
+				
 				enemies[i].update();
 			}
 		}
