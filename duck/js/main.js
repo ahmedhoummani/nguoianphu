@@ -112,7 +112,7 @@ EnemyTank.prototype.update = function () {
 //}
 
 
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'phaser_example', {
+var game = new Phaser.Game(320, 480, Phaser.AUTO, 'phaser_example', {
     preload: preload,
     create: create,
     update: update,
@@ -162,10 +162,10 @@ function create() {
     // game.scale.refresh();
 
     //  Resize our game world to be a 2000 x 2000 square
-    game.world.setBounds(0, 0, 2000, 600);
+    game.world.setBounds(0, 0, 640, 960);
 
     //  Our tiled scrolling background
-    land = game.add.tileSprite(0, 0, 800, 600, 'earth');
+    land = game.add.tileSprite(0, 0, 320, 480, 'earth');
     land.fixedToCamera = true;
 
     //  The base of our tank
@@ -246,7 +246,7 @@ function create() {
     // game.input.onDown.add(removeLogo, this);
 
     game.camera.follow(tank);
-    game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
+    // game.camera.deadzone = new Phaser.Rectangle(150, 150, 500, 300);
     game.camera.focusOnXY(0, 0);
 
     //    cursors = game.input.keyboard.createCursorKeys();
