@@ -404,6 +404,12 @@ Menu.prototype = {
 	
 	this.duck = this.add.sprite(5,5,'duck');
     this.titleGroup.add(this.duck);
+	
+	// ship 
+	this.ship = this.add.sprite(5,100,'ship');
+    this.titleGroup.add(this.ship);
+	
+	
   },
   startClick: function() {
     // start button click handler
