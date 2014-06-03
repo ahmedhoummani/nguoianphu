@@ -421,6 +421,7 @@ var Pipe = require('../prefabs/pipe');
 var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
 var Duck = require('../prefabs/duck');
+var Ship = require('../prefabs/ship');
 
 function Play() {
 }
@@ -560,7 +561,7 @@ module.exports = Play;
 
 },
 
-{"../prefabs/bird":2,"../prefabs/ground":3,"../prefabs/pipe":4,"../prefabs/pipeGroup":5,"../prefabs/scoreboard":6,"../prefabs/duck":11}],
+{"../prefabs/bird":2,"../prefabs/ground":3,"../prefabs/pipe":4,"../prefabs/pipeGroup":5,"../prefabs/scoreboard":6,"../prefabs/duck":11,"../prefabs/ship":12}],
 
 10:[function(require,module,exports){
 
@@ -628,6 +629,8 @@ module.exports = Preload;
 },
 
 {}],
+
+// start Duck
 
 11:[function(require,module,exports){
 'use strict';
@@ -702,7 +705,86 @@ module.exports = Duck;
 
 },
 
+{}],
+// end Duck
+
+// start Ship
+
+12:[function(require,module,exports){
+'use strict';
+
+var Ship = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'Ship', frame);
+  this.anchor.setTo(0.5, 0.5);
+  this.animations.add('flap');
+  this.animations.play('flap', 12, true);
+
+  this.flapSound = this.game.add.audio('flap');
+
+  this.name = 'Ship';
+  this.alive = false;
+  this.onGround = false;
+
+
+  // enable physics on the Ship
+  // and disable gravity on the Ship
+  // until the game is started
+  this.game.physics.arcade.enableBody(this);
+  this.body.allowGravity = false;
+  this.body.collideWorldBounds = true;
+
+
+  this.events.onKilled.add(this.onKilled, this);
+
+  
+  
+};
+
+Ship.prototype = Object.create(Phaser.Sprite.prototype);
+Ship.prototype.constructor = Ship;
+
+Ship.prototype.update = function() {
+  // check to see if our angle is less than 90
+  // if it is rotate the Ship towards the ground by 2.5 degrees
+  if(this.angle < 90 && this.alive) {
+    this.angle += 2.5;
+  } 
+
+  if(!this.alive) {
+    this.body.velocity.x = 0;
+  }
+};
+
+Ship.prototype.flap = function() {
+  if(!!this.alive) {
+    this.flapSound.play();
+    //cause our Ship to "jump" upward
+    this.body.velocity.y = -400;
+    // rotate the Ship to -40 degrees
+    this.game.add.tween(this).to({angle: -40}, 100).start();
+  }
+};
+
+Ship.prototype.revived = function() { 
+};
+
+Ship.prototype.onKilled = function() {
+  this.exists = true;
+  this.visible = true;
+  this.animations.stop();
+  var duration = 90 / this.y * 300;
+  this.game.add.tween(this).to({angle: 90}, duration).start();
+  console.log('killed');
+  console.log('alive:', this.alive);
+};
+
+module.exports = Ship;
+
+
+},
+
 {}]
+// end Ship
 
 },
 
