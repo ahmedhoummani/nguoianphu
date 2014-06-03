@@ -398,6 +398,12 @@ Menu.prototype = {
     // add our start button with a callback
     this.startButton = this.game.add.button(this.game.width/2, 300, 'startButton', this.startClick, this);
     this.startButton.anchor.setTo(0.5,0.5);
+	
+	
+	// duck
+	
+	this.duck = this.add.sprite(5,5,'duck');
+    this.titleGroup.add(this.duck);
   },
   startClick: function() {
     // start button click handler
@@ -603,9 +609,7 @@ Preload.prototype = {
 	
 	// duck
 	this.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50);
-	// this.load.image('shadow', 'assets/sea/wave80a.png');
     this.load.spritesheet('ship', 'assets/ship/china.png', 150, 46);
-    // game.load.image('logo', 'assets/logo.png');
     this.load.image('bullet', 'assets/fire/bullet.png');
     this.load.image('sea', 'assets/sea/sea.png');
     this.load.spritesheet('kaboom', 'assets/fire/explosion.png', 64, 64, 23);
@@ -636,10 +640,11 @@ module.exports = Preload;
 'use strict';
 
 var Duck = function(game, x, y, frame) {
+
   Phaser.Sprite.call(this, game, x, y, 'Duck', frame);
   this.anchor.setTo(0.5, 0.5);
-  this.animations.add('flap');
-  this.animations.play('flap', 12, true);
+  this.animations.add('left', [0], 20, true);
+  this.animations.add('right', [1], 20, true);
 
   this.flapSound = this.game.add.audio('flap');
 
@@ -728,9 +733,7 @@ var Ship = function(index, game, player, bullets) {
     this.nextFire = 0;
     this.alive = true;
 
-//    this.shadow = game.add.sprite(x, y, 'enemy', 'shadow');
     this.ship = game.add.sprite(x, y, 'ship');
-//    this.turret = game.add.sprite(x, y, 'enemy', 'turret');
 
 //    this.shadow.anchor.set(0.5);
     this.ship.anchor.set(0.5, 0.5);
