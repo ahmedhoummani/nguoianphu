@@ -713,28 +713,56 @@ module.exports = Duck;
 12:[function(require,module,exports){
 'use strict';
 
-var Ship = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'Ship', frame);
-  this.anchor.setTo(0.5, 0.5);
-  this.animations.add('flap');
-  this.animations.play('flap', 12, true);
+// var Ship = function(game, x, y, frame) {
+var Ship = function(index, game, player, bullets) {
 
-  this.flapSound = this.game.add.audio('flap');
+	
+    var x = game.world.randomX;
+    var y = game.world.randomY;
 
-  this.name = 'Ship';
-  this.alive = false;
-  this.onGround = false;
+    this.game = game;
+    this.health = 3;
+    this.player = player;
+    this.bullets = bullets;
+    this.fireRate = 15000;
+    this.nextFire = 0;
+    this.alive = true;
 
+//    this.shadow = game.add.sprite(x, y, 'enemy', 'shadow');
+    this.ship = game.add.sprite(x, y, 'ship');
+//    this.turret = game.add.sprite(x, y, 'enemy', 'turret');
 
-  // enable physics on the Ship
-  // and disable gravity on the Ship
-  // until the game is started
-  this.game.physics.arcade.enableBody(this);
-  this.body.allowGravity = false;
-  this.body.collideWorldBounds = true;
+//    this.shadow.anchor.set(0.5);
+    this.ship.anchor.set(0.5, 0.5);
+//    this.turret.anchor.set(0.3, 0.5);
+    this.ship.animations.add('left', [0], 20, true);
+    this.ship.animations.add('right', [1], 20, true);
 
+    this.ship.name = index.toString();
+    game.physics.enable(this.ship, Phaser.Physics.ARCADE);
+    this.ship.body.immovable = false;
+    this.ship.body.collideWorldBounds = true;
+    this.ship.body.bounce.setTo(1, 1);
+	
+	// this.ship.body.customSeparateX = true;
+    // this.ship.body.customSeparateY = true;
+	
+	// if (Math.abs(this.ship.body.velocity.x) != 0 ){
+		// this.ship.animations.play('left');
+	// }
+	
+	this.ship.body.maxVelocity.y = 50;
+	this.ship.body.maxVelocity.x = 50;
+	
+	// this.ship.body.acceleration.x = 0;
+	// this.ship.body.acceleration.y = 0;
+    
+    //	Tell it we don't want physics to manage the rotation
+    this.ship.body.allowRotation = false;
 
-  this.events.onKilled.add(this.onKilled, this);
+//    this.ship.angle = game.rnd.angle();
+
+    game.physics.arcade.velocityFromRotation(this.ship.rotation, 100, this.ship.body.velocity);
 
   
   
@@ -744,39 +772,65 @@ Ship.prototype = Object.create(Phaser.Sprite.prototype);
 Ship.prototype.constructor = Ship;
 
 Ship.prototype.update = function() {
-  // check to see if our angle is less than 90
-  // if it is rotate the Ship towards the ground by 2.5 degrees
-  if(this.angle < 90 && this.alive) {
-    this.angle += 2.5;
-  } 
+	
+	if (this.ship.body.velocity.x < 0 ){
+		this.ship.animations.play('left');
+	} else if (this.ship.body.velocity.x > 0 ) {
+		this.ship.animations.play('right');
+	}
 
-  if(!this.alive) {
-    this.body.velocity.x = 0;
-  }
+//    this.shadow.x = this.ship.x;
+//    this.shadow.y = this.ship.y;
+//    this.shadow.rotation = this.ship.rotation;
+
+//    this.turret.x = this.ship.x;
+//    this.turret.y = this.ship.y;
+//    this.turret.rotation = this.game.physics.arcade.angleBetween(this.ship, this.player);
+
+    if ( 300 < this.game.physics.arcade.distanceBetween(this.ship, this.player)  && this.game.physics.arcade.distanceBetween(this.ship, this.player) < 350) {
+        if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+            this.nextFire = this.game.time.now + this.fireRate;
+
+            var bullet = this.bullets.getFirstDead();
+
+            bullet.reset(this.ship.x, this.ship.y);
+
+            bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+        }
+    }
+	
 };
 
-Ship.prototype.flap = function() {
-  if(!!this.alive) {
-    this.flapSound.play();
-    //cause our Ship to "jump" upward
-    this.body.velocity.y = -400;
-    // rotate the Ship to -40 degrees
-    this.game.add.tween(this).to({angle: -40}, 100).start();
-  }
+Ship.prototype.damage = function() {
+  
+	this.health -= 1;
+
+    if (this.health <= 0) {
+        this.alive = false;
+
+//        this.shadow.kill();
+        this.tank.kill();
+//        this.turret.kill();
+
+        return true;
+    }
+
+    return false;
+  
 };
 
-Ship.prototype.revived = function() { 
-};
+// Ship.prototype.revived = function() { 
+// };
 
-Ship.prototype.onKilled = function() {
-  this.exists = true;
-  this.visible = true;
-  this.animations.stop();
-  var duration = 90 / this.y * 300;
-  this.game.add.tween(this).to({angle: 90}, duration).start();
-  console.log('killed');
-  console.log('alive:', this.alive);
-};
+// Ship.prototype.onKilled = function() {
+  // this.exists = true;
+  // this.visible = true;
+  // this.animations.stop();
+  // var duration = 90 / this.y * 300;
+  // this.game.add.tween(this).to({angle: 90}, duration).start();
+  // console.log('killed');
+  // console.log('alive:', this.alive);
+// };
 
 module.exports = Ship;
 
