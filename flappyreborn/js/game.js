@@ -1,4 +1,8 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})
+
+({
+
+1:[function(require,module,exports){
 'use strict';
 
 
@@ -19,7 +23,11 @@ game.state.add('preload', PreloadState);
 game.state.start('boot');
 
   
-},{"./states/boot":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
+},
+
+{"./states/boot":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],
+
+2:[function(require,module,exports){
 'use strict';
 
 var Bird = function(game, x, y, frame) {
@@ -90,7 +98,11 @@ Bird.prototype.onKilled = function() {
 module.exports = Bird;
 
 
-},{}],3:[function(require,module,exports){
+},
+
+{}],
+
+3:[function(require,module,exports){
 'use strict';
 
 var Ground = function(game, x, y, width, height) {
@@ -120,7 +132,11 @@ Ground.prototype.update = function() {
 };
 
 module.exports = Ground;
-},{}],4:[function(require,module,exports){
+},
+
+{}],
+
+4:[function(require,module,exports){
 'use strict';
 
 var Pipe = function(game, x, y, frame) {
@@ -142,7 +158,11 @@ Pipe.prototype.update = function() {
 };
 
 module.exports = Pipe;
-},{}],5:[function(require,module,exports){
+},
+
+{}],
+
+5:[function(require,module,exports){
 'use strict';
 
 var Pipe = require('./pipe');
@@ -190,7 +210,11 @@ PipeGroup.prototype.stop = function() {
 };
 
 module.exports = PipeGroup;
-},{"./pipe":4}],6:[function(require,module,exports){
+},
+
+{"./pipe":4}],
+
+6:[function(require,module,exports){
 'use strict';
 
 var Scoreboard = function(game) {
@@ -294,7 +318,11 @@ Scoreboard.prototype.update = function() {
 
 module.exports = Scoreboard;
 
-},{}],7:[function(require,module,exports){
+},
+
+{}],
+
+7:[function(require,module,exports){
 
 'use strict';
 
@@ -313,7 +341,11 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],8:[function(require,module,exports){
+},
+
+{}],
+
+8:[function(require,module,exports){
 
 'use strict';
 function Menu() {}
@@ -376,7 +408,11 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{}],9:[function(require,module,exports){
+},
+
+{}],
+
+9:[function(require,module,exports){
 
 'use strict';
 var Bird = require('../prefabs/bird');
@@ -384,6 +420,7 @@ var Ground = require('../prefabs/ground');
 var Pipe = require('../prefabs/pipe');
 var PipeGroup = require('../prefabs/pipeGroup');
 var Scoreboard = require('../prefabs/scoreboard');
+var Duck = require('../prefabs/duck');
 
 function Play() {
 }
@@ -521,7 +558,11 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bird":2,"../prefabs/ground":3,"../prefabs/pipe":4,"../prefabs/pipeGroup":5,"../prefabs/scoreboard":6}],10:[function(require,module,exports){
+},
+
+{"../prefabs/bird":2,"../prefabs/ground":3,"../prefabs/pipe":4,"../prefabs/pipeGroup":5,"../prefabs/scoreboard":6,"../prefabs/duck":11}],
+
+10:[function(require,module,exports){
 
 'use strict';
 function Preload() {
@@ -584,4 +625,87 @@ Preload.prototype = {
 
 module.exports = Preload;
 
-},{}]},{},[1])
+},
+
+{}],
+
+11:[function(require,module,exports){
+'use strict';
+
+var Duck = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'Duck', frame);
+  this.anchor.setTo(0.5, 0.5);
+  this.animations.add('flap');
+  this.animations.play('flap', 12, true);
+
+  this.flapSound = this.game.add.audio('flap');
+
+  this.name = 'Duck';
+  this.alive = false;
+  this.onGround = false;
+
+
+  // enable physics on the Duck
+  // and disable gravity on the Duck
+  // until the game is started
+  this.game.physics.arcade.enableBody(this);
+  this.body.allowGravity = false;
+  this.body.collideWorldBounds = true;
+
+
+  this.events.onKilled.add(this.onKilled, this);
+
+  
+  
+};
+
+Duck.prototype = Object.create(Phaser.Sprite.prototype);
+Duck.prototype.constructor = Duck;
+
+Duck.prototype.update = function() {
+  // check to see if our angle is less than 90
+  // if it is rotate the Duck towards the ground by 2.5 degrees
+  if(this.angle < 90 && this.alive) {
+    this.angle += 2.5;
+  } 
+
+  if(!this.alive) {
+    this.body.velocity.x = 0;
+  }
+};
+
+Duck.prototype.flap = function() {
+  if(!!this.alive) {
+    this.flapSound.play();
+    //cause our Duck to "jump" upward
+    this.body.velocity.y = -400;
+    // rotate the Duck to -40 degrees
+    this.game.add.tween(this).to({angle: -40}, 100).start();
+  }
+};
+
+Duck.prototype.revived = function() { 
+};
+
+Duck.prototype.onKilled = function() {
+  this.exists = true;
+  this.visible = true;
+  this.animations.stop();
+  var duration = 90 / this.y * 300;
+  this.game.add.tween(this).to({angle: 90}, duration).start();
+  console.log('killed');
+  console.log('alive:', this.alive);
+};
+
+module.exports = Duck;
+
+
+},
+
+{}]
+
+},
+
+{},
+
+[1])
