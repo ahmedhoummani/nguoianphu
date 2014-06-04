@@ -13,7 +13,6 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 
-//    this.load.image('sky1', 'assets/sky/sky_bg1.png');
     this.load.image('sky_bg', 'assets/sky/sky_bg.png');
       
     this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
@@ -21,7 +20,7 @@ Preload.prototype = {
 
     this.load.image('ship', 'assets/ship/china_200l.png');
 
-    this.load.spritesheet('duck', 'assets/duck/duck_lr.png', 150, 115, 2);
+    this.load.image('duck', 'assets/duck/duck.png');
 
 
   },
