@@ -404,6 +404,10 @@ Menu.prototype = {
 	
 	this.duck = this.add.sprite(5,5,'duck');
     this.titleGroup.add(this.duck);
+    
+    this.duck.animations.add('right');
+    
+    this.duck.animations.play('right', 12, true);
 	
 	// ship 
 	this.ship = this.add.sprite(5,100,'ship');
@@ -458,7 +462,8 @@ Play.prototype = {
     
     
  // create and add a new Duck object
-    this.duck = new Duck(this.game, 50, this.game.height/2);
+//    this.duck = new Duck(this.game, 50, this.game.height/2);
+    this.duck = new Bird(this.game, 50, 10);
     this.game.add.existing(this.duck);
     
     
@@ -650,9 +655,9 @@ module.exports = Preload;
 11:[function(require,module,exports){
 'use strict';
 
-var Duck = function(game, x, y, frame) {
+var Duck = function(game, x, y) {
 
-  Phaser.Sprite.call(this, game, x, y, 'Duck', frame);
+  Phaser.Sprite.call(this, game, x, y, 'Duck');
   this.anchor.setTo(0.5, 0.5);
   this.animations.add('left', [0], 20, true);
   this.animations.add('right', [1], 20, true);
