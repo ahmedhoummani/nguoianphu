@@ -75,7 +75,7 @@ module.exports = GameOver;
 
       // create a group to put the title assets in
       // so they can be manipulated as a whole
-      //      this.titleGroup = this.game.add.group();
+      this.titleGroup = this.game.add.group();
 
       // add the sky sprite
       this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
@@ -101,9 +101,18 @@ module.exports = GameOver;
       this.ship = this.game.add.sprite(this.game.world.height - 100, this.game.world.height - 166 - 70, 'ship');
       //      this.titleGroup.add(this.ship);
 
-      // add the button
-      this.btnStart = this.game.add.sprite(this.game.world.width / 2 - 104 / 2, this.game.world.height / 2 - 58, 'btnStart');
+      // add our start button with a callback
+      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
+      this.startButton.anchor.setTo(0.5, 0.5);
       //      this.titleGroup.add(this.btnStart);
+
+
+      /*      this.titleGroup.x = this.game.world.width/2;
+      this.titleGroup.y = this.game.world.height/2;
+
+      this.game.add.tween(this.titleGroup).to({
+        y: 115
+      }, 350, Phaser.Easing.Linear.NONE, true, 0, 1000, true);*/
 
     },
 
@@ -115,6 +124,14 @@ module.exports = GameOver;
 */
 
 
+
+    },
+
+    startClick: function() {
+
+      // start button click handler
+      // start the 'play' state
+      this.game.state.start('play');
 
     }
 
@@ -175,7 +192,7 @@ Preload.prototype = {
 
     this.load.image('duck', 'assets/duck/duck.png');
       
-    this.load.image('btnStart', 'assets/menu/start-button.png');
+    this.load.image('startButton', 'assets/menu/start-button.png');
 
 
   },

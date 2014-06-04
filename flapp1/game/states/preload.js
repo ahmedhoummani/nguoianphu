@@ -23,7 +23,7 @@ Preload.prototype = {
 
     this.load.image('duck', 'assets/duck/duck.png');
       
-    this.load.image('btnStart', 'assets/menu/start-button.png');
+    this.load.image('startButton', 'assets/menu/start-button.png');
 
 
   },
