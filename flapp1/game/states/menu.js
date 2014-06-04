@@ -1,30 +1,36 @@
+  'use strict';
 
-'use strict';
-function Menu() {}
+  function Menu() {}
 
-Menu.prototype = {
-  preload: function() {
+  Menu.prototype = {
+    preload: function() {},
+    create: function() {
 
-  },
-  create: function() {
-    var style = { font: '65px Arial', fill: '#ffffff', align: 'center'};
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
+      // add the sky sprite
+      this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
+      //      this.sky_bg.autoScroll(-50, 0);
 
-    this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
-    this.titleText.anchor.setTo(0.5, 0.5);
+      // add the background sprite
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, 400, 'Click anywhere to play "Click The Yeoman Logo"', { font: '16px Arial', fill: '#ffffff', align: 'center'});
-    this.instructionsText.anchor.setTo(0.5, 0.5);
+      // Axis Y : from bottom (this.game.world.height) to top = sea_bottom height + sea_on heith
+      this.sea_on = this.game.add.tileSprite(0, this.game.world.height - 259, this.game.world.width, 259, 'sea_on');
+      this.sea_on.autoScroll(-50, 0);
 
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({angle: 20}, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
-  },
-  update: function() {
-    if(this.game.input.activePointer.justPressed()) {
-      this.game.state.start('play');
+      // Axis Y : from bottom to top = sea3 height
+      this.sea_bottom = this.game.add.tileSprite(0, this.game.world.height - 166, this.game.world.width, 166, 'sea_bottom');
+      //      this.sea.fixedToCamera = true;
+      this.sea_bottom.autoScroll(-50, 0);
+
+    },
+    update: function() {
+
+      /*
+      this.sea.tilePosition.x = - this.game.camera.x;
+      this.sea.tilePosition.y = - this.game.camera.y;
+*/
+
+
+
     }
-  }
-};
-
-module.exports = Menu;
+  };
+  module.exports = Menu;
