@@ -555,13 +555,13 @@
 
 										// create and add a new Bird object
 										this.bird = new Bird(this.game, 100,
-												this.game.height / 2);
+												this.game.height / 2, 0);
 										this.game.add.existing(this.bird);
 
 										// create and add a new Duck object
 										// this.duck = new Duck(this.game, 50,
 										// this.game.height/2);
-										this.duck = new Duck(this.game, 50, 10);
+										this.duck = new Duck(this.game, 50, 10, 0);
 										this.game.add.existing(this.duck);
 
 										// create and add a new Ground object
@@ -798,10 +798,10 @@
 										// duck
 										this.load.spritesheet('duck',
 												'assets/duck/duck.png', 59, 50,
-												1);
+												2);
 										this.load.spritesheet('ship',
 												'assets/ship/china.png', 150,
-												46);
+												46, 2);
 										this.load.image('bullet',
 												'assets/fire/bullet.png');
 										this.load.image('sea',
@@ -836,20 +836,21 @@
 							function(require, module, exports) {
 								'use strict';
 
-								var Duck = function(game, x, y) {
+								var Duck = function(game, x, y, frame) {
 
 									Phaser.Sprite
-											.call(this, game, x, y, 'Duck');
+											.call(this, game, x, y, 'duck', frame);
 									this.anchor.setTo(0.5, 0.5);
-									this.animations
-											.add('left', [ 0 ], 20, true);
-									this.animations.add('right', [ 1 ], 20,
-											true);
+									
+									this.animations.add('left');
+//									this.animations.add('right');
+									
+									this.animations.play('left', 10, true);
 
 									this.flapSound = this.game.add
 											.audio('flap');
 
-									this.name = 'Duck';
+									this.name = 'duck';
 									this.alive = false;
 									this.onGround = false;
 
