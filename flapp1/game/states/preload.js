@@ -7,7 +7,8 @@ function Preload() {
 
 Preload.prototype = {
   preload: function() {
-    this.asset = this.add.sprite(this.width / 2, this.height / 2, 'preloader');
+      
+    this.asset = this.add.sprite(this.game.width / 2, this.game.height / 2, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
@@ -21,6 +22,8 @@ Preload.prototype = {
     this.load.image('ship', 'assets/ship/china_200l.png');
 
     this.load.image('duck', 'assets/duck/duck.png');
+      
+    this.load.image('btnStart', 'assets/menu/start-button.png');
 
 
   },
