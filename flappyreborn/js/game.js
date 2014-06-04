@@ -457,6 +457,11 @@ Play.prototype = {
     this.game.add.existing(this.bird);
     
     
+ // create and add a new Duck object
+    this.duck = new Duck(this.game, 50, this.game.height/2);
+    this.game.add.existing(this.duck);
+    
+    
 
     // create and add a new Ground object
     this.ground = new Ground(this.game, 0, 400, 335, 112);
@@ -614,7 +619,7 @@ Preload.prototype = {
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
 	
 	// duck
-	this.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50);
+	this.load.spritesheet('duck', 'assets/duck/duck.png', 59, 50, 1);
     this.load.spritesheet('ship', 'assets/ship/china.png', 150, 46);
     this.load.image('bullet', 'assets/fire/bullet.png');
     this.load.image('sea', 'assets/sea/sea.png');
