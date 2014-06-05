@@ -42,25 +42,16 @@
 //      this.titleGroup.add(this.startButton);
 
 
-      this.titleGroup.x = this.game.world.width / 2;
+      /*this.titleGroup.x = this.game.world.width / 2;
       this.titleGroup.y = this.game.world.height / 2;
 
       this.game.add.tween(this.titleGroup).to({
         y: 115
-      }, 350, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
+      }, 350, Phaser.Easing.Linear.NONE, true, 0, 1000, true);*/
 
     },
 
-    update: function() {
-
-      /*
-      this.sea.tilePosition.x = - this.game.camera.x;
-      this.sea.tilePosition.y = - this.game.camera.y;
-*/
-
-
-
-    },
+    update: function() {},
 
     startClick: function() {
 
