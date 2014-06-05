@@ -44,8 +44,8 @@ module.exports = Duck;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Sea_under = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'sea_under', frame);
+var Sea_under = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_under');
 
   // initialize your prefab here
 
@@ -60,7 +60,7 @@ var Sea_under = function(game, x, y, frame) {
 
 };
 
-Sea_under.prototype = Object.create(Phaser.Sprite.prototype);
+Sea_under.prototype = Object.create(Phaser.TileSprite.prototype);
 Sea_under.prototype.constructor = Sea_under;
 
 Sea_under.prototype.update = function() {
@@ -248,7 +248,7 @@ Play.prototype = {
     this.game.add.existing(this.duck);
 
     // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, 73);
+    this.sea_under = new Sea_under(this.game, 0, 73, 400, 73);
     this.game.add.existing(this.sea_under);
 
   },

@@ -1,7 +1,7 @@
 'use strict';
 
-var Sea_under = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'sea_under', frame);
+var Sea_under = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_under');
 
   // initialize your prefab here
 
@@ -16,7 +16,7 @@ var Sea_under = function(game, x, y, frame) {
 
 };
 
-Sea_under.prototype = Object.create(Phaser.Sprite.prototype);
+Sea_under.prototype = Object.create(Phaser.TileSprite.prototype);
 Sea_under.prototype.constructor = Sea_under;
 
 Sea_under.prototype.update = function() {
