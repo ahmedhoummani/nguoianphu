@@ -16,20 +16,59 @@ window.onload = function () {
   game.state.start('boot');
 };
 },{"./states/boot":2,"./states/gameover":3,"./states/menu":4,"./states/play":5,"./states/preload":6}],2:[function(require,module,exports){
-
 'use strict';
 
-function Boot() {
-}
+function Boot() {}
 
 Boot.prototype = {
+
   preload: function() {
+
     this.load.image('preloader', 'assets/preloader.gif');
+
   },
+
   create: function() {
+
     this.game.input.maxPointers = 1;
+
+    this.stage.disableVisibilityChange = true;
+
+    if (this.game.device.desktop) {
+      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 260;
+      this.scale.maxWidth = 800;
+      this.scale.maxHeight = 600;
+      this.scale.pageAlignHorizontally = true;
+      this.scale.pageAlignVertically = true;
+      this.scale.setScreenSize(true);
+    } else {
+      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 260;
+      this.scale.maxWidth = 800;
+      this.scale.maxHeight = 600;
+      this.scale.pageAlignHorizontally = true;
+      this.scale.pageAlignVertically = true;
+      this.scale.forceOrientation(true, false);
+      //      this.scale.hasResized.add(this.gameResized, this);
+      //      this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+      //      this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+      this.scale.setScreenSize(true);
+    }
+
     this.game.state.start('preload');
+
+  },
+
+  gameResized: function(width, height) {
+
+    //  This could be handy if you need to do any extra processing if the game resizes.
+    //  A resize could happen if for example swapping orientation on a device.
+
   }
+
 };
 
 module.exports = Boot;
@@ -75,11 +114,10 @@ module.exports = GameOver;
 
       // create a group to put the title assets in
       // so they can be manipulated as a whole
-      this.titleGroup = this.game.add.group();
+      //      this.titleGroup = this.game.add.group();
 
       // add the sky sprite
       this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
-      //      this.titleGroup.add(this.sky_bg);
 
       // add the background sprite
 
@@ -104,7 +142,10 @@ module.exports = GameOver;
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
-//      this.titleGroup.add(this.startButton);
+      this.startButton.inputEnabled = true;
+      this.startButton.input.useHandCursor = true;
+
+      //      this.titleGroup.add(this.startButton);
 
 
       /*this.titleGroup.x = this.game.world.width / 2;
@@ -119,7 +160,6 @@ module.exports = GameOver;
     update: function() {},
 
     startClick: function() {
-
       // start button click handler
       // start the 'play' state
       this.game.state.start('play');

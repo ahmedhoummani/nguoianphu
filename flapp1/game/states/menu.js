@@ -10,11 +10,10 @@
 
       // create a group to put the title assets in
       // so they can be manipulated as a whole
-      this.titleGroup = this.game.add.group();
+      //      this.titleGroup = this.game.add.group();
 
       // add the sky sprite
       this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
-      //      this.titleGroup.add(this.sky_bg);
 
       // add the background sprite
 
@@ -39,7 +38,10 @@
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
-//      this.titleGroup.add(this.startButton);
+      this.startButton.inputEnabled = true;
+      this.startButton.input.useHandCursor = true;
+
+      //      this.titleGroup.add(this.startButton);
 
 
       /*this.titleGroup.x = this.game.world.width / 2;
@@ -54,7 +56,6 @@
     update: function() {},
 
     startClick: function() {
-
       // start button click handler
       // start the 'play' state
       this.game.state.start('play');
