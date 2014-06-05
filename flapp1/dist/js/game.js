@@ -248,7 +248,7 @@ Play.prototype = {
     this.game.add.existing(this.duck);
 
     // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, 73, 400, 73);
+    this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
 
   },
