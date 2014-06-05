@@ -7,7 +7,7 @@ function Preload() {
 
 Preload.prototype = {
   preload: function() {
-      
+
     this.asset = this.add.sprite(this.game.width / 2, this.game.height / 2, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
@@ -15,14 +15,16 @@ Preload.prototype = {
     this.load.setPreloadSprite(this.asset);
 
     this.load.image('sky_bg', 'assets/sky/sky_bg.png');
-      
-    this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
+
     this.load.image('sea_on', 'assets/sea/sea_on.png');
+    this.load.image('sea_face', 'assets/sea/sea_face.png');
+    this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
+    this.load.image('sea_under', 'assets/sea/sea_under.png');
 
     this.load.image('ship', 'assets/ship/china_200l.png');
 
     this.load.image('duck', 'assets/duck/duck.png');
-      
+
     this.load.image('startButton', 'assets/menu/start-button.png');
 
 

@@ -1,26 +1,33 @@
+'use strict';
+var Duck = require('../prefabs/duck');
+var Sea_under = require('../prefabs/sea_under');
 
-  'use strict';
-  function Play() {}
-  Play.prototype = {
-    create: function() {
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'yeoman');
-      this.sprite.inputEnabled = true;
-      
-      this.game.physics.arcade.enable(this.sprite);
-      this.sprite.body.collideWorldBounds = true;
-      this.sprite.body.bounce.setTo(1,1);
-      this.sprite.body.velocity.x = this.game.rnd.integerInRange(-500,500);
-      this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500,500);
+function Play() {}
 
-      this.sprite.events.onInputDown.add(this.clickListener, this);
-    },
-    update: function() {
+Play.prototype = {
 
-    },
-    clickListener: function() {
-      this.game.state.start('gameover');
-    }
-  };
-  
-  module.exports = Play;
+  create: function() {
+
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+    this.game.physics.arcade.gravity.y = 500;
+
+
+    // add the duck
+    // Create a new duck object
+    this.duck = new Duck(this.game, 100, this.game.height / 2);
+    // and add it to the game
+    this.game.add.existing(this.duck);
+
+    // create and add a new Sea_under object
+    this.sea_under = new Sea_under(this.game, 0, 73);
+    this.game.add.existing(this.sea_under);
+
+  },
+
+  update: function() {
+
+  }
+
+};
+
+module.exports = Play;
