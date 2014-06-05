@@ -25,6 +25,9 @@ Play.prototype = {
   },
 
   update: function() {
+      
+      
+      this.game.physics.arcade.collide(this.duck, this.sea_under);
 
   }
 
