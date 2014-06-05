@@ -4,15 +4,7 @@ var Sea_under = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_under');
 
   // initialize your prefab here
-
-  // enable physics on the ground sprite
-  // this is needed for collision detection
-  this.game.physics.arcade.enableBody(this);
-
-  // we don't want the ground's body
-  // to be affected by gravity or external forces
-  this.body.allowGravity = false;
-  this.body.immovable = true;
+  this.autoScroll(30, 0);
 
 };
 

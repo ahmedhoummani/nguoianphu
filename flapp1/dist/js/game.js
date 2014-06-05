@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":4,"./states/gameover":5,"./states/menu":6,"./states/play":7,"./states/preload":8}],2:[function(require,module,exports){
+},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
 'use strict';
 
 var Duck = function(game, x, y, frame) {
@@ -44,19 +44,55 @@ module.exports = Duck;
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var Sea_face = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
+
+  // initialize your prefab here
+  this.autoScroll(0, 20);
+
+};
+
+Sea_face.prototype = Object.create(Phaser.TileSprite.prototype);
+Sea_face.prototype.constructor = Sea_face;
+
+Sea_face.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+};
+
+module.exports = Sea_face;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
+var Sea_on = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_on');
+
+  // initialize your prefab here
+  this.autoScroll(-30, 0);
+
+};
+
+Sea_on.prototype = Object.create(Phaser.TileSprite.prototype);
+Sea_on.prototype.constructor = Sea_on;
+
+Sea_on.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+};
+
+module.exports = Sea_on;
+
+},{}],5:[function(require,module,exports){
+'use strict';
+
 var Sea_under = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_under');
 
   // initialize your prefab here
-
-  // enable physics on the ground sprite
-  // this is needed for collision detection
-  this.game.physics.arcade.enableBody(this);
-
-  // we don't want the ground's body
-  // to be affected by gravity or external forces
-  this.body.allowGravity = false;
-  this.body.immovable = true;
+  this.autoScroll(30, 0);
 
 };
 
@@ -71,7 +107,7 @@ Sea_under.prototype.update = function() {
 
 module.exports = Sea_under;
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -129,7 +165,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],5:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -157,7 +193,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
   'use strict';
 
   function Menu() {}
@@ -173,7 +209,7 @@ module.exports = GameOver;
       //      this.titleGroup = this.game.add.group();
 
       // add the sky sprite
-      this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
+      this.sky = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky');
 
       // add the background sprite
 
@@ -226,10 +262,13 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{}],7:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
-var Duck = require('../prefabs/duck');
+var Sea_on = require('../prefabs/sea_on');
+var Sea_face = require('../prefabs/sea_face');
 var Sea_under = require('../prefabs/sea_under');
+
+var Duck = require('../prefabs/duck');
 
 function Play() {}
 
@@ -238,12 +277,22 @@ Play.prototype = {
   create: function() {
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    this.game.physics.arcade.gravity.y = 500;
+    //    this.game.physics.arcade.gravity.y = 500;
+
+
+    // create and add a new Sea_on object
+    this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
+    this.game.add.existing(this.sea_on);
+      
+      
+      // create and add a new Sea_face object
+    this.sea_face = new Sea_face(this.game, 0, 93, this.game.world.width, this.game.world.height - 73);
+    this.game.add.existing(this.sea_face);
 
 
     // add the duck
     // Create a new duck object
-    this.duck = new Duck(this.game, 100, this.game.height / 2);
+    this.duck = new Duck(this.game, 50, 41);
     // and add it to the game
     this.game.add.existing(this.duck);
 
@@ -264,7 +313,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/duck":2,"../prefabs/sea_under":3}],8:[function(require,module,exports){
+},{"../prefabs/duck":2,"../prefabs/sea_face":3,"../prefabs/sea_on":4,"../prefabs/sea_under":5}],10:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -281,7 +330,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 
-    this.load.image('sky_bg', 'assets/sky/sky_bg.png');
+    this.load.image('sky', 'assets/sky/sky_bg.png');
 
     this.load.image('sea_on', 'assets/sea/sea_on.png');
     this.load.image('sea_face', 'assets/sea/sea_face.png');

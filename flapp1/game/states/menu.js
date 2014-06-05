@@ -13,7 +13,7 @@
       //      this.titleGroup = this.game.add.group();
 
       // add the sky sprite
-      this.sky_bg = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky_bg');
+      this.sky = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky');
 
       // add the background sprite
 

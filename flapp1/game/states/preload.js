@@ -14,7 +14,7 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 
-    this.load.image('sky_bg', 'assets/sky/sky_bg.png');
+    this.load.image('sky', 'assets/sky/sky_bg.png');
 
     this.load.image('sea_on', 'assets/sea/sea_on.png');
     this.load.image('sea_face', 'assets/sea/sea_face.png');
