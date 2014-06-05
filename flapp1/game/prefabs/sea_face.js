@@ -4,7 +4,7 @@ var Sea_face = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
 
   // initialize your prefab here
-  this.autoScroll(0, 20);
+  this.autoScroll(-10, 20);
 
 };
 
