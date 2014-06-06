@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":6,"./states/gameover":7,"./states/menu":8,"./states/play":9,"./states/preload":10}],2:[function(require,module,exports){
+},{"./states/boot":7,"./states/gameover":8,"./states/menu":9,"./states/play":10,"./states/preload":11}],2:[function(require,module,exports){
 'use strict';
 
 var Duck = function(game, x, y, frame) {
@@ -44,6 +44,29 @@ module.exports = Duck;
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var Pole = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'pole', frame);
+
+  // initialize your prefab here
+  this.animations.add('tide');
+  this.animations.play('tide', 2, true);
+
+};
+
+Pole.prototype = Object.create(Phaser.Sprite.prototype);
+Pole.prototype.constructor = Pole;
+
+Pole.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+};
+
+module.exports = Pole;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
 var Sea_face = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
 
@@ -63,7 +86,7 @@ Sea_face.prototype.update = function() {
 
 module.exports = Sea_face;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Sea_on = function(game, x, y, width, height) {
@@ -85,7 +108,7 @@ Sea_on.prototype.update = function() {
 
 module.exports = Sea_on;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Sea_under = function(game, x, y, width, height) {
@@ -107,7 +130,7 @@ Sea_under.prototype.update = function() {
 
 module.exports = Sea_under;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -165,7 +188,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -193,7 +216,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
   'use strict';
 
   function Menu() {}
@@ -215,21 +238,26 @@ module.exports = GameOver;
 
       // Axis Y : from bottom to top = sea3 height
       this.sea_bottom = this.game.add.tileSprite(0, this.game.world.height - 166, this.game.world.width, 166, 'sea_bottom');
-        this.sea_bottom.autoScroll(-10,20)
+      this.sea_bottom.autoScroll(20, 0)
 
 
       // add the duck
-      this.duck = this.game.add.sprite(this.game.world.width/2 - 200, this.game.world.height - 166 - 88, 'duck');
+      this.duck = this.game.add.sprite(this.game.world.width / 2 - 200, this.game.world.height - 166 - 88, 'duck');
       //      this.titleGroup.add(this.duck);
 
       // add the ship
-      this.ship = this.game.add.sprite(this.game.width/2 + 100, this.game.height - 166 - 70, 'ship');
+      this.ship = this.game.add.sprite(this.game.width / 2 + 100, this.game.height - 166 - 70, 'ship');
 
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;
+
+
+      this.pole = this.game.add.sprite(this.game.world.width/2 - 50, this.game.world.height - 73, 'pole');
+      this.pole.animations.add('tide');
+      this.pole.animations.play('tide', 2, true);
 
 
     },
@@ -247,11 +275,13 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
 var Sea_under = require('../prefabs/sea_under');
+
+var Pole = require('../prefabs/pole');
 
 var Duck = require('../prefabs/duck');
 
@@ -268,9 +298,9 @@ Play.prototype = {
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
     this.game.add.existing(this.sea_on);
-      
-      
-      // create and add a new Sea_face object
+
+
+    // create and add a new Sea_face object
     this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
@@ -285,6 +315,12 @@ Play.prototype = {
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
 
+    // add the pole
+    // Create a new pole object
+    this.pole = new Pole(this.game, this.game.world.width/2, this.game.world.height - 73);
+    // and add it to the game
+    this.game.add.existing(this.pole);
+
   },
 
   update: function() {
@@ -298,7 +334,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/duck":2,"../prefabs/sea_face":3,"../prefabs/sea_on":4,"../prefabs/sea_under":5}],10:[function(require,module,exports){
+},{"../prefabs/duck":2,"../prefabs/pole":3,"../prefabs/sea_face":4,"../prefabs/sea_on":5,"../prefabs/sea_under":6}],11:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -321,6 +357,8 @@ Preload.prototype = {
     this.load.image('sea_face', 'assets/sea/sea_face.png');
     this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
     this.load.image('sea_under', 'assets/sea/sea_under.png');
+      
+    this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
     this.load.image('ship', 'assets/ship/china_200l.png');
 

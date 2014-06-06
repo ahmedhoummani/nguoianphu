@@ -20,6 +20,8 @@ Preload.prototype = {
     this.load.image('sea_face', 'assets/sea/sea_face.png');
     this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
     this.load.image('sea_under', 'assets/sea/sea_under.png');
+      
+    this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
     this.load.image('ship', 'assets/ship/china_200l.png');
 

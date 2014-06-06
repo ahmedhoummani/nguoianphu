@@ -3,6 +3,8 @@ var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
 var Sea_under = require('../prefabs/sea_under');
 
+var Pole = require('../prefabs/pole');
+
 var Duck = require('../prefabs/duck');
 
 function Play() {}
@@ -18,9 +20,9 @@ Play.prototype = {
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
     this.game.add.existing(this.sea_on);
-      
-      
-      // create and add a new Sea_face object
+
+
+    // create and add a new Sea_face object
     this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
@@ -34,6 +36,12 @@ Play.prototype = {
     // create and add a new Sea_under object
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
+
+    // add the pole
+    // Create a new pole object
+    this.pole = new Pole(this.game, this.game.world.width/2, this.game.world.height - 73);
+    // and add it to the game
+    this.game.add.existing(this.pole);
 
   },
 
