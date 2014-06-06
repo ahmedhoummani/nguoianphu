@@ -104,15 +104,15 @@ module.exports = GameOver;
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
-      //      this.titleGroup.add(this.btnStart);
+//      this.titleGroup.add(this.startButton);
 
 
-      /*      this.titleGroup.x = this.game.world.width/2;
-      this.titleGroup.y = this.game.world.height/2;
+      this.titleGroup.x = this.game.world.width / 2;
+      this.titleGroup.y = this.game.world.height / 2;
 
       this.game.add.tween(this.titleGroup).to({
         y: 115
-      }, 350, Phaser.Easing.Linear.NONE, true, 0, 1000, true);*/
+      }, 350, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 
     },
 
