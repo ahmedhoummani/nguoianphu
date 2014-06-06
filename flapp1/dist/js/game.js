@@ -129,7 +129,7 @@ Boot.prototype = {
     if (this.game.device.desktop) {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
-      this.scale.minHeight = 260;
+      this.scale.minHeight = 240;
       this.scale.maxWidth = 800;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;
@@ -138,7 +138,7 @@ Boot.prototype = {
     } else {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
-      this.scale.minHeight = 260;
+      this.scale.minHeight = 240;
       this.scale.maxWidth = 800;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;
@@ -219,11 +219,11 @@ module.exports = GameOver;
 
 
       // add the duck
-      this.duck = this.game.add.sprite(100, this.game.world.height - 166 - 88, 'duck');
+      this.duck = this.game.add.sprite(this.game.world.width/2 - 200, this.game.world.height - 166 - 88, 'duck');
       //      this.titleGroup.add(this.duck);
 
       // add the ship
-      this.ship = this.game.add.sprite(this.game.world.height - 100, this.game.world.height - 166 - 70, 'ship');
+      this.ship = this.game.add.sprite(this.game.width/2 + 100, this.game.height - 166 - 70, 'ship');
 
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
@@ -271,7 +271,7 @@ Play.prototype = {
       
       
       // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 93, this.game.world.width, this.game.world.height - 73);
+    this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
 
@@ -309,7 +309,7 @@ function Preload() {
 Preload.prototype = {
   preload: function() {
 
-    this.asset = this.add.sprite(this.game.width / 2, this.game.height / 2, 'preloader');
+    this.asset = this.add.sprite(this.game.width/2, this.game.height/2, 'preloader');
     this.asset.anchor.setTo(0.5, 0.5);
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);

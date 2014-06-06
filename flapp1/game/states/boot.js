@@ -19,7 +19,7 @@ Boot.prototype = {
     if (this.game.device.desktop) {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
-      this.scale.minHeight = 260;
+      this.scale.minHeight = 240;
       this.scale.maxWidth = 800;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;
@@ -28,7 +28,7 @@ Boot.prototype = {
     } else {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
-      this.scale.minHeight = 260;
+      this.scale.minHeight = 240;
       this.scale.maxWidth = 800;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;

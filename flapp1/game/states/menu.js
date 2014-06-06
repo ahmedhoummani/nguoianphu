@@ -23,11 +23,11 @@
 
 
       // add the duck
-      this.duck = this.game.add.sprite(100, this.game.world.height - 166 - 88, 'duck');
+      this.duck = this.game.add.sprite(this.game.world.width/2 - 200, this.game.world.height - 166 - 88, 'duck');
       //      this.titleGroup.add(this.duck);
 
       // add the ship
-      this.ship = this.game.add.sprite(this.game.world.height - 100, this.game.world.height - 166 - 70, 'ship');
+      this.ship = this.game.add.sprite(this.game.width/2 + 100, this.game.height - 166 - 70, 'ship');
 
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);

@@ -21,7 +21,7 @@ Play.prototype = {
       
       
       // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 93, this.game.world.width, this.game.world.height - 73);
+    this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
 
