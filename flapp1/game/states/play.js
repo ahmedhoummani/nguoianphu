@@ -6,6 +6,7 @@ var Sea_under = require('../prefabs/sea_under');
 var Pole = require('../prefabs/pole');
 
 var Duck = require('../prefabs/duck');
+var Ducks = require('../prefabs/ducks');
 
 function Play() {}
 
@@ -33,13 +34,20 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.duck);
 
+
+    // add the ducks
+    // Create a new ducks object
+    this.ducks = new Ducks(this.game, 100, 100);
+    // and add it to the game
+    this.game.add.existing(this.ducks);
+
     // create and add a new Sea_under object
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
 
     // add the pole
     // Create a new pole object
-    this.pole = new Pole(this.game, this.game.world.width/2, this.game.world.height - 73);
+    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
     // and add it to the game
     this.game.add.existing(this.pole);
 
@@ -49,6 +57,7 @@ Play.prototype = {
 
 
     this.game.physics.arcade.collide(this.duck, this.sea_under);
+
 
   }
 
