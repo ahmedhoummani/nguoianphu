@@ -6,6 +6,7 @@ var Pole = function(game, x, y, frame) {
   // initialize your prefab here
   this.animations.add('tide');
   this.animations.play('tide', 2, true);
+    
 
 };
 

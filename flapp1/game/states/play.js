@@ -27,20 +27,6 @@ Play.prototype = {
     this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
-
-    // add the duck
-    // Create a new duck object
-    this.duck = new Duck(this.game, 50, 41);
-    // and add it to the game
-    this.game.add.existing(this.duck);
-
-
-    // add the ducks
-    // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
-    // and add it to the game
-    this.game.add.existing(this.ducks);
-
     // create and add a new Sea_under object
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
@@ -51,15 +37,32 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.pole);
 
+
+    // add the duck
+    // Create a new duck object
+    //    this.duck = new Duck(this.game, 50, 41);
+    // and add it to the game
+    //    this.game.add.existing(this.duck);
+
+
+    // add the ducks
+    // Create a new ducks object
+    this.ducks = new Ducks(this.game, 100, 100);
+    // and add it to the game
+    this.game.add.existing(this.ducks);
+    this.game.input.onDown.add(this.ducks.move, this.ducks);
+
   },
 
   update: function() {
 
 
-    this.game.physics.arcade.collide(this.duck, this.sea_under);
+    //    this.game.physics.arcade.collide(this.duck, this.sea_under);
 
 
   }
+
+
 
 };
 

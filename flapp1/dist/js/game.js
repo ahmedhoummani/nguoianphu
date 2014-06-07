@@ -49,12 +49,20 @@ var Ducks = function(game, x, y, frame) {
 
   // initialize your prefab here
 
-//  this.ducks = game.add.sprite(x, y, 'ducks');
+  this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
   this.animations.add('left', [0], 2, true);
   this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.alive = false;
+
 
 };
 
@@ -79,6 +87,18 @@ Ducks.prototype.update = function() {
 
 };
 
+
+Ducks.prototype.move = function() {
+
+  if (!this.alive) {
+
+    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
+
+  }
+
+
+};
+
 module.exports = Ducks;
 
 },{}],4:[function(require,module,exports){
@@ -90,6 +110,7 @@ var Pole = function(game, x, y, frame) {
   // initialize your prefab here
   this.animations.add('tide');
   this.animations.play('tide', 2, true);
+    
 
 };
 
@@ -345,20 +366,6 @@ Play.prototype = {
     this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
     this.game.add.existing(this.sea_face);
 
-
-    // add the duck
-    // Create a new duck object
-    this.duck = new Duck(this.game, 50, 41);
-    // and add it to the game
-    this.game.add.existing(this.duck);
-
-
-    // add the ducks
-    // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
-    // and add it to the game
-    this.game.add.existing(this.ducks);
-
     // create and add a new Sea_under object
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
     this.game.add.existing(this.sea_under);
@@ -369,15 +376,32 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.pole);
 
+
+    // add the duck
+    // Create a new duck object
+    //    this.duck = new Duck(this.game, 50, 41);
+    // and add it to the game
+    //    this.game.add.existing(this.duck);
+
+
+    // add the ducks
+    // Create a new ducks object
+    this.ducks = new Ducks(this.game, 100, 100);
+    // and add it to the game
+    this.game.add.existing(this.ducks);
+    this.game.input.onDown.add(this.ducks.move, this.ducks);
+
   },
 
   update: function() {
 
 
-    this.game.physics.arcade.collide(this.duck, this.sea_under);
+    //    this.game.physics.arcade.collide(this.duck, this.sea_under);
 
 
   }
+
+
 
 };
 

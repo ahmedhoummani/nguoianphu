@@ -5,12 +5,20 @@ var Ducks = function(game, x, y, frame) {
 
   // initialize your prefab here
 
-//  this.ducks = game.add.sprite(x, y, 'ducks');
+  this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
   this.animations.add('left', [0], 2, true);
   this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.alive = false;
+
 
 };
 
@@ -29,6 +37,18 @@ Ducks.prototype.update = function() {
   if (this.x > this.game.input.worldX) {
 
     this.animations.play('left');
+
+  }
+
+
+};
+
+
+Ducks.prototype.move = function() {
+
+  if (!this.alive) {
+
+    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
 
   }
 
