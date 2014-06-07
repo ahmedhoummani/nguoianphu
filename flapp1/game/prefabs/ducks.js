@@ -13,6 +13,8 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
   this.body.allowRotation = false;
   this.bringToTop();
   this.body.drag.set(0.2);
@@ -33,8 +35,7 @@ Ducks.prototype.update = function() {
 
     this.animations.play('right');
 
-  } else
-  if (this.x > this.game.input.worldX) {
+  } else if (this.x > this.game.input.worldX) {
 
     this.animations.play('left');
 

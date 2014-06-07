@@ -1,0 +1,53 @@
+'use strict';
+
+var Ships = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', frame);
+
+  // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('left', [0], 2, true);
+  this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 50;
+  this.body.maxVelocity.x = 50;
+
+  this.body.allowRotation = false;
+
+  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.add.existing(this);
+
+  this.alive = false;
+
+};
+
+Ships.prototype = Object.create(Phaser.Sprite.prototype);
+Ships.prototype.constructor = Ships;
+
+Ships.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  if (this.body.velocity.x < 0) {
+
+    this.animations.play('left');
+
+  } else if (this.body.velocity.x > 0) {
+
+    this.animations.play('right');
+  }
+
+};
+
+module.exports = Ships;

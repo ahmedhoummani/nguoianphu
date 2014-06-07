@@ -18,32 +18,6 @@ window.onload = function () {
 },{"./states/boot":8,"./states/gameover":9,"./states/menu":10,"./states/play":11,"./states/preload":12}],2:[function(require,module,exports){
 'use strict';
 
-var Duck = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'duck', frame);
-
-  // initialize your prefab here
-
-  this.game.physics.arcade.enableBody(this);
-
-  // set the sprite's anchor to the center
-  this.anchor.setTo(0.5, 0.5);
-
-};
-
-Duck.prototype = Object.create(Phaser.Sprite.prototype);
-Duck.prototype.constructor = Duck;
-
-Duck.prototype.update = function() {
-
-  // write your prefab's specific update code here
-
-};
-
-module.exports = Duck;
-
-},{}],3:[function(require,module,exports){
-'use strict';
-
 var Ducks = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'ducks', frame);
 
@@ -57,6 +31,8 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
   this.body.allowRotation = false;
   this.bringToTop();
   this.body.drag.set(0.2);
@@ -77,8 +53,7 @@ Ducks.prototype.update = function() {
 
     this.animations.play('right');
 
-  } else
-  if (this.x > this.game.input.worldX) {
+  } else if (this.x > this.game.input.worldX) {
 
     this.animations.play('left');
 
@@ -101,7 +76,7 @@ Ducks.prototype.move = function() {
 
 module.exports = Ducks;
 
-},{}],4:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var Pole = function(game, x, y, frame) {
@@ -125,7 +100,7 @@ Pole.prototype.update = function() {
 
 module.exports = Pole;
 
-},{}],5:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var Sea_face = function(game, x, y, width, height) {
@@ -150,7 +125,7 @@ Sea_face.prototype.update = function() {
 
 module.exports = Sea_face;
 
-},{}],6:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Sea_on = function(game, x, y, width, height) {
@@ -175,7 +150,7 @@ Sea_on.prototype.update = function() {
 
 module.exports = Sea_on;
 
-},{}],7:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Sea_under = function(game, x, y, width, height) {
@@ -199,6 +174,61 @@ Sea_under.prototype.update = function() {
 };
 
 module.exports = Sea_under;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+var Ships = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', frame);
+
+  // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('left', [0], 2, true);
+  this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 50;
+  this.body.maxVelocity.x = 50;
+
+  this.body.allowRotation = false;
+
+  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.add.existing(this);
+
+  this.alive = false;
+
+};
+
+Ships.prototype = Object.create(Phaser.Sprite.prototype);
+Ships.prototype.constructor = Ships;
+
+Ships.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  if (this.body.velocity.x < 0) {
+
+    this.animations.play('left');
+
+  } else if (this.body.velocity.x > 0) {
+
+    this.animations.play('right');
+  }
+
+};
+
+module.exports = Ships;
 
 },{}],8:[function(require,module,exports){
 'use strict';
@@ -353,7 +383,7 @@ var Sea_under = require('../prefabs/sea_under');
 
 var Pole = require('../prefabs/pole');
 
-var Duck = require('../prefabs/duck');
+var Ships = require('../prefabs/ships');
 var Ducks = require('../prefabs/ducks');
 
 function Play() {}
@@ -384,18 +414,10 @@ Play.prototype = {
 
     // add the pole
     // Create a new pole object
-//    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
+    //    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
     this.pole = new Pole(this.game, 400, this.game.world.height - 73);
     // and add it to the game
     this.game.add.existing(this.pole);
-
-
-    // add the duck
-    // Create a new duck object
-    //    this.duck = new Duck(this.game, 50, 41);
-    // and add it to the game
-    //    this.game.add.existing(this.duck);
-
 
     // add the ducks
     // Create a new ducks object
@@ -404,6 +426,15 @@ Play.prototype = {
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
+    // add the ships
+    this.shipsAlive = 10;
+    this.shipGroup = this.game.add.group();
+
+    for (var i = 0; i < this.shipsAlive; i++) {
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY);
+      this.shipGroup.add(this.ships);
+    }
+
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
 
@@ -411,8 +442,7 @@ Play.prototype = {
 
   update: function() {
 
-
-    //    this.game.physics.arcade.collide(this.duck, this.sea_under);
+    this.game.physics.arcade.collide(this.ducks, this.shipGroup);
 
 
   }
@@ -423,7 +453,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/duck":2,"../prefabs/ducks":3,"../prefabs/pole":4,"../prefabs/sea_face":5,"../prefabs/sea_on":6,"../prefabs/sea_under":7}],12:[function(require,module,exports){
+},{"../prefabs/ducks":2,"../prefabs/pole":3,"../prefabs/sea_face":4,"../prefabs/sea_on":5,"../prefabs/sea_under":6,"../prefabs/ships":7}],12:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -450,6 +480,7 @@ Preload.prototype = {
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
     this.load.image('ship', 'assets/ship/china_200l.png');
+    this.load.spritesheet('ships', 'assets/ship/china2.png', 150, 46, 2);
 
     this.load.image('duck', 'assets/duck/duck.png');
     this.load.spritesheet('ducks', 'assets/duck/duck_lr.png', 150, 115);

@@ -5,7 +5,7 @@ var Sea_under = require('../prefabs/sea_under');
 
 var Pole = require('../prefabs/pole');
 
-var Duck = require('../prefabs/duck');
+var Ships = require('../prefabs/ships');
 var Ducks = require('../prefabs/ducks');
 
 function Play() {}
@@ -36,18 +36,10 @@ Play.prototype = {
 
     // add the pole
     // Create a new pole object
-//    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
+    //    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
     this.pole = new Pole(this.game, 400, this.game.world.height - 73);
     // and add it to the game
     this.game.add.existing(this.pole);
-
-
-    // add the duck
-    // Create a new duck object
-    //    this.duck = new Duck(this.game, 50, 41);
-    // and add it to the game
-    //    this.game.add.existing(this.duck);
-
 
     // add the ducks
     // Create a new ducks object
@@ -56,6 +48,15 @@ Play.prototype = {
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
+    // add the ships
+    this.shipsAlive = 10;
+    this.shipGroup = this.game.add.group();
+
+    for (var i = 0; i < this.shipsAlive; i++) {
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY);
+      this.shipGroup.add(this.ships);
+    }
+
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
 
@@ -63,8 +64,7 @@ Play.prototype = {
 
   update: function() {
 
-
-    //    this.game.physics.arcade.collide(this.duck, this.sea_under);
+    this.game.physics.arcade.collide(this.ducks, this.shipGroup);
 
 
   }
