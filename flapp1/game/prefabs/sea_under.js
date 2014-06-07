@@ -5,6 +5,7 @@ var Sea_under = function(game, x, y, width, height) {
 
   // initialize your prefab here
   this.autoScroll(30, 0);
+  this.fixedToCamera = true;
 
 };
 
@@ -14,6 +15,8 @@ Sea_under.prototype.constructor = Sea_under;
 Sea_under.prototype.update = function() {
 
   // write your prefab's specific update code here
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
 
 };
 

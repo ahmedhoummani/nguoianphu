@@ -133,6 +133,7 @@ var Sea_face = function(game, x, y, width, height) {
 
   // initialize your prefab here
   this.autoScroll(-10, 20);
+  this.fixedToCamera = true;
 
 };
 
@@ -142,6 +143,8 @@ Sea_face.prototype.constructor = Sea_face;
 Sea_face.prototype.update = function() {
 
   // write your prefab's specific update code here
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -155,6 +158,7 @@ var Sea_on = function(game, x, y, width, height) {
 
   // initialize your prefab here
   this.autoScroll(-30, 0);
+  this.fixedToCamera = true;
 
 };
 
@@ -164,6 +168,8 @@ Sea_on.prototype.constructor = Sea_on;
 Sea_on.prototype.update = function() {
 
   // write your prefab's specific update code here
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -177,6 +183,7 @@ var Sea_under = function(game, x, y, width, height) {
 
   // initialize your prefab here
   this.autoScroll(30, 0);
+  this.fixedToCamera = true;
 
 };
 
@@ -186,6 +193,8 @@ Sea_under.prototype.constructor = Sea_under;
 Sea_under.prototype.update = function() {
 
   // write your prefab's specific update code here
+    this.tilePosition.x = -this.game.camera.x;
+    this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -353,6 +362,9 @@ Play.prototype = {
 
   create: function() {
 
+
+    this.game.world.setBounds(0, 0, 1500, 600);
+
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    this.game.physics.arcade.gravity.y = 500;
 
@@ -372,7 +384,8 @@ Play.prototype = {
 
     // add the pole
     // Create a new pole object
-    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
+//    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
+    this.pole = new Pole(this.game, 400, this.game.world.height - 73);
     // and add it to the game
     this.game.add.existing(this.pole);
 
@@ -390,6 +403,9 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+
+    this.game.camera.follow(this.ducks);
+    this.game.camera.focusOnXY(0, 0);
 
   },
 
