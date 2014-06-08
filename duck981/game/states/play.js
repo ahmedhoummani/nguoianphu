@@ -8,6 +8,8 @@ var Pole = require('../prefabs/pole');
 var Ships = require('../prefabs/ships');
 var Drill = require('../prefabs/drill');
 
+var Bullets = require('../prefabs/bullets');
+
 var Ducks = require('../prefabs/ducks');
 
 var enemyBullets;
@@ -45,13 +47,15 @@ Play.prototype = {
     this.game.add.existing(this.pole);
 
 
-    // add the bullets
-
     //  The enemies bullet group
     this.enemyBullets = this.game.add.group();
     this.enemyBullets.enableBody = true;
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyBullets.createMultiple(100, 'bullets');
+
+    for (var i = 0; i < 100; i++) {
+      this.rockets = new Bullets(this.game, -100, -100);
+      this.enemyBullets.add(this.rockets);
+    }
 
     this.enemyBullets.setAll('anchor.x', 0.5);
     this.enemyBullets.setAll('anchor.y', 0.5);
@@ -82,7 +86,6 @@ Play.prototype = {
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
     }
-
 
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
