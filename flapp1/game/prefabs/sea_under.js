@@ -15,8 +15,8 @@ Sea_under.prototype.constructor = Sea_under;
 Sea_under.prototype.update = function() {
 
   // write your prefab's specific update code here
-    this.tilePosition.x = -this.game.camera.x;
-    this.tilePosition.y = -this.game.camera.y;
+//    this.tilePosition.x = -this.game.camera.x;
+//    this.tilePosition.y = -this.game.camera.y;
 
 };
 

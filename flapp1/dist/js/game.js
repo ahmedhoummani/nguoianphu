@@ -136,7 +136,7 @@ var Sea_face = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
 
   // initialize your prefab here
-  this.autoScroll(-10, 20);
+  this.autoScroll(-20, 20);
   this.fixedToCamera = true;
 
 };
@@ -147,8 +147,8 @@ Sea_face.prototype.constructor = Sea_face;
 Sea_face.prototype.update = function() {
 
   // write your prefab's specific update code here
-    this.tilePosition.x = -this.game.camera.x;
-    this.tilePosition.y = -this.game.camera.y;
+//    this.tilePosition.x = -this.game.camera.x;
+//    this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -161,7 +161,7 @@ var Sea_on = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_on');
 
   // initialize your prefab here
-  this.autoScroll(-30, 0);
+  this.autoScroll(-35, 0);
   this.fixedToCamera = true;
 
 };
@@ -172,8 +172,8 @@ Sea_on.prototype.constructor = Sea_on;
 Sea_on.prototype.update = function() {
 
   // write your prefab's specific update code here
-    this.tilePosition.x = -this.game.camera.x;
-    this.tilePosition.y = -this.game.camera.y;
+//    this.tilePosition.x = -this.game.camera.x;
+//    this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -197,8 +197,8 @@ Sea_under.prototype.constructor = Sea_under;
 Sea_under.prototype.update = function() {
 
   // write your prefab's specific update code here
-    this.tilePosition.x = -this.game.camera.x;
-    this.tilePosition.y = -this.game.camera.y;
+//    this.tilePosition.x = -this.game.camera.x;
+//    this.tilePosition.y = -this.game.camera.y;
 
 };
 
