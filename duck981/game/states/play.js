@@ -12,7 +12,7 @@ var Bullets = require('../prefabs/bullets');
 
 var Ducks = require('../prefabs/ducks');
 
-var enemyBullets;
+//var enemyBullets;
 
 function Play() {}
 
@@ -63,6 +63,16 @@ Play.prototype = {
     this.enemyBullets.setAll('checkWorldBounds', true);
 
 
+    //  Explosion pool
+    this.explosions = this.game.add.group();
+
+    for (var i = 0; i < 10; i++) {
+      this.explosionAnimation = this.explosions.create(0, 0, 'kaboom', [0], false);
+      this.explosionAnimation.anchor.setTo(0.5, 0.5);
+      this.explosionAnimation.animations.add('kaboom');
+    }
+
+
     // add the drill
     // Create a new drill object
     this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
@@ -98,6 +108,25 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.drill);
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
 
+
+    this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+
+
+  },
+
+
+  bulletHitDucks: function(ducks, enemyBullets) {
+
+    enemyBullets.kill();
+
+    this.destroyed = ducks.damage();
+
+    //    if (this.destroyed) {
+    if (true) {
+      var explosionAnimation = this.explosions.getFirstExists(false);
+      this.explosionAnimation.reset(ducks.x, ducks.y);
+      this.explosionAnimation.play('kaboom', 30, false, true);
+    }
 
   }
 

@@ -138,7 +138,8 @@ var Ducks = function(game, x, y, frame) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.alive = false;
+  this.health = 3;
+  this.alive = true;
 
 
 };
@@ -173,7 +174,7 @@ Ducks.prototype.update = function() {
 
 Ducks.prototype.move = function() {
 
-  if (!this.alive) {
+  if (this.alive) {
 
     // ducks move to the pointer
     this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
@@ -201,6 +202,22 @@ Ducks.prototype.move = function() {
 
   }
 
+
+};
+
+
+Ducks.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
 
 };
 
@@ -577,7 +594,7 @@ var Bullets = require('../prefabs/bullets');
 
 var Ducks = require('../prefabs/ducks');
 
-var enemyBullets;
+//var enemyBullets;
 
 function Play() {}
 
@@ -628,6 +645,16 @@ Play.prototype = {
     this.enemyBullets.setAll('checkWorldBounds', true);
 
 
+    //  Explosion pool
+    this.explosions = this.game.add.group();
+
+    for (var i = 0; i < 10; i++) {
+      this.explosionAnimation = this.explosions.create(0, 0, 'kaboom', [0], false);
+      this.explosionAnimation.anchor.setTo(0.5, 0.5);
+      this.explosionAnimation.animations.add('kaboom');
+    }
+
+
     // add the drill
     // Create a new drill object
     this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
@@ -663,6 +690,25 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.drill);
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
 
+
+    this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+
+
+  },
+
+
+  bulletHitDucks: function(ducks, enemyBullets) {
+
+    enemyBullets.kill();
+
+    this.destroyed = ducks.damage();
+
+    //    if (this.destroyed) {
+    if (true) {
+      var explosionAnimation = this.explosions.getFirstExists(false);
+      this.explosionAnimation.reset(ducks.x, ducks.y);
+      this.explosionAnimation.play('kaboom', 30, false, true);
+    }
 
   }
 
@@ -708,8 +754,9 @@ Preload.prototype = {
 
     this.load.image('startButton', 'assets/menu/start-button.png');
 
-    this.load.image('bullets', 'assets/bullets/bullets.png');
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
+
+    this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 
 
   },

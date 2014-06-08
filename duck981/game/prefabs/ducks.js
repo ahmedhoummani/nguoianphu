@@ -19,7 +19,8 @@ var Ducks = function(game, x, y, frame) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.alive = false;
+  this.health = 3;
+  this.alive = true;
 
 
 };
@@ -54,7 +55,7 @@ Ducks.prototype.update = function() {
 
 Ducks.prototype.move = function() {
 
-  if (!this.alive) {
+  if (this.alive) {
 
     // ducks move to the pointer
     this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
@@ -82,6 +83,22 @@ Ducks.prototype.move = function() {
 
   }
 
+
+};
+
+
+Ducks.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
 
 };
 
