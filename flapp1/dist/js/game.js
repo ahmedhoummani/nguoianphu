@@ -536,7 +536,7 @@ Play.prototype = {
 
 
     // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 93, this.game.width, this.game.height - 73);
+    this.sea_face = new Sea_face(this.game, 0, 93, this.game.world.width, this.game.world.height - 73);
     this.game.add.existing(this.sea_face);
 
     // create and add a new Sea_under object
@@ -545,7 +545,6 @@ Play.prototype = {
 
     // add the pole
     // Create a new pole object
-    //    this.pole = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 73);
     this.pole = new Pole(this.game, 400, this.game.world.height - 73);
     // and add it to the game
     this.game.add.existing(this.pole);
