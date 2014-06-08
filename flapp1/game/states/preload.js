@@ -32,6 +32,8 @@ Preload.prototype = {
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
     this.load.image('startButton', 'assets/menu/start-button.png');
+      
+    this.load.image('bullets', 'assets/bullets/bullets.png');
 
 
   },

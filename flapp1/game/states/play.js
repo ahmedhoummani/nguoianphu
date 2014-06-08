@@ -10,6 +10,8 @@ var Drill = require('../prefabs/drill');
 
 var Ducks = require('../prefabs/ducks');
 
+var enemyBullets;
+
 function Play() {}
 
 Play.prototype = {
@@ -42,21 +44,26 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.pole);
 
+
+    // add the bullets
+
+    //  The enemies bullet group
+    this.enemyBullets = this.game.add.group();
+    this.enemyBullets.enableBody = true;
+    this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    this.enemyBullets.createMultiple(100, 'bullets');
+
+    this.enemyBullets.setAll('anchor.x', 0.5);
+    this.enemyBullets.setAll('anchor.y', 0.5);
+    this.enemyBullets.setAll('outOfBoundsKill', true);
+    this.enemyBullets.setAll('checkWorldBounds', true);
+
+
     // add the drill
     // Create a new drill object
     this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
     // and add it to the game
     this.game.add.existing(this.drill);
-
-
-    // add the ships
-    this.shipsAlive = 5;
-    this.shipGroup = this.game.add.group();
-
-    for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY);
-      this.shipGroup.add(this.ships);
-    }
 
 
     // add the ducks
@@ -65,6 +72,16 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+
+
+    // add the ships
+    this.shipsAlive = 5;
+    this.shipGroup = this.game.add.group();
+
+    for (var i = 0; i < this.shipsAlive; i++) {
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.shipGroup.add(this.ships);
+    }
 
 
     this.game.camera.follow(this.ducks);

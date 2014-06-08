@@ -274,11 +274,20 @@ module.exports = Sea_under;
 },{}],8:[function(require,module,exports){
 'use strict';
 
-var Ships = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', frame);
+var Ships = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
+
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+
+  this.game = game;
+  this.health = 3;
+  this.fireRate = 15000;
+  this.nextFire = 0;
+  this.alive = true;
 
   this.anchor.set(0.5, 0.5);
 
@@ -303,7 +312,6 @@ var Ships = function(game, x, y, frame) {
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
   this.game.add.existing(this);
 
-  this.alive = false;
 
 };
 
@@ -330,7 +338,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 100)) {
+  if (this.y > (this.game.world.height - 120)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
 
@@ -352,6 +360,22 @@ Ships.prototype.update = function() {
 
     this.animations.play('right');
   }
+
+
+  // fire the bullets
+
+  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0) {
+      this.nextFire = this.game.time.now + this.fireRate;
+
+      var bullet = this.enemyBullets.getFirstDead();
+
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+    }
+  }
+
 
 };
 
@@ -517,6 +541,8 @@ var Drill = require('../prefabs/drill');
 
 var Ducks = require('../prefabs/ducks');
 
+var enemyBullets;
+
 function Play() {}
 
 Play.prototype = {
@@ -549,21 +575,26 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.pole);
 
+
+    // add the bullets
+
+    //  The enemies bullet group
+    this.enemyBullets = this.game.add.group();
+    this.enemyBullets.enableBody = true;
+    this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+    this.enemyBullets.createMultiple(100, 'bullets');
+
+    this.enemyBullets.setAll('anchor.x', 0.5);
+    this.enemyBullets.setAll('anchor.y', 0.5);
+    this.enemyBullets.setAll('outOfBoundsKill', true);
+    this.enemyBullets.setAll('checkWorldBounds', true);
+
+
     // add the drill
     // Create a new drill object
     this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
     // and add it to the game
     this.game.add.existing(this.drill);
-
-
-    // add the ships
-    this.shipsAlive = 5;
-    this.shipGroup = this.game.add.group();
-
-    for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY);
-      this.shipGroup.add(this.ships);
-    }
 
 
     // add the ducks
@@ -572,6 +603,16 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+
+
+    // add the ships
+    this.shipsAlive = 5;
+    this.shipGroup = this.game.add.group();
+
+    for (var i = 0; i < this.shipsAlive; i++) {
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.shipGroup.add(this.ships);
+    }
 
 
     this.game.camera.follow(this.ducks);
@@ -629,6 +670,8 @@ Preload.prototype = {
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
     this.load.image('startButton', 'assets/menu/start-button.png');
+      
+    this.load.image('bullets', 'assets/bullets/bullets.png');
 
 
   },

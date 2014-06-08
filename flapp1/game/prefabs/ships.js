@@ -1,10 +1,19 @@
 'use strict';
 
-var Ships = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', frame);
+var Ships = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
+
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+
+  this.game = game;
+  this.health = 3;
+  this.fireRate = 15000;
+  this.nextFire = 0;
+  this.alive = true;
 
   this.anchor.set(0.5, 0.5);
 
@@ -29,7 +38,6 @@ var Ships = function(game, x, y, frame) {
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
   this.game.add.existing(this);
 
-  this.alive = false;
 
 };
 
@@ -56,7 +64,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 100)) {
+  if (this.y > (this.game.world.height - 120)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
 
@@ -78,6 +86,22 @@ Ships.prototype.update = function() {
 
     this.animations.play('right');
   }
+
+
+  // fire the bullets
+
+  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0) {
+      this.nextFire = this.game.time.now + this.fireRate;
+
+      var bullet = this.enemyBullets.getFirstDead();
+
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+    }
+  }
+
 
 };
 
