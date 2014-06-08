@@ -99,7 +99,7 @@ Drill.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 300)) {
 
-    this.body.velocity.y = - Math.floor(Math.random() * 10) - 50;
+    this.body.velocity.y = - Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -230,9 +230,13 @@ var Pole = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'pole', frame);
 
   // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+
   this.animations.add('tide');
   this.animations.play('tide', 2, true);
-    
+
 
 };
 
@@ -606,8 +610,8 @@ Play.prototype = {
     this.game.world.setBounds(0, 0, 2000, 600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
-    //    this.game.physics.arcade.gravity.y = 500;
 
+    this.score = 0;
 
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
@@ -657,7 +661,8 @@ Play.prototype = {
 
     // add the drill
     // Create a new drill object
-    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
+    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
+    this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
     // and add it to the game
     this.game.add.existing(this.drill);
 
@@ -692,6 +697,9 @@ Play.prototype = {
 
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 
 
   },
@@ -703,12 +711,39 @@ Play.prototype = {
 
     this.destroyed = ducks.damage();
 
-    //    if (this.destroyed) {
-    if (true) {
-      var explosionAnimation = this.explosions.getFirstExists(false);
-      this.explosionAnimation.reset(ducks.x, ducks.y);
-      this.explosionAnimation.play('kaboom', 30, false, true);
-    }
+    var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+
+  },
+
+  poleHitShips: function(pole, shipGroup) {
+
+    shipGroup.kill();
+
+    var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+
+  },
+
+  poleHitDrill: function(pole, drill) {
+
+    drill.kill();
+
+    var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(drill.x + 5, drill.y + 5);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+
+  },
+
+  poleHitDucks: function(pole, ducks) {
+
+    ducks.kill();
+
+    var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
+    this.explosionAnimation.play('kaboom', 30, false, true);
 
   }
 
