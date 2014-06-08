@@ -25,6 +25,8 @@ Preload.prototype = {
 
     this.load.image('ship', 'assets/ship/china_200l.png');
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
+      
+    this.load.spritesheet('drill', 'assets/drill/drill.png', 200, 234, 2);
 
     this.load.image('duck', 'assets/duck/duck.png');
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);

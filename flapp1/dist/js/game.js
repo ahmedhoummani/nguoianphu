@@ -15,7 +15,74 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":8,"./states/gameover":9,"./states/menu":10,"./states/play":11,"./states/preload":12}],2:[function(require,module,exports){
+},{"./states/boot":9,"./states/gameover":10,"./states/menu":11,"./states/play":12,"./states/preload":13}],2:[function(require,module,exports){
+'use strict';
+
+var Drill = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', frame);
+
+  // initialize your prefab here
+
+
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('left', [0], 2, true);
+  this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 50;
+  this.body.maxVelocity.x = 50;
+
+  this.body.allowRotation = false;
+
+  //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
+  this.game.add.existing(this);
+
+  this.alive = false;
+
+
+};
+
+Drill.prototype = Object.create(Phaser.Sprite.prototype);
+Drill.prototype.constructor = Drill;
+
+Drill.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  // Drill don't want to be kill
+
+  if (this.y > (this.game.world.height - 300)) {
+
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  this.animations.play('left');
+
+
+};
+
+module.exports = Drill;
+
+},{}],3:[function(require,module,exports){
 'use strict';
 
 var Ducks = function(game, x, y, frame) {
@@ -105,7 +172,7 @@ Ducks.prototype.move = function() {
 
 module.exports = Ducks;
 
-},{}],3:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 'use strict';
 
 var Pole = function(game, x, y, frame) {
@@ -129,7 +196,7 @@ Pole.prototype.update = function() {
 
 module.exports = Pole;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Sea_face = function(game, x, y, width, height) {
@@ -154,7 +221,7 @@ Sea_face.prototype.update = function() {
 
 module.exports = Sea_face;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Sea_on = function(game, x, y, width, height) {
@@ -179,7 +246,7 @@ Sea_on.prototype.update = function() {
 
 module.exports = Sea_on;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Sea_under = function(game, x, y, width, height) {
@@ -204,7 +271,7 @@ Sea_under.prototype.update = function() {
 
 module.exports = Sea_under;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, frame) {
@@ -233,7 +300,7 @@ var Ships = function(game, x, y, frame) {
   this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
-  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
   this.game.add.existing(this);
 
   this.alive = false;
@@ -290,7 +357,7 @@ Ships.prototype.update = function() {
 
 module.exports = Ships;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -348,7 +415,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -376,7 +443,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
   'use strict';
 
   function Menu() {}
@@ -435,7 +502,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
@@ -444,6 +511,8 @@ var Sea_under = require('../prefabs/sea_under');
 var Pole = require('../prefabs/pole');
 
 var Ships = require('../prefabs/ships');
+var Drill = require('../prefabs/drill');
+
 var Ducks = require('../prefabs/ducks');
 
 function Play() {}
@@ -479,12 +548,12 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.pole);
 
-    // add the ducks
-    // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
+    // add the drill
+    // Create a new drill object
+    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
     // and add it to the game
-    this.game.add.existing(this.ducks);
-    this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.game.add.existing(this.drill);
+
 
     // add the ships
     this.shipsAlive = 10;
@@ -495,6 +564,15 @@ Play.prototype = {
       this.shipGroup.add(this.ships);
     }
 
+
+    // add the ducks
+    // Create a new ducks object
+    this.ducks = new Ducks(this.game, 100, 100);
+    // and add it to the game
+    this.game.add.existing(this.ducks);
+    this.game.input.onDown.add(this.ducks.move, this.ducks);
+
+
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
 
@@ -503,6 +581,8 @@ Play.prototype = {
   update: function() {
 
     this.game.physics.arcade.collide(this.ducks, this.shipGroup);
+    this.game.physics.arcade.collide(this.ducks, this.drill);
+    this.game.physics.arcade.collide(this.shipGroup, this.drill);
 
 
   }
@@ -513,7 +593,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/ducks":2,"../prefabs/pole":3,"../prefabs/sea_face":4,"../prefabs/sea_on":5,"../prefabs/sea_under":6,"../prefabs/ships":7}],12:[function(require,module,exports){
+},{"../prefabs/drill":2,"../prefabs/ducks":3,"../prefabs/pole":4,"../prefabs/sea_face":5,"../prefabs/sea_on":6,"../prefabs/sea_under":7,"../prefabs/ships":8}],13:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -541,6 +621,8 @@ Preload.prototype = {
 
     this.load.image('ship', 'assets/ship/china_200l.png');
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
+      
+    this.load.spritesheet('drill', 'assets/drill/drill.png', 200, 234, 2);
 
     this.load.image('duck', 'assets/duck/duck.png');
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);

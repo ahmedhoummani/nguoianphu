@@ -26,7 +26,7 @@ var Ships = function(game, x, y, frame) {
   this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
-  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
   this.game.add.existing(this);
 
   this.alive = false;
