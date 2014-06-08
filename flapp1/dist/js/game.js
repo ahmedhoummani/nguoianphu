@@ -252,7 +252,13 @@ Ships.prototype.update = function() {
   if (this.y < 60) {
 
     this.body.velocity.y = Math.floor(Math.random() * 10) + 5;
-    this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 10);
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
   }
 
   // ships don't want to be kill
@@ -260,7 +266,13 @@ Ships.prototype.update = function() {
   if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
-    this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 10);
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
   }
 
   // ships left right
