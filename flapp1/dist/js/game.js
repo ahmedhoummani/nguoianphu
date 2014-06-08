@@ -3,7 +3,7 @@
 
 //global variables
 window.onload = function () {
-  var game = new Phaser.Game(800, 600, Phaser.AUTO, 'flapp1');
+  var game = new Phaser.Game(1024, 600, Phaser.AUTO, 'duck981');
 
   // Game States
   game.state.add('boot', require('./states/boot'));
@@ -380,7 +380,7 @@ Boot.prototype = {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
       this.scale.minHeight = 240;
-      this.scale.maxWidth = 800;
+      this.scale.maxWidth = 1024;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
@@ -389,7 +389,7 @@ Boot.prototype = {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
       this.scale.minWidth = 480;
       this.scale.minHeight = 240;
-      this.scale.maxWidth = 800;
+      this.scale.maxWidth = 1024;
       this.scale.maxHeight = 600;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
