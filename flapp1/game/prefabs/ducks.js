@@ -31,6 +31,8 @@ Ducks.prototype.update = function() {
 
   // write your prefab's specific update code here
 
+  // ducks faces to pointer
+
   if (this.x < this.game.input.worldX) {
 
     this.animations.play('right');
@@ -41,6 +43,11 @@ Ducks.prototype.update = function() {
 
   }
 
+  // ducks face up
+  if (this.angle != 0) {
+    this.angle = 0;
+  }
+
 
 };
 
@@ -49,7 +56,29 @@ Ducks.prototype.move = function() {
 
   if (!this.alive) {
 
+    // ducks move to the pointer
     this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
+
+    // ducks face down
+
+    this.animation = this.game.add.tween(this);
+
+    if (this.x < this.game.input.worldX) {
+
+      this.animation.to({
+        angle: 20
+      }, 150);
+
+    }
+    if (this.x > this.game.input.worldX) {
+
+      this.animation.to({
+        angle: -20
+      }, 150);
+
+    }
+
+    this.animation.start();
 
   }
 
