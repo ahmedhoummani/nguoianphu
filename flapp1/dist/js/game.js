@@ -470,10 +470,12 @@ module.exports = GameOver;
 
       // add the duck
       this.duck = this.game.add.sprite(this.game.world.width / 2 - 200, this.game.world.height - 166 - 88, 'duck');
-      //      this.titleGroup.add(this.duck);
+
+      // add the drill
+      this.drill = this.game.add.sprite(this.game.width / 2 + 150, this.game.height - 235, 'drill');
 
       // add the ship
-      this.ship = this.game.add.sprite(this.game.width / 2 + 100, this.game.height - 166 - 70, 'ship');
+      this.ship = this.game.add.sprite(this.game.width / 2 , this.game.height - 166 - 70, 'ship');
 
       // add our start button with a callback
       this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
@@ -482,7 +484,7 @@ module.exports = GameOver;
       this.startButton.input.useHandCursor = true;
 
 
-      this.pole = this.game.add.sprite(this.game.world.width/2 - 50, this.game.world.height - 73, 'pole');
+      this.pole = this.game.add.sprite(this.game.world.width / 2 - 50, this.game.world.height - 73, 'pole');
       this.pole.animations.add('tide');
       this.pole.animations.play('tide', 2, true);
 
