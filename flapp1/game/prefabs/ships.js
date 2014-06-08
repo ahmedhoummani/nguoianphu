@@ -25,7 +25,8 @@ var Ships = function(game, x, y, frame) {
 
   this.body.allowRotation = false;
 
-  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 100, this.body.velocity);
   this.game.add.existing(this);
 
   this.alive = false;
@@ -38,6 +39,24 @@ Ships.prototype.constructor = Ships;
 Ships.prototype.update = function() {
 
   // write your prefab's specific update code here
+
+  // ships cannot over sea_on
+
+  if (this.y < 60) {
+
+    this.body.velocity.y = Math.floor(Math.random() * 10) + 5;
+    this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 10);
+  }
+
+  // ships don't want to be kill
+
+  if (this.y > (this.game.world.height - 100)) {
+
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
+    this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 10);
+  }
+
+  // ships left right
 
   if (this.body.velocity.x < 0) {
 

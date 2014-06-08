@@ -15,7 +15,7 @@ Play.prototype = {
   create: function() {
 
 
-    this.game.world.setBounds(0, 0, 1500, 600);
+    this.game.world.setBounds(0, 0, 2000, 600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     //    this.game.physics.arcade.gravity.y = 500;
