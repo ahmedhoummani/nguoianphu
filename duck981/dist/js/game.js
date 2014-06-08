@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":10,"./states/gameover":11,"./states/menu":12,"./states/play":13,"./states/preload":14}],2:[function(require,module,exports){
+},{"./states/boot":11,"./states/gameover":12,"./states/menu":13,"./states/play":14,"./states/preload":15}],2:[function(require,module,exports){
 'use strict';
 
 var Bullets = function(game, x, y, frame) {
@@ -254,6 +254,116 @@ module.exports = Pole;
 },{}],6:[function(require,module,exports){
 'use strict';
 
+var Scoreboard = function(game, x, y) {
+
+  this.theX = x;
+  this.theY = y;
+
+
+
+  Phaser.Group.call(this, game);
+  this.gameover = this.create(this.theX, 100, 'gameover');
+  this.gameover.anchor.setTo(0.5, 0.5);
+
+  this.scoreboard = this.create(this.theX, 200, 'scoreboard');
+  this.scoreboard.anchor.setTo(0.5, 0.5);
+
+  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'flappyfont', '', 18);
+  this.add(this.scoreText);
+
+  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'flappyfont', '', 18);
+  this.add(this.bestText);
+
+  // add our start button with a callback
+  this.startButton = this.game.add.button(this.theX, 300, 'startButton', this.startClick, this);
+  this.startButton.anchor.setTo(0.5, 0.5);
+  this.startButton.inputEnabled = true;
+  this.startButton.input.useHandCursor = true;
+
+  this.add(this.startButton);
+
+  this.y = this.game.height;
+  this.x = 0;
+
+};
+
+Scoreboard.prototype = Object.create(Phaser.Group.prototype);
+Scoreboard.prototype.constructor = Scoreboard;
+
+Scoreboard.prototype.show = function(score) {
+  var coin, bestScore;
+  this.scoreText.setText(score.toString());
+  if ( !! localStorage) {
+    bestScore = localStorage.getItem('bestScore');
+    if (!bestScore || bestScore < score) {
+      bestScore = score;
+      localStorage.setItem('bestScore', bestScore);
+    }
+  } else {
+    bestScore = 'N/A';
+  }
+
+  this.bestText.setText(bestScore.toString());
+
+  if (score >= 10 && score < 20) {
+    coin = this.game.add.sprite(-65, 7, 'medals', 1);
+  } else if (score >= 20) {
+    coin = this.game.add.sprite(-65, 7, 'medals', 0);
+  }
+
+  this.game.add.tween(this).to({
+    y: 0
+  }, 1000, Phaser.Easing.Bounce.Out, true);
+
+  if (coin) {
+
+    coin.anchor.setTo(0.5, 0.5);
+    this.scoreboard.addChild(coin);
+
+    // Emitters have a center point and a width/height, which extends from their center point to the left/right and up/down
+    var emitter = this.game.add.emitter(coin.x, coin.y, 400);
+    this.scoreboard.addChild(emitter);
+    emitter.width = coin.width;
+    emitter.height = coin.height;
+
+
+    //  This emitter will have a width of 800px, so a particle can emit from anywhere in the range emitter.x += emitter.width / 2
+    // emitter.width = 800;
+
+    emitter.makeParticles('particle');
+
+    // emitter.minParticleSpeed.set(0, 300);
+    // emitter.maxParticleSpeed.set(0, 600);
+
+    emitter.setRotation(-100, 100);
+    emitter.setXSpeed(0, 0);
+    emitter.setYSpeed(0, 0);
+    emitter.minParticleScale = 0.25;
+    emitter.maxParticleScale = 0.5;
+    emitter.setAll('body.allowGravity', false);
+
+    emitter.start(false, 1000, 1000);
+
+  }
+};
+
+Scoreboard.prototype.startClick = function() {
+  this.game.state.start('play');
+};
+
+
+
+
+
+Scoreboard.prototype.update = function() {
+  // write your prefab's specific update code here
+};
+
+module.exports = Scoreboard;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
 var Sea_face = function(game, x, y, width, height) {
   Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
 
@@ -276,7 +386,7 @@ Sea_face.prototype.update = function() {
 
 module.exports = Sea_face;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Sea_on = function(game, x, y, width, height) {
@@ -301,7 +411,7 @@ Sea_on.prototype.update = function() {
 
 module.exports = Sea_on;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Sea_under = function(game, x, y, width, height) {
@@ -326,7 +436,7 @@ Sea_under.prototype.update = function() {
 
 module.exports = Sea_under;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets) {
@@ -436,7 +546,7 @@ Ships.prototype.update = function() {
 
 module.exports = Ships;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -494,7 +604,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -522,7 +632,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
   'use strict';
 
   function Menu() {}
@@ -583,7 +693,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
@@ -598,7 +708,7 @@ var Bullets = require('../prefabs/bullets');
 
 var Ducks = require('../prefabs/ducks');
 
-//var enemyBullets;
+var Scoreboard = require('../prefabs/scoreboard');
 
 function Play() {}
 
@@ -606,12 +716,12 @@ Play.prototype = {
 
   create: function() {
 
+    this.gameover = false;
 
     this.game.world.setBounds(0, 0, 2000, 600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    this.score = 0;
 
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
@@ -684,6 +794,10 @@ Play.prototype = {
       this.shipGroup.add(this.ships);
     }
 
+    // add the score
+    this.score = 0;
+    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'flappyfont', this.score.toString(), 34);
+
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
 
@@ -707,17 +821,32 @@ Play.prototype = {
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    enemyBullets.kill();
+    this.hasScore(-10);
 
-    this.destroyed = ducks.damage();
+    enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+
+    // the ducks is killed
+    this.theX = ducks.x;
+    this.theY = ducks.y;
+    this.destroyed = ducks.damage();
+    if (this.destroyed) {
+
+      this.scoreboard = new Scoreboard(this.game, this.theX, this.theY);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score);
+
+    }
+
   },
 
   poleHitShips: function(pole, shipGroup) {
+
+    this.hasScore(10);
 
     shipGroup.kill();
 
@@ -728,6 +857,8 @@ Play.prototype = {
   },
 
   poleHitDrill: function(pole, drill) {
+
+    this.hasScore(50);
 
     drill.kill();
 
@@ -745,6 +876,13 @@ Play.prototype = {
     this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+  },
+
+  hasScore: function(addScore) {
+    this.score = this.score + addScore;
+    this.scoreText.setText(this.score.toString());
+    //    this.scoreSound.play();
+
   }
 
 
@@ -753,7 +891,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/sea_face":6,"../prefabs/sea_on":7,"../prefabs/sea_under":8,"../prefabs/ships":9}],14:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/scoreboard":6,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ships":10}],15:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -776,6 +914,13 @@ Preload.prototype = {
     this.load.image('sea_face', 'assets/sea/sea_face.png');
     this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
     this.load.image('sea_under', 'assets/sea/sea_under.png');
+
+    this.load.image('scoreboard', 'assets/score/scoreboard.png');
+    this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
+    this.load.image('gameover', 'assets/score/gameover.png');
+    this.load.image('particle', 'assets/score/particle.png');
+
+    this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
 
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 

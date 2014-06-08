@@ -12,7 +12,7 @@ var Bullets = require('../prefabs/bullets');
 
 var Ducks = require('../prefabs/ducks');
 
-//var enemyBullets;
+var Scoreboard = require('../prefabs/scoreboard');
 
 function Play() {}
 
@@ -20,12 +20,12 @@ Play.prototype = {
 
   create: function() {
 
+    this.gameover = false;
 
     this.game.world.setBounds(0, 0, 2000, 600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    this.score = 0;
 
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
@@ -98,6 +98,10 @@ Play.prototype = {
       this.shipGroup.add(this.ships);
     }
 
+    // add the score
+    this.score = 0;
+    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'flappyfont', this.score.toString(), 34);
+
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
 
@@ -121,17 +125,32 @@ Play.prototype = {
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    enemyBullets.kill();
+    this.hasScore(-10);
 
-    this.destroyed = ducks.damage();
+    enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+
+    // the ducks is killed
+    this.theX = ducks.x;
+    this.theY = ducks.y;
+    this.destroyed = ducks.damage();
+    if (this.destroyed) {
+
+      this.scoreboard = new Scoreboard(this.game, this.theX, this.theY);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score);
+
+    }
+
   },
 
   poleHitShips: function(pole, shipGroup) {
+
+    this.hasScore(10);
 
     shipGroup.kill();
 
@@ -142,6 +161,8 @@ Play.prototype = {
   },
 
   poleHitDrill: function(pole, drill) {
+
+    this.hasScore(50);
 
     drill.kill();
 
@@ -158,6 +179,13 @@ Play.prototype = {
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
+
+  },
+
+  hasScore: function(addScore) {
+    this.score = this.score + addScore;
+    this.scoreText.setText(this.score.toString());
+    //    this.scoreSound.play();
 
   }
 
