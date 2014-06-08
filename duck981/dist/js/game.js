@@ -449,7 +449,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.enemyBullets = enemyBullets;
 
   this.game = game;
-  this.health = 3;
+  this.health = 1;
   this.fireRate = 15000;
   this.nextFire = 0;
   this.alive = true;
@@ -530,7 +530,7 @@ Ships.prototype.update = function() {
   // fire the bullets
 
   if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
-    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
       var bullet = this.enemyBullets.getFirstDead();
@@ -541,6 +541,21 @@ Ships.prototype.update = function() {
     }
   }
 
+
+};
+
+Ships.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
 
 };
 
@@ -784,7 +799,6 @@ Play.prototype = {
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
-
     // add the ships
     this.shipsAlive = 5;
     this.shipGroup = this.game.add.group();
@@ -816,12 +830,19 @@ Play.prototype = {
     this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 
 
+    if (this.score > 90) {
+
+      // you win
+
+    }
+
+
   },
 
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    this.hasScore(-10);
+    this.lostScore(5);
 
     enemyBullets.kill();
 
@@ -848,7 +869,7 @@ Play.prototype = {
 
     this.hasScore(10);
 
-    shipGroup.kill();
+    shipGroup.destroy();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
@@ -860,7 +881,7 @@ Play.prototype = {
 
     this.hasScore(50);
 
-    drill.kill();
+    drill.destroy();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(drill.x + 5, drill.y + 5);
@@ -870,11 +891,19 @@ Play.prototype = {
 
   poleHitDucks: function(pole, ducks) {
 
-    ducks.kill();
-
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
+
+    // the ducks is killed
+    this.theX = ducks.x;
+    this.theY = ducks.y;
+    ducks.destroy();
+
+    this.scoreboard = new Scoreboard(this.game, this.theX, this.theY);
+    this.game.add.existing(this.scoreboard);
+    this.scoreboard.show(this.score);
+
 
   },
 
@@ -883,7 +912,16 @@ Play.prototype = {
     this.scoreText.setText(this.score.toString());
     //    this.scoreSound.play();
 
+  },
+
+  lostScore: function(minusScore) {
+    this.score = this.score - minusScore;
+    this.scoreText.setText(this.score.toString());
+    //    this.scoreSound.play();
+
   }
+
+
 
 
 
