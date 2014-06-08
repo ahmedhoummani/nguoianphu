@@ -557,7 +557,7 @@ Play.prototype = {
 
 
     // add the ships
-    this.shipsAlive = 10;
+    this.shipsAlive = 5;
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
