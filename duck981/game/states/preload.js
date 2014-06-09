@@ -27,7 +27,7 @@ Preload.prototype = {
     this.load.image('particle', 'assets/score/particle.png');
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
-    this.load.bitmapFont('titlewave', 'assets/fonts/titlewave/titlewave.png', 'assets/fonts/titlewave/titlewave.fnt');
+//    this.load.bitmapFont('titlewave', 'assets/fonts/titlewave/titlewave.png', 'assets/fonts/titlewave/titlewave.fnt');
 
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 

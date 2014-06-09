@@ -89,7 +89,7 @@ Play.prototype = {
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
     // add the ships
-    this.shipsAlive = 5;
+    this.shipsAlive = 7;
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
@@ -98,8 +98,11 @@ Play.prototype = {
     }
 
     // add the score
-    this.score = 0;
-    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'titlewave', this.score.toString(), 44);
+    this.score = 30;
+    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText.fixedToCamera = true;
+    this.scoreText.cameraOffset.x = 100;
+    this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
@@ -142,13 +145,13 @@ Play.prototype = {
 
     // the ducks is killed
     this.theX = ducks.x;
-    this.theY = ducks.y;
+
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
-      this.scoreboard = new Scoreboard(this.game, this.theX, this.theY);
+      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
       this.game.add.existing(this.scoreboard);
-      this.scoreboard.show(this.score);
+      this.scoreboard.show(this.score, false);
 
     }
 
@@ -176,6 +179,13 @@ Play.prototype = {
     this.explosionAnimation.reset(drill.x + 5, drill.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+    this.theX = this.ducks.x;
+    this.ducks.kill();
+
+    this.scoreboard = new Scoreboard(this.game);
+    this.game.add.existing(this.scoreboard);
+    this.scoreboard.show(this.score, true);
+
   },
 
   poleHitDucks: function(pole, ducks) {
@@ -186,12 +196,12 @@ Play.prototype = {
 
     // the ducks is killed
     this.theX = ducks.x;
-    this.theY = ducks.y;
+
     ducks.destroy();
 
-    this.scoreboard = new Scoreboard(this.game, this.theX, this.theY);
+    this.scoreboard = new Scoreboard(this.game);
     this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score);
+    this.scoreboard.show(this.score, false);
 
 
   },

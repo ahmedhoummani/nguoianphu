@@ -1,25 +1,32 @@
 'use strict';
 
-var Scoreboard = function(game, x, y) {
-
-  this.theX = x;
-  this.theY = y;
+var Scoreboard = function(game) {
 
   Phaser.Group.call(this, game);
-  this.gameover = this.create(this.theX, 100, 'gameover');
-  this.gameover.anchor.setTo(0.5, 0.5);
+
+
+  this.fixedToCamera = true;
+  this.cameraOffset.x = 200;
+  this.cameraOffset.y = 50;
+
+  this.winText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.add(this.winText);
+
+  this.lostText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.add(this.lostText);
+
 
   this.scoreboard = this.create(this.theX, 200, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'titlewave', '', 22);
+  this.scoreText = this.game.add.bitmapText(this.x + 50, 180, 'flappyfont', '', 22);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'titlewave', '', 22);
+  this.bestText = this.game.add.bitmapText(this.x + 50, 230, 'flappyfont', '', 22);
   this.add(this.bestText);
 
   // add our start button with a callback
-  this.startButton = this.game.add.button(this.theX, 300, 'startButton', this.startClick, this);
+  this.startButton = this.game.add.button(this.x, 300, 'startButton', this.startClick, this);
   this.startButton.anchor.setTo(0.5, 0.5);
   this.startButton.inputEnabled = true;
   this.startButton.input.useHandCursor = true;
@@ -34,7 +41,14 @@ var Scoreboard = function(game, x, y) {
 Scoreboard.prototype = Object.create(Phaser.Group.prototype);
 Scoreboard.prototype.constructor = Scoreboard;
 
-Scoreboard.prototype.show = function(score) {
+Scoreboard.prototype.show = function(score, win) {
+
+  if (win) {
+    this.winText.setText('You win!!!');
+  } else {
+    this.lostText.setText('Game Over...');
+  }
+
   var coin, bestScore;
   this.scoreText.setText(score.toString());
   if ( !! localStorage) {
@@ -49,9 +63,9 @@ Scoreboard.prototype.show = function(score) {
 
   this.bestText.setText(bestScore.toString());
 
-  if (score >= 10 && score < 20) {
+  if (score >= 70) {
     coin = this.game.add.sprite(-65, 7, 'medals', 1);
-  } else if (score >= 20) {
+  } else if (score >= 50) {
     coin = this.game.add.sprite(-65, 7, 'medals', 0);
   }
 
