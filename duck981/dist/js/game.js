@@ -266,10 +266,10 @@ var Scoreboard = function(game, x, y) {
   this.scoreboard = this.create(this.theX, 200, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'titlewave', '', 18);
+  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'titlewave', '', 22);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'titlewave', '', 18);
+  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'titlewave', '', 22);
   this.add(this.bestText);
 
   // add our start button with a callback
@@ -742,7 +742,7 @@ Play.prototype = {
 
 
     // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 93, this.game.world.width, this.game.world.height - 73);
+    this.sea_face = new Sea_face(this.game, 0, 90, this.game.world.width, this.game.world.height - 73);
     this.game.add.existing(this.sea_face);
 
     // create and add a new Sea_under object
