@@ -6,6 +6,10 @@ var Sea_under = require('../prefabs/sea_under');
 var Pole = require('../prefabs/pole');
 
 var Ships = require('../prefabs/ships');
+var Ship1 = require('../prefabs/ship1');
+var Ship2 = require('../prefabs/ship2');
+
+
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
@@ -87,12 +91,30 @@ Play.prototype = {
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
     // add the ships
-    this.shipsAlive = 7;
+    this.shipsAlive = 3;
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
+    }      
+      
+      // add the ship1
+    this.ship1Alive = 3;
+    this.ship1Group = this.game.add.group();
+
+    for (var i = 0; i < this.ship1Alive; i++) {
+      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship1Group.add(this.ship1);
+    }
+      
+      // add the ship2
+    this.ship2Alive = 3;
+    this.ship2Group = this.game.add.group();
+
+    for (var i = 0; i < this.ship2Alive; i++) {
+      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship2Group.add(this.ship2);
     }
 
     // add the score
@@ -110,12 +132,26 @@ Play.prototype = {
   update: function() {
 
     this.game.physics.arcade.collide(this.ducks, this.shipGroup);
+    this.game.physics.arcade.collide(this.ducks, this.ship1Group);
+    this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
+      
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
+    this.game.physics.arcade.collide(this.ship1Group, this.drill);
+    this.game.physics.arcade.collide(this.ship2Group, this.drill);
+      
+    this.game.physics.arcade.collide(this.shipGroup, this.ship1Group);
+    this.game.physics.arcade.collide(this.shipGroup, this.ship2Group);
+      
+    this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
 
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+      
     this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
+      
     this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 

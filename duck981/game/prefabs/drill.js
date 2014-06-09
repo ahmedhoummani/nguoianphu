@@ -10,8 +10,8 @@ var Drill = function(game, x, y, frame) {
 
   this.anchor.set(0.5, 0.5);
 
-  this.animations.add('left', [0], 2, true);
-  this.animations.add('right', [1], 2, true);
+  this.animations.add('rigs');
+  this.animations.play('rigs', 2, true);
 
   this.body.collideWorldBounds = true;
   this.body.bounce.setTo(1, 1);

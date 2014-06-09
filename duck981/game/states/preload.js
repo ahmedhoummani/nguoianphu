@@ -27,8 +27,10 @@ Preload.prototype = {
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
+    this.load.spritesheet('ship1', 'assets/ship/warship1.png', 200, 68, 2);
+    this.load.spritesheet('ship2', 'assets/ship/warship2.png', 200, 68, 2);
 
-    this.load.spritesheet('drill', 'assets/drill/drill.png', 200, 234, 2);
+    this.load.spritesheet('drill', 'assets/drill/rigs.png', 125, 198, 2);
 
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 

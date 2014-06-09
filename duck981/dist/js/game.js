@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":11,"./states/gameover":12,"./states/menu":13,"./states/play":14,"./states/preload":15}],2:[function(require,module,exports){
+},{"./states/boot":13,"./states/gameover":14,"./states/menu":15,"./states/play":16,"./states/preload":17}],2:[function(require,module,exports){
 'use strict';
 
 var Bullets = function(game, x, y, frame) {
@@ -62,8 +62,8 @@ var Drill = function(game, x, y, frame) {
 
   this.anchor.set(0.5, 0.5);
 
-  this.animations.add('left', [0], 2, true);
-  this.animations.add('right', [1], 2, true);
+  this.animations.add('rigs');
+  this.animations.play('rigs', 2, true);
 
   this.body.collideWorldBounds = true;
   this.body.bounce.setTo(1, 1);
@@ -452,7 +452,7 @@ module.exports = Sea_under;
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets);
+  Phaser.Sprite.call(this, game, x, y, 'ship1', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
@@ -576,6 +576,256 @@ module.exports = Ships;
 },{}],11:[function(require,module,exports){
 'use strict';
 
+var Ships = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ship2', player, enemyBullets);
+
+  // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+
+  this.game = game;
+  this.health = 1;
+  this.fireRate = 15000;
+  this.nextFire = 0;
+  this.alive = true;
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('left', [0], 2, true);
+  this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 50;
+  this.body.maxVelocity.x = 50;
+
+  this.body.allowRotation = false;
+
+  //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
+  this.game.add.existing(this);
+
+
+};
+
+Ships.prototype = Object.create(Phaser.Sprite.prototype);
+Ships.prototype.constructor = Ships;
+
+Ships.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  // ships cannot over sea_on
+
+  if (this.y < 60) {
+
+    this.body.velocity.y = Math.floor(Math.random() * 10) + 5;
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  // ships don't want to be kill
+
+  if (this.y > (this.game.world.height - 120)) {
+
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  // ships left right
+
+  if (this.body.velocity.x < 0) {
+
+    this.animations.play('left');
+
+  } else if (this.body.velocity.x > 0) {
+
+    this.animations.play('right');
+  }
+
+
+  // fire the bullets
+
+  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
+
+      var bullet = this.enemyBullets.getFirstDead();
+
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+    }
+  }
+
+
+};
+
+Ships.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
+
+};
+
+module.exports = Ships;
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
+var Ships = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets);
+
+  // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+
+  this.game = game;
+  this.health = 1;
+  this.fireRate = 15000;
+  this.nextFire = 0;
+  this.alive = true;
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('left', [0], 2, true);
+  this.animations.add('right', [1], 2, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+  this.bringToTop();
+  this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 50;
+  this.body.maxVelocity.x = 50;
+
+  this.body.allowRotation = false;
+
+  //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
+  this.game.add.existing(this);
+
+
+};
+
+Ships.prototype = Object.create(Phaser.Sprite.prototype);
+Ships.prototype.constructor = Ships;
+
+Ships.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  // ships cannot over sea_on
+
+  if (this.y < 60) {
+
+    this.body.velocity.y = Math.floor(Math.random() * 10) + 5;
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  // ships don't want to be kill
+
+  if (this.y > (this.game.world.height - 120)) {
+
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  // ships left right
+
+  if (this.body.velocity.x < 0) {
+
+    this.animations.play('left');
+
+  } else if (this.body.velocity.x > 0) {
+
+    this.animations.play('right');
+  }
+
+
+  // fire the bullets
+
+  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
+
+      var bullet = this.enemyBullets.getFirstDead();
+
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+    }
+  }
+
+
+};
+
+Ships.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
+
+};
+
+module.exports = Ships;
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
 function Boot() {}
 
 Boot.prototype = {
@@ -631,7 +881,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],12:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -659,7 +909,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],13:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
   'use strict';
 
   var Sea_on = require('../prefabs/sea_on');
@@ -669,6 +919,8 @@ module.exports = GameOver;
   var Pole = require('../prefabs/pole');
 
   var Ships = require('../prefabs/ships');
+  var Ship1 = require('../prefabs/ship1');
+  var Ship2 = require('../prefabs/ship2');
   var Drill = require('../prefabs/drill');
 
   var Bullets = require('../prefabs/bullets');
@@ -737,6 +989,8 @@ module.exports = GameOver;
 
       // add the ships
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
 
       // add the HEADING TEXT
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
@@ -763,7 +1017,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ships":10}],14:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ship1":10,"../prefabs/ship2":11,"../prefabs/ships":12}],16:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
@@ -772,6 +1026,10 @@ var Sea_under = require('../prefabs/sea_under');
 var Pole = require('../prefabs/pole');
 
 var Ships = require('../prefabs/ships');
+var Ship1 = require('../prefabs/ship1');
+var Ship2 = require('../prefabs/ship2');
+
+
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
@@ -853,12 +1111,30 @@ Play.prototype = {
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
     // add the ships
-    this.shipsAlive = 7;
+    this.shipsAlive = 3;
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
+    }      
+      
+      // add the ship1
+    this.ship1Alive = 3;
+    this.ship1Group = this.game.add.group();
+
+    for (var i = 0; i < this.ship1Alive; i++) {
+      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship1Group.add(this.ship1);
+    }
+      
+      // add the ship2
+    this.ship2Alive = 3;
+    this.ship2Group = this.game.add.group();
+
+    for (var i = 0; i < this.ship2Alive; i++) {
+      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship2Group.add(this.ship2);
     }
 
     // add the score
@@ -876,12 +1152,26 @@ Play.prototype = {
   update: function() {
 
     this.game.physics.arcade.collide(this.ducks, this.shipGroup);
+    this.game.physics.arcade.collide(this.ducks, this.ship1Group);
+    this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
+      
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
+    this.game.physics.arcade.collide(this.ship1Group, this.drill);
+    this.game.physics.arcade.collide(this.ship2Group, this.drill);
+      
+    this.game.physics.arcade.collide(this.shipGroup, this.ship1Group);
+    this.game.physics.arcade.collide(this.shipGroup, this.ship2Group);
+      
+    this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
 
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+      
     this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
+      
     this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 
@@ -982,7 +1272,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/scoreboard":6,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ships":10}],15:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/scoreboard":6,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ship1":10,"../prefabs/ship2":11,"../prefabs/ships":12}],17:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -1012,8 +1302,10 @@ Preload.prototype = {
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
+    this.load.spritesheet('ship1', 'assets/ship/warship1.png', 200, 68, 2);
+    this.load.spritesheet('ship2', 'assets/ship/warship2.png', 200, 68, 2);
 
-    this.load.spritesheet('drill', 'assets/drill/drill.png', 200, 234, 2);
+    this.load.spritesheet('drill', 'assets/drill/rigs.png', 125, 198, 2);
 
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
