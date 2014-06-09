@@ -44,9 +44,9 @@ Scoreboard.prototype.constructor = Scoreboard;
 Scoreboard.prototype.show = function(score, win) {
 
   if (win) {
-    this.winText.setText('You win!!!');
+    this.winText.setText('You win');
   } else {
-    this.lostText.setText('Game Over...');
+    this.lostText.setText('Game Over');
   }
 
   var coin, bestScore;

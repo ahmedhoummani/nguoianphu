@@ -298,9 +298,9 @@ Scoreboard.prototype.constructor = Scoreboard;
 Scoreboard.prototype.show = function(score, win) {
 
   if (win) {
-    this.winText.setText('You win!!!');
+    this.winText.setText('You win');
   } else {
-    this.lostText.setText('Game Over...');
+    this.lostText.setText('Game Over');
   }
 
   var coin, bestScore;
@@ -662,6 +662,20 @@ module.exports = GameOver;
 },{}],13:[function(require,module,exports){
   'use strict';
 
+  var Sea_on = require('../prefabs/sea_on');
+  var Sea_face = require('../prefabs/sea_face');
+  var Sea_under = require('../prefabs/sea_under');
+
+  var Pole = require('../prefabs/pole');
+
+  var Ships = require('../prefabs/ships');
+  var Drill = require('../prefabs/drill');
+
+  var Bullets = require('../prefabs/bullets');
+
+  var Ducks = require('../prefabs/ducks');
+
+
   function Menu() {}
 
   Menu.prototype = {
@@ -670,39 +684,68 @@ module.exports = GameOver;
 
     create: function() {
 
-      // add the sky sprite
-      this.sky = this.game.add.tileSprite(0, 0, this.game.world.width, this.game.world.height - 259, 'sky');
+      this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      // add the background sprite
-
-      // Axis Y : from bottom (this.game.world.height) to top = sea_bottom height + sea_on heith
-      this.sea_on = this.game.add.tileSprite(0, this.game.world.height - 166 - 93, this.game.world.width, 259, 'sea_on');
-      this.sea_on.autoScroll(-20, 0);
-
-      // Axis Y : from bottom to top = sea3 height
-      this.sea_bottom = this.game.add.tileSprite(0, this.game.world.height - 166, this.game.world.width, 166, 'sea_bottom');
-      this.sea_bottom.autoScroll(20, 0)
+      // create and add a new Sea_on object
+      this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
+      this.game.add.existing(this.sea_on);
 
 
-      // add the duck
-      this.duck = this.game.add.sprite(this.game.world.width / 2 - 200, this.game.world.height - 166 - 88, 'duck');
+      // create and add a new Sea_face object
+      this.sea_face = new Sea_face(this.game, 0, 90, this.game.world.width, this.game.world.height - 73);
+      this.game.add.existing(this.sea_face);
+
+      // create and add a new Sea_under object
+      this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
+      this.game.add.existing(this.sea_under);
+
+      // add the pole
+      // Create a new pole object
+      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 73);
+      // and add it to the game
+      this.game.add.existing(this.pole);
+
+
+      //  The enemies bullet group
+      this.enemyBullets = this.game.add.group();
+      this.enemyBullets.enableBody = true;
+      this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
+
+      for (var i = 0; i < 100; i++) {
+        this.rockets = new Bullets(this.game, -100, -100);
+        this.enemyBullets.add(this.rockets);
+      }
+
+      this.enemyBullets.setAll('anchor.x', 0.5);
+      this.enemyBullets.setAll('anchor.y', 0.5);
+      this.enemyBullets.setAll('outOfBoundsKill', true);
+      this.enemyBullets.setAll('checkWorldBounds', true);
+
 
       // add the drill
-      this.drill = this.game.add.sprite(this.game.width / 2 + 150, this.game.height - 235, 'drill');
+      // Create a new drill object
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
+      // and add it to the game
+      this.game.add.existing(this.drill);
 
-      // add the ship
-      this.ship = this.game.add.sprite(this.game.width / 2 , this.game.height - 166 - 70, 'ship');
+
+      // add the ducks
+      // Create a new ducks object
+      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100);
+      // and add it to the game
+      this.game.add.existing(this.ducks);
+
+      // add the ships
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+
+      // add the HEADING TEXT
+      this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
 
       // add our start button with a callback
-      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
+      this.startButton = this.game.add.button(this.game.width / 2, 300 , 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;
-
-
-      this.pole = this.game.add.sprite(this.game.world.width / 2 - 50, this.game.world.height - 73, 'pole');
-      this.pole.animations.add('tide');
-      this.pole.animations.play('tide', 2, true);
 
 
     },
@@ -720,7 +763,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{}],14:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ships":10}],14:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
@@ -742,8 +785,6 @@ function Play() {}
 Play.prototype = {
 
   create: function() {
-
-    this.gameover = false;
 
     this.game.world.setBounds(0, 0, 2000, 600);
 
@@ -958,11 +999,8 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 
-    this.load.image('sky', 'assets/sky/sky_bg.png');
-
     this.load.image('sea_on', 'assets/sea/sea_on.png');
     this.load.image('sea_face', 'assets/sea/sea_face.png');
-    this.load.image('sea_bottom', 'assets/sea/sea_bottom.png');
     this.load.image('sea_under', 'assets/sea/sea_under.png');
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
@@ -973,12 +1011,10 @@ Preload.prototype = {
 
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 
-    this.load.image('ship', 'assets/ship/china_200l.png');
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
 
     this.load.spritesheet('drill', 'assets/drill/drill.png', 200, 234, 2);
 
-    this.load.image('duck', 'assets/duck/duck.png');
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
     this.load.image('startButton', 'assets/menu/start-button.png');

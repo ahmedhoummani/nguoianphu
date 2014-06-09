@@ -20,8 +20,6 @@ Play.prototype = {
 
   create: function() {
 
-    this.gameover = false;
-
     this.game.world.setBounds(0, 0, 2000, 600);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
