@@ -47,7 +47,7 @@ Drill.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 300)) {
 
-    this.body.velocity.y = - Math.floor(Math.random() * 10);
+    this.body.velocity.y = - Math.floor(Math.random() * 10) - 30;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);

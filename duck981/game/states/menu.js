@@ -41,7 +41,7 @@
 
       // add the pole
       // Create a new pole object
-      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 73);
+      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 45);
       // and add it to the game
       this.game.add.existing(this.pole);
 

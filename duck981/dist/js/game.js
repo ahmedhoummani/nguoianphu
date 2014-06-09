@@ -99,7 +99,7 @@ Drill.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 300)) {
 
-    this.body.velocity.y = - Math.floor(Math.random() * 10);
+    this.body.velocity.y = - Math.floor(Math.random() * 10) - 30;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -517,7 +517,7 @@ Ships.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 120)) {
 
-    this.body.velocity.y = -Math.floor(Math.random() * 10) - 15;
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 25;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -642,7 +642,7 @@ Ships.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 120)) {
 
-    this.body.velocity.y = -Math.floor(Math.random() * 10) - 10;
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 20;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -953,7 +953,7 @@ module.exports = GameOver;
 
       // add the pole
       // Create a new pole object
-      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 73);
+      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 45);
       // and add it to the game
       this.game.add.existing(this.pole);
 
@@ -1064,7 +1064,7 @@ Play.prototype = {
 
     // add the pole
     // Create a new pole object
-    this.pole = new Pole(this.game, 400, this.game.world.height - 73);
+    this.pole = new Pole(this.game, 400, this.game.world.height - 45);
     // and add it to the game
     this.game.add.existing(this.pole);
 
@@ -1117,19 +1117,19 @@ Play.prototype = {
     for (var i = 0; i < this.shipsAlive; i++) {
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
-    }      
-      
-      // add the ship1
-    this.ship1Alive = 2;
+    }
+
+    // add the ship1
+    this.ship1Alive = 1;
     this.ship1Group = this.game.add.group();
 
     for (var i = 0; i < this.ship1Alive; i++) {
       this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship1Group.add(this.ship1);
     }
-      
-      // add the ship2
-    this.ship2Alive = 3;
+
+    // add the ship2
+    this.ship2Alive = 2;
     this.ship2Group = this.game.add.group();
 
     for (var i = 0; i < this.ship2Alive; i++) {
@@ -1155,23 +1155,23 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
-      
+
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
     this.game.physics.arcade.collide(this.ship2Group, this.drill);
-      
+
     this.game.physics.arcade.collide(this.shipGroup, this.ship1Group);
     this.game.physics.arcade.collide(this.shipGroup, this.ship2Group);
-      
+
     this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
 
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
-      
+
     this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
-      
+
     this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 
