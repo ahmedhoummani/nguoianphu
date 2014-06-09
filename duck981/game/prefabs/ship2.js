@@ -35,7 +35,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
-  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 250, this.body.velocity);
   this.game.add.existing(this);
 
 
@@ -52,7 +52,7 @@ Ships.prototype.update = function() {
 
   if (this.y < 60) {
 
-    this.body.velocity.y = Math.floor(Math.random() * 10) + 5;
+    this.body.velocity.y = Math.floor(Math.random() * 10) + 10;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -66,7 +66,7 @@ Ships.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 120)) {
 
-    this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
+    this.body.velocity.y = -Math.floor(Math.random() * 10) - 10;
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
@@ -98,7 +98,7 @@ Ships.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
     }
   }
 

@@ -98,7 +98,7 @@ Ships.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 50);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 70);
     }
   }
 

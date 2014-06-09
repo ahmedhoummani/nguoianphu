@@ -100,7 +100,7 @@ Play.prototype = {
     }      
       
       // add the ship1
-    this.ship1Alive = 3;
+    this.ship1Alive = 2;
     this.ship1Group = this.game.add.group();
 
     for (var i = 0; i < this.ship1Alive; i++) {
