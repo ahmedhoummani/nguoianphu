@@ -99,7 +99,7 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'flappyfont', this.score.toString(), 34);
+    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'titlewave', this.score.toString(), 44);
 
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
@@ -131,7 +131,7 @@ Play.prototype = {
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    this.lostScore(5);
+    this.hasScore(-10);
 
     enemyBullets.kill();
 
@@ -201,17 +201,7 @@ Play.prototype = {
     this.scoreText.setText(this.score.toString());
     //    this.scoreSound.play();
 
-  },
-
-  lostScore: function(minusScore) {
-    this.score = this.score - minusScore;
-    this.scoreText.setText(this.score.toString());
-    //    this.scoreSound.play();
-
   }
-
-
-
 
 
 };

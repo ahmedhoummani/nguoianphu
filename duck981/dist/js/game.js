@@ -138,7 +138,7 @@ var Ducks = function(game, x, y, frame) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.health = 3;
+  this.health = 5;
   this.alive = true;
 
 
@@ -259,8 +259,6 @@ var Scoreboard = function(game, x, y) {
   this.theX = x;
   this.theY = y;
 
-
-
   Phaser.Group.call(this, game);
   this.gameover = this.create(this.theX, 100, 'gameover');
   this.gameover.anchor.setTo(0.5, 0.5);
@@ -268,10 +266,10 @@ var Scoreboard = function(game, x, y) {
   this.scoreboard = this.create(this.theX, 200, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'flappyfont', '', 18);
+  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'titlewave', '', 18);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'flappyfont', '', 18);
+  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'titlewave', '', 18);
   this.add(this.bestText);
 
   // add our start button with a callback
@@ -810,7 +808,7 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'flappyfont', this.score.toString(), 34);
+    this.scoreText = this.game.add.bitmapText(this.pole.x, 10, 'titlewave', this.score.toString(), 44);
 
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
@@ -842,7 +840,7 @@ Play.prototype = {
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    this.lostScore(5);
+    this.hasScore(-10);
 
     enemyBullets.kill();
 
@@ -912,17 +910,7 @@ Play.prototype = {
     this.scoreText.setText(this.score.toString());
     //    this.scoreSound.play();
 
-  },
-
-  lostScore: function(minusScore) {
-    this.score = this.score - minusScore;
-    this.scoreText.setText(this.score.toString());
-    //    this.scoreSound.play();
-
   }
-
-
-
 
 
 };
@@ -959,6 +947,7 @@ Preload.prototype = {
     this.load.image('particle', 'assets/score/particle.png');
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
+    this.load.bitmapFont('titlewave', 'assets/fonts/titlewave/titlewave.png', 'assets/fonts/titlewave/titlewave.fnt');
 
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 

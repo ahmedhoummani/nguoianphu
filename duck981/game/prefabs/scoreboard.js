@@ -5,8 +5,6 @@ var Scoreboard = function(game, x, y) {
   this.theX = x;
   this.theY = y;
 
-
-
   Phaser.Group.call(this, game);
   this.gameover = this.create(this.theX, 100, 'gameover');
   this.gameover.anchor.setTo(0.5, 0.5);
@@ -14,10 +12,10 @@ var Scoreboard = function(game, x, y) {
   this.scoreboard = this.create(this.theX, 200, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'flappyfont', '', 18);
+  this.scoreText = this.game.add.bitmapText(this.theX + 50, 180, 'titlewave', '', 18);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'flappyfont', '', 18);
+  this.bestText = this.game.add.bitmapText(this.theX + 50, 230, 'titlewave', '', 18);
   this.add(this.bestText);
 
   // add our start button with a callback
