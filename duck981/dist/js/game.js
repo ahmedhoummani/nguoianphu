@@ -894,7 +894,7 @@ Play.prototype = {
 
   poleHitDrill: function(pole, drill) {
 
-    this.hasScore(50);
+    this.hasScore(100);
 
     drill.destroy();
 
@@ -967,11 +967,9 @@ Preload.prototype = {
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
     this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
-    this.load.image('gameover', 'assets/score/gameover.png');
     this.load.image('particle', 'assets/score/particle.png');
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
-//    this.load.bitmapFont('titlewave', 'assets/fonts/titlewave/titlewave.png', 'assets/fonts/titlewave/titlewave.fnt');
 
     this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
 

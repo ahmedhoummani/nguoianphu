@@ -171,7 +171,7 @@ Play.prototype = {
 
   poleHitDrill: function(pole, drill) {
 
-    this.hasScore(50);
+    this.hasScore(100);
 
     drill.destroy();
 
