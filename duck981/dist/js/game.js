@@ -460,6 +460,8 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.player = player;
   this.enemyBullets = enemyBullets;
 
+  this.shot = this.game.add.audio('shot');
+
   this.game = game;
   this.health = 1;
   this.fireRate = 15000;
@@ -550,6 +552,7 @@ Ships.prototype.update = function() {
       bullet.reset(this.x, this.y);
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 150);
+      this.shot.play();
     }
   }
 
@@ -584,6 +587,8 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.player = player;
   this.enemyBullets = enemyBullets;
+
+  this.shot = this.game.add.audio('shot');
 
   this.game = game;
   this.health = 1;
@@ -675,6 +680,7 @@ Ships.prototype.update = function() {
       bullet.reset(this.x, this.y);
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+      this.shot.play();
     }
   }
 
@@ -709,6 +715,8 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.player = player;
   this.enemyBullets = enemyBullets;
+
+  this.shot = this.game.add.audio('shot');
 
   this.game = game;
   this.health = 1;
@@ -800,6 +808,7 @@ Ships.prototype.update = function() {
       bullet.reset(this.x, this.y);
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 70);
+      thí.shot.play();
     }
   }
 
@@ -938,6 +947,9 @@ module.exports = GameOver;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+      this.caribe = this.game.add.audio('caribe', 1, true);
+      this.caribe.play('',0,1,true);
+
       // create and add a new Sea_on object
       this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
       this.game.add.existing(this.sea_on);
@@ -996,7 +1008,7 @@ module.exports = GameOver;
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
 
       // add our start button with a callback
-      this.startButton = this.game.add.button(this.game.width / 2, 300 , 'startButton', this.startClick, this);
+      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;
@@ -1048,6 +1060,12 @@ Play.prototype = {
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    // add the sounds
+    this.boom = this.game.add.audio('boom');
+    this.shot = this.game.add.audio('shot');
+      
+    this.caribe = this.game.add.audio('caribe', 1, true);
+    this.caribe.play('', 0, 1, true);
 
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
@@ -1115,7 +1133,7 @@ Play.prototype = {
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX +100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
     }
 
@@ -1133,7 +1151,7 @@ Play.prototype = {
     this.ship2Group = this.game.add.group();
 
     for (var i = 0; i < this.ship2Alive; i++) {
-      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
 
@@ -1190,6 +1208,8 @@ Play.prototype = {
 
     this.hasScore(-10);
 
+    this.boom.play();
+
     enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
@@ -1221,6 +1241,8 @@ Play.prototype = {
     this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+    this.boom.play();
+
   },
 
   poleHitDrill: function(pole, drill) {
@@ -1240,6 +1262,8 @@ Play.prototype = {
     this.game.add.existing(this.scoreboard);
     this.scoreboard.show(this.score, true);
 
+    this.boom.play();
+
   },
 
   poleHitDucks: function(pole, ducks) {
@@ -1256,6 +1280,8 @@ Play.prototype = {
     this.scoreboard = new Scoreboard(this.game);
     this.game.add.existing(this.scoreboard);
     this.scoreboard.show(this.score, false);
+
+    this.boom.play();
 
 
   },
@@ -1315,19 +1341,24 @@ Preload.prototype = {
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 
+    this.load.audio('boom', 'assets/audio/boom.ogg');
+    this.load.audio('shot', 'assets/audio/shot.ogg');
+    this.game.load.audio('caribe', 'assets/audio/caribe.ogg');
 
-  },
-  create: function() {
-    this.asset.cropEnabled = false;
-  },
-  update: function() {
-    if ( !! this.ready) {
-      this.game.state.start('menu');
-    }
-  },
-  onLoadComplete: function() {
-    this.ready = true;
+
+
+},
+create: function() {
+  this.asset.cropEnabled = false;
+},
+update: function() {
+  if ( !! this.ready) {
+    this.game.state.start('menu');
   }
+},
+onLoadComplete: function() {
+  this.ready = true;
+}
 };
 
 module.exports = Preload;

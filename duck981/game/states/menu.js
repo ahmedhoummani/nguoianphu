@@ -26,6 +26,9 @@
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+      this.caribe = this.game.add.audio('caribe', 1, true);
+      this.caribe.play('',0,1,true);
+
       // create and add a new Sea_on object
       this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
       this.game.add.existing(this.sea_on);
@@ -84,7 +87,7 @@
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
 
       // add our start button with a callback
-      this.startButton = this.game.add.button(this.game.width / 2, 300 , 'startButton', this.startClick, this);
+      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;

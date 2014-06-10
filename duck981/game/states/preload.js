@@ -40,19 +40,24 @@ Preload.prototype = {
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 
+    this.load.audio('boom', 'assets/audio/boom.ogg');
+    this.load.audio('shot', 'assets/audio/shot.ogg');
+    this.game.load.audio('caribe', 'assets/audio/caribe.ogg');
 
-  },
-  create: function() {
-    this.asset.cropEnabled = false;
-  },
-  update: function() {
-    if ( !! this.ready) {
-      this.game.state.start('menu');
-    }
-  },
-  onLoadComplete: function() {
-    this.ready = true;
+
+
+},
+create: function() {
+  this.asset.cropEnabled = false;
+},
+update: function() {
+  if ( !! this.ready) {
+    this.game.state.start('menu');
   }
+},
+onLoadComplete: function() {
+  this.ready = true;
+}
 };
 
 module.exports = Preload;

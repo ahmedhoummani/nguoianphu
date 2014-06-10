@@ -9,6 +9,8 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.player = player;
   this.enemyBullets = enemyBullets;
 
+  this.shot = this.game.add.audio('shot');
+
   this.game = game;
   this.health = 1;
   this.fireRate = 15000;
@@ -99,6 +101,7 @@ Ships.prototype.update = function() {
       bullet.reset(this.x, this.y);
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+      this.shot.play();
     }
   }
 

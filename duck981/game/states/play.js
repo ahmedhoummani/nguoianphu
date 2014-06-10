@@ -28,6 +28,12 @@ Play.prototype = {
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
+    // add the sounds
+    this.boom = this.game.add.audio('boom');
+    this.shot = this.game.add.audio('shot');
+      
+    this.caribe = this.game.add.audio('caribe', 1, true);
+    this.caribe.play('', 0, 1, true);
 
     // create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
@@ -95,7 +101,7 @@ Play.prototype = {
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX +100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
     }
 
@@ -113,7 +119,7 @@ Play.prototype = {
     this.ship2Group = this.game.add.group();
 
     for (var i = 0; i < this.ship2Alive; i++) {
-      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
 
@@ -170,6 +176,8 @@ Play.prototype = {
 
     this.hasScore(-10);
 
+    this.boom.play();
+
     enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
@@ -201,6 +209,8 @@ Play.prototype = {
     this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+    this.boom.play();
+
   },
 
   poleHitDrill: function(pole, drill) {
@@ -220,6 +230,8 @@ Play.prototype = {
     this.game.add.existing(this.scoreboard);
     this.scoreboard.show(this.score, true);
 
+    this.boom.play();
+
   },
 
   poleHitDucks: function(pole, ducks) {
@@ -236,6 +248,8 @@ Play.prototype = {
     this.scoreboard = new Scoreboard(this.game);
     this.game.add.existing(this.scoreboard);
     this.scoreboard.show(this.score, false);
+
+    this.boom.play();
 
 
   },
