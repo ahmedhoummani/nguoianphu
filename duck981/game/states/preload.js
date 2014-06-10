@@ -42,7 +42,7 @@ Preload.prototype = {
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');
-    this.game.load.audio('caribe', 'assets/audio/caribe.ogg');
+//    this.game.load.audio('caribe', 'assets/audio/caribe.ogg');
 
 
 

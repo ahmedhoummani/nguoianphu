@@ -26,8 +26,8 @@
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.caribe = this.game.add.audio('caribe', 1, true);
-      this.caribe.play('',0,1,true);
+//      this.caribe = this.game.add.audio('caribe', 1, true);
+//      this.caribe.play('',0,1,true);
 
       // create and add a new Sea_on object
       this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
