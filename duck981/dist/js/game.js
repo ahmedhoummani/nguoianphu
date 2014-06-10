@@ -97,7 +97,7 @@ Drill.prototype.update = function() {
 
   // Drill don't want to be kill
 
-  if (this.y > (this.game.world.height - 300)) {
+  if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y = - Math.floor(Math.random() * 10) - 30;
 
@@ -515,7 +515,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 25;
 
@@ -640,7 +640,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 90)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 20;
 
@@ -765,7 +765,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 80)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
 
@@ -1115,7 +1115,7 @@ Play.prototype = {
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX +100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.shipGroup.add(this.ships);
     }
 
@@ -1124,7 +1124,7 @@ Play.prototype = {
     this.ship1Group = this.game.add.group();
 
     for (var i = 0; i < this.ship1Alive; i++) {
-      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship1Group.add(this.ship1);
     }
 
@@ -1133,7 +1133,7 @@ Play.prototype = {
     this.ship2Group = this.game.add.group();
 
     for (var i = 0; i < this.ship2Alive; i++) {
-      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100 , this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
 

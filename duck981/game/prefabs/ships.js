@@ -64,7 +64,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 80)) {
 
     this.body.velocity.y = -Math.floor(Math.random() * 10) - 5;
 
