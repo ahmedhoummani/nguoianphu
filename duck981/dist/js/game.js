@@ -592,7 +592,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.game = game;
   this.health = 1;
-  this.fireRate = 15000;
+  this.fireRate = 20000;
   this.nextFire = 0;
   this.alive = true;
 
@@ -720,7 +720,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.game = game;
   this.health = 1;
-  this.fireRate = 15000;
+  this.fireRate = 30000;
   this.nextFire = 0;
   this.alive = true;
 
