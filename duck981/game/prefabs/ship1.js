@@ -52,28 +52,28 @@ Ships.prototype.update = function() {
 
   // ships cannot over sea_on
 
-  if (this.y < 60) {
+  if (this.y < 70) {
 
-    this.body.velocity.y = Math.floor(Math.random() * 10) + 15;
+    this.body.velocity.y += Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
-      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+      this.body.velocity.x += Math.floor(Math.random() * 50);
     } else {
-      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+      this.body.velocity.x -= Math.floor(Math.random() * 50);
     }
 
   }
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 100)) {
+  if (this.y > (this.game.world.height - 140)) {
 
-    this.body.velocity.y = -Math.floor(Math.random() * 10) - 40;
+    this.body.velocity.y -= Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
-      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+      this.body.velocity.x += Math.floor(Math.random() * 50);
     } else {
-      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+      this.body.velocity.x -= Math.floor(Math.random() * 50);
     }
 
   }

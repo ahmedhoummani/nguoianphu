@@ -45,14 +45,14 @@ Drill.prototype.update = function() {
 
   // Drill don't want to be kill
 
-  if (this.y > (this.game.world.height - 100)) {
+  if (this.y > (this.game.world.height - 200)) {
 
-    this.body.velocity.y = - Math.floor(Math.random() * 10) - 40;
+    this.body.velocity.y -= Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
-      this.body.velocity.x = this.body.velocity.x + Math.floor(Math.random() * 50);
+      this.body.velocity.x += Math.floor(Math.random() * 50);
     } else {
-      this.body.velocity.x = this.body.velocity.x - Math.floor(Math.random() * 50);
+      this.body.velocity.x -= Math.floor(Math.random() * 50);
     }
 
   }
