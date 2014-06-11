@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":13,"./states/gameover":14,"./states/menu":15,"./states/play":16,"./states/preload":17}],2:[function(require,module,exports){
+},{"./states/boot":14,"./states/gameover":15,"./states/menu":16,"./states/play":17,"./states/preload":18}],2:[function(require,module,exports){
 'use strict';
 
 var Bullets = function(game, x, y, frame) {
@@ -76,8 +76,6 @@ var Drill = function(game, x, y, frame) {
 
   this.body.maxVelocity.y = 50;
   this.body.maxVelocity.x = 50;
-
-  this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
@@ -226,6 +224,108 @@ module.exports = Ducks;
 },{}],5:[function(require,module,exports){
 'use strict';
 
+var Mermaid = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'mermaid');
+
+  // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+  // this.scale.setTo(2, 2);
+  
+  // this.animations.add('swim');
+  // this.animations.play('swim', 12, true);
+
+  this.animations.add('face', [0, 1, 2], 3, true);
+  this.animations.add('left', [3, 4, 5], 3, true);
+  this.animations.add('right', [6, 7, 8], 3, true);
+  this.animations.add('back', [9, 10, 11], 3, true);
+
+  this.body.collideWorldBounds = true;
+  this.body.bounce.setTo(1, 1);
+
+  // this.body.allowRotation = false;
+  // this.bringToTop();
+  // this.body.drag.set(0.2);
+
+  this.body.immovable = false;
+
+  this.body.maxVelocity.y = 40;
+  this.body.maxVelocity.x = 40;
+
+  //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
+  this.game.add.existing(this);
+
+
+};
+
+Mermaid.prototype = Object.create(Phaser.Sprite.prototype);
+Mermaid.prototype.constructor = Mermaid;
+
+Mermaid.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+  // Mermaid cannot over sea_on
+
+  if (this.y < 100) {
+
+    this.body.velocity.y += Math.floor(Math.random() * 10);
+
+    if (this.body.velocity.x > 0) {
+      this.body.velocity.x += Math.floor(Math.random() * 50);
+    } else {
+      this.body.velocity.x -= Math.floor(Math.random() * 50);
+    }
+
+  }
+
+  // Mermaid don't want to be kill
+
+  // if (this.y > (this.game.world.height - 120)) {
+
+    // this.body.velocity.y -= 20;
+
+    // if (this.body.velocity.x > 0) {
+      // this.body.velocity.x -= Math.floor(Math.random() * 50);
+    // } else {
+      // this.body.velocity.x -= Math.floor(Math.random() * 50);
+    // }
+
+  // }
+
+  // Mermaid left right
+
+  if (this.body.velocity.x < 0) {
+
+    this.animations.play('left');
+
+  } else if (this.body.velocity.x > 0) {
+
+    this.animations.play('right');
+  }
+  
+  // else 
+  
+  // if (this.body.velocity.y > 0) {
+
+    // this.animations.play('face');
+  // }
+  // else if (this.body.velocity.y < 0) {
+
+    // this.animations.play('back');
+  // }
+  
+
+
+};
+
+module.exports = Mermaid;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
 var Pole = function(game, x, y, frame) {
   Phaser.Sprite.call(this, game, x, y, 'pole', frame);
 
@@ -251,7 +351,7 @@ Pole.prototype.update = function() {
 
 module.exports = Pole;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Scoreboard = function(game) {
@@ -373,7 +473,7 @@ Scoreboard.prototype.update = function() {
 
 module.exports = Scoreboard;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Sea_face = function(game, x, y, width, height) {
@@ -398,7 +498,7 @@ Sea_face.prototype.update = function() {
 
 module.exports = Sea_face;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 var Sea_on = function(game, x, y, width, height) {
@@ -423,7 +523,7 @@ Sea_on.prototype.update = function() {
 
 module.exports = Sea_on;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Sea_under = function(game, x, y, width, height) {
@@ -448,7 +548,7 @@ Sea_under.prototype.update = function() {
 
 module.exports = Sea_under;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets) {
@@ -484,8 +584,6 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.body.maxVelocity.y = 50;
   this.body.maxVelocity.x = 50;
-
-  this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 300, this.body.velocity);
@@ -576,7 +674,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets) {
@@ -612,9 +710,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.body.maxVelocity.y = 50;
   this.body.maxVelocity.x = 50;
-
-  this.body.allowRotation = false;
-
+  
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 250, this.body.velocity);
   this.game.add.existing(this);
@@ -704,7 +800,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets) {
@@ -740,8 +836,6 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.body.maxVelocity.y = 50;
   this.body.maxVelocity.x = 50;
-
-  this.body.allowRotation = false;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
@@ -832,7 +926,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -890,7 +984,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -918,7 +1012,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
   'use strict';
 
   var Sea_on = require('../prefabs/sea_on');
@@ -931,6 +1025,8 @@ module.exports = GameOver;
   var Ship1 = require('../prefabs/ship1');
   var Ship2 = require('../prefabs/ship2');
   var Drill = require('../prefabs/drill');
+  
+  var Mermaid = require('../prefabs/mermaid');
 
   var Bullets = require('../prefabs/bullets');
 
@@ -1003,6 +1099,13 @@ module.exports = GameOver;
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+	  
+	  
+	  // add the mermaid
+      // Create a new mermaid object
+      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+      // and add it to the game
+      this.game.add.existing(this.mermaid);
 
       // add the HEADING TEXT
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
@@ -1029,7 +1132,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ship1":10,"../prefabs/ship2":11,"../prefabs/ships":12}],16:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/mermaid":5,"../prefabs/pole":6,"../prefabs/sea_face":8,"../prefabs/sea_on":9,"../prefabs/sea_under":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],17:[function(require,module,exports){
 'use strict';
 var Sea_on = require('../prefabs/sea_on');
 var Sea_face = require('../prefabs/sea_face');
@@ -1045,6 +1148,8 @@ var Ship2 = require('../prefabs/ship2');
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
+
+var Mermaid = require('../prefabs/mermaid');
 
 var Ducks = require('../prefabs/ducks');
 
@@ -1154,6 +1259,12 @@ Play.prototype = {
       this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
+	
+	// add the mermaid
+      // Create a new mermaid object
+      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+      // and add it to the game
+      this.game.add.existing(this.mermaid);
 
     // add the score
     this.score = 30;
@@ -1173,6 +1284,7 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
+    this.game.physics.arcade.collide(this.ducks, this.mermaid);
 
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
@@ -1310,7 +1422,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/pole":5,"../prefabs/scoreboard":6,"../prefabs/sea_face":7,"../prefabs/sea_on":8,"../prefabs/sea_under":9,"../prefabs/ship1":10,"../prefabs/ship2":11,"../prefabs/ships":12}],17:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/mermaid":5,"../prefabs/pole":6,"../prefabs/scoreboard":7,"../prefabs/sea_face":8,"../prefabs/sea_on":9,"../prefabs/sea_under":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],18:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -1352,6 +1464,13 @@ Preload.prototype = {
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
+	
+    this.load.spritesheet('mermaid', 'assets/mermaid/mermaid.png', 56, 48);
+	
+    // this.load.spritesheet('mermaid_01', 'assets/mermaid/images/mermaid_01.png', 56, 48);
+    // this.load.spritesheet('mermaid_03', 'assets/mermaid/images/mermaid_03.png', 56, 48);
+    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
+    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');

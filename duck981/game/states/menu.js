@@ -10,6 +10,8 @@
   var Ship1 = require('../prefabs/ship1');
   var Ship2 = require('../prefabs/ship2');
   var Drill = require('../prefabs/drill');
+  
+  var Mermaid = require('../prefabs/mermaid');
 
   var Bullets = require('../prefabs/bullets');
 
@@ -82,6 +84,13 @@
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+	  
+	  
+	  // add the mermaid
+      // Create a new mermaid object
+      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+      // and add it to the game
+      this.game.add.existing(this.mermaid);
 
       // add the HEADING TEXT
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);

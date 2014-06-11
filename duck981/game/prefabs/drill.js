@@ -25,8 +25,6 @@ var Drill = function(game, x, y, frame) {
   this.body.maxVelocity.y = 50;
   this.body.maxVelocity.x = 50;
 
-  this.body.allowRotation = false;
-
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
   this.game.add.existing(this);

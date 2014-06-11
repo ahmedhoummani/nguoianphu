@@ -14,6 +14,8 @@ var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
 
+var Mermaid = require('../prefabs/mermaid');
+
 var Ducks = require('../prefabs/ducks');
 
 var Scoreboard = require('../prefabs/scoreboard');
@@ -122,6 +124,12 @@ Play.prototype = {
       this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
+	
+	// add the mermaid
+      // Create a new mermaid object
+      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+      // and add it to the game
+      this.game.add.existing(this.mermaid);
 
     // add the score
     this.score = 30;
@@ -141,6 +149,7 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
+    this.game.physics.arcade.collide(this.ducks, this.mermaid);
 
     this.game.physics.arcade.collide(this.shipGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
