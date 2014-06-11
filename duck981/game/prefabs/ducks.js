@@ -13,7 +13,7 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(1, 1);
+  this.body.bounce.setTo(0.5, 0.5);
 
   this.body.allowRotation = false;
   this.bringToTop();
