@@ -98,8 +98,23 @@ Play.prototype = {
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
+    // Health points, which are the hearts in the top right corner
+    this.hp = new Array();
+    /*Adding 3 hearts*/
+
+    for (this.live = 0; this.live < this.ducks.health; this.live++) {
+      this.hp[this.live] = this.add.sprite(10 + this.live * 20, 10, 'health');
+      this.hp[this.live].fixedToCamera = true;
+      this.hp[this.live].cameraOffset.x = 10 + this.live * 20;
+      this.hp[this.live].cameraOffset.y = 10;
+    }
+
+    //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
+    this.live = this.ducks.health - 1; //IDs of the hearts: hp[0], hp[1], hp[2]
+
+
     // add the ships
-    this.shipsAlive = 3;
+    this.shipsAlive = 5;
     this.shipGroup = this.game.add.group();
 
     for (var i = 0; i < this.shipsAlive; i++) {
@@ -108,7 +123,7 @@ Play.prototype = {
     }
 
     // add the ship1
-    this.ship1Alive = 1;
+    this.ship1Alive = 2;
     this.ship1Group = this.game.add.group();
 
     for (var i = 0; i < this.ship1Alive; i++) {
@@ -124,15 +139,15 @@ Play.prototype = {
       this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
       this.ship2Group.add(this.ship2);
     }
-	
-	// add the mermaid
-      // Create a new mermaid object
-      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
-      // and add it to the game
-      this.game.add.existing(this.mermaid);
+
+    // add the mermaid
+    // Create a new mermaid object
+    this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+    // and add it to the game
+    this.game.add.existing(this.mermaid);
 
     // add the score
-    this.score = 30;
+    this.score = 0;
     this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
     this.scoreText.fixedToCamera = true;
     this.scoreText.cameraOffset.x = 100;
@@ -193,18 +208,23 @@ Play.prototype = {
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    this.hasScore(-10);
-
     this.shot.play();
 
     enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
+    this.explosionAnimation.reset(ducks.x + 10, ducks.y + 10);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
 
     // the ducks is killed
+    this.hp[this.live].kill(); // "Killing" the hearth with the largest index
+    this.live--; // Decrementing our live variable
+
+    if (this.live === -1) { // If our last heart (index: 0) is "killed" then we restart the game
+      this.boom.play();
+    }
+
     this.theX = ducks.x;
 
     this.destroyed = ducks.damage();
@@ -213,8 +233,6 @@ Play.prototype = {
       this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
-
-      this.boom.play();
 
     }
 
@@ -257,20 +275,35 @@ Play.prototype = {
 
   poleHitDucks: function(pole, ducks) {
 
+    this.shot.play();
+
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
+    this.explosionAnimation.reset(ducks.x + 10, ducks.y + 10);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
+    // the pole cannot be kill, instead o re-create it
+    // if the pole lives, the ducks will overlap it foever
+    // so that it will be killed
+    // not depend on the remain healths
+
     // the ducks is killed
+    this.hp[this.live].kill(); // "Killing" the hearth with the largest index
+    this.live--; // Decrementing our live variable
+
+    if (this.live === -1) { // If our last heart (index: 0) is "killed" then we restart the game
+      this.boom.play();
+    }
+
     this.theX = ducks.x;
 
-    ducks.destroy();
+    this.destroyed = ducks.damage();
+    if (this.destroyed) {
 
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, false);
+      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score, false);
 
-    this.boom.play();
+    }
 
 
   },
