@@ -57,10 +57,15 @@ module.exports = function (grunt) {
       dist: {
         files: [
           // includes files within path and its sub-directories
-          { expand: true, src: ['assets/**'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.png'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.gif'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.fnt'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.mp3'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.ogg'], dest: 'dist/' },
+          { expand: true, src: ['assets/**/*.wav'], dest: 'dist/' },
           { expand: true, flatten: true, src: ['game/plugins/*.js'], dest: 'dist/js/plugins/' },
           { expand: true, flatten: true, src: ['bower_components/**/build/*.js'], dest: 'dist/js/' },
-          { expand: true, src: ['css/**'], dest: 'dist/' },
+          // { expand: true, src: ['css/**'], dest: 'dist/' },
           { expand: true, src: ['index.html'], dest: 'dist/' }
         ]
       }
@@ -70,11 +75,36 @@ module.exports = function (grunt) {
         src: ['game/main.js'],
         dest: 'dist/js/game.js'
       }
+    },
+	
+	concat: {
+            css: {
+                src: [
+                    'dist/css/**/*.css'
+                ],
+                dest: 'dist/css/css.min.css'
+			},
+            js: {
+                src: [
+                    'dist/js/game.js'
+                ],
+                dest: 'dist/js/game.min.js'
     }
+    },
+    uglify: {
+            js: {
+                files: {
+                    'dist/js/game.min.js': ['dist/js/game.min.js']
+                }
+            }
+    }
+	
   });
   
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('build', ['buildBootstrapper', 'browserify','copy']);
-  grunt.registerTask('serve', ['build', 'connect:livereload', 'open', 'watch']);
+  grunt.registerTask('serve', ['build', 'concat:js', 'uglify:js', 'connect:livereload', 'open', 'watch']);
   grunt.registerTask('default', ['serve']);
   grunt.registerTask('prod', ['build', 'copy']);
 
