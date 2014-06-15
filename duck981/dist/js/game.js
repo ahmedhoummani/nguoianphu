@@ -130,7 +130,7 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(0.5, 0.5);
+  this.body.bounce.setTo(0.3, 0.3);
 
   this.body.allowRotation = false;
   this.bringToTop();
@@ -175,7 +175,7 @@ Ducks.prototype.move = function() {
   if (this.alive) {
 
     // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
+    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
 
     // ducks face down
 
