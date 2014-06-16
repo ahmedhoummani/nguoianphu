@@ -47,7 +47,7 @@ Play.prototype = {
     //      this.game.add.existing(this.sea_face);
 
     // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, 35, this.game.world.width, this.game.world.height);
+    this.sea_under = new Sea_under(this.game, 0, 33, this.game.world.width, this.game.world.height);
     this.game.add.existing(this.sea_under);
 
     // add the pole
