@@ -869,7 +869,7 @@ Ships.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 120)) {
 
-    this.body.velocity.y -= 20;
+    this.body.velocity.y -=  Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x -= Math.floor(Math.random() * 50);
