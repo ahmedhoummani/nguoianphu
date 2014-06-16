@@ -1465,8 +1465,8 @@ Preload.prototype = {
 
     this.load.spritesheet('mermaid', 'assets/mermaid/mermaidm.png', 30, 21, 6);
 
-     this.load.audio('boom', 'assets/audio/boom.ogg');
-     this.load.audio('shot', 'assets/audio/shot.ogg');
+     this.load.audio('boom', ['assets/audio/explosion.wav']);
+     this.load.audio('shot', ['assets/audio/hit.wav']);
 
   },
   create: function() {
