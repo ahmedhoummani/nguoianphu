@@ -14,19 +14,19 @@ Boot.prototype = {
 
     if (this.game.device.desktop) {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 320;
-      this.scale.minHeight = 480;
-      this.scale.maxWidth = 640;
-      this.scale.maxHeight = 960;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 320;
+      this.scale.maxWidth = 480;
+      this.scale.maxHeight = 320;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
       this.scale.setScreenSize(true);
     } else {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 320;
-      this.scale.minHeight = 480;
-      this.scale.maxWidth = 640;
-      this.scale.maxHeight = 960;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 320;
+      this.scale.maxWidth = 480;
+      this.scale.maxHeight = 320;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
       this.scale.forceOrientation(true, false);

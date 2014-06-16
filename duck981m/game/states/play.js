@@ -26,7 +26,7 @@ Play.prototype = {
 
   create: function() {
 
-    this.game.world.setBounds(0, 0, 960, 600);
+    this.game.world.setBounds(0, 0, 960, 320);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -148,7 +148,7 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 36);
     this.scoreText.fixedToCamera = true;
     this.scoreText.cameraOffset.x = 100;
     this.scoreText.cameraOffset.y = 10;
@@ -230,7 +230,7 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
-      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+      this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
 
@@ -299,7 +299,7 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
-      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+      this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
 

@@ -93,10 +93,10 @@
       this.game.add.existing(this.mermaid);
 
       // add the HEADING TEXT
-      this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
+      this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 130, 'flappyfont', 'Duck 981', 72);
 
       // add our start button with a callback
-      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
+      this.startButton = this.game.add.button(this.game.width / 2, 220, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;

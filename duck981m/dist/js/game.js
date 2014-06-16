@@ -3,7 +3,7 @@
 
 //global variables
 window.onload = function () {
-  var game = new Phaser.Game(320, 480, Phaser.AUTO, 'duck981');
+  var game = new Phaser.Game(480, 320, Phaser.AUTO, 'duck981');
 
   // Game States
   game.state.add('boot', require('./states/boot'));
@@ -94,7 +94,7 @@ Drill.prototype.update = function() {
 
   // Drill don't want to be kill
 
-  if (this.y > (this.game.world.height - 200)) {
+  if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y -= Math.floor(Math.random() * 10);
 
@@ -358,26 +358,26 @@ var Scoreboard = function(game) {
 
   this.fixedToCamera = true;
   this.cameraOffset.x = 200;
-  this.cameraOffset.y = 50;
+  this.cameraOffset.y = 0;
 
-  this.winText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.winText = this.game.add.bitmapText(this.x - 60, 50, 'flappyfont', '', 52);
   this.add(this.winText);
 
-  this.lostText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.lostText = this.game.add.bitmapText(this.x - 60, 50, 'flappyfont', '', 52);
   this.add(this.lostText);
 
 
-  this.scoreboard = this.create(this.theX, 200, 'scoreboard');
+  this.scoreboard = this.create(50, 160, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.x + 50, 180, 'flappyfont', '', 22);
+  this.scoreText = this.game.add.bitmapText(100, 140, 'flappyfont', '', 22);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.x + 50, 230, 'flappyfont', '', 22);
+  this.bestText = this.game.add.bitmapText(100, 190, 'flappyfont', '', 22);
   this.add(this.bestText);
 
   // add our start button with a callback
-  this.startButton = this.game.add.button(this.x, 300, 'startButton', this.startClick, this);
+  this.startButton = this.game.add.button(this.x + 10 , 250, 'startButton', this.startClick, this);
   this.startButton.anchor.setTo(0.5, 0.5);
   this.startButton.inputEnabled = true;
   this.startButton.input.useHandCursor = true;
@@ -598,7 +598,7 @@ Ships.prototype.update = function() {
 
   // ships cannot over sea_on
 
-  if (this.y < 70) {
+  if (this.y < 35) {
 
     this.body.velocity.y += Math.floor(Math.random() * 10);
 
@@ -612,7 +612,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 140)) {
+  if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y -= Math.floor(Math.random() * 10);
 
@@ -724,7 +724,7 @@ Ships.prototype.update = function() {
 
   // ships cannot over sea_on
 
-  if (this.y < 70) {
+  if (this.y < 35) {
 
     this.body.velocity.y += Math.floor(Math.random() * 10);
 
@@ -738,7 +738,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 130)) {
+  if (this.y > (this.game.world.height - 100)) {
 
     this.body.velocity.y -=  Math.floor(Math.random() * 10);
 
@@ -850,7 +850,7 @@ Ships.prototype.update = function() {
 
   // ships cannot over sea_on
 
-  if (this.y < 70) {
+  if (this.y < 35) {
 
     this.body.velocity.y += Math.floor(Math.random() * 10);
 
@@ -864,7 +864,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 80)) {
 
     this.body.velocity.y -= 20;
 
@@ -940,19 +940,19 @@ Boot.prototype = {
 
     if (this.game.device.desktop) {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 320;
-      this.scale.minHeight = 480;
-      this.scale.maxWidth = 640;
-      this.scale.maxHeight = 960;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 320;
+      this.scale.maxWidth = 480;
+      this.scale.maxHeight = 320;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
       this.scale.setScreenSize(true);
     } else {
       this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 320;
-      this.scale.minHeight = 480;
-      this.scale.maxWidth = 640;
-      this.scale.maxHeight = 960;
+      this.scale.minWidth = 480;
+      this.scale.minHeight = 320;
+      this.scale.maxWidth = 480;
+      this.scale.maxHeight = 320;
       this.scale.pageAlignHorizontally = true;
       this.scale.pageAlignVertically = true;
       this.scale.forceOrientation(true, false);
@@ -1020,7 +1020,7 @@ module.exports = Boot;
       //      this.game.add.existing(this.sea_face);
 
       // create and add a new Sea_under object
-      this.sea_under = new Sea_under(this.game, 0, 35, this.game.world.width, this.game.world.height);
+      this.sea_under = new Sea_under(this.game, 0, 33, this.game.world.width, this.game.world.height);
       this.game.add.existing(this.sea_under);
 
       // add the pole
@@ -1072,10 +1072,10 @@ module.exports = Boot;
       this.game.add.existing(this.mermaid);
 
       // add the HEADING TEXT
-      this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
+      this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 130, 'flappyfont', 'Duck 981', 72);
 
       // add our start button with a callback
-      this.startButton = this.game.add.button(this.game.width / 2, 300, 'startButton', this.startClick, this);
+      this.startButton = this.game.add.button(this.game.width / 2, 220, 'startButton', this.startClick, this);
       this.startButton.anchor.setTo(0.5, 0.5);
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;
@@ -1125,7 +1125,7 @@ Play.prototype = {
 
   create: function() {
 
-    this.game.world.setBounds(0, 0, 960, 600);
+    this.game.world.setBounds(0, 0, 960, 320);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -1146,7 +1146,7 @@ Play.prototype = {
     //      this.game.add.existing(this.sea_face);
 
     // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, 35, this.game.world.width, this.game.world.height);
+    this.sea_under = new Sea_under(this.game, 0, 33, this.game.world.width, this.game.world.height);
     this.game.add.existing(this.sea_under);
 
     // add the pole
@@ -1247,7 +1247,7 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 36);
     this.scoreText.fixedToCamera = true;
     this.scoreText.cameraOffset.x = 100;
     this.scoreText.cameraOffset.y = 10;
@@ -1329,7 +1329,7 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
-      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+      this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
 
@@ -1398,7 +1398,7 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
-      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+      this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
 

@@ -7,26 +7,26 @@ var Scoreboard = function(game) {
 
   this.fixedToCamera = true;
   this.cameraOffset.x = 200;
-  this.cameraOffset.y = 50;
+  this.cameraOffset.y = 0;
 
-  this.winText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.winText = this.game.add.bitmapText(this.x - 60, 50, 'flappyfont', '', 52);
   this.add(this.winText);
 
-  this.lostText = this.game.add.bitmapText(this.x - 120, 80, 'flappyfont', '', 62);
+  this.lostText = this.game.add.bitmapText(this.x - 60, 50, 'flappyfont', '', 52);
   this.add(this.lostText);
 
 
-  this.scoreboard = this.create(this.theX, 200, 'scoreboard');
+  this.scoreboard = this.create(50, 160, 'scoreboard');
   this.scoreboard.anchor.setTo(0.5, 0.5);
 
-  this.scoreText = this.game.add.bitmapText(this.x + 50, 180, 'flappyfont', '', 22);
+  this.scoreText = this.game.add.bitmapText(100, 140, 'flappyfont', '', 22);
   this.add(this.scoreText);
 
-  this.bestText = this.game.add.bitmapText(this.x + 50, 230, 'flappyfont', '', 22);
+  this.bestText = this.game.add.bitmapText(100, 190, 'flappyfont', '', 22);
   this.add(this.bestText);
 
   // add our start button with a callback
-  this.startButton = this.game.add.button(this.x, 300, 'startButton', this.startClick, this);
+  this.startButton = this.game.add.button(this.x + 10 , 250, 'startButton', this.startClick, this);
   this.startButton.anchor.setTo(0.5, 0.5);
   this.startButton.inputEnabled = true;
   this.startButton.input.useHandCursor = true;
