@@ -96,7 +96,7 @@ Drill.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 100)) {
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
+    this.body.velocity.y -= Math.floor(Math.random() * 20);
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x += Math.floor(Math.random() * 50);
@@ -1214,30 +1214,30 @@ Play.prototype = {
 
     // add the ships
     this.shipsAlive = 5;
-    this.shipGroup = this.game.add.group();
+    this.shipsGroup = this.game.add.group();
 
-    for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.shipGroup.add(this.ships);
-    }
+    //    for (var i = 0; i < this.shipsAlive; i++) {
+    //      this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    //      this.shipsGroup.add(this.ships);
+    //    }
 
     // add the ship1
     this.ship1Alive = 2;
     this.ship1Group = this.game.add.group();
 
-    for (var i = 0; i < this.ship1Alive; i++) {
-      this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.ship1Group.add(this.ship1);
-    }
+    //    for (var i = 0; i < this.ship1Alive; i++) {
+    //      this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    //      this.ship1Group.add(this.ship1);
+    //    }
 
     // add the ship2
     this.ship2Alive = 3;
     this.ship2Group = this.game.add.group();
 
-    for (var i = 0; i < this.ship2Alive; i++) {
-      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.ship2Group.add(this.ship2);
-    }
+    //    for (var i = 0; i < this.ship2Alive; i++) {
+    //      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    //      this.ship2Group.add(this.ship2);
+    //    }
 
     // add the mermaid
     // Create a new mermaid object
@@ -1259,23 +1259,34 @@ Play.prototype = {
 
   update: function() {
 
-    this.game.physics.arcade.collide(this.ducks, this.shipGroup);
+
+    if (this.shipsGroup.countLiving() < 2) {
+      this.createShips(this.shipsGroup);
+    }
+    if (this.ship1Group.countLiving() < 1) {
+      this.createShip1(this.ship1Group);
+    }
+    if (this.ship2Group.countLiving() < 1) {
+      this.createShip2(this.ship2Group);
+    }
+
+    this.game.physics.arcade.collide(this.ducks, this.shipsGroup);
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
     this.game.physics.arcade.collide(this.ducks, this.mermaid);
 
-    this.game.physics.arcade.collide(this.shipGroup, this.drill);
+    this.game.physics.arcade.collide(this.shipsGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
     this.game.physics.arcade.collide(this.ship2Group, this.drill);
 
-    this.game.physics.arcade.collide(this.shipGroup, this.ship1Group);
-    this.game.physics.arcade.collide(this.shipGroup, this.ship2Group);
+    this.game.physics.arcade.collide(this.shipsGroup, this.ship1Group);
+    this.game.physics.arcade.collide(this.shipsGroup, this.ship2Group);
 
     this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
 
 
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.shipGroup, this.shotSound, null, this);
+    //    this.game.physics.arcade.overlap(this.enemyBullets, this.shipsGroup, this.shotSound, null, this);
     //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship1Group, this.shotSound, null, this);
     //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship2Group, this.shotSound, null, this);
 
@@ -1283,7 +1294,7 @@ Play.prototype = {
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
 
-    this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.pole, this.shipsGroup, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
 
@@ -1291,6 +1302,27 @@ Play.prototype = {
     this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
 
 
+
+  },
+
+  createShips: function(shipsGroup) {
+
+    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    shipsGroup.add(this.ships);
+
+  },
+
+  createShip1: function(ship1Group) {
+
+    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    ship1Group.add(this.ship1);
+
+  },
+
+  createShip2: function(ship2Group) {
+
+    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    ship2Group.add(this.ship2);
 
   },
 
@@ -1337,14 +1369,14 @@ Play.prototype = {
 
   },
 
-  poleHitShips: function(pole, shipGroup) {
+  poleHitShips: function(pole, shipsGroup) {
 
     this.hasScore(10);
 
-    shipGroup.destroy();
+    shipsGroup.destroy();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
+    this.explosionAnimation.reset(shipsGroup.x + 5, shipsGroup.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
     this.boom.play();
