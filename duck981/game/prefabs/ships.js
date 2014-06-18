@@ -48,7 +48,7 @@ Ships.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // ships cannot over sea_on
+   // ships cannot over sea_on
 
   if (this.y < 70) {
 
@@ -66,10 +66,10 @@ Ships.prototype.update = function() {
 
   if (this.y > (this.game.world.height - 120)) {
 
-    this.body.velocity.y -=  Math.floor(Math.random() * 10);
+    this.body.velocity.y -= Math.floor(Math.random() * 10);
 
     if (this.body.velocity.x > 0) {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
+      this.body.velocity.x += Math.floor(Math.random() * 50);
     } else {
       this.body.velocity.x -= Math.floor(Math.random() * 50);
     }
@@ -98,7 +98,7 @@ Ships.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 70);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
 //      thí.shot.play();
     }
   }
