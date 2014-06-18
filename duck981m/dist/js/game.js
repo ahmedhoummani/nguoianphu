@@ -5,7 +5,7 @@
 window.onload = function () {
 
 //By default we set
-	this.screen = "small";
+	this.screen.value = "small";
 	this.srx = Math.max(window.innerWidth,window.innerHeight);
 	this.sry = Math.min(window.innerWidth,window.innerHeight);
 
@@ -16,30 +16,30 @@ window.onload = function () {
 	var r = this.logicWidth/this.logicHeight;
 
 	if(this.srx >= 360){
-		this.screen = "small";
+		this.screen.value = "small";
 		this.gameWidth = 360;
 	}
 	if(this.srx >= 480){
-		this.screen = "normal";
+		this.screen.value = "normal";
 		this.gameWidth = 480;
 	}
 	if(this.srx >= 720){
-		this.screen = "large";
+		this.screen.value = "large";
 		this.gameWidth = 720;
 	}
 	if(this.srx >= 960){
-		this.screen = "xlarge";
+		this.screen.value = "xlarge";
 		this.gameWidth = 960;
 	}
 	if(this.srx >= 1024){
-		this.screen = "xxlarge";
+		this.screen.value = "xxlarge";
 		this.gameWidth = 1024;
 	}
 
 	//If on deskop, we may need to fix the maximum resolution instead of scaling the game to the full monitor resolution
 	var device = new Phaser.Device();
 	if(device.desktop){
-		//this.screen = "xxlarge";
+		//this.screen.value = "xxlarge";
 		this.gameWidth = 480;
 	}
 	device = null;
