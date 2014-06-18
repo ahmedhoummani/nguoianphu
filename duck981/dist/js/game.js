@@ -3,9 +3,62 @@
 
 //global variables
 window.onload = function () {
-  var game = new Phaser.Game(1024, 600, Phaser.AUTO, 'duck981');
 
-  // Game States
+//By default we set
+	this.screen = "small";
+	this.srx = Math.max(window.innerWidth,window.innerHeight);
+	this.sry = Math.min(window.innerWidth,window.innerHeight);
+
+	this.logicWidth = 1024;
+    // 480
+	this.logicHeight = 600;
+    //320
+	var r = this.logicWidth/this.logicHeight;
+
+	if(this.srx >= 360){
+		this.screen = "small";
+		this.gameWidth = 360;
+	}
+	if(this.srx >= 480){
+		this.screen = "normal";
+		this.gameWidth = 480;
+	}
+	if(this.srx >= 720){
+		this.screen = "large";
+		this.gameWidth = 720;
+	}
+	if(this.srx >= 960){
+		this.screen = "xlarge";
+		this.gameWidth = 960;
+	}
+	if(this.srx >= 1024){
+		this.screen = "xxlarge";
+		this.gameWidth = 1024;
+	}
+
+	//If on deskop, we may need to fix the maximum resolution instead of scaling the game to the full monitor resolution
+	var device = new Phaser.Device();
+	if(device.desktop){
+		this.screen = "xxlarge";
+		this.gameWidth = 1024;
+	}
+	device = null;
+
+
+	this.gameHeight = this.gameWidth/r;
+	//We need these methods later to convert the logical game position to display position, So convertWidth(logicWidth) will be right edge for all screens
+	this.convertWidth = function(value){
+		return value/this.logicWidth * this.gameWidth;
+	};
+	this.convertHeight = function(value){
+		return value/this.logicHeight * this.gameHeight;
+	};
+
+	var game = new Phaser.Game(this.gameWidth,this.gameHeight, Phaser.AUTO, 'game');
+
+	//	Add the States your game has.
+	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
+	  // Game States
   game.state.add('boot', require('./states/boot'));
   game.state.add('gameover', require('./states/gameover'));
   game.state.add('menu', require('./states/menu'));
@@ -13,8 +66,11 @@ window.onload = function () {
   game.state.add('preload', require('./states/preload'));
   
 
+	//	Now start the Boot state.
   game.state.start('boot');
 };
+
+
 },{"./states/boot":14,"./states/gameover":15,"./states/menu":16,"./states/play":17,"./states/preload":18}],2:[function(require,module,exports){
 'use strict';
 
@@ -945,32 +1001,50 @@ Boot.prototype = {
 
     this.stage.disableVisibilityChange = true;
 
-    if (this.game.device.desktop) {
-      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 480;
-      this.scale.minHeight = 240;
-      this.scale.maxWidth = 1024;
-      this.scale.maxHeight = 600;
-      this.scale.pageAlignHorizontally = true;
-      this.scale.pageAlignVertically = true;
-      this.scale.setScreenSize(true);
-    } else {
-      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 480;
-      this.scale.minHeight = 240;
-      this.scale.maxWidth = 1024;
-      this.scale.maxHeight = 600;
-      this.scale.pageAlignHorizontally = true;
-      this.scale.pageAlignVertically = true;
-      this.scale.forceOrientation(true, false);
-      //      this.scale.hasResized.add(this.gameResized, this);
-      //      this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
-      //      this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-      this.scale.setScreenSize(true);
-    }
+	this.scaleStage();
 
     this.game.state.start('preload');
 
+  },
+
+  scaleStage:function(){
+    	if (this.game.device.desktop)
+        {
+            this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL; 
+        }
+        else
+        {
+            this.scale.scaleMode = Phaser.ScaleManager.NO_BORDER;
+            this.scale.forceOrientation(true, false);
+            this.scale.hasResized.add(this.gameResized, this);
+            this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+            this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+            this.scale.setScreenSize(true);
+        }
+
+        this.scale.minWidth = this.gameWidth/2;
+        this.scale.minHeight = this.gameHeight/2;
+        this.scale.maxWidth = this.gameWidth;
+        this.scale.maxHeight = this.gameHeight;
+      this.scale.pageAlignHorizontally = true;
+      this.scale.pageAlignVertically = true;
+      this.scale.setScreenSize(true);
+        
+		if(this.scale.scaleMode==Phaser.ScaleManager.NO_BORDER){
+			this.viewX = (this.scale.width/2 - window.innerWidth/2)*this.scale.scaleFactor.x;
+			this.viewY = (this.scale.height/2 - window.innerHeight/2 - 1)*this.scale.scaleFactor.y;
+			this.viewWidth = this.gameWidth-this.viewX;
+			this.viewHeight = this.gameHeight-this.viewY;
+    } else {
+			this.viewX = 0;
+			this.viewY = 0;
+			this.viewWidth = this.gameWidth;
+			this.viewHeight = this.gameHeight;
+    }
+
+		document.getElementById("game").style.width = window.innerWidth+"px";
+		document.getElementById("game").style.height = window.innerHeight-1+"px";//The css for body includes 1px top margin, I believe this is the cause for this -1
+		document.getElementById("game").style.overflow = "hidden";
   },
 
   gameResized: function(width, height) {
@@ -978,6 +1052,22 @@ Boot.prototype = {
     //  This could be handy if you need to do any extra processing if the game resizes.
     //  A resize could happen if for example swapping orientation on a device.
 
+    },
+
+    enterIncorrectOrientation: function () {
+
+        this.orientated = false;
+
+        document.getElementById('orientation').style.display = 'block';
+
+    },
+
+    leaveIncorrectOrientation: function () {
+
+        this.orientated = true;
+
+        document.getElementById('orientation').style.display = 'none';
+		this.scaleStage();
   }
 
 };

@@ -63,6 +63,9 @@ module.exports = function (grunt) {
           { expand: true, src: ['assets/**/*.mp3'], dest: 'dist/' },
           { expand: true, src: ['assets/**/*.ogg'], dest: 'dist/' },
           { expand: true, src: ['assets/**/*.wav'], dest: 'dist/' },
+          { expand: true, src: ['css/**/*.css'], dest: 'dist/' },
+          { expand: true, src: ['icons/**/*.png'], dest: 'dist/' },
+          { expand: true, src: ['images/**/*.jpg'], dest: 'dist/' },
           { expand: true, flatten: true, src: ['game/plugins/*.js'], dest: 'dist/js/plugins/' },
           { expand: true, flatten: true, src: ['bower_components/**/build/*.js'], dest: 'dist/js/' },
           // { expand: true, src: ['css/**'], dest: 'dist/' },
@@ -120,7 +123,7 @@ module.exports = function (grunt) {
     });
     config.gameStates = gameStates;
     console.log(config);
-    var bootstrapper = grunt.file.read('templates/_main.js.tpl');
+    var bootstrapper = grunt.file.read('templates/_main.js.tpl2');
     bootstrapper = grunt.template.process(bootstrapper,{data: config});
     grunt.file.write('game/main.js', bootstrapper);
   });

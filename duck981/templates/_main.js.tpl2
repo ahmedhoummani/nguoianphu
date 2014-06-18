@@ -8,9 +8,9 @@ window.onload = function () {
 	this.srx = Math.max(window.innerWidth,window.innerHeight);
 	this.sry = Math.min(window.innerWidth,window.innerHeight);
 
-	this.logicWidth = 1024;
+	this.logicWidth = <%= gameWidth %>;
     // 480
-	this.logicHeight = 600;
+	this.logicHeight = <%= gameHeight %>;
     //320
 	var r = this.logicWidth/this.logicHeight;
 
@@ -58,12 +58,8 @@ window.onload = function () {
 	//	Add the States your game has.
 	//	You don't have to do this in the html, it could be done in your Boot state too, but for simplicity I'll keep it here.
 	  // Game States
-  game.state.add('boot', require('./states/boot'));
-  game.state.add('gameover', require('./states/gameover'));
-  game.state.add('menu', require('./states/menu'));
-  game.state.add('play', require('./states/play'));
-  game.state.add('preload', require('./states/preload'));
-  
+  <% _.forEach(gameStates, function(gameState) {  %>game.state.add('<%= gameState.shortName %>', require('./states/<%= gameState.shortName %>'));
+  <% }); %>
 
 	//	Now start the Boot state.
   game.state.start('boot');
