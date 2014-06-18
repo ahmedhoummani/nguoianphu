@@ -40,7 +40,7 @@ window.onload = function () {
 	var device = new Phaser.Device();
 	if(device.desktop){
 		//this.screen = "xxlarge";
-		//this.gameWidth = 1024;
+		this.gameWidth = 480;
 	}
 	device = null;
 

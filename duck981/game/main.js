@@ -38,7 +38,7 @@ window.onload = function () {
 	//If on deskop, we may need to fix the maximum resolution instead of scaling the game to the full monitor resolution
 	var device = new Phaser.Device();
 	if(device.desktop){
-		this.screen = "xxlarge";
+		//this.screen = "xxlarge";
 		this.gameWidth = 1024;
 	}
 	device = null;
