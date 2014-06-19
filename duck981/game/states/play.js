@@ -49,8 +49,8 @@ Play.prototype = {
 
     this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole1 = new Pole(this.game, this.game.world.width/2 - 200, this.game.world.height - 35);
-    this.pole2 = new Pole(this.game, this.game.world.width/2 + 200, this.game.world.height - 35);
+    this.pole1 = new Pole(this.game, this.game.world.width / 2 - 200, this.game.world.height - 35);
+    this.pole2 = new Pole(this.game, this.game.world.width / 2 + 200, this.game.world.height - 35);
     // and add it to the game
     this.poleGroup.add(this.pole1);
     this.poleGroup.add(this.pole2);
@@ -157,6 +157,23 @@ Play.prototype = {
 
     this.game.camera.follow(this.ducks);
     this.game.camera.focusOnXY(0, 0);
+
+
+    // add the logo
+    this.styleLogo = {
+      font: "10pt Courier",
+      fill: "#fcfcfc",
+      stroke: "#d4dbd9",
+      strokeThickness: 1,
+      align: "center"
+    };
+    this.logo = this.game.add.text(600, this.game.world.height - 10, 'play.nguoianphu.com', this.styleLogo);
+    this.logo.anchor.setTo(0.5, 0.5);
+    this.logo.fixedToCamera = true;
+    this.logo.cameraOffset.x = this.game.width - 90;
+    this.logo.cameraOffset.y = this.game.height - 10;
+
+
 
   },
 

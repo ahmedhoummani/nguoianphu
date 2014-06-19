@@ -114,8 +114,10 @@
 
       // add the Content
       this.contents = [
-        "photon storm presents",
-        "a phaser production",
+        "Nguoi An Phu\n presents",
+        " ",
+        "Tab to move the duck",
+        "try to push the Oil Rig to the Pole",
       ];
 
       this.style = {
