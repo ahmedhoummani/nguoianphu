@@ -1197,7 +1197,7 @@ module.exports = GameOver;
       this.contents = [
         "Nguoi An Phu\n presents",
         " ",
-        "Tab to move the Duck",
+        "Click or Tap to move the Duck",
         "push the Oil Rig to the Poles",
       ];
 
@@ -1432,7 +1432,7 @@ Play.prototype = {
 
     // add the Content
     this.contents = [
-      "Tab to move the Duck",
+      "Click or Tap to move the Duck",
       "push the Oil Rig and the Ships to the Poles",
     ];
 

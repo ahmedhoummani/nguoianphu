@@ -116,7 +116,7 @@
       this.contents = [
         "Nguoi An Phu\n presents",
         " ",
-        "Tab to move the Duck",
+        "Click or Tap to move the Duck",
         "push the Oil Rig to the Poles",
       ];
 
