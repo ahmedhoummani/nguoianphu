@@ -116,8 +116,8 @@
       this.contents = [
         "Nguoi An Phu\n presents",
         " ",
-        "Tab to move the duck",
-        "try to push the Oil Rig to the Pole",
+        "Tab to move the Duck",
+        "push the Oil Rig to the Poles",
       ];
 
       this.style = {
@@ -158,7 +158,6 @@
 
         }
       }
-
 
 
     },

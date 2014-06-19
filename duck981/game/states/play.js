@@ -167,11 +167,34 @@ Play.prototype = {
       strokeThickness: 1,
       align: "center"
     };
-    this.logo = this.game.add.text(600, this.game.world.height - 10, 'play.nguoianphu.com', this.styleLogo);
+    this.logo = this.game.add.text(this.game.width - 90, this.game.height - 10, 'play.nguoianphu.com', this.styleLogo);
     this.logo.anchor.setTo(0.5, 0.5);
     this.logo.fixedToCamera = true;
     this.logo.cameraOffset.x = this.game.width - 90;
     this.logo.cameraOffset.y = this.game.height - 10;
+
+    // add the Content
+    this.contents = [
+      "Tab to move the Duck",
+      "push the Oil Rig and the Ships to the Poles",
+    ];
+
+    this.style = {
+      font: "15pt Courier",
+      fill: "#fcfcfc",
+      stroke: "#d4dbd9",
+      strokeThickness: 1,
+      align: "center"
+    };
+
+    this.content = this.game.add.text(this.game.width - 300, this.game.height - 30, '', this.style);
+    this.content.fixedToCamera = true;
+    this.content.cameraOffset.x = this.game.width - 300;
+    this.content.cameraOffset.y = this.game.height - 30;
+    this.content.anchor.setTo(0.5, 0.5);
+    this.time = this.game.time.now + 80;
+    this.index = 0;
+    this.line = '';
 
 
 
@@ -179,6 +202,7 @@ Play.prototype = {
 
   update: function() {
 
+    // add the ships
     if (this.shipsGroup.countLiving() < 1) {
       this.createShips(this.shipsGroup);
     }
@@ -189,6 +213,7 @@ Play.prototype = {
       this.createShip2(this.ship2Group);
     }
 
+    // make everything collide
     this.game.physics.arcade.collide(this.ducks, this.shipsGroup);
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
@@ -204,13 +229,7 @@ Play.prototype = {
 
     this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
 
-
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.shipsGroup, this.shotSound, null, this);
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship1Group, this.shotSound, null, this);
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship2Group, this.shotSound, null, this);
-
-
-
+    // make everything hit and kill
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
 
     this.game.physics.arcade.overlap(this.poleGroup, this.shipsGroup, this.poleHitShips, null, this);
@@ -220,6 +239,26 @@ Play.prototype = {
     this.game.physics.arcade.overlap(this.poleGroup, this.drill, this.poleHitDrill, null, this);
     this.game.physics.arcade.overlap(this.poleGroup, this.ducks, this.poleHitDucks, null, this);
 
+    // add the message
+    if (this.game.time.now > this.time && this.index < this.contents.length) {
+      //  get the next character in the line
+      if (this.line.length < this.contents[this.index].length) {
+        this.line = this.contents[this.index].substr(0, this.line.length + 1);
+        this.content.setText(this.line);
+        this.time = this.game.time.now + 80;
+      } else {
+        this.time = this.game.time.now + 2000;
+
+        if (this.index < this.contents.length) {
+          this.index++;
+          if (this.index >= this.contents.length) {
+            this.index = 0;
+          }
+          this.line = '';
+        }
+
+      }
+    }
 
 
   },
