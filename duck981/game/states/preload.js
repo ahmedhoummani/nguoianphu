@@ -14,9 +14,12 @@ Preload.prototype = {
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
 
-    this.load.image('sea_on', 'assets/sea/sea_on.png');
-    this.load.image('sea_face', 'assets/sea/sea_face.png');
-    this.load.image('sea_under', 'assets/sea/sea_under.png');
+//    this.load.image('sea_on', 'assets/sea/sea_on.png');
+//    this.load.image('sea_face', 'assets/sea/sea_face.png');
+//    this.load.image('sea_under', 'assets/sea/sea_under.png');
+      
+    this.load.image('sea_top', 'assets/sea/sea_top.png');
+    this.load.image('sea_wave', 'assets/sea/sea_wave.png');
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
     this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
@@ -24,7 +27,7 @@ Preload.prototype = {
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
 
-    this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
+    this.load.spritesheet('pole', 'assets/pole/poles.png', 96, 70, 2);
 
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
     this.load.spritesheet('ship1', 'assets/ship/warship1.png', 200, 68, 2);

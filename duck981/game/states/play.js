@@ -1,7 +1,11 @@
 'use strict';
-var Sea_on = require('../prefabs/sea_on');
-var Sea_face = require('../prefabs/sea_face');
-var Sea_under = require('../prefabs/sea_under');
+
+//var Sea_on = require('../prefabs/sea_on');
+//var Sea_face = require('../prefabs/sea_face');
+//var Sea_under = require('../prefabs/sea_under');
+
+var Sea_top = require('../prefabs/sea_top');
+  var Sea_wave = require('../prefabs/sea_wave');
 
 var Pole = require('../prefabs/pole');
 
@@ -37,7 +41,7 @@ Play.prototype = {
     //    this.caribe = this.game.add.audio('caribe', 1, true);
     //    this.caribe.play('', 0, 1, true);
 
-    // create and add a new Sea_on object
+    /*// create and add a new Sea_on object
     this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
     this.game.add.existing(this.sea_on);
 
@@ -48,7 +52,15 @@ Play.prototype = {
 
     // create and add a new Sea_under object
     this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
-    this.game.add.existing(this.sea_under);
+    this.game.add.existing(this.sea_under);*/
+      
+      // create and add a new Sea_top object
+      this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
+      this.game.add.existing(this.sea_top);
+        
+        // create and add a new Sea_wave object
+      this.sea_wave = new Sea_wave(this.game, 0, 79, this.game.world.width, this.game.world.height);
+      this.game.add.existing(this.sea_wave);
 
     // add the pole
     // Create a new pole object
