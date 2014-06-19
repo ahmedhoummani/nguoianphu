@@ -13,10 +13,6 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-
-//    this.load.image('sea_on', 'assets/sea/sea_on.png');
-//    this.load.image('sea_face', 'assets/sea/sea_face.png');
-//    this.load.image('sea_under', 'assets/sea/sea_under.png');
       
     this.load.image('sea_top', 'assets/sea/sea_top.png');
     this.load.image('sea_wave', 'assets/sea/sea_wave.png');
@@ -46,11 +42,6 @@ Preload.prototype = {
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 	
     this.load.spritesheet('mermaid', 'assets/mermaid/mermaid.png', 56, 48);
-	
-    // this.load.spritesheet('mermaid_01', 'assets/mermaid/images/mermaid_01.png', 56, 48);
-    // this.load.spritesheet('mermaid_03', 'assets/mermaid/images/mermaid_03.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');

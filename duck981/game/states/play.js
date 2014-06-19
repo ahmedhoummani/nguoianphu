@@ -1,11 +1,7 @@
 'use strict';
 
-//var Sea_on = require('../prefabs/sea_on');
-//var Sea_face = require('../prefabs/sea_face');
-//var Sea_under = require('../prefabs/sea_under');
-
 var Sea_top = require('../prefabs/sea_top');
-  var Sea_wave = require('../prefabs/sea_wave');
+var Sea_wave = require('../prefabs/sea_wave');
 
 var Pole = require('../prefabs/pole');
 
@@ -41,32 +37,23 @@ Play.prototype = {
     //    this.caribe = this.game.add.audio('caribe', 1, true);
     //    this.caribe.play('', 0, 1, true);
 
-    /*// create and add a new Sea_on object
-    this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
-    this.game.add.existing(this.sea_on);
+    // create and add a new Sea_top object
+    this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
+    this.game.add.existing(this.sea_top);
 
-
-    // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 90, this.game.world.width, this.game.world.height - 73);
-    this.game.add.existing(this.sea_face);
-
-    // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
-    this.game.add.existing(this.sea_under);*/
-      
-      // create and add a new Sea_top object
-      this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
-      this.game.add.existing(this.sea_top);
-        
-        // create and add a new Sea_wave object
-      this.sea_wave = new Sea_wave(this.game, 0, 79, this.game.world.width, this.game.world.height);
-      this.game.add.existing(this.sea_wave);
+    // create and add a new Sea_wave object
+    this.sea_wave = new Sea_wave(this.game, 0, 79, this.game.world.width, this.game.world.height);
+    this.game.add.existing(this.sea_wave);
 
     // add the pole
+
+    this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole = new Pole(this.game, 400, this.game.world.height - 45);
+    this.pole1 = new Pole(this.game, 300, this.game.world.height - 45);
+    this.pole2 = new Pole(this.game, 550, this.game.world.height - 45);
     // and add it to the game
-    this.game.add.existing(this.pole);
+    this.poleGroup.add(this.pole1);
+    this.poleGroup.add(this.pole2);
 
 
     //  The enemies bullet group
@@ -111,18 +98,20 @@ Play.prototype = {
     this.game.input.onDown.add(this.ducks.move, this.ducks);
 
     // Health points, which are the hearts in the top right corner
+    this.hpGroup = this.game.add.group();
     this.hp = new Array();
     /*Adding 3 hearts*/
+    this.numberLifes = this.ducks.health;
 
-    for (this.live = 0; this.live < this.ducks.health; this.live++) {
-      this.hp[this.live] = this.add.sprite(10 + this.live * 20, 10, 'health');
+    for (this.live = 0; this.live < this.numberLifes; this.live++) {
+      this.hp[this.live] = this.add.sprite(10 + this.live * 40, 10, 'health');
       this.hp[this.live].fixedToCamera = true;
-      this.hp[this.live].cameraOffset.x = 10 + this.live * 20;
+      this.hp[this.live].cameraOffset.x = 10 + this.live * 40;
       this.hp[this.live].cameraOffset.y = 10;
+      this.hpGroup.add(this.hp[this.live]);
     }
-
     //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
-    this.live = this.ducks.health - 1; //IDs of the hearts: hp[0], hp[1], hp[2]
+    this.live = this.numberLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
 
 
     // add the ships
@@ -160,9 +149,9 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText = this.game.add.bitmapText(200, 10, 'flappyfont', this.score.toString(), 44);
     this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 100;
+    this.scoreText.cameraOffset.x = 200;
     this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
@@ -206,12 +195,12 @@ Play.prototype = {
 
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
 
-    this.game.physics.arcade.overlap(this.pole, this.shipsGroup, this.poleHitShips, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.poleGroup, this.shipsGroup, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.poleGroup, this.ship1Group, this.poleHitShips, null, this);
+    this.game.physics.arcade.overlap(this.poleGroup, this.ship2Group, this.poleHitShips, null, this);
 
-    this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
+    this.game.physics.arcade.overlap(this.poleGroup, this.drill, this.poleHitDrill, null, this);
+    this.game.physics.arcade.overlap(this.poleGroup, this.ducks, this.poleHitDucks, null, this);
 
 
 
@@ -318,35 +307,20 @@ Play.prototype = {
 
   poleHitDucks: function(pole, ducks) {
 
-    this.shot.play();
-
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 10, ducks.y + 10);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
-    // the pole cannot be kill, instead o re-create it
-    // if the pole lives, the ducks will overlap it foever
-    // so that it will be killed
-    // not depend on the remain healths
-
-    // the ducks is killed
-    this.hp[this.live].kill(); // "Killing" the hearth with the largest index
-    this.live--; // Decrementing our live variable
-
-    if (this.live === -1) { // If our last heart (index: 0) is "killed" then we restart the game
-      this.boom.play();
-    }
+    this.boom.play();
 
     this.theX = ducks.x;
 
-    this.destroyed = ducks.damage();
-    if (this.destroyed) {
+    this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+    this.game.add.existing(this.scoreboard);
+    this.scoreboard.show(this.score, false);
 
-      this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
-      this.game.add.existing(this.scoreboard);
-      this.scoreboard.show(this.score, false);
-
-    }
+    this.ducks.kill();
+    this.hpGroup.destroy();
 
 
   },

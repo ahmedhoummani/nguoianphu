@@ -10,7 +10,8 @@ var Pole = function(game, x, y, frame) {
 
   this.animations.add('tide');
   this.animations.play('tide', 2, true);
-
+    
+  this.game.add.existing(this);
 
 };
 
