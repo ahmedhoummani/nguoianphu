@@ -899,7 +899,7 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 120)) {
+  if (this.y > (this.game.world.height - 130)) {
 
     this.body.velocity.y -= Math.floor(Math.random() * 10);
 
@@ -1261,8 +1261,8 @@ Play.prototype = {
 
     this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole1 = new Pole(this.game, 300, this.game.world.height - 45);
-    this.pole2 = new Pole(this.game, 550, this.game.world.height - 45);
+    this.pole1 = new Pole(this.game, this.game.world.width/2 - 200, this.game.world.height - 35);
+    this.pole2 = new Pole(this.game, this.game.world.width/2 + 200, this.game.world.height - 35);
     // and add it to the game
     this.poleGroup.add(this.pole1);
     this.poleGroup.add(this.pole2);
@@ -1308,6 +1308,7 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.ducksLive = true;
 
     // Health points, which are the hearts in the top right corner
     this.hpGroup = this.game.add.group();
@@ -1474,6 +1475,8 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
+      this.ducksLive = false;
+
       this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
@@ -1496,7 +1499,7 @@ Play.prototype = {
 
   },
 
-  poleHitDrill: function(pole, drill) {
+  poleHitDrill: function(drill, pole) {
 
     this.hasScore(100);
 
@@ -1507,13 +1510,15 @@ Play.prototype = {
     this.explosionAnimation.play('kaboom', 30, false, true);
 
     this.theX = this.ducks.x;
-    this.ducks.destroy();
 
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, true);
+    if (this.ducksLive) {
+      this.scoreboard = new Scoreboard(this.game);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score, true);
+    }
 
     this.boom.play();
+    this.ducks.destroy();
 
   },
 
@@ -1532,6 +1537,7 @@ Play.prototype = {
     this.scoreboard.show(this.score, false);
 
     this.ducks.kill();
+    this.ducksLive = false;
     this.hpGroup.destroy();
 
 
