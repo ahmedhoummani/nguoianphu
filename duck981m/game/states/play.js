@@ -97,6 +97,8 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.ducksLive = true;
+
 
     // Health points, which are the hearts in the top right corner
     this.hpGroup = this.game.add.group();
@@ -265,6 +267,8 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
+      this.ducksLive = false;
+
       this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
@@ -300,9 +304,11 @@ Play.prototype = {
     this.theX = this.ducks.x;
     this.ducks.kill();
 
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, true);
+    if (this.ducksLive) {
+      this.scoreboard = new Scoreboard(this.game);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score, true);
+    }
 
     this.boom.play();
 
@@ -324,7 +330,7 @@ Play.prototype = {
 
     this.ducks.kill();
     this.hpGroup.destroy();
-
+    this.ducksLive = false;
 
   },
 
