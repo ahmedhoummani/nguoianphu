@@ -85,7 +85,7 @@ Play.prototype = {
     // add the drill
     // Create a new drill object
     //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
+    this.drill = new Drill(this.game, this.game.world.width - 10, 10);
     // and add it to the game
     this.game.add.existing(this.drill);
 
