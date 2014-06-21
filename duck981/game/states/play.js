@@ -14,7 +14,7 @@ var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
 
-var Mermaid = require('../prefabs/mermaid');
+var Helicopter = require('../prefabs/helicopter');
 
 var Ducks = require('../prefabs/ducks');
 
@@ -142,11 +142,11 @@ Play.prototype = {
     //      this.ship2Group.add(this.ship2);
     //    }
 
-    // add the mermaid
-    // Create a new mermaid object
-    this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
-    // and add it to the game
-    this.game.add.existing(this.mermaid);
+    // add the helicopter
+      // Create a new helicopter object
+      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY);
+      // and add it to the game
+      this.game.add.existing(this.helicopter);
 
     // add the score
     this.score = 0;

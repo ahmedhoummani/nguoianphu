@@ -41,7 +41,7 @@ Preload.prototype = {
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 	
-    this.load.spritesheet('mermaid', 'assets/mermaid/mermaid.png', 56, 48);
+    this.load.spritesheet('helicopter', 'assets/helicopter/helicopter.png', 150, 38, 8);
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');
