@@ -124,7 +124,7 @@ module.exports = function (grunt) {
     });
     config.gameStates = gameStates;
     console.log(config);
-    var bootstrapper = grunt.file.read('templates/_main.js.tpl2');
+    var bootstrapper = grunt.file.read('templates/_main.js.tpl');
     bootstrapper = grunt.template.process(bootstrapper,{data: config});
     grunt.file.write('game/main.js', bootstrapper);
   });
