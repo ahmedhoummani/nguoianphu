@@ -60,9 +60,9 @@ module.exports = function (grunt) {
           { expand: true, src: ['assets/**/*.png'], dest: 'dist/' },
           { expand: true, src: ['assets/**/*.gif'], dest: 'dist/' },
           { expand: true, src: ['assets/**/*.fnt'], dest: 'dist/' },
-          { expand: true, src: ['assets/**/*.mp3'], dest: 'dist/' },
+          // { expand: true, src: ['assets/**/*.mp3'], dest: 'dist/' },
           { expand: true, src: ['assets/**/*.ogg'], dest: 'dist/' },
-          { expand: true, src: ['assets/**/*.wav'], dest: 'dist/' },
+          // { expand: true, src: ['assets/**/*.wav'], dest: 'dist/' },
           { expand: true, src: ['css/**/*.css'], dest: 'dist/' },
           { expand: true, src: ['icons/**/*.png'], dest: 'dist/' },
           { expand: true, src: ['images/**/*.jpg'], dest: 'dist/' },
@@ -89,15 +89,16 @@ module.exports = function (grunt) {
 			},
             js: {
                 src: [
-                    'dist/js/game.js'
+                    'dist/js/game*.js'
                 ],
-                dest: 'dist/js/game.min.js'
+                dest: 'dist/js/game.js'
             }
     },
     uglify: {
             js: {
                 files: {
-                    'dist/js/game.min.js': ['dist/js/game.min.js']
+					// 			dest	 : source
+                    'dist/js/game.min.js': ['dist/js/game.js']
                 }
             }
     }
@@ -107,7 +108,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.registerTask('build', ['buildBootstrapper', 'browserify','copy']);
-  grunt.registerTask('serve', ['build', 'concat:js', 'uglify:js', 'connect:livereload', 'open', 'watch']);
+  grunt.registerTask('serve', ['build','concat:js' ,'uglify:js', 'connect:livereload', 'open', 'watch']);
   grunt.registerTask('default', ['serve']);
   grunt.registerTask('prod', ['build', 'copy']);
 
