@@ -26,7 +26,7 @@ Play.prototype = {
 
   create: function() {
 
-    this.game.world.setBounds(0, 0, 2000, 600);
+    this.game.world.setBounds(0, 0, 2000, 2000);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -37,20 +37,21 @@ Play.prototype = {
     //    this.caribe = this.game.add.audio('caribe', 1, true);
     //    this.caribe.play('', 0, 1, true);
 
+	// create and add a new Sea_wave object
+    this.sea_wave = new Sea_wave(this.game, 0, 0, this.game.world.width, this.game.world.height);
+    this.game.add.existing(this.sea_wave);
+	
     // create and add a new Sea_top object
+	// It will overlay the sea_wave becasuse it is created later
     this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
     this.game.add.existing(this.sea_top);
-
-    // create and add a new Sea_wave object
-    this.sea_wave = new Sea_wave(this.game, 0, 79, this.game.world.width, this.game.world.height);
-    this.game.add.existing(this.sea_wave);
 
     // add the pole
 
     this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole1 = new Pole(this.game, this.game.world.width / 2 - 200, this.game.world.height - 35);
-    this.pole2 = new Pole(this.game, this.game.world.width / 2 + 200, this.game.world.height - 35);
+    this.pole1 = new Pole(this.game, this.game.world.width / 2, 500);
+    this.pole2 = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 500);
     // and add it to the game
     this.poleGroup.add(this.pole1);
     this.poleGroup.add(this.pole2);

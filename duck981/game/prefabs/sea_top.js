@@ -5,7 +5,7 @@ var Sea_top = function(game, x, y, width, height) {
 
   // initialize your prefab here
   this.autoScroll(-35, 0);
-  this.fixedToCamera = true;
+  // this.fixedToCamera = true;
 
 };
 
