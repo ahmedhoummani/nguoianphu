@@ -1,7 +1,7 @@
 'use strict';
 
-var Pole = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'pole', frame);
+var Pole = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'pole');
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);

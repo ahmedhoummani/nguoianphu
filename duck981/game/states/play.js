@@ -5,6 +5,8 @@ var Sea_wave = require('../prefabs/sea_wave');
 
 var Pole = require('../prefabs/pole');
 
+var Island = require('../prefabs/island');
+
 var Ships = require('../prefabs/ships');
 var Ship1 = require('../prefabs/ship1');
 var Ship2 = require('../prefabs/ship2');
@@ -50,11 +52,24 @@ Play.prototype = {
 
     this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole1 = new Pole(this.game, this.game.world.width / 2, 500);
-    this.pole2 = new Pole(this.game, this.game.world.width / 2, this.game.world.height - 500);
+    this.pole1 = new Pole(this.game, this.game.world.width / 2 - 300, this.game.world.height/2);
+    this.pole2 = new Pole(this.game, this.game.world.width / 2 + 300, this.game.world.height/2);
     // and add it to the game
     this.poleGroup.add(this.pole1);
     this.poleGroup.add(this.pole2);
+	
+	// add the island
+	this.islandGroup = this.game.add.group();
+    // Create a new island object
+    this.island1 = new Island(this.game, this.game.world.width / 2 - 500, this.game.world.height/2);
+    this.island2 = new Island(this.game, this.game.world.width / 2 + 500, this.game.world.height/2);
+    this.island3 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 - 300);
+    this.island4 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 + 300);
+    // and add it to the game
+    this.islandGroup.add(this.island1);
+    this.islandGroup.add(this.island2);
+    this.islandGroup.add(this.island3);
+    this.islandGroup.add(this.island4);
 
 
     //  The enemies bullet group
@@ -219,7 +234,7 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
-    //    this.game.physics.arcade.collide(this.ducks, this.mermaid);
+    this.game.physics.arcade.collide(this.ducks, this.islandGroup);
 
     this.game.physics.arcade.collide(this.shipsGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
@@ -227,11 +242,16 @@ Play.prototype = {
 
     this.game.physics.arcade.collide(this.shipsGroup, this.ship1Group);
     this.game.physics.arcade.collide(this.shipsGroup, this.ship2Group);
-
     this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
+	
+	this.game.physics.arcade.collide(this.shipsGroup, this.islandGroup);
+    this.game.physics.arcade.collide(this.ship1Group, this.islandGroup);
+    this.game.physics.arcade.collide(this.ship2Group, this.islandGroup);
+    this.game.physics.arcade.collide(this.drill, this.islandGroup);
 
     // make everything hit and kill
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+    this.game.physics.arcade.overlap(this.enemyBullets, this.islandGroup, this.bulletHitIslandGroup, null, this);
 
     this.game.physics.arcade.overlap(this.poleGroup, this.shipsGroup, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.poleGroup, this.ship1Group, this.poleHitShips, null, this);
@@ -328,6 +348,10 @@ Play.prototype = {
 
     }
 
+  },
+  
+  bulletHitIslandGroup: function(enemyBullets, island){
+		enemyBullets.kill();
   },
 
   poleHitShips: function(pole, shipsGroup) {

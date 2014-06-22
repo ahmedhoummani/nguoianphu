@@ -46,14 +46,14 @@ Drill.prototype.update = function() {
 
   if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
   
-	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+	this.game.physics.arcade.moveToObject(this, this.pole1, -80);
   }
   
   // ships don't want to be kill
 
   if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
   
-	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
+	this.game.physics.arcade.moveToObject(this, this.pole2, -80);
   }
 
   this.animations.play('left');

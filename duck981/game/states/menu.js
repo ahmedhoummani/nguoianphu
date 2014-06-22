@@ -6,6 +6,8 @@
 
   var Sea_top = require('../prefabs/sea_top');
   var Sea_wave = require('../prefabs/sea_wave');
+  
+  var Island = require('../prefabs/island');
 
   var Pole = require('../prefabs/pole');
 
@@ -57,9 +59,15 @@
 
       // add the pole
       // Create a new pole object
-      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 45);
+      this.pole = new Pole(this.game, this.game.width / 2 - 100, this.game.world.height - 45);
       // and add it to the game
       this.game.add.existing(this.pole);
+	  
+	  // add the island
+      // Create a new island object
+      this.island = new Island(this.game, this.game.width / 2 + 100, this.game.world.height - 60);
+      // and add it to the game
+      this.game.add.existing(this.island);
 
 
       //  The enemies bullet group

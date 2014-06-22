@@ -16,6 +16,8 @@ Preload.prototype = {
       
     this.load.image('sea_top', 'assets/sea/sea_top.png');
     this.load.image('sea_wave', 'assets/sea/sea_wave.png');
+	
+    this.load.image('island', 'assets/island/island.png');
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
     this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
