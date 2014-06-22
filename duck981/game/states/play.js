@@ -85,7 +85,7 @@ Play.prototype = {
     // add the drill
     // Create a new drill object
     //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 10, 10);
+    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.pole1, this.pole2);
     // and add it to the game
     this.game.add.existing(this.drill);
 
@@ -265,21 +265,21 @@ Play.prototype = {
 
   createShips: function(shipsGroup) {
 
-    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1);
+    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     shipsGroup.add(this.ships);
 
   },
 
   createShip1: function(ship1Group) {
 
-    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     ship1Group.add(this.ship1);
 
   },
 
   createShip2: function(ship2Group) {
 
-    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     ship2Group.add(this.ship2);
 
   },

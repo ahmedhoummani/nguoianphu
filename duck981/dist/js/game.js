@@ -52,11 +52,12 @@ module.exports = Bullets;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Drill = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', frame);
+var Drill = function(game, x, y, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', pole1, pole2);
 
   // initialize your prefab here
-
+	this.pole1 = pole1;
+	this.pole2 = pole2;
 
   this.game.physics.arcade.enableBody(this);
 
@@ -93,18 +94,18 @@ Drill.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Drill don't want to be kill
+  // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 200)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   this.animations.play('left');
@@ -278,13 +279,7 @@ Helicopter.prototype.update = function() {
 
   if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100 ) {
 
-    // if (this.body.velocity.x > 0) {
-      // this.body.velocity.x -= Math.floor(Math.random() * 50);
-      // this.body.velocity.y -= Math.floor(Math.random() * 50);
-    // } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-      // this.body.velocity.y -= Math.floor(Math.random() * 50);
-    // }
+    this.game.physics.arcade.moveToObject(this, this.pole, -10);
 
   }
 
@@ -537,14 +532,16 @@ module.exports = Sea_wave;
 },{}],10:[function(require,module,exports){
 'use strict';
 
-var Ships = function(game, x, y, player, enemyBullets) {
-  Phaser.Sprite.call(this, game, x, y, 'ship1', player, enemyBullets);
+var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'ship1', player, enemyBullets, pole1, pole2);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
+  this.pole1 = pole1;
+  this.pole2 = pole2;
 
 //  this.shot = this.game.add.audio('shot');
 
@@ -601,16 +598,16 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 140)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   // ships left right
@@ -663,14 +660,16 @@ module.exports = Ships;
 },{}],11:[function(require,module,exports){
 'use strict';
 
-var Ships = function(game, x, y, player, enemyBullets) {
-  Phaser.Sprite.call(this, game, x, y, 'ship2', player, enemyBullets);
+var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'ship2', player, enemyBullets, pole1, pole2);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
+  this.pole1 = pole1;
+  this.pole2 = pole2;
 
 //  this.shot = this.game.add.audio('shot');
 
@@ -727,16 +726,16 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 130)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    this.body.velocity.y -=  Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   // ships left right
@@ -789,15 +788,16 @@ module.exports = Ships;
 },{}],12:[function(require,module,exports){
 'use strict';
 
-var Ships = function(game, x, y, player, enemyBullets, pole) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets, pole);
+var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets, pole1, pole2);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
-  this.pole = pole;
+  this.pole1 = pole1;
+  this.pole2 = pole2;
 
 //  this.shot = this.game.add.audio('shot');
 
@@ -854,18 +854,16 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 130) {
   
-	this.game.physics.arcade.moveToObject(this, this.pole, -50);
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    // if (this.body.velocity.x > 0) {
-      // this.body.acceleration.x += Math.floor(Math.random() * 200);
-	  // this.body.velocity.y += Math.floor(Math.random() * 10);
-    // } else {
-      // this.body.acceleration.x -= Math.floor(Math.random() * 200);
-	  // this.body.velocity.y -= Math.floor(Math.random() * 10);
-    // }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 130) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   // ships left right
@@ -1067,7 +1065,7 @@ module.exports = GameOver;
 
       // add the drill
       // Create a new drill object
-      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.pole, this.pole);
       // and add it to the game
       this.game.add.existing(this.drill);
 
@@ -1079,9 +1077,9 @@ module.exports = GameOver;
       this.game.add.existing(this.ducks);
 
       // add the ships
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole);
-      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
-      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
+      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
 
 
       // add the helicopter
@@ -1248,7 +1246,7 @@ Play.prototype = {
     // add the drill
     // Create a new drill object
     //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 10, 10);
+    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.pole1, this.pole2);
     // and add it to the game
     this.game.add.existing(this.drill);
 
@@ -1428,21 +1426,21 @@ Play.prototype = {
 
   createShips: function(shipsGroup) {
 
-    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1);
+    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     shipsGroup.add(this.ships);
 
   },
 
   createShip1: function(ship1Group) {
 
-    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     ship1Group.add(this.ship1);
 
   },
 
   createShip2: function(ship2Group) {
 
-    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     ship2Group.add(this.ship2);
 
   },

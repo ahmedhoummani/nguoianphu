@@ -1,10 +1,11 @@
 'use strict';
 
-var Drill = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', frame);
+var Drill = function(game, x, y, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', pole1, pole2);
 
   // initialize your prefab here
-
+	this.pole1 = pole1;
+	this.pole2 = pole2;
 
   this.game.physics.arcade.enableBody(this);
 
@@ -41,18 +42,18 @@ Drill.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Drill don't want to be kill
+  // ships don't want to be kill
 
-  if (this.y > (this.game.world.height - 200)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   this.animations.play('left');

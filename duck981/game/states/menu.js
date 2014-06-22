@@ -80,7 +80,7 @@
 
       // add the drill
       // Create a new drill object
-      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.pole, this.pole);
       // and add it to the game
       this.game.add.existing(this.drill);
 
@@ -92,9 +92,9 @@
       this.game.add.existing(this.ducks);
 
       // add the ships
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole);
-      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
-      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
+      this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
+      this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
 
 
       // add the helicopter

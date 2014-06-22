@@ -1,14 +1,15 @@
 'use strict';
 
-var Ships = function(game, x, y, player, enemyBullets, pole) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets, pole);
+var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets, pole1, pole2);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
-  this.pole = pole;
+  this.pole1 = pole1;
+  this.pole2 = pole2;
 
 //  this.shot = this.game.add.audio('shot');
 
@@ -65,18 +66,16 @@ Ships.prototype.update = function() {
 
   // ships don't want to be kill
 
-  if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100) {
+  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 130) {
   
-	this.game.physics.arcade.moveToObject(this, this.pole, -50);
+	this.game.physics.arcade.moveToObject(this, this.pole1, -100);
+  }
+  
+  // ships don't want to be kill
 
-    // if (this.body.velocity.x > 0) {
-      // this.body.acceleration.x += Math.floor(Math.random() * 200);
-	  // this.body.velocity.y += Math.floor(Math.random() * 10);
-    // } else {
-      // this.body.acceleration.x -= Math.floor(Math.random() * 200);
-	  // this.body.velocity.y -= Math.floor(Math.random() * 10);
-    // }
-
+  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 130) {
+  
+	this.game.physics.arcade.moveToObject(this, this.pole2, -100);
   }
 
   // ships left right
