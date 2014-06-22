@@ -92,14 +92,14 @@
       this.game.add.existing(this.ducks);
 
       // add the ships
-      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole);
       this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
 
 
       // add the helicopter
       // Create a new helicopter object
-      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY);
+      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets,this.pole);
       // and add it to the game
       this.game.add.existing(this.helicopter);
 

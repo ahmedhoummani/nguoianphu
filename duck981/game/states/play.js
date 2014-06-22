@@ -144,7 +144,7 @@ Play.prototype = {
 
     // add the helicopter
       // Create a new helicopter object
-      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY);
+      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.poleGroup);
       // and add it to the game
       this.game.add.existing(this.helicopter);
 
@@ -265,7 +265,7 @@ Play.prototype = {
 
   createShips: function(shipsGroup) {
 
-    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets, this.pole1);
     shipsGroup.add(this.ships);
 
   },

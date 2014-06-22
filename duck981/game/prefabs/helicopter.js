@@ -1,11 +1,20 @@
 'use strict';
 
-var Helicopter = function(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'helicopter');
+var Helicopter = function(game, x, y, player, enemyBullets, pole) {
+  Phaser.Sprite.call(this, game, x, y, 'helicopter', player, enemyBullets, pole);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+  this.pole = pole;
+  this.game = game;
+  this.health = 1;
+  this.fireRate = 30000;
+  this.nextFire = 0;
+  this.alive = true;
+  
   this.anchor.set(0.5, 0.5);
   // this.scale.setTo(2, 2);
 
@@ -40,33 +49,20 @@ Helicopter.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Helicopter cannot over sea_on
-
-  // if (this.y < 100) {
-
-    // this.body.velocity.y += Math.floor(Math.random() * 10);
-
-    // if (this.body.velocity.x > 0) {
-      // this.body.velocity.x += Math.floor(Math.random() * 50);
-    // } else {
-      // this.body.velocity.x -= Math.floor(Math.random() * 50);
-    // }
-
-  // }
 
   // Helicopter don't want to be kill
 
-  // if (this.y > (this.game.world.height - 120)) {
-
-    // this.body.velocity.y -= 20;
+  if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100 ) {
 
     // if (this.body.velocity.x > 0) {
       // this.body.velocity.x -= Math.floor(Math.random() * 50);
+      // this.body.velocity.y -= Math.floor(Math.random() * 50);
     // } else {
-      // this.body.velocity.x -= Math.floor(Math.random() * 50);
+      this.body.velocity.x -= Math.floor(Math.random() * 50);
+      // this.body.velocity.y -= Math.floor(Math.random() * 50);
     // }
 
-  // }
+  }
 
   // Helicopter left right
 
@@ -79,18 +75,35 @@ Helicopter.prototype.update = function() {
     this.animations.play('right');
   }
   
-  // else 
-  
-  // if (this.body.velocity.y > 0) {
+  // fire the bullets
 
-    // this.animations.play('face');
-  // }
-  // else if (this.body.velocity.y < 0) {
+  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
 
-    // this.animations.play('back');
-  // }
-  
+      var bullet = this.enemyBullets.getFirstDead();
 
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+//      this.shot.play();
+    }
+  }
+
+};
+
+Helicopter.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
 
 };
 
