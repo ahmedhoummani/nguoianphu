@@ -36,7 +36,7 @@ var Helicopter = function(game, x, y, player, enemyBullets, pole) {
   // this.body.maxVelocity.x = 50;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
-  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 150, this.body.velocity);
+  this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
   this.game.add.existing(this);
 
 
@@ -52,11 +52,11 @@ Helicopter.prototype.update = function() {
 
   // Helicopter don't want to be kill
 
-  if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100 ) {
+  // if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100 ) {
 
-    this.game.physics.arcade.moveToObject(this, this.pole, -10);
+    // this.game.physics.arcade.moveToObject(this, this.pole, -100);
 
-  }
+  // }
 
   // Helicopter left right
 
