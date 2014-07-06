@@ -15,21 +15,17 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":14,"./states/gameover":15,"./states/menu":16,"./states/play":17,"./states/preload":18}],2:[function(require,module,exports){
+},{"./states/boot":15,"./states/gameover":16,"./states/menu":17,"./states/play":18,"./states/preload":19}],2:[function(require,module,exports){
 'use strict';
 
-var Bullets = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'rockets', frame);
+var Bullets = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'bullets');
 
   // initialize your prefab here
-
 
   this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
-
-  this.animations.add('fire');
-  this.animations.play('fire', 3, true);
 
   this.body.outOfBoundsKill = true;
   this.body.checkWorldBounds = true;
@@ -118,10 +114,14 @@ module.exports = Drill;
 },{}],4:[function(require,module,exports){
 'use strict';
 
-var Ducks = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'ducks', frame);
+var Ducks = function(game, x, y, bullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ducks', bullets);
 
   // initialize your prefab here
+  
+  this.bullets = bullets;
+  this.fireRate = 100;
+  this.nextFire = 0;
 
   this.game.physics.arcade.enableBody(this);
 
@@ -166,20 +166,19 @@ Ducks.prototype.update = function() {
   if (this.angle != 0) {
     this.angle = 0;
   }
+  
+  // ducks move to the pointer
+    this.game.physics.arcade.moveToPointer(this, 160, this.game.input.activePointer, 0);
+
 
 
 };
 
 
-Ducks.prototype.move = function() {
+Ducks.prototype.fire = function() {
 
   if (this.alive) {
-
-    // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
-
-    // ducks face down
-
+ 
     this.animation = this.game.add.tween(this);
 
     if (this.x < this.game.input.worldX) {
@@ -198,6 +197,21 @@ Ducks.prototype.move = function() {
     }
 
     this.animation.start();
+	
+	// fire the bullets
+	if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+    
+		this.nextFire = this.game.time.now + this.fireRate;
+		
+		var bullet = this.bullets.getFirstDead();
+
+		bullet.reset(this.x, this.y);
+
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 500, this.game.input.activePointer, 700);
+	}
+    // ducks move to the pointer
+    // this.game.physics.arcade.moveToPointer(this, 150, this.game.input.activePointer, 0);
+    // ducks face down
 
   }
 
@@ -389,6 +403,39 @@ module.exports = Pole;
 },{}],8:[function(require,module,exports){
 'use strict';
 
+var Rockets = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'rockets', frame);
+
+  // initialize your prefab here
+
+  this.game.physics.arcade.enableBody(this);
+
+  this.anchor.set(0.5, 0.5);
+
+  this.animations.add('fire');
+  this.animations.play('fire', 3, true);
+
+  this.body.outOfBoundsKill = true;
+  this.body.checkWorldBounds = true;
+
+  this.game.add.existing(this);
+
+};
+
+Rockets.prototype = Object.create(Phaser.Sprite.prototype);
+Rockets.prototype.constructor = Rockets;
+
+Rockets.prototype.update = function() {
+
+  // write your prefab's specific update code here
+
+};
+
+module.exports = Rockets;
+
+},{}],9:[function(require,module,exports){
+'use strict';
+
 var Scoreboard = function(game) {
 
   Phaser.Group.call(this, game);
@@ -508,7 +555,7 @@ Scoreboard.prototype.update = function() {
 
 module.exports = Scoreboard;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 'use strict';
 
 var Sea_top = function(game, x, y, width, height) {
@@ -533,7 +580,7 @@ Sea_top.prototype.update = function() {
 
 module.exports = Sea_top;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Sea_wave = function(game, x, y, width, height) {
@@ -558,7 +605,7 @@ Sea_wave.prototype.update = function() {
 
 module.exports = Sea_wave;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
@@ -686,7 +733,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
@@ -814,7 +861,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
@@ -942,7 +989,7 @@ Ships.prototype.damage = function() {
 
 module.exports = Ships;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 'use strict';
 
 function Boot() {}
@@ -983,7 +1030,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],15:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -1011,7 +1058,7 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
   'use strict';
 
   //  var Sea_on = require('../prefabs/sea_on');
@@ -1033,6 +1080,7 @@ module.exports = GameOver;
   var Helicopter = require('../prefabs/helicopter');
 
   var Bullets = require('../prefabs/bullets');
+  var Rockets = require('../prefabs/rockets');
 
   var Ducks = require('../prefabs/ducks');
 
@@ -1090,7 +1138,7 @@ module.exports = GameOver;
       this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
       for (var i = 0; i < 100; i++) {
-        this.rockets = new Bullets(this.game, -100, -100);
+        this.rockets = new Rockets(this.game, -100, -100);
         this.enemyBullets.add(this.rockets);
       }
 
@@ -1109,7 +1157,7 @@ module.exports = GameOver;
 
       // add the ducks
       // Create a new ducks object
-      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100);
+      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.enemyBullets);
       // and add it to the game
       this.game.add.existing(this.ducks);
 
@@ -1195,7 +1243,7 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/pole":7,"../prefabs/sea_top":9,"../prefabs/sea_wave":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],17:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/pole":7,"../prefabs/rockets":8,"../prefabs/sea_top":10,"../prefabs/sea_wave":11,"../prefabs/ship1":12,"../prefabs/ship2":13,"../prefabs/ships":14}],18:[function(require,module,exports){
 'use strict';
 
 var Sea_top = require('../prefabs/sea_top');
@@ -1213,6 +1261,7 @@ var Ship2 = require('../prefabs/ship2');
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
+var Rockets = require('../prefabs/rockets');
 
 var Helicopter = require('../prefabs/helicopter');
 
@@ -1276,7 +1325,7 @@ Play.prototype = {
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
     for (var i = 0; i < 50; i++) {
-      this.rockets = new Bullets(this.game, -100, -100);
+      this.rockets = new Rockets(this.game, -100, -100);
       this.enemyBullets.add(this.rockets);
     }
 
@@ -1284,6 +1333,21 @@ Play.prototype = {
     this.enemyBullets.setAll('anchor.y', 0.5);
     this.enemyBullets.setAll('outOfBoundsKill', true);
     this.enemyBullets.setAll('checkWorldBounds', true);
+	
+	//  The duck bullet group
+    this.bulletsGroup = this.game.add.group();
+    this.bulletsGroup.enableBody = true;
+    this.bulletsGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
+    for (var i = 0; i < 50; i++) {
+      this.bullets = new Bullets(this.game, -100, -100);
+      this.bulletsGroup.add(this.bullets);
+    }
+
+    this.bulletsGroup.setAll('anchor.x', 0.5);
+    this.bulletsGroup.setAll('anchor.y', 0.5);
+    this.bulletsGroup.setAll('outOfBoundsKill', true);
+    this.bulletsGroup.setAll('checkWorldBounds', true);
 
 
     //  Explosion pool
@@ -1306,10 +1370,10 @@ Play.prototype = {
 
     // add the ducks
     // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
+    this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
     // and add it to the game
     this.game.add.existing(this.ducks);
-    this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.game.input.onDown.add(this.ducks.fire, this.ducks);
     this.ducksLive = true;
 
     // Health points, which are the hearts in the top right corner
@@ -1622,7 +1686,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/pole":7,"../prefabs/scoreboard":8,"../prefabs/sea_top":9,"../prefabs/sea_wave":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],18:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/pole":7,"../prefabs/rockets":8,"../prefabs/scoreboard":9,"../prefabs/sea_top":10,"../prefabs/sea_wave":11,"../prefabs/ship1":12,"../prefabs/ship2":13,"../prefabs/ships":14}],19:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -1664,6 +1728,7 @@ Preload.prototype = {
       
     this.load.image('startButton', 'assets/menu/start-button.png');
 
+    this.load.image('bullets', 'assets/bullets/bullets.png', 54, 17);
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);

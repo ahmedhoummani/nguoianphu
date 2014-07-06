@@ -19,6 +19,7 @@
   var Helicopter = require('../prefabs/helicopter');
 
   var Bullets = require('../prefabs/bullets');
+  var Rockets = require('../prefabs/rockets');
 
   var Ducks = require('../prefabs/ducks');
 
@@ -76,7 +77,7 @@
       this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
       for (var i = 0; i < 100; i++) {
-        this.rockets = new Bullets(this.game, -100, -100);
+        this.rockets = new Rockets(this.game, -100, -100);
         this.enemyBullets.add(this.rockets);
       }
 
@@ -95,7 +96,7 @@
 
       // add the ducks
       // Create a new ducks object
-      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100);
+      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.enemyBullets);
       // and add it to the game
       this.game.add.existing(this.ducks);
 

@@ -15,6 +15,7 @@ var Ship2 = require('../prefabs/ship2');
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
+var Rockets = require('../prefabs/rockets');
 
 var Helicopter = require('../prefabs/helicopter');
 
@@ -78,7 +79,7 @@ Play.prototype = {
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
     for (var i = 0; i < 50; i++) {
-      this.rockets = new Bullets(this.game, -100, -100);
+      this.rockets = new Rockets(this.game, -100, -100);
       this.enemyBullets.add(this.rockets);
     }
 
@@ -86,6 +87,21 @@ Play.prototype = {
     this.enemyBullets.setAll('anchor.y', 0.5);
     this.enemyBullets.setAll('outOfBoundsKill', true);
     this.enemyBullets.setAll('checkWorldBounds', true);
+	
+	//  The duck bullet group
+    this.bulletsGroup = this.game.add.group();
+    this.bulletsGroup.enableBody = true;
+    this.bulletsGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
+    for (var i = 0; i < 50; i++) {
+      this.bullets = new Bullets(this.game, -100, -100);
+      this.bulletsGroup.add(this.bullets);
+    }
+
+    this.bulletsGroup.setAll('anchor.x', 0.5);
+    this.bulletsGroup.setAll('anchor.y', 0.5);
+    this.bulletsGroup.setAll('outOfBoundsKill', true);
+    this.bulletsGroup.setAll('checkWorldBounds', true);
 
 
     //  Explosion pool
@@ -108,10 +124,10 @@ Play.prototype = {
 
     // add the ducks
     // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
+    this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
     // and add it to the game
     this.game.add.existing(this.ducks);
-    this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.game.input.onDown.add(this.ducks.fire, this.ducks);
     this.ducksLive = true;
 
     // Health points, which are the hearts in the top right corner
