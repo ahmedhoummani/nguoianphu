@@ -378,6 +378,7 @@ Play.prototype = {
   bulletHitDrill: function(drill, bullets) {
 
     this.shot.play();
+	this.hasScore(10);
 
     bullets.kill();
 
@@ -396,6 +397,8 @@ Play.prototype = {
 
     this.destroyed = drill.damage();
     if (this.destroyed) {
+	
+		this.hasScore(100);
 
       if (this.ducksLive) {
 		  this.scoreboard = new Scoreboard(this.game);
@@ -404,7 +407,7 @@ Play.prototype = {
 		}
 
 		this.boom.play();
-		this.hasScore(100);
+		
 		this.ducks.destroy();
 
     }
