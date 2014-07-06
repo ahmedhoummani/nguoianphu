@@ -39,7 +39,7 @@ Preload.prototype = {
       
     this.load.image('startButton', 'assets/menu/start-button.png');
 
-    this.load.image('bullets', 'assets/bullets/bullets.png', 54, 17);
+    this.load.image('bullets', 'assets/bullets/egg.png', 43, 32);
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);

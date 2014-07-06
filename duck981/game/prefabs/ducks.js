@@ -6,7 +6,7 @@ var Ducks = function(game, x, y, bullets) {
   // initialize your prefab here
   
   this.bullets = bullets;
-  this.fireRate = 100;
+  this.fireRate = 500;
   this.nextFire = 0;
 
   this.game.physics.arcade.enableBody(this);
@@ -23,7 +23,7 @@ var Ducks = function(game, x, y, bullets) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.health = 3;
+  this.health = 5;
   this.alive = true;
 
 
@@ -93,7 +93,7 @@ Ducks.prototype.fire = function() {
 
 		bullet.reset(this.x, this.y);
 
-		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 500, this.game.input.activePointer, 700);
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 300, this.game.input.activePointer, 700);
 	}
     // ducks move to the pointer
     // this.game.physics.arcade.moveToPointer(this, 150, this.game.input.activePointer, 0);

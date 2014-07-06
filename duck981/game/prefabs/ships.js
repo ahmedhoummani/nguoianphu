@@ -14,8 +14,8 @@ var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
 //  this.shot = this.game.add.audio('shot');
 
   this.game = game;
-  this.health = 1;
-  this.fireRate = 30000;
+  this.health = 5;
+  this.fireRate = 1000;
   this.nextFire = 0;
   this.alive = true;
 
@@ -92,7 +92,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 

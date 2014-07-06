@@ -48,14 +48,23 @@ module.exports = Bullets;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Drill = function(game, x, y, pole1, pole2) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', pole1, pole2);
+var Drill = function(game, x, y, player, enemyBullets, pole1, pole2) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', player, enemyBullets, pole1, pole2);
 
   // initialize your prefab here
+  
+	this.game.physics.arcade.enableBody(this);
+  
+	this.player = player;
+	this.enemyBullets = enemyBullets;
 	this.pole1 = pole1;
 	this.pole2 = pole2;
+	this.game = game;
+	this.health = 20;
+    this.fireRate = 400;
+    this.nextFire = 0;
+    this.alive = true;
 
-  this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
@@ -77,8 +86,6 @@ var Drill = function(game, x, y, pole1, pole2) {
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
   this.game.add.existing(this);
-
-  this.alive = false;
 
 
 };
@@ -105,6 +112,26 @@ Drill.prototype.update = function() {
   }
 
   this.animations.play('left');
+  
+   // fire the bullets
+
+  if (100 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
+
+      var bullet = this.enemyBullets.getFirstDead();
+
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 130);
+
+    }
+	
+	}
+	
+	
+	
+
 
 
 };
@@ -120,7 +147,7 @@ var Ducks = function(game, x, y, bullets) {
   // initialize your prefab here
   
   this.bullets = bullets;
-  this.fireRate = 100;
+  this.fireRate = 500;
   this.nextFire = 0;
 
   this.game.physics.arcade.enableBody(this);
@@ -137,7 +164,7 @@ var Ducks = function(game, x, y, bullets) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.health = 3;
+  this.health = 5;
   this.alive = true;
 
 
@@ -207,7 +234,7 @@ Ducks.prototype.fire = function() {
 
 		bullet.reset(this.x, this.y);
 
-		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 500, this.game.input.activePointer, 700);
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 300, this.game.input.activePointer, 700);
 	}
     // ducks move to the pointer
     // this.game.physics.arcade.moveToPointer(this, 150, this.game.input.activePointer, 0);
@@ -622,8 +649,8 @@ var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
 //  this.shot = this.game.add.audio('shot');
 
   this.game = game;
-  this.health = 1;
-  this.fireRate = 15000;
+  this.health = 5;
+  this.fireRate = 500;
   this.nextFire = 0;
   this.alive = true;
 
@@ -700,7 +727,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 250) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -750,8 +777,8 @@ var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
 //  this.shot = this.game.add.audio('shot');
 
   this.game = game;
-  this.health = 1;
-  this.fireRate = 20000;
+  this.health = 5;
+  this.fireRate = 700;
   this.nextFire = 0;
   this.alive = true;
 
@@ -828,7 +855,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 250) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -878,8 +905,8 @@ var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
 //  this.shot = this.game.add.audio('shot');
 
   this.game = game;
-  this.health = 1;
-  this.fireRate = 30000;
+  this.health = 5;
+  this.fireRate = 1000;
   this.nextFire = 0;
   this.alive = true;
 
@@ -956,7 +983,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -1148,18 +1175,17 @@ module.exports = GameOver;
       this.enemyBullets.setAll('checkWorldBounds', true);
 
 
-      // add the drill
-      // Create a new drill object
-      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.pole, this.pole);
-      // and add it to the game
-      this.game.add.existing(this.drill);
-
-
       // add the ducks
       // Create a new ducks object
       this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.enemyBullets);
       // and add it to the game
       this.game.add.existing(this.ducks);
+	  
+	  // add the drill
+      // Create a new drill object
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.ducks, this.enemyBullets, this.pole, this.pole);
+      // and add it to the game
+      this.game.add.existing(this.drill);
 
       // add the ships
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);
@@ -1360,14 +1386,6 @@ Play.prototype = {
     }
 
 
-    // add the drill
-    // Create a new drill object
-    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.pole1, this.pole2);
-    // and add it to the game
-    this.game.add.existing(this.drill);
-
-
     // add the ducks
     // Create a new ducks object
     this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
@@ -1391,6 +1409,14 @@ Play.prototype = {
     }
     //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
     this.live = this.numberLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
+	
+	
+	 // add the drill
+    // Create a new drill object
+    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
+    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.ducks, this.enemyBullets, this.pole1, this.pole2);
+    // and add it to the game
+    this.game.add.existing(this.drill);
 
 
     // add the ships
@@ -1428,9 +1454,9 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(200, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText = this.game.add.bitmapText(300, 10, 'flappyfont', this.score.toString(), 44);
     this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 200;
+    this.scoreText.cameraOffset.x = 300;
     this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
@@ -1728,7 +1754,7 @@ Preload.prototype = {
       
     this.load.image('startButton', 'assets/menu/start-button.png');
 
-    this.load.image('bullets', 'assets/bullets/bullets.png', 54, 17);
+    this.load.image('bullets', 'assets/bullets/egg.png', 43, 32);
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);

@@ -87,18 +87,17 @@
       this.enemyBullets.setAll('checkWorldBounds', true);
 
 
-      // add the drill
-      // Create a new drill object
-      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.pole, this.pole);
-      // and add it to the game
-      this.game.add.existing(this.drill);
-
-
       // add the ducks
       // Create a new ducks object
       this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.enemyBullets);
       // and add it to the game
       this.game.add.existing(this.ducks);
+	  
+	  // add the drill
+      // Create a new drill object
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.ducks, this.enemyBullets, this.pole, this.pole);
+      // and add it to the game
+      this.game.add.existing(this.drill);
 
       // add the ships
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets, this.pole, this.pole);

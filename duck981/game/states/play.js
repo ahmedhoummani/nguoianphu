@@ -114,14 +114,6 @@ Play.prototype = {
     }
 
 
-    // add the drill
-    // Create a new drill object
-    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.pole1, this.pole2);
-    // and add it to the game
-    this.game.add.existing(this.drill);
-
-
     // add the ducks
     // Create a new ducks object
     this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
@@ -145,6 +137,14 @@ Play.prototype = {
     }
     //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
     this.live = this.numberLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
+	
+	
+	 // add the drill
+    // Create a new drill object
+    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
+    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.ducks, this.enemyBullets, this.pole1, this.pole2);
+    // and add it to the game
+    this.game.add.existing(this.drill);
 
 
     // add the ships
@@ -182,9 +182,9 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(200, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText = this.game.add.bitmapText(300, 10, 'flappyfont', this.score.toString(), 44);
     this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 200;
+    this.scoreText.cameraOffset.x = 300;
     this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
