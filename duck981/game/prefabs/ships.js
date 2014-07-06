@@ -1,22 +1,18 @@
 'use strict';
 
-var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
-  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets, pole1, pole2);
+var Ships = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ships', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
-  this.pole1 = pole1;
-  this.pole2 = pole2;
-
-//  this.shot = this.game.add.audio('shot');
-
+  
   this.game = game;
   this.health = 5;
-  this.fireRate = 700;
-  this.nextFire = 0;
+  this.fireRate = 1000;
+  this.nextFire = 100;
   this.alive = true;
 
   this.anchor.set(0.5, 0.5);
@@ -64,20 +60,6 @@ Ships.prototype.update = function() {
 
   }
 
-  // ships don't want to be kill
-
-  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 100) {
-  
-	this.game.physics.arcade.moveToObject(this, this.pole1, -80);
-  }
-  
-  // ships don't want to be kill
-
-  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 100) {
-  
-	this.game.physics.arcade.moveToObject(this, this.pole2, -80);
-  }
-
   // ships left right
 
   if (this.body.velocity.x < 0) {
@@ -103,7 +85,7 @@ Ships.prototype.update = function() {
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
 //      this.shot.play();
 	// wanted the duck
-		this.game.physics.arcade.moveToObject(this, this.player, 10);
+		// this.game.physics.arcade.moveToObject(this, this.player, 10);
 
     }
   }

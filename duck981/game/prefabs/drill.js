@@ -1,7 +1,7 @@
 'use strict';
 
-var Drill = function(game, x, y, player, enemyBullets, pole1, pole2) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', player, enemyBullets, pole1, pole2);
+var Drill = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', player, enemyBullets);
 
   // initialize your prefab here
   
@@ -9,12 +9,10 @@ var Drill = function(game, x, y, player, enemyBullets, pole1, pole2) {
   
 	this.player = player;
 	this.enemyBullets = enemyBullets;
-	this.pole1 = pole1;
-	this.pole2 = pole2;
 	this.game = game;
 	this.health = 10;
-    this.fireRate = 500;
-    this.nextFire = 0;
+    this.fireRate = 700;
+    this.nextFire = 100;
     this.alive = true;
 
 
@@ -49,21 +47,7 @@ Drill.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // ships don't want to be kill
-
-  if (this.game.physics.arcade.distanceBetween(this, this.pole1) < 150) {
-  
-	this.game.physics.arcade.moveToObject(this, this.pole1, -80);
-  }
-  
-  // ships don't want to be kill
-
-  if (this.game.physics.arcade.distanceBetween(this, this.pole2) < 150) {
-  
-	this.game.physics.arcade.moveToObject(this, this.pole2, -80);
-  }
-
-  this.animations.play('left');
+  this.animations.play('rigs');
   
    // fire the bullets
 
@@ -78,7 +62,7 @@ Drill.prototype.update = function() {
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 130);
 	  
 	  // wanted the duck
-		this.game.physics.arcade.moveToObject(this, this.player, 10);
+		this.game.physics.arcade.moveToObject(this, this.player, 30);
 
     }
 	

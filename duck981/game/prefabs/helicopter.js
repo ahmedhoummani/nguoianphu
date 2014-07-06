@@ -1,14 +1,14 @@
 'use strict';
 
-var Helicopter = function(game, x, y, player, enemyBullets, pole) {
-  Phaser.Sprite.call(this, game, x, y, 'helicopter', player, enemyBullets, pole);
+var Helicopter = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'helicopter', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
   this.player = player;
   this.enemyBullets = enemyBullets;
-  this.pole = pole;
+
   this.game = game;
   this.health = 1;
   this.fireRate = 800;
@@ -48,15 +48,6 @@ Helicopter.prototype.constructor = Helicopter;
 Helicopter.prototype.update = function() {
 
   // write your prefab's specific update code here
-
-
-  // Helicopter don't want to be kill
-
-  // if (this.game.physics.arcade.distanceBetween(this, this.pole) < 100 ) {
-
-    // this.game.physics.arcade.moveToObject(this, this.pole, -100);
-
-  // }
 
   // Helicopter left right
 
