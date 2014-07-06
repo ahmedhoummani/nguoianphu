@@ -1098,8 +1098,8 @@ module.exports = GameOver;
       this.contents = [
         "Nguoi An Phu\n presents",
         " ",
-        "Click or Tap to move the Duck",
-        "push the Oil Rig to the Poles",
+        "Duck981",
+        "protects our sea!",
       ];
 
       this.style = {
@@ -1352,8 +1352,9 @@ Play.prototype = {
 
     // add the Content
     this.contents = [
-      "Click or Tap to move the Duck",
-      "push the Oil Rig and the Ships to the Poles",
+      "Attention:",
+      "the invader attacks our sea...",
+      "defend the Oil Rig and the Ships!",
     ];
 
     this.style = {
