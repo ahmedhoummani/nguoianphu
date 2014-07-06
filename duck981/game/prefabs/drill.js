@@ -13,7 +13,7 @@ var Drill = function(game, x, y, player, enemyBullets, pole1, pole2) {
 	this.pole2 = pole2;
 	this.game = game;
 	this.health = 20;
-    this.fireRate = 400;
+    this.fireRate = 800;
     this.nextFire = 0;
     this.alive = true;
 
@@ -67,7 +67,7 @@ Drill.prototype.update = function() {
   
    // fire the bullets
 
-  if (100 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 250) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -76,15 +76,29 @@ Drill.prototype.update = function() {
       bullet.reset(this.x, this.y);
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 130);
+	  
+	  // wanted the duck
+		this.game.physics.arcade.moveToObject(this, this.player, 10);
 
     }
 	
 	}
 	
-	
-	
 
+};
 
+Drill.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
 
 };
 

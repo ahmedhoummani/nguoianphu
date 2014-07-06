@@ -102,6 +102,9 @@ Ships.prototype.update = function() {
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 150);
 //      this.shot.play();
+
+		// wanted the duck
+		this.game.physics.arcade.moveToObject(this, this.player, 10);
     }
   }
 
