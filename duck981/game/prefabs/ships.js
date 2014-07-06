@@ -15,7 +15,7 @@ var Ships = function(game, x, y, player, enemyBullets, pole1, pole2) {
 
   this.game = game;
   this.health = 5;
-  this.fireRate = 1000;
+  this.fireRate = 700;
   this.nextFire = 0;
   this.alive = true;
 

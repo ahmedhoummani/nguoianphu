@@ -23,7 +23,7 @@ var Ducks = function(game, x, y, bullets) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.health = 5;
+  this.health = 3;
   this.alive = true;
 
 

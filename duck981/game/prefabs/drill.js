@@ -12,8 +12,8 @@ var Drill = function(game, x, y, player, enemyBullets, pole1, pole2) {
 	this.pole1 = pole1;
 	this.pole2 = pole2;
 	this.game = game;
-	this.health = 20;
-    this.fireRate = 800;
+	this.health = 10;
+    this.fireRate = 500;
     this.nextFire = 0;
     this.alive = true;
 
@@ -67,7 +67,7 @@ Drill.prototype.update = function() {
   
    // fire the bullets
 
-  if (this.game.physics.arcade.distanceBetween(this, this.player) < 250) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 

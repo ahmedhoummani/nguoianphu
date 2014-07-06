@@ -53,8 +53,8 @@ Play.prototype = {
 
     this.poleGroup = this.game.add.group();
     // Create a new pole object
-    this.pole1 = new Pole(this.game, this.game.world.width / 2 - 300, this.game.world.height/2);
-    this.pole2 = new Pole(this.game, this.game.world.width / 2 + 300, this.game.world.height/2);
+    this.pole1 = new Pole(this.game, this.game.world.width / 2 - 600, this.game.world.height/2);
+    this.pole2 = new Pole(this.game, this.game.world.width / 2 + 600, this.game.world.height/2);
     // and add it to the game
     this.poleGroup.add(this.pole1);
     this.poleGroup.add(this.pole2);
@@ -62,10 +62,10 @@ Play.prototype = {
 	// add the island
 	this.islandGroup = this.game.add.group();
     // Create a new island object
-    this.island1 = new Island(this.game, this.game.world.width / 2 - 500, this.game.world.height/2);
-    this.island2 = new Island(this.game, this.game.world.width / 2 + 500, this.game.world.height/2);
-    this.island3 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 - 300);
-    this.island4 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 + 300);
+    this.island1 = new Island(this.game, this.game.world.width / 2 - 700, this.game.world.height/2);
+    this.island2 = new Island(this.game, this.game.world.width / 2 + 700, this.game.world.height/2);
+    this.island3 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 - 700);
+    this.island4 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 + 700);
     // and add it to the game
     this.islandGroup.add(this.island1);
     this.islandGroup.add(this.island2);
@@ -145,6 +145,23 @@ Play.prototype = {
     this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.ducks, this.enemyBullets, this.pole1, this.pole2);
     // and add it to the game
     this.game.add.existing(this.drill);
+	this.drillLive = true;
+
+    // Health points, which are the hearts in the top right corner
+    this.hpDrillGroup = this.game.add.group();
+    this.hpDrill = new Array();
+    /*Adding 3 hearts*/
+    this.numberDrillLifes = this.drill.health;
+
+    for (this.liveDrill = 0; this.liveDrill < this.numberDrillLifes; this.liveDrill++) {
+      this.hpDrill[this.liveDrill] = this.add.sprite(this.game.width - 50 - this.liveDrill * 40, 10, 'healthDrill');
+      this.hpDrill[this.liveDrill].fixedToCamera = true;
+      this.hpDrill[this.liveDrill].cameraOffset.x = this.game.width - 50 - this.liveDrill * 40;
+      this.hpDrill[this.liveDrill].cameraOffset.y = 10;
+      this.hpDrillGroup.add(this.hpDrill[this.liveDrill]);
+    }
+    //    this.liveDrill = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
+    this.liveDrill = this.numberDrillLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
 
 
     // add the ships
@@ -235,13 +252,13 @@ Play.prototype = {
   update: function() {
 
     // add the ships
-    if (this.shipsGroup.countLiving() < 1) {
+    if (this.shipsGroup.countLiving() < 2) {
       this.createShips(this.shipsGroup);
     }
-    if (this.ship1Group.countLiving() < 1) {
+    if (this.ship1Group.countLiving() < 3) {
       this.createShip1(this.ship1Group);
     }
-    if (this.ship2Group.countLiving() < 1) {
+    if (this.ship2Group.countLiving() < 3) {
       this.createShip2(this.ship2Group);
     }
 
@@ -266,8 +283,15 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.drill, this.islandGroup);
 
     // make everything hit and kill
+    
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
     this.game.physics.arcade.overlap(this.enemyBullets, this.islandGroup, this.bulletHitIslandGroup, null, this);
+	
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.drill, this.bulletHitDrill, null, this);
+    this.game.physics.arcade.overlap(this.bulletsGroup, this.islandGroup, this.bulletHitIslandGroup, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.shipsGroup, this.bulletHitShip, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.ship1Group, this.bulletHitShip, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.ship2Group, this.bulletHitShip, null, this);
 
     this.game.physics.arcade.overlap(this.poleGroup, this.shipsGroup, this.poleHitShips, null, this);
     this.game.physics.arcade.overlap(this.poleGroup, this.ship1Group, this.poleHitShips, null, this);
@@ -369,6 +393,22 @@ Play.prototype = {
   bulletHitIslandGroup: function(enemyBullets, island){
 		enemyBullets.kill();
   },
+  
+  bulletHitShip: function(bullets, ship) {
+
+    bullets.kill();
+	this.boom.play();
+	var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(ship.x + 10, ship.y + 10);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+	this.destroyed = ship.damage();
+    if (this.destroyed) {
+	
+	this.hasScore(10);
+
+    }
+
+  },
 
   poleHitShips: function(pole, shipsGroup) {
 
@@ -383,6 +423,42 @@ Play.prototype = {
     this.boom.play();
 
   },
+  
+  bulletHitDrill: function(drill, bullets) {
+
+    this.shot.play();
+
+    bullets.kill();
+
+    var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(drill.x + 10, drill.y + 10);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+
+
+    // the drill is killed
+    this.hpDrill[this.liveDrill].kill(); // "Killing" the hearth with the largest index
+    this.liveDrill--; // Decrementing our live variable
+
+    if (this.liveDrill === -1) { // If our last heart (index: 0) is "killed" then we restart the game
+      this.boom.play();
+    }
+
+    this.destroyed = drill.damage();
+    if (this.destroyed) {
+
+      if (this.ducksLive) {
+		  this.scoreboard = new Scoreboard(this.game);
+		  this.game.add.existing(this.scoreboard);
+		  this.scoreboard.show(this.score, true);
+		}
+
+		this.boom.play();
+		this.hasScore(100);
+		this.ducks.destroy();
+
+    }
+
+  },
 
   poleHitDrill: function(drill, pole) {
 
@@ -393,8 +469,6 @@ Play.prototype = {
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(drill.x + 5, drill.y + 5);
     this.explosionAnimation.play('kaboom', 30, false, true);
-
-    this.theX = this.ducks.x;
 
     if (this.ducksLive) {
       this.scoreboard = new Scoreboard(this.game);

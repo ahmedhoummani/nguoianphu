@@ -11,7 +11,7 @@ var Helicopter = function(game, x, y, player, enemyBullets, pole) {
   this.pole = pole;
   this.game = game;
   this.health = 1;
-  this.fireRate = 30000;
+  this.fireRate = 800;
   this.nextFire = 0;
   this.alive = true;
   
@@ -71,7 +71,7 @@ Helicopter.prototype.update = function() {
   
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
