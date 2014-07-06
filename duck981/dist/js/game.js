@@ -1040,7 +1040,7 @@ module.exports = GameOver;
 	  
 	  // add the island
       // Create a new island object
-      this.island = new Island(this.game, this.game.width / 2 + 100, this.game.world.height - 60);
+      this.island = new Island(this.game, this.game.width / 2 , this.game.world.height - 60);
       // and add it to the game
       this.game.add.existing(this.island);
 
