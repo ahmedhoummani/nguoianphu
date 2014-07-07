@@ -10,7 +10,7 @@ var Drill = function(game, x, y, player, enemyBullets) {
 	this.player = player;
 	this.enemyBullets = enemyBullets;
 	this.game = game;
-	this.health = 10;
+	this.health = 5;
     this.fireRate = 1500;
     this.nextFire = 100;
     this.alive = true;
@@ -62,7 +62,7 @@ Drill.prototype.update = function() {
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 	  
 	  // wanted the duck
-		this.game.physics.arcade.moveToObject(this, this.player, 30);
+		this.game.physics.arcade.moveToObject(this, this.player, -100);
 
     }
 	

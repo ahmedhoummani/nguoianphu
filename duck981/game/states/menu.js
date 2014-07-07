@@ -48,7 +48,7 @@
       this.enemyBullets.enableBody = true;
       this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < 2; i++) {
         this.rockets = new Rockets(this.game, -100, -100);
         this.enemyBullets.add(this.rockets);
       }

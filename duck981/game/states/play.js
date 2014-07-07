@@ -63,7 +63,7 @@ Play.prototype = {
     this.enemyBullets.enableBody = true;
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 3; i++) {
       this.rockets = new Rockets(this.game, -100, -100);
       this.enemyBullets.add(this.rockets);
     }
@@ -78,7 +78,7 @@ Play.prototype = {
     this.bulletsGroup.enableBody = true;
     this.bulletsGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 3; i++) {
       this.bullets = new Bullets(this.game, -100, -100);
       this.bulletsGroup.add(this.bullets);
     }

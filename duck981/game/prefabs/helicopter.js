@@ -62,7 +62,7 @@ Helicopter.prototype.update = function() {
   
   // fire the bullets
 
-  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -70,7 +70,7 @@ Helicopter.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, 200, this.player, 100);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 //      this.shot.play();
     }
   }

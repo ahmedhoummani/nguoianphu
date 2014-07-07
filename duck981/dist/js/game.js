@@ -58,7 +58,7 @@ var Drill = function(game, x, y, player, enemyBullets) {
 	this.player = player;
 	this.enemyBullets = enemyBullets;
 	this.game = game;
-	this.health = 10;
+	this.health = 5;
     this.fireRate = 1500;
     this.nextFire = 100;
     this.alive = true;
@@ -110,7 +110,7 @@ Drill.prototype.update = function() {
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 	  
 	  // wanted the duck
-		this.game.physics.arcade.moveToObject(this, this.player, 30);
+		this.game.physics.arcade.moveToObject(this, this.player, -100);
 
     }
 	
@@ -326,7 +326,7 @@ Helicopter.prototype.update = function() {
   
   // fire the bullets
 
-  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -334,7 +334,7 @@ Helicopter.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, 200, this.player, 100);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 //      this.shot.play();
     }
   }
@@ -605,7 +605,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.enemyBullets = enemyBullets;
 
   this.game = game;
-  this.health = 5;
+  this.health = 2;
   this.fireRate = 2000;
   this.nextFire = 100;
   this.alive = true;
@@ -669,7 +669,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -718,7 +718,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.enemyBullets = enemyBullets;
 
   this.game = game;
-  this.health = 5;
+  this.health = 2;
   this.fireRate = 2000;
   this.nextFire = 100;
   this.alive = true;
@@ -782,7 +782,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -830,7 +830,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.enemyBullets = enemyBullets;
   
   this.game = game;
-  this.health = 5;
+  this.health = 2;
   this.fireRate = 2000;
   this.nextFire = 100;
   this.alive = true;
@@ -894,7 +894,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (250 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -1050,7 +1050,7 @@ module.exports = GameOver;
       this.enemyBullets.enableBody = true;
       this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < 2; i++) {
         this.rockets = new Rockets(this.game, -100, -100);
         this.enemyBullets.add(this.rockets);
       }
@@ -1221,7 +1221,7 @@ Play.prototype = {
     this.enemyBullets.enableBody = true;
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 3; i++) {
       this.rockets = new Rockets(this.game, -100, -100);
       this.enemyBullets.add(this.rockets);
     }
@@ -1236,7 +1236,7 @@ Play.prototype = {
     this.bulletsGroup.enableBody = true;
     this.bulletsGroup.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var i = 0; i < 50; i++) {
+    for (var i = 0; i < 3; i++) {
       this.bullets = new Bullets(this.game, -100, -100);
       this.bulletsGroup.add(this.bullets);
     }
