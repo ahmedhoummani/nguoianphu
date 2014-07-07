@@ -11,7 +11,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.game = game;
   this.health = 5;
-  this.fireRate = 800;
+  this.fireRate = 2000;
   this.nextFire = 100;
   this.alive = true;
 
@@ -82,7 +82,7 @@ Ships.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 150);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 190);
 //      this.shot.play();
 
 		// wanted the duck

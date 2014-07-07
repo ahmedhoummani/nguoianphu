@@ -126,8 +126,7 @@ Play.prototype = {
 	
 	 // add the drill
     // Create a new drill object
-    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 10, 10, this.ducks, this.enemyBullets);
+    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
     // and add it to the game
     this.game.add.existing(this.drill);
 	this.drillLive = true;
@@ -150,7 +149,7 @@ Play.prototype = {
 
 
     // add the ships
-    this.shipsAlive = 4;
+    this.shipsAlive = 2;
     this.shipsGroup = this.game.add.group();
 
     // add the ship1

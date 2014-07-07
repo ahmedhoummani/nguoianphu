@@ -70,7 +70,7 @@ Helicopter.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, 200, this.player, 100);
 //      this.shot.play();
     }
   }

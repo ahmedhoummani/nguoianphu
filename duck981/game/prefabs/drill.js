@@ -11,7 +11,7 @@ var Drill = function(game, x, y, player, enemyBullets) {
 	this.enemyBullets = enemyBullets;
 	this.game = game;
 	this.health = 10;
-    this.fireRate = 700;
+    this.fireRate = 1500;
     this.nextFire = 100;
     this.alive = true;
 
@@ -51,7 +51,7 @@ Drill.prototype.update = function() {
   
    // fire the bullets
 
-  if (this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 500) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -59,7 +59,7 @@ Drill.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 130);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 	  
 	  // wanted the duck
 		this.game.physics.arcade.moveToObject(this, this.player, 30);

@@ -93,10 +93,10 @@ Ducks.prototype.fire = function() {
 
 		bullet.reset(this.x, this.y);
 
-		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 300, this.game.input.activePointer, 700);
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 200, this.game.input.activePointer, 0);
 	}
     // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
+    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
     // ducks face down
 
   }

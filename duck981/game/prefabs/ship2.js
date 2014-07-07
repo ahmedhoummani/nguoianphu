@@ -11,7 +11,7 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.game = game;
   this.health = 5;
-  this.fireRate = 900;
+  this.fireRate = 2000;
   this.nextFire = 100;
   this.alive = true;
 
@@ -74,7 +74,7 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
+  if (200 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
@@ -82,7 +82,7 @@ Ships.prototype.update = function() {
 
       bullet.reset(this.x, this.y);
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 130);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 180);
 //      this.shot.play();
 		// wanted the duck
 		// this.game.physics.arcade.moveToObject(this, this.player, 10);
