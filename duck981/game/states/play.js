@@ -194,8 +194,8 @@ Play.prototype = {
     // add the Content
     this.contents = [
       "Attention:",
-      "the invader attacks our sea...",
-      "defend the Oil Rig and the Ships!",
+      "the Oil Rig invades our sea!",
+      "defend the Oil Rig and the ships!",
     ];
 
     this.style = {
