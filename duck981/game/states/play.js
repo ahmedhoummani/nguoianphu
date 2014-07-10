@@ -88,17 +88,6 @@ Play.prototype = {
     this.bulletsGroup.setAll('outOfBoundsKill', true);
     this.bulletsGroup.setAll('checkWorldBounds', true);
 
-
-    //  Explosion pool
-    this.explosions = this.game.add.group();
-
-    for (var i = 0; i < 10; i++) {
-      this.explosionAnimation = this.explosions.create(0, 0, 'kaboom', [0], false);
-      this.explosionAnimation.anchor.setTo(0.5, 0.5);
-      this.explosionAnimation.animations.add('kaboom');
-    }
-
-
     // add the ducks
     // Create a new ducks object
     this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
@@ -215,7 +204,17 @@ Play.prototype = {
     this.index = 0;
     this.line = '';
 
+	//  Explosion pool
+    this.explosions = this.game.add.group();
 
+    for (var i = 0; i < 10; i++) {
+      this.explosionAnimation = this.explosions.create(0, 0, 'kaboom', [0], false);
+      this.explosionAnimation.anchor.setTo(0.5, 0.5);
+      this.explosionAnimation.animations.add('kaboom');
+    }
+	
+	this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
 
   },
 
@@ -253,6 +252,8 @@ Play.prototype = {
     this.game.physics.arcade.collide(this.drill, this.islandGroup);
 
     // make everything hit and kill
+	
+	this.game.physics.arcade.overlap(this.enemyBullets, this.bulletsGroup, this.bulletOverlap, null, this);
     
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
     this.game.physics.arcade.overlap(this.enemyBullets, this.islandGroup, this.bulletHitIslandGroup, null, this);
@@ -309,12 +310,16 @@ Play.prototype = {
   },
 
 
-  shotSound: function(bullets, ship) {
-
-    if (this.game.physics.arcade.distanceBetween(bullets, this.ducks) < 200) {
-
-      this.shot.play();
-    }
+  bulletOverlap: function(bullet1, bullet2) {
+  
+	bullet1.kill();
+	bullet2.kill();
+	
+	this.shot.play();
+	
+	var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(bullet1.x, bullet1.y);
+    this.explosionAnimation.play('kaboom', 30, false, true);
 
   },
 
@@ -326,7 +331,7 @@ Play.prototype = {
     enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ducks.x + 10, ducks.y + 10);
+    this.explosionAnimation.reset(ducks.x, ducks.y);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
 
@@ -362,7 +367,7 @@ Play.prototype = {
     bullets.kill();
 	this.boom.play();
 	var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ship.x + 10, ship.y + 10);
+    this.explosionAnimation.reset(ship.x, ship.y);
     this.explosionAnimation.play('kaboom', 30, false, true);
 	this.destroyed = ship.damage();
     if (this.destroyed) {
@@ -382,7 +387,7 @@ Play.prototype = {
     bullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(drill.x + 10, drill.y + 10);
+    this.explosionAnimation.reset(drill.x, drill.y);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
 
@@ -407,9 +412,13 @@ Play.prototype = {
 
 		this.boom.play();
 		
-		this.ducks.destroy();
-
-    }
+		// this.ducks.destroy();
+		
+		this.enemyBullets.destroy();
+		this.helicopter.destroy();
+		this.shipsGroup.destroy();
+        this.ship1Group.destroy();
+    }   this.ship2Group.destroy();
 
   },
 

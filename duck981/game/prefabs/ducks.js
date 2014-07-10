@@ -23,7 +23,7 @@ var Ducks = function(game, x, y, bullets) {
   this.bringToTop();
   this.body.drag.set(0.2);
 
-  this.health = 5;
+  this.health = 3;
   this.alive = true;
 
 
@@ -54,7 +54,7 @@ Ducks.prototype.update = function() {
   }
   
   // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 180, this.game.input.activePointer, 0);
+    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
 
 
 
@@ -92,11 +92,13 @@ Ducks.prototype.fire = function() {
 		var bullet = this.bullets.getFirstDead();
 
 		bullet.reset(this.x, this.y);
+		
+		bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
 		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 200, this.game.input.activePointer, 0);
 	}
     // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
+    // this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
     // ducks face down
 
   }

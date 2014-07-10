@@ -69,6 +69,8 @@ Helicopter.prototype.update = function() {
       var bullet = this.enemyBullets.getFirstDead();
 
       bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 //      this.shot.play();

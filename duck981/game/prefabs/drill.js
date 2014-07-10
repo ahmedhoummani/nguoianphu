@@ -61,6 +61,8 @@ Drill.prototype.update = function() {
 
       bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
 	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+	  
 	  // wanted the duck
 		this.game.physics.arcade.moveToObject(this, this.player, -100);
 
