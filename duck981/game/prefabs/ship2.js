@@ -9,12 +9,10 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.player = player;
   this.enemyBullets = enemyBullets;
 
-//  this.shot = this.game.add.audio('shot');
-
   this.game = game;
-  this.health = 1;
-  this.fireRate = 20000;
-  this.nextFire = 0;
+  this.health = 2;
+  this.fireRate = 2000;
+  this.nextFire = 100;
   this.alive = true;
 
   this.anchor.set(0.5, 0.5);
@@ -62,20 +60,6 @@ Ships.prototype.update = function() {
 
   }
 
-  // ships don't want to be kill
-
-  if (this.y > (this.game.world.height - 130)) {
-
-    this.body.velocity.y -=  Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
-  }
-
   // ships left right
 
   if (this.body.velocity.x < 0) {
@@ -90,16 +74,20 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
       var bullet = this.enemyBullets.getFirstDead();
 
       bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 180);
 //      this.shot.play();
+		// wanted the duck
+		// this.game.physics.arcade.moveToObject(this, this.player, 10);
     }
   }
 

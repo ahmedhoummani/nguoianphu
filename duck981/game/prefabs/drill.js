@@ -1,12 +1,20 @@
 'use strict';
 
-var Drill = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', frame);
+var Drill = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', player, enemyBullets);
 
   // initialize your prefab here
+  
+	this.game.physics.arcade.enableBody(this);
+  
+	this.player = player;
+	this.enemyBullets = enemyBullets;
+	this.game = game;
+	this.health = 5;
+    this.fireRate = 1500;
+    this.nextFire = 100;
+    this.alive = true;
 
-
-  this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
@@ -29,8 +37,6 @@ var Drill = function(game, x, y, frame) {
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
   this.game.add.existing(this);
 
-  this.alive = false;
-
 
 };
 
@@ -41,22 +47,44 @@ Drill.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Drill don't want to be kill
+  this.animations.play('rigs');
+  
+   // fire the bullets
 
-  if (this.y > (this.game.world.height - 200)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 500) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
+      var bullet = this.enemyBullets.getFirstDead();
 
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+	  
+	  // wanted the duck
+		this.game.physics.arcade.moveToObject(this, this.player, -100);
+
     }
+	
+	}
+	
 
+};
+
+Drill.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
   }
 
-  this.animations.play('left');
-
+  return false;
 
 };
 

@@ -1,17 +1,13 @@
 'use strict';
 
-var Bullets = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'rockets', frame);
+var Bullets = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'bullets');
 
   // initialize your prefab here
-
 
   this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
-
-  this.animations.add('fire');
-  this.animations.play('fire', 3, true);
 
   this.body.outOfBoundsKill = true;
   this.body.checkWorldBounds = true;

@@ -1,9 +1,13 @@
 'use strict';
 
-var Ducks = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'ducks', frame);
+var Ducks = function(game, x, y, bullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ducks', bullets);
 
   // initialize your prefab here
+  
+  this.bullets = bullets;
+  this.fireRate = 400;
+  this.nextFire = 0;
 
   this.game.physics.arcade.enableBody(this);
 
@@ -13,7 +17,7 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(0.5, 0.5);
+  this.body.bounce.setTo(0.3, 0.3);
 
   this.body.allowRotation = false;
   this.bringToTop();
@@ -48,20 +52,19 @@ Ducks.prototype.update = function() {
   if (this.angle != 0) {
     this.angle = 0;
   }
+  
+  // ducks move to the pointer
+    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
+
 
 
 };
 
 
-Ducks.prototype.move = function() {
+Ducks.prototype.fire = function() {
 
   if (this.alive) {
-
-    // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
-
-    // ducks face down
-
+ 
     this.animation = this.game.add.tween(this);
 
     if (this.x < this.game.input.worldX) {
@@ -80,6 +83,23 @@ Ducks.prototype.move = function() {
     }
 
     this.animation.start();
+	
+	// fire the bullets
+	if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+    
+		this.nextFire = this.game.time.now + this.fireRate;
+		
+		var bullet = this.bullets.getFirstDead();
+
+		bullet.reset(this.x, this.y);
+		
+		bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 200, this.game.input.activePointer, 0);
+	}
+    // ducks move to the pointer
+    // this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
+    // ducks face down
 
   }
 

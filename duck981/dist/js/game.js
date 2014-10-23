@@ -18,18 +18,14 @@ window.onload = function () {
 },{"./states/boot":14,"./states/gameover":15,"./states/menu":16,"./states/play":17,"./states/preload":18}],2:[function(require,module,exports){
 'use strict';
 
-var Bullets = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'rockets', frame);
+var Bullets = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'bullets');
 
   // initialize your prefab here
-
 
   this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
-
-  this.animations.add('fire');
-  this.animations.play('fire', 3, true);
 
   this.body.outOfBoundsKill = true;
   this.body.checkWorldBounds = true;
@@ -52,13 +48,21 @@ module.exports = Bullets;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Drill = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'drill', frame);
+var Drill = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'drill', player, enemyBullets);
 
   // initialize your prefab here
+  
+	this.game.physics.arcade.enableBody(this);
+  
+	this.player = player;
+	this.enemyBullets = enemyBullets;
+	this.game = game;
+	this.health = 5;
+    this.fireRate = 1500;
+    this.nextFire = 100;
+    this.alive = true;
 
-
-  this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
@@ -81,8 +85,6 @@ var Drill = function(game, x, y, frame) {
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 50) + 50, 100, this.body.velocity);
   this.game.add.existing(this);
 
-  this.alive = false;
-
 
 };
 
@@ -93,22 +95,44 @@ Drill.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Drill don't want to be kill
+  this.animations.play('rigs');
+  
+   // fire the bullets
 
-  if (this.y > (this.game.world.height - 200)) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 500) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
 
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
+      var bullet = this.enemyBullets.getFirstDead();
 
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
+      bullet.reset(this.x, this.y);
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+	  
+	  // wanted the duck
+		this.game.physics.arcade.moveToObject(this, this.player, -100);
+
     }
+	
+	}
+	
 
+};
+
+Drill.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
   }
 
-  this.animations.play('left');
-
+  return false;
 
 };
 
@@ -117,10 +141,14 @@ module.exports = Drill;
 },{}],4:[function(require,module,exports){
 'use strict';
 
-var Ducks = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'ducks', frame);
+var Ducks = function(game, x, y, bullets) {
+  Phaser.Sprite.call(this, game, x, y, 'ducks', bullets);
 
   // initialize your prefab here
+  
+  this.bullets = bullets;
+  this.fireRate = 400;
+  this.nextFire = 0;
 
   this.game.physics.arcade.enableBody(this);
 
@@ -130,7 +158,7 @@ var Ducks = function(game, x, y, frame) {
   this.animations.add('right', [1], 2, true);
 
   this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(0.5, 0.5);
+  this.body.bounce.setTo(0.3, 0.3);
 
   this.body.allowRotation = false;
   this.bringToTop();
@@ -165,20 +193,19 @@ Ducks.prototype.update = function() {
   if (this.angle != 0) {
     this.angle = 0;
   }
+  
+  // ducks move to the pointer
+    this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
+
 
 
 };
 
 
-Ducks.prototype.move = function() {
+Ducks.prototype.fire = function() {
 
   if (this.alive) {
-
-    // ducks move to the pointer
-    this.game.physics.arcade.moveToPointer(this, 300, this.game.input.activePointer, 0);
-
-    // ducks face down
-
+ 
     this.animation = this.game.add.tween(this);
 
     if (this.x < this.game.input.worldX) {
@@ -197,6 +224,23 @@ Ducks.prototype.move = function() {
     }
 
     this.animation.start();
+	
+	// fire the bullets
+	if (this.game.time.now > this.nextFire && this.bullets.countDead() > 0) {
+    
+		this.nextFire = this.game.time.now + this.fireRate;
+		
+		var bullet = this.bullets.getFirstDead();
+
+		bullet.reset(this.x, this.y);
+		
+		bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+
+		bullet.rotation = this.game.physics.arcade.moveToPointer(bullet, 200, this.game.input.activePointer, 0);
+	}
+    // ducks move to the pointer
+    // this.game.physics.arcade.moveToPointer(this, 200, this.game.input.activePointer, 0);
+    // ducks face down
 
   }
 
@@ -224,22 +268,28 @@ module.exports = Ducks;
 },{}],5:[function(require,module,exports){
 'use strict';
 
-var Mermaid = function(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'mermaid');
+var Helicopter = function(game, x, y, player, enemyBullets) {
+  Phaser.Sprite.call(this, game, x, y, 'helicopter', player, enemyBullets);
 
   // initialize your prefab here
   this.game.physics.arcade.enableBody(this);
 
+  this.player = player;
+  this.enemyBullets = enemyBullets;
+
+  this.game = game;
+  this.health = 1;
+  this.fireRate = 800;
+  this.nextFire = 0;
+  this.alive = true;
+  
   this.anchor.set(0.5, 0.5);
   // this.scale.setTo(2, 2);
-  
-  // this.animations.add('swim');
-  // this.animations.play('swim', 12, true);
 
-  this.animations.add('face', [0, 1, 2], 3, true);
-  this.animations.add('left', [3, 4, 5], 3, true);
-  this.animations.add('right', [6, 7, 8], 3, true);
-  this.animations.add('back', [9, 10, 11], 3, true);
+  // this.animations.add('face', [0, 1, 2], 3, true);
+  this.animations.add('right', [0, 1, 2, 3], 4, true);
+  this.animations.add('left', [7, 6, 5, 4], 4, true);
+  // this.animations.add('back', [9, 10, 11], 3, true);
 
   this.body.collideWorldBounds = true;
   this.body.bounce.setTo(1, 1);
@@ -250,8 +300,8 @@ var Mermaid = function(game, x, y) {
 
   this.body.immovable = false;
 
-  this.body.maxVelocity.y = 40;
-  this.body.maxVelocity.x = 40;
+  // this.body.maxVelocity.y = 50;
+  // this.body.maxVelocity.x = 50;
 
   //  this.game.physics.arcade.velocityFromRotation(Math.random(), 100, this.body.velocity);
   this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random() * 100) + 50, 200, this.body.velocity);
@@ -260,42 +310,14 @@ var Mermaid = function(game, x, y) {
 
 };
 
-Mermaid.prototype = Object.create(Phaser.Sprite.prototype);
-Mermaid.prototype.constructor = Mermaid;
+Helicopter.prototype = Object.create(Phaser.Sprite.prototype);
+Helicopter.prototype.constructor = Helicopter;
 
-Mermaid.prototype.update = function() {
+Helicopter.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // Mermaid cannot over sea_on
-
-  if (this.y < 100) {
-
-    this.body.velocity.y += Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
-  }
-
-  // Mermaid don't want to be kill
-
-  // if (this.y > (this.game.world.height - 120)) {
-
-    // this.body.velocity.y -= 20;
-
-    // if (this.body.velocity.x > 0) {
-      // this.body.velocity.x -= Math.floor(Math.random() * 50);
-    // } else {
-      // this.body.velocity.x -= Math.floor(Math.random() * 50);
-    // }
-
-  // }
-
-  // Mermaid left right
+  // Helicopter left right
 
   if (this.body.velocity.x < 0) {
 
@@ -306,52 +328,105 @@ Mermaid.prototype.update = function() {
     this.animations.play('right');
   }
   
-  // else 
-  
-  // if (this.body.velocity.y > 0) {
+  // fire the bullets
 
-    // this.animations.play('face');
-  // }
-  // else if (this.body.velocity.y < 0) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+    if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
+      this.nextFire = this.game.time.now + this.fireRate;
 
-    // this.animations.play('back');
-  // }
-  
+      var bullet = this.enemyBullets.getFirstDead();
 
+      bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
+
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 200);
+//      this.shot.play();
+    }
+  }
 
 };
 
-module.exports = Mermaid;
+Helicopter.prototype.damage = function() {
+
+  this.health -= 1;
+
+  if (this.health <= 0) {
+    this.alive = false;
+    this.kill();
+
+    return true;
+  }
+
+  return false;
+
+};
+
+module.exports = Helicopter;
 
 },{}],6:[function(require,module,exports){
 'use strict';
 
-var Pole = function(game, x, y, frame) {
-  Phaser.Sprite.call(this, game, x, y, 'pole', frame);
+var Island = function(game, x, y) {
+  Phaser.Sprite.call(this, game, x, y, 'island');
+
+ // initialize your prefab here
+  this.game.physics.arcade.enableBody(this);
+   this.anchor.set(0.5, 0.5);
+  this.game.add.existing(this);
+  
+  this.body.bounce.setTo(1, 1);
+
+  this.body.allowRotation = false;
+
+  this.body.immovable = true;
+
+};
+
+Island.prototype = Object.create(Phaser.Sprite.prototype);
+Island.prototype.constructor = Island;
+
+Island.prototype.update = function() {
+
+  // write your prefab's specific update code here
+};
+
+module.exports = Island;
+
+},{}],7:[function(require,module,exports){
+'use strict';
+
+var Rockets = function(game, x, y, frame) {
+  Phaser.Sprite.call(this, game, x, y, 'rockets', frame);
 
   // initialize your prefab here
+
   this.game.physics.arcade.enableBody(this);
 
   this.anchor.set(0.5, 0.5);
 
-  this.animations.add('tide');
-  this.animations.play('tide', 2, true);
+  this.animations.add('fire');
+  this.animations.play('fire', 3, true);
 
+  this.body.outOfBoundsKill = true;
+  this.body.checkWorldBounds = true;
+
+  this.game.add.existing(this);
 
 };
 
-Pole.prototype = Object.create(Phaser.Sprite.prototype);
-Pole.prototype.constructor = Pole;
+Rockets.prototype = Object.create(Phaser.Sprite.prototype);
+Rockets.prototype.constructor = Rockets;
 
-Pole.prototype.update = function() {
+Rockets.prototype.update = function() {
 
   // write your prefab's specific update code here
 
 };
 
-module.exports = Pole;
+module.exports = Rockets;
 
-},{}],7:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Scoreboard = function(game) {
@@ -473,47 +548,22 @@ Scoreboard.prototype.update = function() {
 
 module.exports = Scoreboard;
 
-},{}],8:[function(require,module,exports){
-'use strict';
-
-var Sea_face = function(game, x, y, width, height) {
-  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_face');
-
-  // initialize your prefab here
-  this.autoScroll(-20, 20);
-  this.fixedToCamera = true;
-
-};
-
-Sea_face.prototype = Object.create(Phaser.TileSprite.prototype);
-Sea_face.prototype.constructor = Sea_face;
-
-Sea_face.prototype.update = function() {
-
-  // write your prefab's specific update code here
-//    this.tilePosition.x = -this.game.camera.x;
-//    this.tilePosition.y = -this.game.camera.y;
-
-};
-
-module.exports = Sea_face;
-
 },{}],9:[function(require,module,exports){
 'use strict';
 
-var Sea_on = function(game, x, y, width, height) {
-  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_on');
+var Sea_top = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_top');
 
   // initialize your prefab here
   this.autoScroll(-35, 0);
-  this.fixedToCamera = true;
+  // this.fixedToCamera = true;
 
 };
 
-Sea_on.prototype = Object.create(Phaser.TileSprite.prototype);
-Sea_on.prototype.constructor = Sea_on;
+Sea_top.prototype = Object.create(Phaser.TileSprite.prototype);
+Sea_top.prototype.constructor = Sea_top;
 
-Sea_on.prototype.update = function() {
+Sea_top.prototype.update = function() {
 
   // write your prefab's specific update code here
 //    this.tilePosition.x = -this.game.camera.x;
@@ -521,13 +571,13 @@ Sea_on.prototype.update = function() {
 
 };
 
-module.exports = Sea_on;
+module.exports = Sea_top;
 
 },{}],10:[function(require,module,exports){
 'use strict';
 
-var Sea_under = function(game, x, y, width, height) {
-  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_under');
+var Sea_wave = function(game, x, y, width, height) {
+  Phaser.TileSprite.call(this, game, x, y, width, height, 'sea_wave');
 
   // initialize your prefab here
   this.autoScroll(30, 0);
@@ -535,10 +585,10 @@ var Sea_under = function(game, x, y, width, height) {
 
 };
 
-Sea_under.prototype = Object.create(Phaser.TileSprite.prototype);
-Sea_under.prototype.constructor = Sea_under;
+Sea_wave.prototype = Object.create(Phaser.TileSprite.prototype);
+Sea_wave.prototype.constructor = Sea_wave;
 
-Sea_under.prototype.update = function() {
+Sea_wave.prototype.update = function() {
 
   // write your prefab's specific update code here
 //    this.tilePosition.x = -this.game.camera.x;
@@ -546,7 +596,7 @@ Sea_under.prototype.update = function() {
 
 };
 
-module.exports = Sea_under;
+module.exports = Sea_wave;
 
 },{}],11:[function(require,module,exports){
 'use strict';
@@ -560,12 +610,10 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.player = player;
   this.enemyBullets = enemyBullets;
 
-//  this.shot = this.game.add.audio('shot');
-
   this.game = game;
-  this.health = 1;
-  this.fireRate = 15000;
-  this.nextFire = 0;
+  this.health = 2;
+  this.fireRate = 2000;
+  this.nextFire = 100;
   this.alive = true;
 
   this.anchor.set(0.5, 0.5);
@@ -613,20 +661,6 @@ Ships.prototype.update = function() {
 
   }
 
-  // ships don't want to be kill
-
-  if (this.y > (this.game.world.height - 140)) {
-
-    this.body.velocity.y -= Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
-  }
-
   // ships left right
 
   if (this.body.velocity.x < 0) {
@@ -641,16 +675,21 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 300) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
       var bullet = this.enemyBullets.getFirstDead();
 
       bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 150);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 190);
 //      this.shot.play();
+
+		// wanted the duck
+		// this.game.physics.arcade.moveToObject(this, this.player, 10);
     }
   }
 
@@ -686,12 +725,10 @@ var Ships = function(game, x, y, player, enemyBullets) {
   this.player = player;
   this.enemyBullets = enemyBullets;
 
-//  this.shot = this.game.add.audio('shot');
-
   this.game = game;
-  this.health = 1;
-  this.fireRate = 20000;
-  this.nextFire = 0;
+  this.health = 2;
+  this.fireRate = 2000;
+  this.nextFire = 100;
   this.alive = true;
 
   this.anchor.set(0.5, 0.5);
@@ -739,20 +776,6 @@ Ships.prototype.update = function() {
 
   }
 
-  // ships don't want to be kill
-
-  if (this.y > (this.game.world.height - 130)) {
-
-    this.body.velocity.y -=  Math.floor(Math.random() * 10);
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
-  }
-
   // ships left right
 
   if (this.body.velocity.x < 0) {
@@ -767,16 +790,20 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
       var bullet = this.enemyBullets.getFirstDead();
 
       bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 100);
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 180);
 //      this.shot.play();
+		// wanted the duck
+		// this.game.physics.arcade.moveToObject(this, this.player, 10);
     }
   }
 
@@ -811,13 +838,11 @@ var Ships = function(game, x, y, player, enemyBullets) {
 
   this.player = player;
   this.enemyBullets = enemyBullets;
-
-//  this.shot = this.game.add.audio('shot');
-
+  
   this.game = game;
-  this.health = 1;
-  this.fireRate = 30000;
-  this.nextFire = 0;
+  this.health = 2;
+  this.fireRate = 2000;
+  this.nextFire = 100;
   this.alive = true;
 
   this.anchor.set(0.5, 0.5);
@@ -851,7 +876,7 @@ Ships.prototype.update = function() {
 
   // write your prefab's specific update code here
 
-  // ships cannot over sea_on
+   // ships cannot over sea_on
 
   if (this.y < 70) {
 
@@ -859,20 +884,6 @@ Ships.prototype.update = function() {
 
     if (this.body.velocity.x > 0) {
       this.body.velocity.x += Math.floor(Math.random() * 50);
-    } else {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
-    }
-
-  }
-
-  // ships don't want to be kill
-
-  if (this.y > (this.game.world.height - 120)) {
-
-    this.body.velocity.y -= 20;
-
-    if (this.body.velocity.x > 0) {
-      this.body.velocity.x -= Math.floor(Math.random() * 50);
     } else {
       this.body.velocity.x -= Math.floor(Math.random() * 50);
     }
@@ -893,16 +904,21 @@ Ships.prototype.update = function() {
 
   // fire the bullets
 
-  if (350 < this.game.physics.arcade.distanceBetween(this, this.player) && this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
+  if (this.game.physics.arcade.distanceBetween(this, this.player) < 400) {
     if (this.game.time.now > this.nextFire && this.enemyBullets.countDead() > 0 && this.alive) {
       this.nextFire = this.game.time.now + this.fireRate;
 
       var bullet = this.enemyBullets.getFirstDead();
 
       bullet.reset(this.x, this.y);
+	  
+	  bullet.lifespan = 2500; // remove the fireball after 2500 milliseconds - back to non-existance
 
-      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 70);
-//      thí.shot.play();
+      bullet.rotation = this.game.physics.arcade.moveToObject(bullet, this.player, 170);
+//      this.shot.play();
+	// wanted the duck
+		// this.game.physics.arcade.moveToObject(this, this.player, 10);
+
     }
   }
 
@@ -942,42 +958,25 @@ Boot.prototype = {
   create: function() {
 
     this.game.input.maxPointers = 1;
-
-    this.stage.disableVisibilityChange = true;
-
-    if (this.game.device.desktop) {
-      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 480;
-      this.scale.minHeight = 240;
-      this.scale.maxWidth = 1024;
-      this.scale.maxHeight = 600;
-      this.scale.pageAlignHorizontally = true;
-      this.scale.pageAlignVertically = true;
-      this.scale.setScreenSize(true);
-    } else {
-      this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-      this.scale.minWidth = 480;
-      this.scale.minHeight = 240;
-      this.scale.maxWidth = 1024;
-      this.scale.maxHeight = 600;
-      this.scale.pageAlignHorizontally = true;
-      this.scale.pageAlignVertically = true;
-      this.scale.forceOrientation(true, false);
-      //      this.scale.hasResized.add(this.gameResized, this);
-      //      this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
-      //      this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-      this.scale.setScreenSize(true);
-    }
+	this.stage.disableVisibilityChange = !0;
+	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+	this.scale.pageAlignHorizontally = !0;
+	this.scale.hasResized.add(this.gameResized, this);
+	this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+	this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+	this.scale.setScreenSize(!0);
 
     this.game.state.start('preload');
 
   },
 
-  gameResized: function(width, height) {
-
-    //  This could be handy if you need to do any extra processing if the game resizes.
-    //  A resize could happen if for example swapping orientation on a device.
-
+  gameResized: function () {},
+        
+  enterIncorrectOrientation: function () {
+            this.orientated = !1, document.getElementById("orientation").style.display = "block"
+  },
+  leaveIncorrectOrientation: function () {
+            this.orientated = !0, document.getElementById("orientation").style.display = "none"
   }
 
 };
@@ -1015,20 +1014,20 @@ module.exports = GameOver;
 },{}],16:[function(require,module,exports){
   'use strict';
 
-  var Sea_on = require('../prefabs/sea_on');
-  var Sea_face = require('../prefabs/sea_face');
-  var Sea_under = require('../prefabs/sea_under');
-
-  var Pole = require('../prefabs/pole');
+  var Sea_top = require('../prefabs/sea_top');
+  var Sea_wave = require('../prefabs/sea_wave');
+  
+  var Island = require('../prefabs/island');
 
   var Ships = require('../prefabs/ships');
   var Ship1 = require('../prefabs/ship1');
   var Ship2 = require('../prefabs/ship2');
   var Drill = require('../prefabs/drill');
-  
-  var Mermaid = require('../prefabs/mermaid');
+
+  var Helicopter = require('../prefabs/helicopter');
 
   var Bullets = require('../prefabs/bullets');
+  var Rockets = require('../prefabs/rockets');
 
   var Ducks = require('../prefabs/ducks');
 
@@ -1043,27 +1042,19 @@ module.exports = GameOver;
 
       this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-//      this.caribe = this.game.add.audio('caribe', 1, true);
-//      this.caribe.play('',0,1,true);
+      // create and add a new Sea_top object
+      this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
+      this.game.add.existing(this.sea_top);
 
-      // create and add a new Sea_on object
-      this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
-      this.game.add.existing(this.sea_on);
-
-
-      // create and add a new Sea_face object
-      this.sea_face = new Sea_face(this.game, 0, 90, this.game.world.width, this.game.world.height - 73);
-      this.game.add.existing(this.sea_face);
-
-      // create and add a new Sea_under object
-      this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
-      this.game.add.existing(this.sea_under);
-
-      // add the pole
-      // Create a new pole object
-      this.pole = new Pole(this.game, this.game.width / 2, this.game.world.height - 45);
+      // create and add a new Sea_wave object
+      this.sea_wave = new Sea_wave(this.game, 0, 79, this.game.world.width, this.game.world.height);
+      this.game.add.existing(this.sea_wave);
+	  
+	  // add the island
+      // Create a new island object
+      this.island = new Island(this.game, this.game.width / 2 , this.game.world.height - 60);
       // and add it to the game
-      this.game.add.existing(this.pole);
+      this.game.add.existing(this.island);
 
 
       //  The enemies bullet group
@@ -1071,8 +1062,8 @@ module.exports = GameOver;
       this.enemyBullets.enableBody = true;
       this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-      for (var i = 0; i < 100; i++) {
-        this.rockets = new Bullets(this.game, -100, -100);
+      for (var i = 0; i < 2; i++) {
+        this.rockets = new Rockets(this.game, -100, -100);
         this.enemyBullets.add(this.rockets);
       }
 
@@ -1082,30 +1073,29 @@ module.exports = GameOver;
       this.enemyBullets.setAll('checkWorldBounds', true);
 
 
-      // add the drill
-      // Create a new drill object
-      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
-      // and add it to the game
-      this.game.add.existing(this.drill);
-
-
       // add the ducks
       // Create a new ducks object
-      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100);
+      this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.enemyBullets);
       // and add it to the game
       this.game.add.existing(this.ducks);
+	  
+	  // add the drill
+      // Create a new drill object
+      this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100, this.ducks, this.enemyBullets);
+      // and add it to the game
+      this.game.add.existing(this.drill);
 
       // add the ships
       this.ships = new Ships(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship1 = new Ship1(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       this.ship2 = new Ship2(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
-	  
-	  
-	  // add the mermaid
-      // Create a new mermaid object
-      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
+
+
+      // add the helicopter
+      // Create a new helicopter object
+      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
       // and add it to the game
-      this.game.add.existing(this.mermaid);
+      this.game.add.existing(this.helicopter);
 
       // add the HEADING TEXT
       this.headText = this.game.add.bitmapText(this.game.world.width / 2 - 150, 200, 'flappyfont', 'Duck 981', 72);
@@ -1116,10 +1106,55 @@ module.exports = GameOver;
       this.startButton.inputEnabled = true;
       this.startButton.input.useHandCursor = true;
 
+      // add the Content
+      this.contents = [
+        "Nguoi An Phu\n presents",
+        " ",
+        "Duck981",
+        "protects our sea!",
+      ];
+
+      this.style = {
+        font: "30pt Courier",
+        fill: "#fcfcfc",
+        stroke: "#d4dbd9",
+        strokeThickness: 2,
+        align: "center"
+      };
+
+      this.content = this.game.add.text(this.game.world.centerX, 400, '', this.style);
+      this.content.anchor.setTo(0.5, 0.5);
+      this.time = this.game.time.now + 80;
+      this.index = 0;
+      this.line = '';
+
 
     },
 
-    update: function() {},
+    update: function() {
+
+      if (this.game.time.now > this.time && this.index < this.contents.length) {
+        //  get the next character in the line
+        if (this.line.length < this.contents[this.index].length) {
+          this.line = this.contents[this.index].substr(0, this.line.length + 1);
+          this.content.setText(this.line);
+          this.time = this.game.time.now + 80;
+        } else {
+          this.time = this.game.time.now + 2000;
+
+          if (this.index < this.contents.length) {
+            this.index++;
+            if (this.index >= this.contents.length) {
+              this.index = 0;
+            }
+            this.line = '';
+          }
+
+        }
+      }
+
+
+    },
 
     startClick: function() {
       // start button click handler
@@ -1132,13 +1167,13 @@ module.exports = GameOver;
 
   module.exports = Menu;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/mermaid":5,"../prefabs/pole":6,"../prefabs/sea_face":8,"../prefabs/sea_on":9,"../prefabs/sea_under":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],17:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/rockets":7,"../prefabs/sea_top":9,"../prefabs/sea_wave":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],17:[function(require,module,exports){
 'use strict';
-var Sea_on = require('../prefabs/sea_on');
-var Sea_face = require('../prefabs/sea_face');
-var Sea_under = require('../prefabs/sea_under');
 
-var Pole = require('../prefabs/pole');
+var Sea_top = require('../prefabs/sea_top');
+var Sea_wave = require('../prefabs/sea_wave');
+
+var Island = require('../prefabs/island');
 
 var Ships = require('../prefabs/ships');
 var Ship1 = require('../prefabs/ship1');
@@ -1148,8 +1183,9 @@ var Ship2 = require('../prefabs/ship2');
 var Drill = require('../prefabs/drill');
 
 var Bullets = require('../prefabs/bullets');
+var Rockets = require('../prefabs/rockets');
 
-var Mermaid = require('../prefabs/mermaid');
+var Helicopter = require('../prefabs/helicopter');
 
 var Ducks = require('../prefabs/ducks');
 
@@ -1161,7 +1197,7 @@ Play.prototype = {
 
   create: function() {
 
-    this.game.world.setBounds(0, 0, 2000, 600);
+    this.game.world.setBounds(0, 0, 2000, 2000);
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -1169,27 +1205,27 @@ Play.prototype = {
     this.boom = this.game.add.audio('boom');
     this.shot = this.game.add.audio('shot');
 
-    //    this.caribe = this.game.add.audio('caribe', 1, true);
-    //    this.caribe.play('', 0, 1, true);
-
-    // create and add a new Sea_on object
-    this.sea_on = new Sea_on(this.game, 0, 0, this.game.world.width, 93);
-    this.game.add.existing(this.sea_on);
-
-
-    // create and add a new Sea_face object
-    this.sea_face = new Sea_face(this.game, 0, 90, this.game.world.width, this.game.world.height - 73);
-    this.game.add.existing(this.sea_face);
-
-    // create and add a new Sea_under object
-    this.sea_under = new Sea_under(this.game, 0, this.game.world.height - 73, this.game.world.width, 73);
-    this.game.add.existing(this.sea_under);
-
-    // add the pole
-    // Create a new pole object
-    this.pole = new Pole(this.game, 400, this.game.world.height - 45);
+	// create and add a new Sea_wave object
+    this.sea_wave = new Sea_wave(this.game, 0, 0, this.game.world.width, this.game.world.height);
+    this.game.add.existing(this.sea_wave);
+	
+    // create and add a new Sea_top object
+	// It will overlay the sea_wave becasuse it is created later
+    this.sea_top = new Sea_top(this.game, 0, 0, this.game.world.width, 80);
+    this.game.add.existing(this.sea_top);
+	
+	// add the island
+	this.islandGroup = this.game.add.group();
+    // Create a new island object
+    this.island1 = new Island(this.game, this.game.world.width / 2 - 700, this.game.world.height/2);
+    this.island2 = new Island(this.game, this.game.world.width / 2 + 700, this.game.world.height/2);
+    this.island3 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 - 700);
+    this.island4 = new Island(this.game, this.game.world.width / 2, this.game.world.height/2 + 700);
     // and add it to the game
-    this.game.add.existing(this.pole);
+    this.islandGroup.add(this.island1);
+    this.islandGroup.add(this.island2);
+    this.islandGroup.add(this.island3);
+    this.islandGroup.add(this.island4);
 
 
     //  The enemies bullet group
@@ -1197,8 +1233,8 @@ Play.prototype = {
     this.enemyBullets.enableBody = true;
     this.enemyBullets.physicsBodyType = Phaser.Physics.ARCADE;
 
-    for (var i = 0; i < 100; i++) {
-      this.rockets = new Bullets(this.game, -100, -100);
+    for (var i = 0; i < 3; i++) {
+      this.rockets = new Rockets(this.game, -100, -100);
       this.enemyBullets.add(this.rockets);
     }
 
@@ -1206,9 +1242,139 @@ Play.prototype = {
     this.enemyBullets.setAll('anchor.y', 0.5);
     this.enemyBullets.setAll('outOfBoundsKill', true);
     this.enemyBullets.setAll('checkWorldBounds', true);
+	
+	//  The duck bullet group
+    this.bulletsGroup = this.game.add.group();
+    this.bulletsGroup.enableBody = true;
+    this.bulletsGroup.physicsBodyType = Phaser.Physics.ARCADE;
+
+    for (var i = 0; i < 3; i++) {
+      this.bullets = new Bullets(this.game, -100, -100);
+      this.bulletsGroup.add(this.bullets);
+    }
+
+    this.bulletsGroup.setAll('anchor.x', 0.5);
+    this.bulletsGroup.setAll('anchor.y', 0.5);
+    this.bulletsGroup.setAll('outOfBoundsKill', true);
+    this.bulletsGroup.setAll('checkWorldBounds', true);
+
+    // add the ducks
+    // Create a new ducks object
+    this.ducks = new Ducks(this.game, this.game.world.width / 2, 100, this.bulletsGroup);
+    // and add it to the game
+    this.game.add.existing(this.ducks);
+    this.game.input.onDown.add(this.ducks.fire, this.ducks);
+    this.ducksLive = true;
+
+    // Health points, which are the hearts in the top right corner
+    this.hpGroup = this.game.add.group();
+    this.hp = new Array();
+    /*Adding 3 hearts*/
+    this.numberLifes = this.ducks.health;
+
+    for (this.live = 0; this.live < this.numberLifes; this.live++) {
+      this.hp[this.live] = this.add.sprite(10 + this.live * 40, 10, 'health');
+      this.hp[this.live].fixedToCamera = true;
+      this.hp[this.live].cameraOffset.x = 10 + this.live * 40;
+      this.hp[this.live].cameraOffset.y = 10;
+      this.hpGroup.add(this.hp[this.live]);
+    }
+    //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
+    this.live = this.numberLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
+	
+	
+	 // add the drill
+    // Create a new drill object
+    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+    // and add it to the game
+    this.game.add.existing(this.drill);
+	this.drillLive = true;
+
+    // Health points, which are the hearts in the top right corner
+    this.hpDrillGroup = this.game.add.group();
+    this.hpDrill = new Array();
+    /*Adding hearts*/
+    this.numberDrillLifes = this.drill.health;
+
+    for (this.liveDrill = 0; this.liveDrill < this.numberDrillLifes; this.liveDrill++) {
+      this.hpDrill[this.liveDrill] = this.add.sprite(this.game.width - 50 - this.liveDrill * 40, 10, 'healthDrill');
+      this.hpDrill[this.liveDrill].fixedToCamera = true;
+      this.hpDrill[this.liveDrill].cameraOffset.x = this.game.width - 50 - this.liveDrill * 40;
+      this.hpDrill[this.liveDrill].cameraOffset.y = 10;
+      this.hpDrillGroup.add(this.hpDrill[this.liveDrill]);
+    }
+    //    this.liveDrill = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
+    this.liveDrill = this.numberDrillLifes - 1; //get the largest IDs of the hearts: hp[0], hp[1], hp[2]
 
 
-    //  Explosion pool
+    // add the ships
+    this.shipsAlive = 2;
+    this.shipsGroup = this.game.add.group();
+
+    // add the ship1
+    this.ship1Alive = 2;
+    this.ship1Group = this.game.add.group();
+
+    // add the ship2
+    this.ship2Alive = 2;
+    this.ship2Group = this.game.add.group();
+
+    // add the helicopter
+      // Create a new helicopter object
+      this.helicopter = new Helicopter(this.game, this.game.world.randomX, this.game.world.randomY, this.ducks, this.enemyBullets);
+      // and add it to the game
+      this.game.add.existing(this.helicopter);
+
+    // add the score
+    this.score = 0;
+    this.scoreText = this.game.add.bitmapText(300, 10, 'flappyfont', this.score.toString(), 44);
+    this.scoreText.fixedToCamera = true;
+    this.scoreText.cameraOffset.x = 300;
+    this.scoreText.cameraOffset.y = 10;
+
+    this.game.camera.follow(this.ducks);
+    this.game.camera.focusOnXY(0, 0);
+
+
+    // add the logo
+    this.styleLogo = {
+      font: "10pt Courier",
+      fill: "#fcfcfc",
+      stroke: "#d4dbd9",
+      strokeThickness: 1,
+      align: "center"
+    };
+    this.logo = this.game.add.text(this.game.width - 90, this.game.height - 10, 'play.nguoianphu.com', this.styleLogo);
+    this.logo.anchor.setTo(0.5, 0.5);
+    this.logo.fixedToCamera = true;
+    this.logo.cameraOffset.x = this.game.width - 90;
+    this.logo.cameraOffset.y = this.game.height - 10;
+
+    // add the Content
+    this.contents = [
+      "Attention:",
+      "the Oil Rig invades our sea!",
+      "defend the Oil Rig and the ships!",
+    ];
+
+    this.style = {
+      font: "15pt Courier",
+      fill: "#fcfcfc",
+      stroke: "#d4dbd9",
+      strokeThickness: 1,
+      align: "center"
+    };
+
+    this.content = this.game.add.text(this.game.width - 300, this.game.height - 30, '', this.style);
+    this.content.fixedToCamera = true;
+    this.content.cameraOffset.x = this.game.width - 300;
+    this.content.cameraOffset.y = this.game.height - 30;
+    this.content.anchor.setTo(0.5, 0.5);
+    this.time = this.game.time.now + 80;
+    this.index = 0;
+    this.line = '';
+
+	//  Explosion pool
     this.explosions = this.game.add.group();
 
     for (var i = 0; i < 10; i++) {
@@ -1216,204 +1382,219 @@ Play.prototype = {
       this.explosionAnimation.anchor.setTo(0.5, 0.5);
       this.explosionAnimation.animations.add('kaboom');
     }
-
-
-    // add the drill
-    // Create a new drill object
-    //    this.drill = new Drill(this.game, this.game.world.randomX, this.game.world.randomY);
-    this.drill = new Drill(this.game, this.game.world.width - 100, this.game.world.height - 100);
-    // and add it to the game
-    this.game.add.existing(this.drill);
-
-
-    // add the ducks
-    // Create a new ducks object
-    this.ducks = new Ducks(this.game, 100, 100);
-    // and add it to the game
-    this.game.add.existing(this.ducks);
-    this.game.input.onDown.add(this.ducks.move, this.ducks);
-
-    // add the ships
-    this.shipsAlive = 3;
-    this.shipGroup = this.game.add.group();
-
-    for (var i = 0; i < this.shipsAlive; i++) {
-      this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.shipGroup.add(this.ships);
-    }
-
-    // add the ship1
-    this.ship1Alive = 1;
-    this.ship1Group = this.game.add.group();
-
-    for (var i = 0; i < this.ship1Alive; i++) {
-      this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.ship1Group.add(this.ship1);
-    }
-
-    // add the ship2
-    this.ship2Alive = 3;
-    this.ship2Group = this.game.add.group();
-
-    for (var i = 0; i < this.ship2Alive; i++) {
-      this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
-      this.ship2Group.add(this.ship2);
-    }
 	
-	// add the mermaid
-      // Create a new mermaid object
-      this.mermaid = new Mermaid(this.game, this.game.world.randomX, this.game.world.randomY);
-      // and add it to the game
-      this.game.add.existing(this.mermaid);
-
-    // add the score
-    this.score = 30;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 44);
-    this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 100;
-    this.scoreText.cameraOffset.y = 10;
-
-    this.game.camera.follow(this.ducks);
-    this.game.camera.focusOnXY(0, 0);
+	this.explosions.setAll('anchor.x', 0.5);
+    this.explosions.setAll('anchor.y', 0.5);
 
   },
 
   update: function() {
 
-    this.game.physics.arcade.collide(this.ducks, this.shipGroup);
+    // add the ships
+    if (this.shipsGroup.countLiving() < this.shipsAlive) {
+      this.createShips(this.shipsGroup);
+    }
+    if (this.ship1Group.countLiving() < this.ship1Alive) {
+      this.createShip1(this.ship1Group);
+    }
+    if (this.ship2Group.countLiving() < this.ship2Alive) {
+      this.createShip2(this.ship2Group);
+    }
+
+    // make everything collide
+    this.game.physics.arcade.collide(this.ducks, this.shipsGroup);
     this.game.physics.arcade.collide(this.ducks, this.ship1Group);
     this.game.physics.arcade.collide(this.ducks, this.ship2Group);
     this.game.physics.arcade.collide(this.ducks, this.drill);
-    this.game.physics.arcade.collide(this.ducks, this.mermaid);
+    this.game.physics.arcade.collide(this.ducks, this.islandGroup);
 
-    this.game.physics.arcade.collide(this.shipGroup, this.drill);
+    this.game.physics.arcade.collide(this.shipsGroup, this.drill);
     this.game.physics.arcade.collide(this.ship1Group, this.drill);
     this.game.physics.arcade.collide(this.ship2Group, this.drill);
 
-    this.game.physics.arcade.collide(this.shipGroup, this.ship1Group);
-    this.game.physics.arcade.collide(this.shipGroup, this.ship2Group);
-
+    this.game.physics.arcade.collide(this.shipsGroup, this.ship1Group);
+    this.game.physics.arcade.collide(this.shipsGroup, this.ship2Group);
     this.game.physics.arcade.collide(this.ship1Group, this.ship2Group);
+	
+	this.game.physics.arcade.collide(this.shipsGroup, this.islandGroup);
+    this.game.physics.arcade.collide(this.ship1Group, this.islandGroup);
+    this.game.physics.arcade.collide(this.ship2Group, this.islandGroup);
+    this.game.physics.arcade.collide(this.drill, this.islandGroup);
 
-
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.shipGroup, this.shotSound, null, this);
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship1Group, this.shotSound, null, this);
-    //    this.game.physics.arcade.overlap(this.enemyBullets, this.ship2Group, this.shotSound, null, this);
-
-
-
+    // make everything hit and kill
+	
+	this.game.physics.arcade.overlap(this.enemyBullets, this.bulletsGroup, this.bulletOverlap, null, this);
+    
     this.game.physics.arcade.overlap(this.enemyBullets, this.ducks, this.bulletHitDucks, null, this);
+    this.game.physics.arcade.overlap(this.enemyBullets, this.islandGroup, this.bulletHitIslandGroup, null, this);
+	
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.drill, this.bulletHitDrill, null, this);
+    this.game.physics.arcade.overlap(this.bulletsGroup, this.islandGroup, this.bulletHitIslandGroup, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.shipsGroup, this.bulletHitShip, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.ship1Group, this.bulletHitShip, null, this);
+	this.game.physics.arcade.overlap(this.bulletsGroup, this.ship2Group, this.bulletHitShip, null, this);
 
-    this.game.physics.arcade.overlap(this.pole, this.shipGroup, this.poleHitShips, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ship1Group, this.poleHitShips, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ship2Group, this.poleHitShips, null, this);
+    // add the message
+    if (this.game.time.now > this.time && this.index < this.contents.length) {
+      //  get the next character in the line
+      if (this.line.length < this.contents[this.index].length) {
+        this.line = this.contents[this.index].substr(0, this.line.length + 1);
+        this.content.setText(this.line);
+        this.time = this.game.time.now + 80;
+      } else {
+        this.time = this.game.time.now + 2000;
 
-    this.game.physics.arcade.overlap(this.pole, this.drill, this.poleHitDrill, null, this);
-    this.game.physics.arcade.overlap(this.pole, this.ducks, this.poleHitDucks, null, this);
+        if (this.index < this.contents.length) {
+          this.index++;
+          if (this.index >= this.contents.length) {
+            this.index = 0;
+          }
+          this.line = '';
+        }
 
+      }
+    }
 
 
   },
 
+  createShips: function(shipsGroup) {
 
-  shotSound: function(bullets, ship) {
+    this.ships = new Ships(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    shipsGroup.add(this.ships);
 
-    if (this.game.physics.arcade.distanceBetween(bullets, this.ducks) < 200) {
+  },
 
-      this.shot.play();
-    }
+  createShip1: function(ship1Group) {
+
+    this.ship1 = new Ship1(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    ship1Group.add(this.ship1);
+
+  },
+
+  createShip2: function(ship2Group) {
+
+    this.ship2 = new Ship2(this.game, this.game.world.randomX + 100, this.game.world.randomY + 100, this.ducks, this.enemyBullets);
+    ship2Group.add(this.ship2);
+
+  },
+
+
+  bulletOverlap: function(bullet1, bullet2) {
+  
+	bullet1.kill();
+	bullet2.kill();
+	
+	this.shot.play();
+	
+	var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(bullet1.x, bullet1.y);
+    this.explosionAnimation.play('kaboom', 30, false, true);
 
   },
 
 
   bulletHitDucks: function(ducks, enemyBullets) {
 
-    this.hasScore(-10);
-
     this.shot.play();
 
     enemyBullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
+    this.explosionAnimation.reset(ducks.x, ducks.y);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
 
     // the ducks is killed
+    this.hp[this.live].kill(); // "Killing" the hearth with the largest index
+    this.live--; // Decrementing our live variable
+
+    if (this.live === -1) { // If our last heart (index: 0) is "killed" then we restart the game
+      this.boom.play();
+    }
+
     this.theX = ducks.x;
 
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
+      this.ducksLive = false;
+
       this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
 
-      this.boom.play();
+    }
+
+  },
+  
+  bulletHitIslandGroup: function(enemyBullets, island){
+		enemyBullets.kill();
+  },
+  
+  bulletHitShip: function(bullets, ship) {
+
+    bullets.kill();
+	this.boom.play();
+	var explosionAnimation = this.explosions.getFirstExists(false);
+    this.explosionAnimation.reset(ship.x, ship.y);
+    this.explosionAnimation.play('kaboom', 30, false, true);
+	this.destroyed = ship.damage();
+    if (this.destroyed) {
+	
+	this.hasScore(10);
 
     }
 
   },
 
-  poleHitShips: function(pole, shipGroup) {
+  
+  bulletHitDrill: function(drill, bullets) {
 
-    this.hasScore(10);
+    this.shot.play();
+	this.hasScore(10);
 
-    shipGroup.destroy();
-
-    var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(shipGroup.x + 5, shipGroup.y + 5);
-    this.explosionAnimation.play('kaboom', 30, false, true);
-
-    this.boom.play();
-
-  },
-
-  poleHitDrill: function(pole, drill) {
-
-    this.hasScore(100);
-
-    drill.destroy();
+    bullets.kill();
 
     var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(drill.x + 5, drill.y + 5);
+    this.explosionAnimation.reset(drill.x, drill.y);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
-    this.theX = this.ducks.x;
-    this.ducks.kill();
 
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, true);
+    // the drill is killed
+    this.hpDrill[this.liveDrill].kill(); // "Killing" the hearth with the largest index
+    this.liveDrill--; // Decrementing our live variable
 
-    this.boom.play();
+    if (this.liveDrill === -1) { // If our last heart (index: 0) is "killed" then we restart the game
+      this.boom.play();
+    }
 
-  },
+    this.destroyed = drill.damage();
+    if (this.destroyed) {
+	
+		this.hasScore(100);
 
-  poleHitDucks: function(pole, ducks) {
+      if (this.ducksLive) {
+		  this.scoreboard = new Scoreboard(this.game);
+		  this.game.add.existing(this.scoreboard);
+		  this.scoreboard.show(this.score, true);
+		}
 
-    var explosionAnimation = this.explosions.getFirstExists(false);
-    this.explosionAnimation.reset(ducks.x + 5, ducks.y + 5);
-    this.explosionAnimation.play('kaboom', 30, false, true);
-
-    // the ducks is killed
-    this.theX = ducks.x;
-
-    ducks.destroy();
-
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, false);
-
-    this.boom.play();
-
+		this.boom.play();
+		
+		// this.ducks.destroy();
+		
+		this.enemyBullets.destroy();
+		this.helicopter.destroy();
+		this.shipsGroup.destroy();
+        this.ship1Group.destroy();
+    }   this.ship2Group.destroy();
 
   },
 
   hasScore: function(addScore) {
     this.score = this.score + addScore;
     this.scoreText.setText(this.score.toString());
-    //    this.scoreSound.play();
 
   }
 
@@ -1422,7 +1603,7 @@ Play.prototype = {
 
 module.exports = Play;
 
-},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/mermaid":5,"../prefabs/pole":6,"../prefabs/scoreboard":7,"../prefabs/sea_face":8,"../prefabs/sea_on":9,"../prefabs/sea_under":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],18:[function(require,module,exports){
+},{"../prefabs/bullets":2,"../prefabs/drill":3,"../prefabs/ducks":4,"../prefabs/helicopter":5,"../prefabs/island":6,"../prefabs/rockets":7,"../prefabs/scoreboard":8,"../prefabs/sea_top":9,"../prefabs/sea_wave":10,"../prefabs/ship1":11,"../prefabs/ship2":12,"../prefabs/ships":13}],18:[function(require,module,exports){
 'use strict';
 
 function Preload() {
@@ -1438,10 +1619,11 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-
-    this.load.image('sea_on', 'assets/sea/sea_on.png');
-    this.load.image('sea_face', 'assets/sea/sea_face.png');
-    this.load.image('sea_under', 'assets/sea/sea_under.png');
+      
+    this.load.image('sea_top', 'assets/sea/sea_top.png');
+    this.load.image('sea_wave', 'assets/sea/sea_wave.png');
+	
+    this.load.image('island', 'assets/island/island.png');
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
     this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
@@ -1449,7 +1631,7 @@ Preload.prototype = {
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
 
-    this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
+    this.load.spritesheet('pole', 'assets/pole/poles.png', 96, 70, 2);
 
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
     this.load.spritesheet('ship1', 'assets/ship/warship1.png', 200, 68, 2);
@@ -1459,18 +1641,17 @@ Preload.prototype = {
 
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
+    this.load.image('health', 'assets/health/heart.png');
+    this.load.image('healthDrill', 'assets/drill/rigicon.png');
+      
     this.load.image('startButton', 'assets/menu/start-button.png');
 
+    this.load.image('bullets', 'assets/bullets/egg.png', 43, 32);
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 	
-    this.load.spritesheet('mermaid', 'assets/mermaid/mermaid.png', 56, 48);
-	
-    // this.load.spritesheet('mermaid_01', 'assets/mermaid/images/mermaid_01.png', 56, 48);
-    // this.load.spritesheet('mermaid_03', 'assets/mermaid/images/mermaid_03.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
+    this.load.spritesheet('helicopter', 'assets/helicopter/helicopter.png', 150, 38, 8);
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');

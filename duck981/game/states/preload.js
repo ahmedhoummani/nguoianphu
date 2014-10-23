@@ -13,10 +13,11 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-
-    this.load.image('sea_on', 'assets/sea/sea_on.png');
-    this.load.image('sea_face', 'assets/sea/sea_face.png');
-    this.load.image('sea_under', 'assets/sea/sea_under.png');
+      
+    this.load.image('sea_top', 'assets/sea/sea_top.png');
+    this.load.image('sea_wave', 'assets/sea/sea_wave.png');
+	
+    this.load.image('island', 'assets/island/island.png');
 
     this.load.image('scoreboard', 'assets/score/scoreboard.png');
     this.load.spritesheet('medals', 'assets/score/medals.png', 44, 46, 2);
@@ -24,7 +25,7 @@ Preload.prototype = {
 
     this.load.bitmapFont('flappyfont', 'assets/fonts/flappyfont/flappyfont.png', 'assets/fonts/flappyfont/flappyfont.fnt');
 
-    this.load.spritesheet('pole', 'assets/pole/pole.png', 100, 73, 2);
+    this.load.spritesheet('pole', 'assets/pole/poles.png', 96, 70, 2);
 
     this.load.spritesheet('ships', 'assets/ship/ships.png', 200, 61, 2);
     this.load.spritesheet('ship1', 'assets/ship/warship1.png', 200, 68, 2);
@@ -34,18 +35,17 @@ Preload.prototype = {
 
     this.load.spritesheet('ducks', 'assets/duck/ducks.png', 125, 96, 2);
 
+    this.load.image('health', 'assets/health/heart.png');
+    this.load.image('healthDrill', 'assets/drill/rigicon.png');
+      
     this.load.image('startButton', 'assets/menu/start-button.png');
 
+    this.load.image('bullets', 'assets/bullets/egg.png', 43, 32);
     this.load.spritesheet('rockets', 'assets/bullets/rockets.png', 80, 25, 3);
 
     this.load.spritesheet('kaboom', 'assets/bullets/explosion.png', 64, 64, 23);
 	
-    this.load.spritesheet('mermaid', 'assets/mermaid/mermaid.png', 56, 48);
-	
-    // this.load.spritesheet('mermaid_01', 'assets/mermaid/images/mermaid_01.png', 56, 48);
-    // this.load.spritesheet('mermaid_03', 'assets/mermaid/images/mermaid_03.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
-    // this.load.spritesheet('mermaid_04', 'assets/mermaid/images/mermaid_04.png', 56, 48);
+    this.load.spritesheet('helicopter', 'assets/helicopter/helicopter.png', 150, 38, 8);
 
     this.load.audio('boom', 'assets/audio/boom.ogg');
     this.load.audio('shot', 'assets/audio/shot.ogg');
