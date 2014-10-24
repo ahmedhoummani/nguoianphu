@@ -141,11 +141,6 @@ Play.prototype = {
 
     this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
 
-    //    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'greenEnemy');
-    //    this.enemy.animations.add('fly', [0, 1, 2], 20, true);
-    //    this.enemy.play('fly');
-    //    this.enemy.anchor.setTo(0.5, 0.5);
-    //    this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
@@ -172,15 +167,11 @@ Play.prototype = {
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.speed = 300;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
-    this.player.body.bounce.setTo(0.3, 0.3);
+    this.player.body.bounce.setTo(0.1, 0.1);
+    // 20 x 20 pixel hitbox, centered a little bit higher than the center
+    this.player.body.setSize(20, 20, 0, -5);
 
 
-    //    this.bullet = this.add.sprite(this.player.x, this.player.y, 'bullet');
-    //    this.bullet.anchor.setTo(0.5, 0.5);
-    //    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
-    //    this.bullet.body.velocity.y = -50;
-
-    //    this.bullets = [];
 
     // Add an empty sprite group into our game
     this.bulletPool = this.add.group();
@@ -205,6 +196,17 @@ Play.prototype = {
     this.nextShotAt = 0;
     this.shotDelay = 100;
 
+    this.explosionPool = this.add.group();
+    this.explosionPool.enableBody = true;
+    this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+    this.explosionPool.createMultiple(100, 'explosion');
+    this.explosionPool.setAll('anchor.x', 0.5);
+    this.explosionPool.setAll('anchor.y', 0.5);
+    this.explosionPool.forEach(function(explosion) {
+      explosion.animations.add('boom');
+    });
+
+
 
 
   },
@@ -219,15 +221,12 @@ Play.prototype = {
 
     }
 
+    //    this.game.physics.arcade.collide(this.player, this.enemyPool);
 
-    //    this.physics.arcade.overlap(
-    //      this.bullet, this.enemy, this.enemyHit, null, this
-    //    );
-    //    for (var i = 0; i < this.bullets.length; i++) {
-    //      this.physics.arcade.overlap(
-    //        this.bullets[i], this.enemy, this.enemyHit, null, this
-    //      );
-    //    }
+    this.physics.arcade.overlap(
+      this.player, this.enemyPool, this.playerHit, null, this
+    );
+
 
     this.physics.arcade.overlap(
       this.bulletPool, this.enemyPool, this.enemyHit, null, this
@@ -243,16 +242,13 @@ Play.prototype = {
       enemy.play('fly');
     }
 
-    this.player.body.velocity.x = 0;
-    this.player.body.velocity.y = 0;
-
 
 
   },
 
   fire: function() {
 
-    if (this.nextShotAt > this.time.now) {
+    if (!this.player.alive || this.nextShotAt > this.time.now) {
       return;
     }
 
@@ -282,15 +278,35 @@ Play.prototype = {
 
   enemyHit: function(bullet, enemy) {
     bullet.kill();
+    this.explode(enemy);
     enemy.kill();
+  },
 
-    var explosion = this.add.sprite(enemy.x, enemy.y, 'explosion');
-    explosion.anchor.setTo(0.5, 0.5);
-    explosion.animations.add('boom');
+  playerHit: function(player, enemy) {
+    this.explode(enemy);
+    enemy.kill();
+    this.explode(player);
+    player.kill();
+
+  },
+
+  explode: function(sprite) {
+
+    if (this.explosionPool.countDead() === 0) {
+
+      return;
+
+    }
+
+    var explosion = this.explosionPool.getFirstExists(false);
+    explosion.reset(sprite.x, sprite.y);
     explosion.play('boom', 15, false, true);
-
+    // add the original sprite's velocity to the explosion
+    explosion.body.velocity.x = sprite.body.velocity.x;
+    explosion.body.velocity.y = sprite.body.velocity.y;
 
   }
+
 
 };
 
