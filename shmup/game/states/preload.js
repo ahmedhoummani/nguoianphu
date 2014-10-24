@@ -12,10 +12,15 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    //    this.load.image('yeoman', 'assets/yeoman-logo.png');
+
+
     this.load.image('sea', 'assets/sea.png');
     this.load.image('bullet', 'assets/bullet.png');
     this.load.spritesheet('greenEnemy', 'assets/enemy.png', 32, 32);
+    this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
+    this.load.spritesheet('player', 'assets/player.png', 64, 64);
+
+
 
   },
   create: function() {
