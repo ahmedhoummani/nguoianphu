@@ -2,6 +2,9 @@
 npm config set proxy http://proxy.company.com:8080
 npm config set https-proxy http://proxy.company.com:8080
 
+set HTTP_PROXY=http://proxy.company.com:8080
+set HTTPS_PROXY=https://proxy.company.com:8080
+
 
 Install libraries
 
@@ -45,3 +48,13 @@ Generate a new prefab:
 $ yo phaser-official:prefab "prefabName" 
 
 This will create a new prefabName.js file in the game/prefabs directory with the options provided at the prompts
+
+
+Running these cmd for you to install the required dependencies.
+
+set HTTP_PROXY=http://proxy.company.com:8080
+set HTTPS_PROXY=https://proxy.company.com:8080
+MUST install GIT and add GIT_HOME to PATH
+
+npm install -g bower
+bower install
