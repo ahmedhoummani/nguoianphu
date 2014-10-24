@@ -15,12 +15,17 @@ Preload.prototype = {
 
 
     this.load.image('sea', 'assets/sea.png');
+
     this.load.image('bullet', 'assets/bullet.png');
+    this.load.image('enemyBullet', 'assets/enemy-bullet.png');
+
     this.load.spritesheet('greenEnemy', 'assets/enemy.png', 32, 32);
-    this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
+    this.load.spritesheet('whiteEnemy', 'assets/shooting-enemy.png', 32, 32);
+
     this.load.spritesheet('player', 'assets/player.png', 64, 64);
+    this.load.image('powerup1', 'assets/powerup1.png');
 
-
+    this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
 
   },
   create: function() {
