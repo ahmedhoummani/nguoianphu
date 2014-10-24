@@ -15,8 +15,12 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
+
+    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'greenEnemy');
+    this.enemy.animations.add('fly', [0, 1, 2], 20, true);
+    this.enemy.play('fly');
+    this.enemy.anchor.setTo(0.5, 0.5);
+    this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
     this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
@@ -28,18 +32,28 @@ Menu.prototype = {
     });
     this.instructionsText.anchor.setTo(0.5, 0.5);
 
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({
+    this.enemy.angle = -20;
+    this.game.add.tween(this.enemy).to({
       angle: 20
     }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 
-    this.bullet = this.add.sprite(400, 300, 'bullet');
+    this.bullet = this.add.sprite(this.enemy.x, this.enemy.y, 'bullet');
+    this.bullet.anchor.setTo(0.5, 0.5);
+    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
+    this.bullet.body.velocity.y = +50;
+
+
 
   },
   update: function() {
+
+    this.sea.tilePosition.y += 0.2;
+    //    this.bullet.y += 1;
+
     if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
+
   }
 };
 

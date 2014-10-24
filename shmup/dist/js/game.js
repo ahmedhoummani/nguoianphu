@@ -80,8 +80,12 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.sprite = this.game.add.sprite(this.game.world.centerX, 138, 'yeoman');
-    this.sprite.anchor.setTo(0.5, 0.5);
+
+    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'greenEnemy');
+    this.enemy.animations.add('fly', [0, 1, 2], 20, true);
+    this.enemy.play('fly');
+    this.enemy.anchor.setTo(0.5, 0.5);
+    this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
     this.titleText = this.game.add.text(this.game.world.centerX, 300, '\'Allo, \'Allo!', style);
     this.titleText.anchor.setTo(0.5, 0.5);
@@ -93,50 +97,64 @@ Menu.prototype = {
     });
     this.instructionsText.anchor.setTo(0.5, 0.5);
 
-    this.sprite.angle = -20;
-    this.game.add.tween(this.sprite).to({
+    this.enemy.angle = -20;
+    this.game.add.tween(this.enemy).to({
       angle: 20
     }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 
-    this.bullet = this.add.sprite(400, 300, 'bullet');
+    this.bullet = this.add.sprite(this.enemy.x, this.enemy.y, 'bullet');
+    this.bullet.anchor.setTo(0.5, 0.5);
+    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
+    this.bullet.body.velocity.y = +50;
+
+
 
   },
   update: function() {
+
+    this.sea.tilePosition.y += 0.2;
+    //    this.bullet.y += 1;
+
     if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
     }
+
   }
 };
 
 module.exports = Menu;
 
 },{}],5:[function(require,module,exports){
+'use strict';
 
-  'use strict';
-  function Play() {}
-  Play.prototype = {
-    create: function() {
-      this.game.physics.startSystem(Phaser.Physics.ARCADE);
-      this.sprite = this.game.add.sprite(this.game.width/2, this.game.height/2, 'yeoman');
-      this.sprite.inputEnabled = true;
-      
-      this.game.physics.arcade.enable(this.sprite);
-      this.sprite.body.collideWorldBounds = true;
-      this.sprite.body.bounce.setTo(1,1);
-      this.sprite.body.velocity.x = this.game.rnd.integerInRange(-500,500);
-      this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500,500);
+function Play() {}
+Play.prototype = {
+  create: function() {
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-      this.sprite.events.onInputDown.add(this.clickListener, this);
-    },
-    update: function() {
+    this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
 
-    },
-    clickListener: function() {
-      this.game.state.start('gameover');
-    }
-  };
-  
-  module.exports = Play;
+    this.sprite = this.game.add.sprite(this.game.width / 2, this.game.height / 2, 'bullet');
+    this.sprite.inputEnabled = true;
+
+    this.game.physics.arcade.enable(this.sprite);
+    this.sprite.body.collideWorldBounds = true;
+    this.sprite.body.bounce.setTo(1, 1);
+    this.sprite.body.velocity.x = this.game.rnd.integerInRange(-500, 500);
+    this.sprite.body.velocity.y = this.game.rnd.integerInRange(-500, 500);
+
+    this.sprite.events.onInputDown.add(this.clickListener, this);
+  },
+  update: function() {
+
+  },
+  clickListener: function() {
+    this.game.state.start('gameover');
+  }
+};
+
+module.exports = Play;
+
 },{}],6:[function(require,module,exports){
 'use strict';
 
@@ -152,9 +170,10 @@ Preload.prototype = {
 
     this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
     this.load.setPreloadSprite(this.asset);
-    this.load.image('yeoman', 'assets/yeoman-logo.png');
+    //    this.load.image('yeoman', 'assets/yeoman-logo.png');
     this.load.image('sea', 'assets/sea.png');
     this.load.image('bullet', 'assets/bullet.png');
+    this.load.spritesheet('greenEnemy', 'assets/enemy.png', 32, 32);
 
   },
   create: function() {
