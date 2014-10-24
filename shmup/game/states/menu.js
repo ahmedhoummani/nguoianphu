@@ -30,10 +30,15 @@ Menu.prototype = {
       angle: 20
     }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 
-    this.bullet = this.add.sprite(this.enemy.x, this.enemy.y, 'bullet');
-    this.bullet.anchor.setTo(0.5, 0.5);
-    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
-    this.bullet.body.velocity.y = +50;
+    this.player.angle = -20;
+    this.game.add.tween(this.player).to({
+      angle: 20
+    }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
+
+    //    this.bullet = this.add.sprite(this.player.x, this.player.y, 'bullet');
+    //    this.bullet.anchor.setTo(0.5, 0.5);
+    //    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
+    //    this.bullet.body.velocity.y = +50;
 
     var style = {
       font: '65px Arial',
