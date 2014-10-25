@@ -11,7 +11,7 @@ Menu.prototype = {
     this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
 
 
-    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'greenEnemy');
+    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'boss');
     this.enemy.animations.add('fly', [0, 1, 2], 20, true);
     this.enemy.play('fly');
     this.enemy.anchor.setTo(0.5, 0.5);
@@ -60,7 +60,7 @@ Menu.prototype = {
   },
   update: function() {
 
-    this.sea.tilePosition.y += 0.2;
+    this.sea.tilePosition.y += 0.6;
 
     if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');

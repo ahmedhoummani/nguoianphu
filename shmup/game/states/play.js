@@ -7,6 +7,12 @@ Play.prototype = {
 
     this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
 
+    this.explosionSFX = this.add.audio('explosion');
+    this.playerExplosionSFX = this.add.audio('playerExplosion');
+    this.enemyFireSFX = this.add.audio('enemyFire');
+    this.playerFireSFX = this.add.audio('playerFire');
+    this.powerUpSFX = this.add.audio('powerUp');
+
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
@@ -60,6 +66,29 @@ Play.prototype = {
     this.shooterInitialHealth = 5;
 
 
+    this.bossPool = this.add.group();
+    this.bossPool.enableBody = true;
+    this.bossPool.physicsBodyType = Phaser.Physics.ARCADE;
+    this.bossPool.createMultiple(1, 'boss');
+    this.bossPool.setAll('anchor.x', 0.5);
+    this.bossPool.setAll('anchor.y', 0.5);
+    this.bossPool.setAll('outOfBoundsKill', true);
+    this.bossPool.setAll('checkWorldBounds', true);
+    this.bossPool.setAll('reward', 10000, false, false, 0, true);
+    this.bossPool.setAll('dropRate', 0, false, false, 0, true);
+    // Set the animation for each sprite
+    this.bossPool.forEach(function(enemy) {
+      enemy.animations.add('fly', [0, 1, 2], 20, true);
+      enemy.animations.add('hit', [3, 1, 3, 2], 20, false);
+      enemy.events.onAnimationComplete.add(function(e) {
+        e.play('fly');
+      }, this);
+    });
+    this.boss = this.bossPool.getTop();
+    this.bossApproaching = false;
+    this.bossInitialHealth = 300;
+
+
     this.player = this.add.sprite(400, 550, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
@@ -76,7 +105,7 @@ Play.prototype = {
     this.powerUpPool = this.add.group();
     this.powerUpPool.enableBody = true;
     this.powerUpPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.powerUpPool.createMultiple(5, 'powerup1');
+    this.powerUpPool.createMultiple(3, 'powerup1');
     this.powerUpPool.setAll('anchor.x', 0.5);
     this.powerUpPool.setAll('anchor.y', 0.5);
     this.powerUpPool.setAll('outOfBoundsKill', true);
@@ -148,7 +177,7 @@ Play.prototype = {
   },
   update: function() {
 
-    this.sea.tilePosition.y += 0.2;
+    this.sea.tilePosition.y += 0.6;
 
     if (this.input.activePointer.isDown &&
       this.physics.arcade.distanceToPointer(this.player) > 15) {
@@ -219,13 +248,41 @@ Play.prototype = {
     }
 
     this.shooterPool.forEachAlive(function(enemy) {
-      if (this.time.now > enemy.nextShotAt && this.enemyBulletPool.countDead() > 0 && enemy.y < 600) {
+      if (this.time.now > enemy.nextShotAt && this.enemyBulletPool.countDead() > 0 && enemy.y < 500) {
         var bullet = this.enemyBulletPool.getFirstExists(false);
         bullet.reset(enemy.x, enemy.y);
         this.physics.arcade.moveToObject(bullet, this.player, 150);
         enemy.nextShotAt = this.time.now + this.shooterShotDelay;
+        this.enemyFireSFX.play();
       }
     }, this);
+
+    if (this.bossApproaching === false && this.boss.alive &&
+      this.boss.nextShotAt < this.time.now &&
+      this.enemyBulletPool.countDead() > 4) {
+      this.boss.nextShotAt = this.time.now + 1000;
+      this.enemyFireSFX.play();
+      for (var i = 0; i < 5; i++) {
+        // process 2 bullets at a time
+        var leftBullet = this.enemyBulletPool.getFirstExists(false);
+        leftBullet.reset(this.boss.x - 10 - i * 10, this.boss.y + 20);
+        var rightBullet = this.enemyBulletPool.getFirstExists(false);
+        rightBullet.reset(this.boss.x + 10 + i * 10, this.boss.y + 20);
+        if (this.boss.health > 100) {
+          // aim directly at the player
+          this.physics.arcade.moveToObject(leftBullet, this.player, 150);
+          this.physics.arcade.moveToObject(rightBullet, this.player, 150);
+        } else {
+          // aim slightly off center of the player
+          this.physics.arcade.moveToXY(
+            leftBullet, this.player.x - i * 100, this.player.y, 150
+          );
+          this.physics.arcade.moveToXY(
+            rightBullet, this.player.x + i * 100, this.player.y, 150
+          );
+        }
+      }
+    }
 
 
     if (this.ghostUntil && this.ghostUntil < this.time.now) {
@@ -236,13 +293,33 @@ Play.prototype = {
     if (this.showReturn && this.time.now > this.showReturn) {
       this.returnText = this.add.text(
         this.game.world.width / 2, 300,
-        'Tap Game to go back to Main Menu', {
+        'Click anywhere to go back to Main Menu', {
           font: '16px sans-serif',
           fill: '#fff'
         }
       );
       this.returnText.anchor.setTo(0.5, 0.5);
       this.showReturn = false;
+    }
+
+    if (this.bossApproaching && this.boss.y > 80) {
+      this.bossApproaching = false;
+      this.boss.health = this.bossInitialHealth;
+      this.boss.nextShotAt = 0;
+      this.boss.body.velocity.y = 0;
+      this.boss.body.velocity.x = 200;
+      // allow bouncing off world bounds
+      this.boss.body.bounce.x = 1;
+      this.boss.body.collideWorldBounds = true;
+    }
+
+    if (this.bossApproaching === false) {
+      this.physics.arcade.overlap(
+        this.bulletPool, this.bossPool, this.enemyHit, null, this
+      );
+      this.physics.arcade.overlap(
+        this.player, this.bossPool, this.playerHit, null, this
+      );
     }
 
 
@@ -256,6 +333,7 @@ Play.prototype = {
     }
 
     this.nextShotAt = this.time.now + this.shotDelay;
+    this.playerFireSFX.play();
 
     var bullet;
     if (this.weaponLevel === 0) {
@@ -299,6 +377,8 @@ Play.prototype = {
       return;
     }
 
+    this.playerExplosionSFX.play();
+
     // crashing into an enemy only deals 5 damage
     this.damageEnemy(enemy, 5);
     this.weaponLevel = 0;
@@ -339,8 +419,16 @@ Play.prototype = {
       enemy.play('hit');
     } else {
       this.explode(enemy);
+      this.explosionSFX.play();
       this.addToScore(enemy.reward);
       this.spawnPowerUp(enemy);
+      if (enemy.key === 'boss') {
+        this.enemyPool.destroy();
+        this.shooterPool.destroy();
+        this.bossPool.destroy();
+        this.enemyBulletPool.destroy();
+        this.displayEnd(true);
+      }
     }
   },
 
@@ -348,11 +436,9 @@ Play.prototype = {
     this.score += score;
     this.scoreText.text = this.score;
 
-    if (this.score >= 20000) {
-      this.enemyPool.destroy();
-      this.displayEnd(true);
-      this.shooterPool.destroy();
-      this.enemyBulletPool.destroy();
+    // this approach prevents the boss from spawning again upon winning
+    if (this.score >= 5000 && this.bossPool.countDead() == 1) {
+      this.spawnBoss();
     }
 
   },
@@ -375,7 +461,7 @@ Play.prototype = {
   },
 
   spawnPowerUp: function(enemy) {
-    if (this.powerUpPool.countDead() === 0 || this.weaponLevel === 5) {
+    if (this.powerUpPool.countDead() === 0 || this.weaponLevel === 3) {
       return;
     }
 
@@ -386,28 +472,39 @@ Play.prototype = {
     }
   },
 
+  spawnBoss: function() {
+    this.bossApproaching = true;
+    this.boss.reset(512, 0, this.bossInitialHealth);
+    this.game.physics.enable(this.boss, Phaser.Physics.ARCADE);
+    this.boss.body.velocity.y = 15;
+    this.boss.play('fly');
+  },
+
   playerPowerUp: function(player, powerUp) {
     this.addToScore(powerUp.reward);
     powerUp.kill();
-    if (this.weaponLevel < 5) {
+    this.powerUpSFX.play();
+    if (this.weaponLevel < 3) {
       this.weaponLevel++;
     }
   },
+
 
   quitGame: function(pointer) {
     // Here you should destroy anything you no longer need.
     // Stop music, delete sprites, purge caches, free resources, all that good stuff.
     this.sea.destroy();
     this.player.destroy();
-    this.powerUpPool.destroy();
     this.enemyPool.destroy();
     this.bulletPool.destroy();
     this.explosionPool.destroy();
+    this.shooterPool.destroy();
+    this.enemyBulletPool.destroy();
+    this.powerUpPool.destroy();
+    this.bossPool.destroy();
     this.scoreText.destroy();
     this.endText.destroy();
     this.returnText.destroy();
-    this.shooterPool.destroy();
-    this.enemyBulletPool.destroy();
     // Then let's go back to the main menu.
     this.state.start('menu');
   }
