@@ -155,7 +155,7 @@ Play.prototype = {
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(50, 'greenEnemy');
+    this.enemyPool.createMultiple(20, 'greenEnemy');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
@@ -183,7 +183,7 @@ Play.prototype = {
     this.shooterPool = this.add.group();
     this.shooterPool.enableBody = true;
     this.shooterPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.shooterPool.createMultiple(20, 'whiteEnemy');
+    this.shooterPool.createMultiple(10, 'whiteEnemy');
     this.shooterPool.setAll('anchor.x', 0.5);
     this.shooterPool.setAll('anchor.y', 0.5);
     this.shooterPool.setAll('outOfBoundsKill', true);
@@ -201,7 +201,7 @@ Play.prototype = {
     // start spawning 5 seconds into the game
     this.nextShooterAt = this.time.now + 5000;
     this.shooterDelay = 3000;
-    this.shooterShotDelay = 2000;
+    this.shooterShotDelay = 5000;
     this.shooterInitialHealth = 5;
 
 
@@ -272,7 +272,7 @@ Play.prototype = {
     this.bulletPool.setAll('checkWorldBounds', true);
 
     this.nextShotAt = 0;
-    this.shotDelay = 100;
+    this.shotDelay = 300;
 
     this.enemyBulletPool = this.add.group();
     this.enemyBulletPool.enableBody = true;
@@ -399,9 +399,9 @@ Play.prototype = {
     if (this.bossApproaching === false && this.boss.alive &&
       this.boss.nextShotAt < this.time.now &&
       this.enemyBulletPool.countDead() > 4) {
-      this.boss.nextShotAt = this.time.now + 1000;
+      this.boss.nextShotAt = this.time.now + 1500;
       this.enemyFireSFX.play();
-      for (var i = 0; i < 5; i++) {
+      for (var i = 0; i < 3; i++) {
         // process 2 bullets at a time
         var leftBullet = this.enemyBulletPool.getFirstExists(false);
         leftBullet.reset(this.boss.x - 10 - i * 10, this.boss.y + 20);
