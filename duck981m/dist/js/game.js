@@ -1287,16 +1287,21 @@ Play.prototype = {
     // and add it to the game
     this.game.add.existing(this.ducks);
     this.game.input.onDown.add(this.ducks.move, this.ducks);
+    this.ducksLive = true;
+
 
     // Health points, which are the hearts in the top right corner
+    this.hpGroup = this.game.add.group();
     this.hp = new Array();
     /*Adding 3 hearts*/
+    this.numberLifes = this.ducks.health;
 
-    for (this.live = 0; this.live < this.ducks.health; this.live++) {
-      this.hp[this.live] = this.add.sprite(10 + this.live * 20, 10, 'health');
+    for (this.live = 0; this.live < this.numberLifes; this.live++) {
+      this.hp[this.live] = this.add.sprite(10 + this.live * 40, 10, 'health');
       this.hp[this.live].fixedToCamera = true;
-      this.hp[this.live].cameraOffset.x = 10 + this.live * 20;
+      this.hp[this.live].cameraOffset.x = 10 + this.live * 40;
       this.hp[this.live].cameraOffset.y = 10;
+      this.hpGroup.add(this.hp[this.live]);
     }
 
     //    this.live = 2; //IDs of the hearts: hp[0], hp[1], hp[2]
@@ -1338,9 +1343,9 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 36);
+    this.scoreText = this.game.add.bitmapText(150, 10, 'flappyfont', this.score.toString(), 36);
     this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 100;
+    this.scoreText.cameraOffset.x = 150;
     this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
@@ -1452,6 +1457,8 @@ Play.prototype = {
     this.destroyed = ducks.damage();
     if (this.destroyed) {
 
+      this.ducksLive = false;
+
       this.scoreboard = new Scoreboard(this.game);
       this.game.add.existing(this.scoreboard);
       this.scoreboard.show(this.score, false);
@@ -1487,9 +1494,11 @@ Play.prototype = {
     this.theX = this.ducks.x;
     this.ducks.kill();
 
-    this.scoreboard = new Scoreboard(this.game);
-    this.game.add.existing(this.scoreboard);
-    this.scoreboard.show(this.score, true);
+    if (this.ducksLive) {
+      this.scoreboard = new Scoreboard(this.game);
+      this.game.add.existing(this.scoreboard);
+      this.scoreboard.show(this.score, true);
+    }
 
     this.boom.play();
 
@@ -1497,36 +1506,21 @@ Play.prototype = {
 
   poleHitDucks: function(pole, ducks) {
 
-    this.shot.play();
-
     var explosionAnimation = this.explosions.getFirstExists(false);
     this.explosionAnimation.reset(ducks.x + 10, ducks.y + 10);
     this.explosionAnimation.play('kaboom', 30, false, true);
 
-    // the pole cannot be kill, instead o re-create it
-    // if the pole lives, the ducks will overlap it foever
-    // so that it will be killed
-    // not depend on the remain healths
-
-    // the ducks is killed
-    this.hp[this.live].kill(); // "Killing" the hearth with the largest index
-    this.live--; // Decrementing our live variable
-
-    if (this.live === -1) { // If our last heart (index: 0) is "killed" then we restart the game
-      this.boom.play();
-    }
+    this.boom.play();
 
     this.theX = ducks.x;
 
-    this.destroyed = ducks.damage();
-    if (this.destroyed) {
+    this.scoreboard = new Scoreboard(this.game, this.theX - 100, 100);
+    this.game.add.existing(this.scoreboard);
+    this.scoreboard.show(this.score, false);
 
-      this.scoreboard = new Scoreboard(this.game);
-      this.game.add.existing(this.scoreboard);
-      this.scoreboard.show(this.score, false);
-
-    }
-
+    this.ducks.kill();
+    this.hpGroup.destroy();
+    this.ducksLive = false;
 
   },
 
