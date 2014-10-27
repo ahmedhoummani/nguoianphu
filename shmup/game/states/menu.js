@@ -11,7 +11,7 @@ Menu.prototype = {
     this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
 
 
-    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'greenEnemy');
+    this.enemy = this.game.add.sprite(this.game.world.centerX, 138, 'boss');
     this.enemy.animations.add('fly', [0, 1, 2], 20, true);
     this.enemy.play('fly');
     this.enemy.anchor.setTo(0.5, 0.5);
@@ -30,10 +30,15 @@ Menu.prototype = {
       angle: 20
     }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 
-    this.bullet = this.add.sprite(this.enemy.x, this.enemy.y, 'bullet');
-    this.bullet.anchor.setTo(0.5, 0.5);
-    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
-    this.bullet.body.velocity.y = +50;
+    this.player.angle = -20;
+    this.game.add.tween(this.player).to({
+      angle: 20
+    }, 1000, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
+
+    //    this.bullet = this.add.sprite(this.player.x, this.player.y, 'bullet');
+    //    this.bullet.anchor.setTo(0.5, 0.5);
+    //    this.physics.enable(this.bullet, Phaser.Physics.ARCADE);
+    //    this.bullet.body.velocity.y = +50;
 
     var style = {
       font: '65px Arial',
@@ -55,7 +60,7 @@ Menu.prototype = {
   },
   update: function() {
 
-    this.sea.tilePosition.y += 0.2;
+    this.sea.tilePosition.y += 0.6;
 
     if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');

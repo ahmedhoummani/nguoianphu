@@ -153,9 +153,9 @@ Play.prototype = {
 
     // add the score
     this.score = 0;
-    this.scoreText = this.game.add.bitmapText(100, 10, 'flappyfont', this.score.toString(), 36);
+    this.scoreText = this.game.add.bitmapText(150, 10, 'flappyfont', this.score.toString(), 36);
     this.scoreText.fixedToCamera = true;
-    this.scoreText.cameraOffset.x = 100;
+    this.scoreText.cameraOffset.x = 150;
     this.scoreText.cameraOffset.y = 10;
 
     this.game.camera.follow(this.ducks);
