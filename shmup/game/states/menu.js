@@ -8,17 +8,17 @@ Menu.prototype = {
   },
   create: function() {
 
-    this.sea = this.add.tileSprite(0, 0, 320, 480, 'sea');
+    this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
 
 
-    this.enemy = this.game.add.sprite(this.game.world.centerX, 50, 'boss');
+    this.enemy = this.game.add.sprite(this.game.width/2, 50, 'boss');
     this.enemy.animations.add('fly', [0, 1, 2], 20, true);
     this.enemy.play('fly');
     this.enemy.anchor.setTo(0.5, 0.5);
     this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
 
-    this.player = this.add.sprite(this.game.world.centerX, 400, 'player');
+    this.player = this.add.sprite(this.game.width/2, 400, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
     this.player.play('fly');
@@ -41,10 +41,10 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.titleText = this.game.add.text(this.game.world.centerX, this.game.world.centerY - 15, 'Air War', style);
+    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 15, 'Air War', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.world.centerX, this.game.world.centerY + 15, 'Click anywhere to play', {
+    this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 15, 'Click anywhere to play', {
       font: '12px Arial',
       fill: '#ffffff',
       align: 'center'

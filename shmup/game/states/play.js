@@ -5,7 +5,7 @@ Play.prototype = {
   create: function() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    this.sea = this.add.tileSprite(0, 0, 320, 480, 'sea');
+    this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
     this.sea.autoScroll(0, 12);
 
     this.explosionSFX = this.add.audio('explosion');
@@ -17,7 +17,7 @@ Play.prototype = {
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(15, 'greenEnemy');
+    this.enemyPool.createMultiple(30, 'greenEnemy');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
@@ -38,14 +38,14 @@ Play.prototype = {
     });
 
     this.nextEnemyAt = 0;
-    this.enemyDelay = 1000;
+    this.enemyDelay = 2000;
     this.enemyInitialHealth = 2;
 
 
     this.shooterPool = this.add.group();
     this.shooterPool.enableBody = true;
     this.shooterPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.shooterPool.createMultiple(20, 'whiteEnemy');
+    this.shooterPool.createMultiple(30, 'whiteEnemy');
     this.shooterPool.setAll('anchor.x', 0.5);
     this.shooterPool.setAll('anchor.y', 0.5);
     this.shooterPool.setAll('checkWorldBounds', true);
@@ -64,7 +64,7 @@ Play.prototype = {
     this.nextShooterAt = this.time.now + 5000;
     this.shooterDelay = 2000;
     this.shooterShotDelay = 3000;
-    this.shooterInitialHealth = 5;
+    this.shooterInitialHealth = 4;
 
 
     this.bossPool = this.add.group();
@@ -87,18 +87,18 @@ Play.prototype = {
     });
     this.boss = this.bossPool.getTop();
     this.bossApproaching = false;
-    this.bossInitialHealth = 300;
+    this.bossInitialHealth = 100;
 
 
-    this.player = this.add.sprite(this.game.world.centerX, this.game.world.height - 20, 'player');
+    this.player = this.add.sprite(this.game.width / 2, this.game.height - 20, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 50;
+    this.player.speed = 80;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
-    this.player.body.bounce.setTo(0, 0);
+    this.player.body.bounce.setTo(0.3, 0.3);
     // 20 x 20 pixel hitbox, centered a little bit higher than the center
     this.player.body.setSize(20, 20, 0, -5);
     this.weaponLevel = 0;
@@ -135,7 +135,7 @@ Play.prototype = {
 
 
     this.nextShotAt = 0;
-    this.shotDelay = 400;
+    this.shotDelay = 800;
 
     this.enemyBulletPool = this.add.group();
     this.enemyBulletPool.enableBody = true;
@@ -170,7 +170,7 @@ Play.prototype = {
 
     this.lives = this.add.group();
     for (var i = 0; i < 3; i++) {
-      var life = this.lives.create(924 + (30 * i), 30, 'player');
+      var life = this.lives.create(20 + (30 * i), 30, 'player');
       life.scale.setTo(0.5, 0.5);
       life.anchor.setTo(0.5, 0.5);
     }
@@ -182,12 +182,19 @@ Play.prototype = {
     this.sea.tilePosition.y += 0.6;
 
     if (this.input.activePointer.isDown &&
-      this.physics.arcade.distanceToPointer(this.player) > 15) {
+      this.physics.arcade.distanceToPointer(this.player) > 20) {
+
       this.physics.arcade.moveToPointer(this.player, this.player.speed);
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
       }
+
+      //      if (true) {
+      //        this.nextShotAt = this.time.now + this.shotDelay;
+      //        this.playerFireSFX.play();
+      //      }
+
 
     }
     //    else {
@@ -230,6 +237,8 @@ Play.prototype = {
       // also randomize the speed
       enemy.body.velocity.y = this.rnd.integerInRange(30, 60);
       enemy.play('fly');
+      enemy.checkWorldBounds = true;
+      enemy.outOfBoundsKill = true;
     }
 
 
@@ -243,15 +252,17 @@ Play.prototype = {
       var target = this.rnd.integerInRange(20, 1004);
       // move to target and rotate the sprite accordingly
       shooter.rotation = this.physics.arcade.moveToXY(
-        shooter, target, 768, this.rnd.integerInRange(30, 80)
+        shooter, target, 768, this.rnd.integerInRange(30, 100)
       ) - Math.PI / 2;
       shooter.play('fly');
       // each shooter has their own shot timer
       shooter.nextShotAt = 0;
+      shooter.checkWorldBounds = true;
+      shooter.outOfBoundsKill = true;
     }
 
     this.shooterPool.forEachAlive(function(enemy) {
-      if (this.time.now > enemy.nextShotAt && this.enemyBulletPool.countDead() > 0 && enemy.y < 400 && enemy.inWorld) {
+      if (this.time.now > enemy.nextShotAt && this.enemyBulletPool.countDead() > 0 && enemy.y < this.game.height - 100 && enemy.x > 0 && enemy.x < this.game.width) {
         var bullet = this.enemyBulletPool.getFirstExists(false);
         bullet.reset(enemy.x, enemy.y);
         this.physics.arcade.moveToObject(bullet, this.player, 150);
@@ -263,15 +274,15 @@ Play.prototype = {
     if (this.bossApproaching === false && this.boss.alive &&
       this.boss.nextShotAt < this.time.now &&
       this.enemyBulletPool.countDead() > 4) {
-      this.boss.nextShotAt = this.time.now + 1500;
+      this.boss.nextShotAt = this.time.now + 1000;
       this.enemyFireSFX.play();
-      for (var i = 0; i < 3; i++) {
+      for (var i = 0; i < 2; i++) {
         // process 2 bullets at a time
         var leftBullet = this.enemyBulletPool.getFirstExists(false);
         leftBullet.reset(this.boss.x - 10 - i * 10, this.boss.y + 20);
         var rightBullet = this.enemyBulletPool.getFirstExists(false);
         rightBullet.reset(this.boss.x + 10 + i * 10, this.boss.y + 20);
-        if (this.boss.health > 100) {
+        if (this.boss.health > 20) {
           // aim directly at the player
           this.physics.arcade.moveToObject(leftBullet, this.player, 150);
           this.physics.arcade.moveToObject(rightBullet, this.player, 150);
@@ -295,7 +306,7 @@ Play.prototype = {
 
     if (this.showReturn && this.time.now > this.showReturn) {
       this.returnText = this.add.text(
-        this.game.world.width / 2, this.game.world.height / 2,
+        this.game.width / 2, this.game.height / 2 + 15,
         'Click anywhere to go back to Main Menu', {
           font: '12px sans-serif',
           fill: '#fff'
@@ -336,7 +347,7 @@ Play.prototype = {
     }
 
     this.nextShotAt = this.time.now + this.shotDelay;
-    this.playerFireSFX.play();
+    //    this.playerFireSFX.play();
 
     var bullet;
     if (this.weaponLevel === 0) {
@@ -345,7 +356,7 @@ Play.prototype = {
       }
       bullet = this.bulletPool.getFirstExists(false);
       bullet.reset(this.player.x, this.player.y - 20);
-      bullet.body.velocity.y = -500;
+      bullet.body.velocity.y = -400;
     } else {
       if (this.bulletPool.countDead() < this.weaponLevel * 2) {
         return;
@@ -355,18 +366,18 @@ Play.prototype = {
         // spawn left bullet slightly left off center
         bullet.reset(this.player.x - (10 + i * 6), this.player.y - 20);
         // the left bullets spread from -95 degrees to -135 degrees
-        this.physics.arcade.velocityFromAngle(-95 - i * 10, 500, bullet.body.velocity);
+        // velocityFromAngle(angle, speed, point)
+        this.physics.arcade.velocityFromAngle(-90 - i * 0, 200, bullet.body.velocity);
 
         bullet = this.bulletPool.getFirstExists(false);
         // spawn right bullet slightly right off center
         bullet.reset(this.player.x + (10 + i * 6), this.player.y - 20);
         // the right bullets spread from -85 degrees to -45
-        this.physics.arcade.velocityFromAngle(-85 + i * 10, 500, bullet.body.velocity);
+        this.physics.arcade.velocityFromAngle(-90 + i * 0, 200, bullet.body.velocity);
       }
     }
 
   },
-
 
   enemyHit: function(bullet, enemy) {
     bullet.kill();
@@ -384,7 +395,10 @@ Play.prototype = {
 
     // crashing into an enemy only deals 5 damage
     this.damageEnemy(enemy, 5);
-    this.weaponLevel = 0;
+
+    if (this.weaponLevel > 0) {
+      this.weaponLevel -= 1;
+    }
 
     var life = this.lives.getFirstAlive();
     if (life) {
@@ -454,7 +468,7 @@ Play.prototype = {
 
     var msg = win ? 'You Win!!!' : 'Game Over!';
     this.endText = this.add.text(
-      this.game.world.width / 2, this.game.world.height / 2 - 100, msg, {
+      this.game.width / 2, this.game.height / 2 - 15, msg, {
         font: '40px serif',
         fill: '#fff'
       }
@@ -464,7 +478,7 @@ Play.prototype = {
   },
 
   spawnPowerUp: function(enemy) {
-    if (this.powerUpPool.countDead() === 0 || this.weaponLevel === 3) {
+    if (this.powerUpPool.countDead() === 0 || this.weaponLevel === 2) {
       return;
     }
 
@@ -479,7 +493,7 @@ Play.prototype = {
     this.bossApproaching = true;
     this.boss.reset(this.game.world.centerX, 0, this.bossInitialHealth);
     this.game.physics.enable(this.boss, Phaser.Physics.ARCADE);
-    this.boss.body.velocity.y = 15;
+    this.boss.body.velocity.y = 10;
     this.boss.play('fly');
   },
 
@@ -508,6 +522,7 @@ Play.prototype = {
     this.scoreText.destroy();
     this.endText.destroy();
     this.returnText.destroy();
+    this.lives.destroy();
     // Then let's go back to the main menu.
     this.state.start('menu');
   }
