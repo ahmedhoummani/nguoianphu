@@ -140,6 +140,7 @@ Play.prototype = {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
     this.sea = this.add.tileSprite(0, 0, 800, 600, 'sea');
+    this.sea.autoScroll(0, 12);
 
 
     this.enemyPool = this.add.group();
@@ -212,7 +213,7 @@ Play.prototype = {
   },
   update: function() {
 
-    this.sea.tilePosition.y += 0.2;
+    //    this.sea.tilePosition.y += 0.2;
 
     if (this.input.activePointer.isDown &&
       this.physics.arcade.distanceToPointer(this.player) > 15) {
