@@ -1,5 +1,5 @@
 {
   "projectName": "shmup",
-  "gameWidth": "800",
-  "gameHeight": "600"
+  "gameWidth": "240",
+  "gameHeight": "480"
 }
