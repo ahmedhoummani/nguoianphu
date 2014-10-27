@@ -5,7 +5,7 @@ Play.prototype = {
   create: function() {
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    this.sea = this.add.tileSprite(0, 0, 240, 480, 'sea');
+    this.sea = this.add.tileSprite(0, 0, 320, 480, 'sea');
     this.sea.autoScroll(0, 12);
 
     this.explosionSFX = this.add.audio('explosion');

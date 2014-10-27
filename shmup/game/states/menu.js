@@ -8,7 +8,7 @@ Menu.prototype = {
   },
   create: function() {
 
-    this.sea = this.add.tileSprite(0, 0, 240, 480, 'sea');
+    this.sea = this.add.tileSprite(0, 0, 320, 480, 'sea');
 
 
     this.enemy = this.game.add.sprite(this.game.world.centerX, 50, 'boss');
