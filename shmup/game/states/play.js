@@ -17,7 +17,7 @@ Play.prototype = {
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(30, 'greenEnemy');
+    this.enemyPool.createMultiple(50, 'greenEnemy');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
