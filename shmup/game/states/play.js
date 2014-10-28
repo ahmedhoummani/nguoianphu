@@ -3,8 +3,10 @@
 function Play() {}
 Play.prototype = {
   create: function() {
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
-
+    
+	this.game.world.setBounds(0, 0, 320, 480);
+	this.game.physics.startSystem(Phaser.Physics.ARCADE);
+	
     this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
     this.sea.autoScroll(0, 12);
 
@@ -17,7 +19,7 @@ Play.prototype = {
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(30, 'greenEnemy');
+    this.enemyPool.createMultiple(50, 'greenEnemy');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
@@ -45,7 +47,7 @@ Play.prototype = {
     this.shooterPool = this.add.group();
     this.shooterPool.enableBody = true;
     this.shooterPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.shooterPool.createMultiple(30, 'whiteEnemy');
+    this.shooterPool.createMultiple(40, 'whiteEnemy');
     this.shooterPool.setAll('anchor.x', 0.5);
     this.shooterPool.setAll('anchor.y', 0.5);
     this.shooterPool.setAll('checkWorldBounds', true);
@@ -98,7 +100,7 @@ Play.prototype = {
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.speed = 80;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
-    this.player.body.bounce.setTo(0.3, 0.3);
+    this.player.body.bounce.setTo(1, 1);
     // 20 x 20 pixel hitbox, centered a little bit higher than the center
     this.player.body.setSize(20, 20, 0, -5);
     this.weaponLevel = 0;
@@ -135,7 +137,7 @@ Play.prototype = {
 
 
     this.nextShotAt = 0;
-    this.shotDelay = 800;
+    this.shotDelay = 500;
 
     this.enemyBulletPool = this.add.group();
     this.enemyBulletPool.enableBody = true;
@@ -181,10 +183,12 @@ Play.prototype = {
 
     this.sea.tilePosition.y += 0.6;
 
-    if (this.input.activePointer.isDown &&
-      this.physics.arcade.distanceToPointer(this.player) > 20) {
+	
+    if (this.input.activePointer.isDown) {
 
-      this.physics.arcade.moveToPointer(this.player, this.player.speed);
+      // this.physics.arcade.moveToPointer(this.player, this.player.speed);
+	this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x)*2;
+	this.player.body.velocity.y = (this.input.activePointer.position.y - this.input.activePointer.positionDown.y);
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
@@ -196,7 +200,10 @@ Play.prototype = {
       //      }
 
 
-    }
+    } else {
+	this.player.body.velocity.x = 0;
+	this.player.body.velocity.y = 0;
+	}
     //    else {
     this.fire();
     //    }
@@ -356,7 +363,7 @@ Play.prototype = {
       }
       bullet = this.bulletPool.getFirstExists(false);
       bullet.reset(this.player.x, this.player.y - 20);
-      bullet.body.velocity.y = -400;
+      bullet.body.velocity.y = -500;
     } else {
       if (this.bulletPool.countDead() < this.weaponLevel * 2) {
         return;
@@ -367,13 +374,13 @@ Play.prototype = {
         bullet.reset(this.player.x - (10 + i * 6), this.player.y - 20);
         // the left bullets spread from -95 degrees to -135 degrees
         // velocityFromAngle(angle, speed, point)
-        this.physics.arcade.velocityFromAngle(-90 - i * 0, 200, bullet.body.velocity);
+        this.physics.arcade.velocityFromAngle(-90 - i * 0, 500, bullet.body.velocity);
 
         bullet = this.bulletPool.getFirstExists(false);
         // spawn right bullet slightly right off center
         bullet.reset(this.player.x + (10 + i * 6), this.player.y - 20);
         // the right bullets spread from -85 degrees to -45
-        this.physics.arcade.velocityFromAngle(-90 + i * 0, 200, bullet.body.velocity);
+        this.physics.arcade.velocityFromAngle(-90 + i * 0, 500, bullet.body.velocity);
       }
     }
 
@@ -473,7 +480,7 @@ Play.prototype = {
         fill: '#fff'
       }
     );
-    this.endText.anchor.setTo(0.5, 0);
+    this.endText.anchor.setTo(0.5, 0.5);
     this.showReturn = this.time.now + 2000;
   },
 
