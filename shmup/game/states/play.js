@@ -64,7 +64,7 @@ Play.prototype = {
     this.nextShooterAt = this.time.now + 5000;
     this.shooterDelay = 2000;
     this.shooterShotDelay = 3000;
-    this.shooterInitialHealth = 4;
+    this.shooterInitialHealth = 3;
 
 
     this.bossPool = this.add.group();
@@ -87,7 +87,7 @@ Play.prototype = {
     });
     this.boss = this.bossPool.getTop();
     this.bossApproaching = false;
-    this.bossInitialHealth = 100;
+    this.bossInitialHealth = 50;
 
 
     this.player = this.add.sprite(this.game.width / 2, this.game.height - 20, 'player');
@@ -96,7 +96,7 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 80;
+    this.player.speed = 100;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
     this.player.body.bounce.setTo(0.3, 0.3);
     // 20 x 20 pixel hitbox, centered a little bit higher than the center
@@ -182,7 +182,7 @@ Play.prototype = {
     this.sea.tilePosition.y += 0.6;
 
     if (this.input.activePointer.isDown &&
-      this.physics.arcade.distanceToPointer(this.player) > 20) {
+      this.physics.arcade.distanceToPointer(this.player) > 15) {
 
       this.physics.arcade.moveToPointer(this.player, this.player.speed);
 
@@ -308,8 +308,9 @@ Play.prototype = {
       this.returnText = this.add.text(
         this.game.width / 2, this.game.height / 2 + 15,
         'Click anywhere to go back to Main Menu', {
-          font: '12px sans-serif',
-          fill: '#fff'
+          font: '12px Arial',
+          fill: '#ffffff',
+          align: 'center'
         }
       );
       this.returnText.anchor.setTo(0.5, 0.5);
@@ -469,11 +470,12 @@ Play.prototype = {
     var msg = win ? 'You Win!!!' : 'Game Over!';
     this.endText = this.add.text(
       this.game.width / 2, this.game.height / 2 - 15, msg, {
-        font: '40px serif',
-        fill: '#fff'
+        font: '45px Arial',
+        fill: '#ffffff',
+        align: 'center'
       }
     );
-    this.endText.anchor.setTo(0.5, 0);
+    this.endText.anchor.setTo(0.5, 0.5);
     this.showReturn = this.time.now + 2000;
   },
 
