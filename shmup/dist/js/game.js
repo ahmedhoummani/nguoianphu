@@ -160,10 +160,10 @@ module.exports = Menu;
 function Play() {}
 Play.prototype = {
   create: function() {
-    
-	this.game.world.setBounds(0, 0, 320, 480);
-	this.game.physics.startSystem(Phaser.Physics.ARCADE);
-	
+
+    this.game.world.setBounds(0, 0, 320, 480);
+    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+
     this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
     this.sea.autoScroll(0, 12);
 
@@ -223,7 +223,7 @@ Play.prototype = {
     this.nextShooterAt = this.time.now + 5000;
     this.shooterDelay = 2000;
     this.shooterShotDelay = 3000;
-    this.shooterInitialHealth = 4;
+    this.shooterInitialHealth = 3;
 
 
     this.bossPool = this.add.group();
@@ -246,7 +246,7 @@ Play.prototype = {
     });
     this.boss = this.bossPool.getTop();
     this.bossApproaching = false;
-    this.bossInitialHealth = 100;
+    this.bossInitialHealth = 50;
 
 
     this.player = this.add.sprite(this.game.width / 2, this.game.height - 20, 'player');
@@ -255,11 +255,9 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 0;
+    this.player.speed = 100;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
-    this.player.body.bounce.setTo(1, 1);
-    // 20 x 20 pixel hitbox, centered a little bit higher than the center
-    this.player.body.setSize(20, 20, 0, -5);
+    this.player.body.bounce.setTo(0.5, 0.5);
     this.weaponLevel = 0;
 
     this.powerUpPool = this.add.group();
@@ -334,38 +332,46 @@ Play.prototype = {
       life.anchor.setTo(0.5, 0.5);
     }
 
+    // add our pause button without a callback
+    this.pauseButton = this.game.add.sprite(this.game.width - 32, this.game.height - 32, 'pauseButton');
+    this.pauseButton.anchor.setTo(0.5, 0.5);
+    this.pauseButton.inputEnabled = true;
+    //    this.pauseButton.input.useHandCursor = true;
+
 
   },
   update: function() {
 
     this.sea.tilePosition.y += 0.6;
 
-	
+    // add our pause button without a callback
+    this.pauseButton.events.onInputUp.add(function() {
+      this.game.paused = true;
+    }, this);
+    this.game.input.onDown.add(function() {
+      if (this.game.paused) this.game.paused = false;
+    }, this);
+
+
     if (this.input.activePointer.isDown) {
 
       // this.physics.arcade.moveToPointer(this.player, this.player.speed);
-	this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x)*2;
-	this.player.body.velocity.y = (this.input.activePointer.position.y - this.input.activePointer.positionDown.y);
+      this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x) * 2;
+      this.player.body.velocity.y = (this.input.activePointer.position.y - this.input.activePointer.positionDown.y);
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
       }
 
-      //      if (true) {
-      //        this.nextShotAt = this.time.now + this.shotDelay;
-      //        this.playerFireSFX.play();
-      //      }
-
-
     } else {
-	this.player.body.velocity.x = 0;
-	this.player.body.velocity.y = 0;
-	}
+      this.player.body.velocity.x = 0;
+      this.player.body.velocity.y = 0;
+    }
     //    else {
     this.fire();
     //    }
 
-    //    this.game.physics.arcade.collide(this.player, this.enemyPool);
+    //        this.game.physics.arcade.collide(this.player, this.game.bo);
 
     this.physics.arcade.overlap(
       this.player, this.enemyPool, this.playerHit, null, this
@@ -472,8 +478,9 @@ Play.prototype = {
       this.returnText = this.add.text(
         this.game.width / 2, this.game.height / 2 + 15,
         'Click anywhere to go back to Main Menu', {
-          font: '12px sans-serif',
-          fill: '#fff'
+          font: '12px Arial',
+          fill: '#ffffff',
+          align: 'center'
         }
       );
       this.returnText.anchor.setTo(0.5, 0.5);
@@ -633,10 +640,12 @@ Play.prototype = {
     var msg = win ? 'You Win!!!' : 'Game Over!';
     this.endText = this.add.text(
       this.game.width / 2, this.game.height / 2 - 15, msg, {
-        font: '40px serif',
-        fill: '#fff'
+        font: '45px Arial',
+        fill: '#ffffff',
+        align: 'center'
       }
     );
+    this.pauseButton.kill();
     this.endText.anchor.setTo(0.5, 0.5);
     this.showReturn = this.time.now + 2000;
   },
@@ -670,6 +679,26 @@ Play.prototype = {
     }
   },
 
+  managePause: function() {
+    //    this.game.paused = true;
+    this._fontStyle = {
+      font: "40px Arial",
+      fill: "#FFCC00",
+      stroke: "#333",
+      strokeThickness: 5,
+      align: "center"
+    };
+    var pausedText = this.add.text(100, 250, "Game paused.\nTap anywhere to continue.", this._fontStyle);
+    this.input.onDown.add(function() {
+      if (this.game.paused) {
+        pausedText.destroy();
+        this.game.paused = false;
+      } else {
+        this.game.paused = true;
+      }
+    }, this);
+  },
+
 
   quitGame: function(pointer) {
     // Here you should destroy anything you no longer need.
@@ -687,6 +716,7 @@ Play.prototype = {
     this.endText.destroy();
     this.returnText.destroy();
     this.lives.destroy();
+    this.pauseButton.destroy();
     // Then let's go back to the main menu.
     this.state.start('menu');
   }
@@ -726,6 +756,7 @@ Preload.prototype = {
     this.load.image('powerup1', 'assets/powerup1.png');
 
     this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
+    this.load.spritesheet('pauseButton', 'assets/pause-button.png', 32, 32);
 
     this.load.audio('explosion', ['assets/explosion.wav']);
     this.load.audio('playerExplosion', ['assets/player-explosion.wav']);

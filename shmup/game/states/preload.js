@@ -27,6 +27,7 @@ Preload.prototype = {
     this.load.image('powerup1', 'assets/powerup1.png');
 
     this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
+    this.load.spritesheet('pauseButton', 'assets/pause-button.png', 32, 32);
 
     this.load.audio('explosion', ['assets/explosion.wav']);
     this.load.audio('playerExplosion', ['assets/player-explosion.wav']);
