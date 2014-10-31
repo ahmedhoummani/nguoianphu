@@ -353,23 +353,23 @@ Play.prototype = {
     }, this);
 
 
-    if (this.input.activePointer.isDown ){
-//        && 1000 > this.input.activePointer.duration > 100) {
+    if (this.input.activePointer.isDown) {
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
       }
 
-      // this.physics.arcade.moveToPointer(this.player, this.player.speed);
-
-      this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x) * 2;
-        
-      this.player.body.velocity.y = (this.input.activePointer.position.y - this.input.activePointer.positionDown.y);
-
-    } else {
-      this.player.body.velocity.x = 0;
-      this.player.body.velocity.y = 0;
+      this.physics.arcade.moveToPointer(this.player, this.player.speed);
     }
+
+    //      this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x) * 2;
+    //
+    //      this.player.body.velocity.y = (this.input.activePointer.position.y - this.input.activePointer.positionDown.y);
+    //
+    //    } else {
+    //      this.player.body.velocity.x = 0;
+    //      this.player.body.velocity.y = 0;
+    //    }
 
     this.fire();
 
