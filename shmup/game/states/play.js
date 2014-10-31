@@ -19,13 +19,13 @@ Play.prototype = {
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
     this.enemyPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.enemyPool.createMultiple(50, 'greenEnemy');
+    this.enemyPool.createMultiple(10, 'greenEnemy');
     this.enemyPool.setAll('anchor.x', 0.5);
     this.enemyPool.setAll('anchor.y', 0.5);
     this.enemyPool.setAll('outOfBoundsKill', true);
     this.enemyPool.setAll('checkWorldBounds', true);
 
-    this.enemyPool.setAll('reward', 100, false, false, 0, true);
+    this.enemyPool.setAll('reward', 200, false, false, 0, true);
     this.enemyPool.setAll('dropRate', 0.3, false, false, 0, true);
 
     // Set the animation for each sprite
@@ -39,7 +39,7 @@ Play.prototype = {
 
     });
 
-    this.nextEnemyAt = 0;
+    this.nextEnemyAt = this.time.now + 5000;;
     this.enemyDelay = 2000;
     this.enemyInitialHealth = 2;
 
@@ -47,12 +47,12 @@ Play.prototype = {
     this.shooterPool = this.add.group();
     this.shooterPool.enableBody = true;
     this.shooterPool.physicsBodyType = Phaser.Physics.ARCADE;
-    this.shooterPool.createMultiple(40, 'whiteEnemy');
+    this.shooterPool.createMultiple(5, 'whiteEnemy');
     this.shooterPool.setAll('anchor.x', 0.5);
     this.shooterPool.setAll('anchor.y', 0.5);
     this.shooterPool.setAll('checkWorldBounds', true);
     this.shooterPool.setAll('outOfBoundsKill', true);
-    this.shooterPool.setAll('reward', 400, false, false, 0, true);
+    this.shooterPool.setAll('reward', 500, false, false, 0, true);
     this.shooterPool.setAll('dropRate', 0.5, false, false, 0, true);
     // Set the animation for each sprite
     this.shooterPool.forEach(function(enemy) {
@@ -64,7 +64,7 @@ Play.prototype = {
     });
     // start spawning 5 seconds into the game
     this.nextShooterAt = this.time.now + 5000;
-    this.shooterDelay = 2000;
+    this.shooterDelay = 5000;
     this.shooterShotDelay = 3000;
     this.shooterInitialHealth = 3;
 
@@ -100,7 +100,7 @@ Play.prototype = {
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
     this.player.speed = 120;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
-    this.player.body.bounce.setTo(0.5, 0.5);
+    this.player.body.bounce.setTo(0.2, 0.2);
     this.weaponLevel = 0;
 
     this.powerUpPool = this.add.group();
@@ -134,7 +134,7 @@ Play.prototype = {
     this.bulletPool.setAll('outOfBoundsKill', true);
 
 
-    this.nextShotAt = 0;
+    this.nextShotAt = 0;;
     this.shotDelay = 500;
 
     this.enemyBulletPool = this.add.group();
@@ -246,9 +246,9 @@ Play.prototype = {
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
       //      enemy.reset(this.rnd.integerInRange(20, 780), 0);
-      enemy.reset(this.rnd.integerInRange(20, 1004), 0, this.enemyInitialHealth);
+      enemy.reset(this.rnd.integerInRange(20, 460), 0, this.enemyInitialHealth);
       // also randomize the speed
-      enemy.body.velocity.y = this.rnd.integerInRange(30, 60);
+      enemy.body.velocity.y = this.rnd.integerInRange(50, 80);
       enemy.play('fly');
       enemy.checkWorldBounds = true;
       enemy.outOfBoundsKill = true;
@@ -259,13 +259,13 @@ Play.prototype = {
       this.nextShooterAt = this.time.now + this.shooterDelay;
       var shooter = this.shooterPool.getFirstExists(false);
       // spawn at a random location at the top
-      shooter.reset(this.rnd.integerInRange(20, 1004), 0,
+      shooter.reset(this.rnd.integerInRange(20, 460), 0,
         this.shooterInitialHealth);
       // choose a random target location at the bottom
-      var target = this.rnd.integerInRange(20, 1004);
+      var target = this.rnd.integerInRange(20, 460);
       // move to target and rotate the sprite accordingly
       shooter.rotation = this.physics.arcade.moveToXY(
-        shooter, target, 768, this.rnd.integerInRange(30, 100)
+        shooter, target, 768, this.rnd.integerInRange(70, 100)
       ) - Math.PI / 2;
       shooter.play('fly');
       // each shooter has their own shot timer
@@ -287,15 +287,15 @@ Play.prototype = {
     if (this.bossApproaching === false && this.boss.alive &&
       this.boss.nextShotAt < this.time.now &&
       this.enemyBulletPool.countDead() > 4) {
-      this.boss.nextShotAt = this.time.now + 1000;
+      this.boss.nextShotAt = this.time.now + 1500;
       //      this.enemyFireSFX.play();
-      for (var i = 0; i < 2; i++) {
+      for (var i = 0; i < 1; i++) {
         // process 2 bullets at a time
         var leftBullet = this.enemyBulletPool.getFirstExists(false);
         leftBullet.reset(this.boss.x - 10 - i * 10, this.boss.y + 20);
         var rightBullet = this.enemyBulletPool.getFirstExists(false);
         rightBullet.reset(this.boss.x + 10 + i * 10, this.boss.y + 20);
-        if (this.boss.health > 20) {
+        if (this.boss.health > 10) {
           // aim directly at the player
           this.physics.arcade.moveToObject(leftBullet, this.player, 150);
           this.physics.arcade.moveToObject(rightBullet, this.player, 150);
@@ -330,12 +330,12 @@ Play.prototype = {
       this.showReturn = false;
     }
 
-    if (this.bossApproaching && this.boss.y > 80) {
+    if (this.bossApproaching && this.boss.y > 70) {
       this.bossApproaching = false;
       this.boss.health = this.bossInitialHealth;
       this.boss.nextShotAt = 0;
       this.boss.body.velocity.y = 0;
-      this.boss.body.velocity.x = 200;
+      this.boss.body.velocity.x = 80;
       // allow bouncing off world bounds
       this.boss.body.bounce.x = 1;
       this.boss.body.collideWorldBounds = true;
@@ -363,30 +363,48 @@ Play.prototype = {
 
     var bullet;
     if (this.weaponLevel === 0) {
+
       if (this.bulletPool.countDead() === 0) {
         return;
       }
+
       bullet = this.bulletPool.getFirstExists(false);
       bullet.reset(this.player.x, this.player.y - 20);
-      bullet.body.velocity.y = -500;
-    } else {
-      if (this.bulletPool.countDead() < this.weaponLevel * 2) {
+      bullet.body.velocity.y = -300;
+
+    } else if (this.weaponLevel === 1) {
+
+      if (this.bulletPool.countDead() < 10) {
         return;
       }
-      for (var i = 0; i < this.weaponLevel; i++) {
+        
+      for (var i = 0; i < 3; i++) {
+        bullet = this.bulletPool.getFirstExists(false);
+        bullet.reset(this.player.x, this.player.y - i*10);
+        bullet.body.velocity.y = -200;
+      }
+
+    } else {
+
+      if (this.bulletPool.countDead() < 20) {
+        return;
+      }
+
+      for (var i = 0; i < 2; i++) {
         bullet = this.bulletPool.getFirstExists(false);
         // spawn left bullet slightly left off center
-        bullet.reset(this.player.x - (10 + i * 6), this.player.y - 20);
+        bullet.reset(this.player.x - (20 + i * 6), this.player.y - 20);
         // the left bullets spread from -95 degrees to -135 degrees
         // velocityFromAngle(angle, speed, point)
-        this.physics.arcade.velocityFromAngle(-90 - i * 0, 500, bullet.body.velocity);
+        this.physics.arcade.velocityFromAngle(-95 - i * 10, 300, bullet.body.velocity);
 
         bullet = this.bulletPool.getFirstExists(false);
         // spawn right bullet slightly right off center
-        bullet.reset(this.player.x + (10 + i * 6), this.player.y - 20);
+        bullet.reset(this.player.x + (20 + i * 6), this.player.y - 20);
         // the right bullets spread from -85 degrees to -45
-        this.physics.arcade.velocityFromAngle(-90 + i * 0, 500, bullet.body.velocity);
+        this.physics.arcade.velocityFromAngle(-85 + i * 10, 300, bullet.body.velocity);
       }
+
     }
 
   },
@@ -466,7 +484,7 @@ Play.prototype = {
     this.scoreText.text = this.score;
 
     // this approach prevents the boss from spawning again upon winning
-    if (this.score >= 5000 && this.bossPool.countDead() == 1) {
+    if (this.score >= 3500 && this.bossPool.countDead() == 1) {
       this.spawnBoss();
     }
 
@@ -515,7 +533,7 @@ Play.prototype = {
     this.addToScore(powerUp.reward);
     powerUp.kill();
     //    this.powerUpSFX.play();
-    if (this.weaponLevel < 3) {
+    if (this.weaponLevel < 2) {
       this.weaponLevel++;
     }
   },
