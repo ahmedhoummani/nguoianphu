@@ -110,6 +110,7 @@ module.exports = function (grunt) {
   grunt.registerTask('build', ['buildBootstrapper', 'browserify','copy']);
   // grunt.registerTask('serve', ['build','concat:js' ,'uglify:js', 'connect:livereload', 'open', 'watch']);
   grunt.registerTask('serve', ['build','uglify:js', 'connect:livereload', 'open', 'watch']);
+  grunt.registerTask('deploy', ['build','uglify:js']);
   grunt.registerTask('default', ['serve']);
   grunt.registerTask('prod', ['build', 'copy']);
 
