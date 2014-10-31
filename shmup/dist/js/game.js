@@ -24,32 +24,38 @@ Boot.prototype = {
 
   preload: function() {
 
-    this.load.image('preloader', 'assets/preloader.gif');
+    //    this.load.image('preloader', 'assets/preloader.gif');
 
   },
 
   create: function() {
 
     this.game.input.maxPointers = 1;
-	this.stage.disableVisibilityChange = !0;
-	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	this.scale.pageAlignHorizontally = !0;
-	this.scale.hasResized.add(this.gameResized, this);
-	this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
-	this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-	this.scale.setScreenSize(!0);
+    this.stage.disableVisibilityChange = !0;
+      
+    //scaling options
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    //have the game centered horizontally
+    this.scale.pageAlignHorizontally = !0;
+    this.scale.pageAlignVertically = !0;
+
+    this.scale.hasResized.add(this.gameResized, this);
+    this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+    this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+    //screen size will be set automatically
+    this.scale.setScreenSize(!0);
 
     this.game.state.start('preload');
 
   },
 
-  gameResized: function () {},
-        
-  enterIncorrectOrientation: function () {
-            this.orientated = !1, document.getElementById("orientation").style.display = "block"
+  gameResized: function() {},
+
+  enterIncorrectOrientation: function() {
+    this.orientated = !1, document.getElementById("orientation").style.display = "block"
   },
-  leaveIncorrectOrientation: function () {
-            this.orientated = !0, document.getElementById("orientation").style.display = "none"
+  leaveIncorrectOrientation: function() {
+    this.orientated = !0, document.getElementById("orientation").style.display = "none"
   }
 
 };
@@ -167,11 +173,11 @@ Play.prototype = {
     this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
     this.sea.autoScroll(0, 12);
 
-    this.explosionSFX = this.add.audio('explosion');
-    this.playerExplosionSFX = this.add.audio('playerExplosion');
-    this.enemyFireSFX = this.add.audio('enemyFire');
-    this.playerFireSFX = this.add.audio('playerFire');
-    this.powerUpSFX = this.add.audio('powerUp');
+    //    this.explosionSFX = this.add.audio('explosion');
+    //    this.playerExplosionSFX = this.add.audio('playerExplosion');
+    //    this.enemyFireSFX = this.add.audio('enemyFire');
+    //    this.playerFireSFX = this.add.audio('playerFire');
+    //    this.powerUpSFX = this.add.audio('powerUp');
 
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
@@ -255,7 +261,7 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 100;
+    this.player.speed = 120;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
     this.player.body.bounce.setTo(0.5, 0.5);
     this.weaponLevel = 0;
@@ -373,10 +379,6 @@ Play.prototype = {
 
     this.fire();
 
-    this.physics.arcade.overlap(
-      this.player, this.enemyPool, this.playerHit, null, this
-    );
-
 
     this.physics.arcade.overlap(
       this.bulletPool, this.enemyPool, this.enemyHit, null, this
@@ -384,6 +386,10 @@ Play.prototype = {
 
     this.physics.arcade.overlap(
       this.bulletPool, this.shooterPool, this.enemyHit, null, this
+    );
+
+    this.physics.arcade.overlap(
+      this.player, this.enemyPool, this.playerHit, null, this
     );
 
     this.physics.arcade.overlap(
@@ -436,7 +442,7 @@ Play.prototype = {
         var bullet = this.enemyBulletPool.getFirstExists(false);
         bullet.reset(enemy.x, enemy.y);
         this.physics.arcade.moveToObject(bullet, this.player, 150);
-        this.enemyFireSFX.play();
+        //        this.enemyFireSFX.play();
         enemy.nextShotAt = this.time.now + this.shooterShotDelay;
       }
     }, this);
@@ -445,7 +451,7 @@ Play.prototype = {
       this.boss.nextShotAt < this.time.now &&
       this.enemyBulletPool.countDead() > 4) {
       this.boss.nextShotAt = this.time.now + 1000;
-      this.enemyFireSFX.play();
+      //      this.enemyFireSFX.play();
       for (var i = 0; i < 2; i++) {
         // process 2 bullets at a time
         var leftBullet = this.enemyBulletPool.getFirstExists(false);
@@ -507,8 +513,6 @@ Play.prototype = {
       );
     }
 
-
-
   },
 
   fire: function() {
@@ -562,7 +566,7 @@ Play.prototype = {
       return;
     }
 
-    this.playerExplosionSFX.play();
+    //    this.playerExplosionSFX.play();
 
     // crashing into an enemy only deals 5 damage
     this.damageEnemy(enemy, 5);
@@ -607,7 +611,7 @@ Play.prototype = {
       enemy.play('hit');
     } else {
       this.explode(enemy);
-      this.explosionSFX.play();
+      //      this.explosionSFX.play();
       this.addToScore(enemy.reward);
       this.spawnPowerUp(enemy);
       if (enemy.key === 'boss') {
@@ -673,7 +677,7 @@ Play.prototype = {
   playerPowerUp: function(player, powerUp) {
     this.addToScore(powerUp.reward);
     powerUp.kill();
-    this.powerUpSFX.play();
+    //    this.powerUpSFX.play();
     if (this.weaponLevel < 3) {
       this.weaponLevel++;
     }
@@ -736,11 +740,11 @@ function Preload() {
 
 Preload.prototype = {
   preload: function() {
-    this.asset = this.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'preloader');
-    this.asset.anchor.setTo(0.5, 0.5);
+    //    this.asset = this.add.sprite(this.game.world.width / 2, this.game.world.height / 2, 'preloader');
+    //    this.asset.anchor.setTo(0.5, 0.5);
 
-    this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
-    this.load.setPreloadSprite(this.asset);
+    //    this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
+    //    this.load.setPreloadSprite(this.asset);
 
 
     this.load.image('sea', 'assets/sea.png');
@@ -758,25 +762,27 @@ Preload.prototype = {
     this.load.spritesheet('explosion', 'assets/explosion.png', 32, 32);
     this.load.spritesheet('pauseButton', 'assets/pause-button.png', 32, 32);
 
-    this.load.audio('explosion', ['assets/explosion.wav']);
-    this.load.audio('playerExplosion', ['assets/player-explosion.wav']);
-    this.load.audio('enemyFire', ['assets/enemy-fire.wav']);
-    this.load.audio('playerFire', ['assets/player-fire.wav']);
-    this.load.audio('powerUp', ['assets/powerup.wav']);
+    //    this.load.audio('explosion', ['assets/explosion.wav']);
+    //    this.load.audio('playerExplosion', ['assets/player-explosion.wav']);
+    //    this.load.audio('enemyFire', ['assets/enemy-fire.wav']);
+    //    this.load.audio('playerFire', ['assets/player-fire.wav']);
+    //    this.load.audio('powerUp', ['assets/powerup.wav']);
 
   },
   create: function() {
-    this.asset.cropEnabled = false;
+    //    this.asset.cropEnabled = false;
+    this.game.state.start('menu');
 
   },
   update: function() {
-    if ( !! this.ready) {
-      this.game.state.start('menu');
-    }
-  },
-  onLoadComplete: function() {
-    this.ready = true;
+    //    if ( !! this.ready) {
+    //      this.game.state.start('menu');
+    //    }
   }
+  //    ,
+  //  onLoadComplete: function() {
+  //    this.ready = true;
+  //  }
 };
 
 module.exports = Preload;

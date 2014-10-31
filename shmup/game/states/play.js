@@ -10,11 +10,11 @@ Play.prototype = {
     this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
     this.sea.autoScroll(0, 12);
 
-    this.explosionSFX = this.add.audio('explosion');
-    this.playerExplosionSFX = this.add.audio('playerExplosion');
-    this.enemyFireSFX = this.add.audio('enemyFire');
-    this.playerFireSFX = this.add.audio('playerFire');
-    this.powerUpSFX = this.add.audio('powerUp');
+    //    this.explosionSFX = this.add.audio('explosion');
+    //    this.playerExplosionSFX = this.add.audio('playerExplosion');
+    //    this.enemyFireSFX = this.add.audio('enemyFire');
+    //    this.playerFireSFX = this.add.audio('playerFire');
+    //    this.powerUpSFX = this.add.audio('powerUp');
 
     this.enemyPool = this.add.group();
     this.enemyPool.enableBody = true;
@@ -98,7 +98,7 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 100;
+    this.player.speed = 120;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
     this.player.body.bounce.setTo(0.5, 0.5);
     this.weaponLevel = 0;
@@ -216,10 +216,6 @@ Play.prototype = {
 
     this.fire();
 
-    this.physics.arcade.overlap(
-      this.player, this.enemyPool, this.playerHit, null, this
-    );
-
 
     this.physics.arcade.overlap(
       this.bulletPool, this.enemyPool, this.enemyHit, null, this
@@ -227,6 +223,10 @@ Play.prototype = {
 
     this.physics.arcade.overlap(
       this.bulletPool, this.shooterPool, this.enemyHit, null, this
+    );
+
+    this.physics.arcade.overlap(
+      this.player, this.enemyPool, this.playerHit, null, this
     );
 
     this.physics.arcade.overlap(
@@ -279,7 +279,7 @@ Play.prototype = {
         var bullet = this.enemyBulletPool.getFirstExists(false);
         bullet.reset(enemy.x, enemy.y);
         this.physics.arcade.moveToObject(bullet, this.player, 150);
-        this.enemyFireSFX.play();
+        //        this.enemyFireSFX.play();
         enemy.nextShotAt = this.time.now + this.shooterShotDelay;
       }
     }, this);
@@ -288,7 +288,7 @@ Play.prototype = {
       this.boss.nextShotAt < this.time.now &&
       this.enemyBulletPool.countDead() > 4) {
       this.boss.nextShotAt = this.time.now + 1000;
-      this.enemyFireSFX.play();
+      //      this.enemyFireSFX.play();
       for (var i = 0; i < 2; i++) {
         // process 2 bullets at a time
         var leftBullet = this.enemyBulletPool.getFirstExists(false);
@@ -350,8 +350,6 @@ Play.prototype = {
       );
     }
 
-
-
   },
 
   fire: function() {
@@ -405,7 +403,7 @@ Play.prototype = {
       return;
     }
 
-    this.playerExplosionSFX.play();
+    //    this.playerExplosionSFX.play();
 
     // crashing into an enemy only deals 5 damage
     this.damageEnemy(enemy, 5);
@@ -450,7 +448,7 @@ Play.prototype = {
       enemy.play('hit');
     } else {
       this.explode(enemy);
-      this.explosionSFX.play();
+      //      this.explosionSFX.play();
       this.addToScore(enemy.reward);
       this.spawnPowerUp(enemy);
       if (enemy.key === 'boss') {
@@ -516,7 +514,7 @@ Play.prototype = {
   playerPowerUp: function(player, powerUp) {
     this.addToScore(powerUp.reward);
     powerUp.kill();
-    this.powerUpSFX.play();
+    //    this.powerUpSFX.play();
     if (this.weaponLevel < 3) {
       this.weaponLevel++;
     }
