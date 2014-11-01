@@ -246,7 +246,7 @@ Play.prototype = {
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
       //      enemy.reset(this.rnd.integerInRange(20, 780), 0);
-      enemy.reset(this.rnd.integerInRange(20, 460), 0, this.enemyInitialHealth);
+      enemy.reset(this.rnd.integerInRange(32, this.game.width -32), 0, this.enemyInitialHealth);
       // also randomize the speed
       enemy.body.velocity.y = this.rnd.integerInRange(50, 80);
       enemy.play('fly');
@@ -259,10 +259,10 @@ Play.prototype = {
       this.nextShooterAt = this.time.now + this.shooterDelay;
       var shooter = this.shooterPool.getFirstExists(false);
       // spawn at a random location at the top
-      shooter.reset(this.rnd.integerInRange(20, 460), 0,
+      shooter.reset(this.rnd.integerInRange(32, this.game.width -32), 0,
         this.shooterInitialHealth);
       // choose a random target location at the bottom
-      var target = this.rnd.integerInRange(20, 460);
+      var target = this.rnd.integerInRange(32, this.game.width -32);
       // move to target and rotate the sprite accordingly
       shooter.rotation = this.physics.arcade.moveToXY(
         shooter, target, 768, this.rnd.integerInRange(70, 100)
