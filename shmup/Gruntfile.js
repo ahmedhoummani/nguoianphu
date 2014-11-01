@@ -107,10 +107,9 @@ module.exports = function (grunt) {
   
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
-  grunt.registerTask('build', ['buildBootstrapper', 'browserify','copy']);
+  grunt.registerTask('build', ['buildBootstrapper', 'browserify','uglify:js','copy']);
   // grunt.registerTask('serve', ['build','concat:js' ,'uglify:js', 'connect:livereload', 'open', 'watch']);
   grunt.registerTask('serve', ['build','uglify:js', 'connect:livereload', 'open', 'watch']);
-  grunt.registerTask('deploy', ['build','uglify:js']);
   grunt.registerTask('default', ['serve']);
   grunt.registerTask('prod', ['build', 'copy']);
 

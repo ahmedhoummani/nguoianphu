@@ -540,10 +540,10 @@ Play.prototype = {
       if (this.bulletPool.countDead() < 10) {
         return;
       }
-        
+
       for (var i = 0; i < 3; i++) {
         bullet = this.bulletPool.getFirstExists(false);
-        bullet.reset(this.player.x, this.player.y - i*10);
+        bullet.reset(this.player.x, this.player.y - i * 10);
         bullet.body.velocity.y = -200;
       }
 
@@ -624,21 +624,28 @@ Play.prototype = {
   },
 
   damageEnemy: function(enemy, damage) {
+
     enemy.damage(damage);
+
     if (enemy.alive) {
       enemy.play('hit');
     } else {
+
       this.explode(enemy);
       //      this.explosionSFX.play();
       this.addToScore(enemy.reward);
       this.spawnPowerUp(enemy);
+
       if (enemy.key === 'boss') {
         this.enemyPool.destroy();
         this.shooterPool.destroy();
         this.bossPool.destroy();
         this.enemyBulletPool.destroy();
+        this.addToScore(this.lives.countLiving() * 500);
+        this.lives.destroy();
         this.displayEnd(true);
       }
+
     }
   },
 
@@ -700,27 +707,6 @@ Play.prototype = {
       this.weaponLevel++;
     }
   },
-
-  managePause: function() {
-    //    this.game.paused = true;
-    this._fontStyle = {
-      font: "40px Arial",
-      fill: "#FFCC00",
-      stroke: "#333",
-      strokeThickness: 5,
-      align: "center"
-    };
-    var pausedText = this.add.text(100, 250, "Game paused.\nTap anywhere to continue.", this._fontStyle);
-    this.input.onDown.add(function() {
-      if (this.game.paused) {
-        pausedText.destroy();
-        this.game.paused = false;
-      } else {
-        this.game.paused = true;
-      }
-    }, this);
-  },
-
 
   quitGame: function(pointer) {
     // Here you should destroy anything you no longer need.
