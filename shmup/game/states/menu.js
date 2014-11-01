@@ -11,14 +11,14 @@ Menu.prototype = {
     this.sea = this.add.tileSprite(0, 0, this.game.world.width, this.game.world.height, 'sea');
 
 
-    this.enemy = this.game.add.sprite(this.game.width/2, 50, 'boss');
+    this.enemy = this.game.add.sprite(this.game.width/2, 80, 'boss');
     this.enemy.animations.add('fly', [0, 1, 2], 20, true);
     this.enemy.play('fly');
     this.enemy.anchor.setTo(0.5, 0.5);
     this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
 
-    this.player = this.add.sprite(this.game.width/2, 400, 'player');
+    this.player = this.add.sprite(this.game.width/2, this.game.height/2 + 50, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
     this.player.play('fly');
