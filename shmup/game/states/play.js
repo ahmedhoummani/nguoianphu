@@ -40,7 +40,7 @@ Play.prototype = {
     });
 
     this.nextEnemyAt = this.time.now + 5000;;
-    this.enemyDelay = 2000;
+    this.enemyDelay = 4000;
     this.enemyInitialHealth = 2;
 
 
@@ -64,8 +64,8 @@ Play.prototype = {
     });
     // start spawning 5 seconds into the game
     this.nextShooterAt = this.time.now + 5000;
-    this.shooterDelay = 5000;
-    this.shooterShotDelay = 3000;
+    this.shooterDelay = 7000;
+    this.shooterShotDelay = 5000;
     this.shooterInitialHealth = 3;
 
 
@@ -98,7 +98,7 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 120;
+    this.player.speed = 150;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
     this.player.body.bounce.setTo(0.2, 0.2);
     this.weaponLevel = 0;
@@ -359,30 +359,27 @@ Play.prototype = {
       return;
     }
 
-    this.nextShotAt = this.time.now + this.shotDelay;
-    //    this.playerFireSFX.play();
-
     var bullet;
     if (this.weaponLevel === 0) {
 
       if (this.bulletPool.countDead() === 0) {
         return;
       }
-
-      bullet = this.bulletPool.getFirstExists(false);
-      bullet.reset(this.player.x, this.player.y - 20);
-      bullet.body.velocity.y = -300;
+		this.nextShotAt = this.time.now + this.shotDelay;
+		bullet = this.bulletPool.getFirstExists(false);
+		bullet.reset(this.player.x, this.player.y - 20);
+		bullet.body.velocity.y = -300;
 
     } else if (this.weaponLevel === 1) {
 
       if (this.bulletPool.countDead() < 10) {
         return;
       }
-
-      for (var i = 0; i < 3; i++) {
-        bullet = this.bulletPool.getFirstExists(false);
-        bullet.reset(this.player.x, this.player.y - i * 10);
-        bullet.body.velocity.y = -200;
+		for (var i = 0; i < 3; i++) {
+			this.nextShotAt = this.time.now + (this.shotDelay)*2;
+			bullet = this.bulletPool.getFirstExists(false);
+			bullet.reset(this.player.x, this.player.y - i * 10);
+			bullet.body.velocity.y = -200;
       }
 
     } else {
@@ -390,21 +387,21 @@ Play.prototype = {
       if (this.bulletPool.countDead() < 20) {
         return;
       }
+		for (var i = 0; i < 2; i++) {
+			this.nextShotAt = this.time.now + (this.shotDelay)*3;
+			bullet = this.bulletPool.getFirstExists(false);
+			// spawn left bullet slightly left off center
+			bullet.reset(this.player.x - (20 + i * 6), this.player.y - 20);
+			// the left bullets spread from -95 degrees to -135 degrees
+			// velocityFromAngle(angle, speed, point)
+			this.physics.arcade.velocityFromAngle(-95 - i * 10, 300, bullet.body.velocity);
 
-      for (var i = 0; i < 2; i++) {
-        bullet = this.bulletPool.getFirstExists(false);
-        // spawn left bullet slightly left off center
-        bullet.reset(this.player.x - (20 + i * 6), this.player.y - 20);
-        // the left bullets spread from -95 degrees to -135 degrees
-        // velocityFromAngle(angle, speed, point)
-        this.physics.arcade.velocityFromAngle(-95 - i * 10, 300, bullet.body.velocity);
-
-        bullet = this.bulletPool.getFirstExists(false);
-        // spawn right bullet slightly right off center
-        bullet.reset(this.player.x + (20 + i * 6), this.player.y - 20);
-        // the right bullets spread from -85 degrees to -45
-        this.physics.arcade.velocityFromAngle(-85 + i * 10, 300, bullet.body.velocity);
-      }
+			bullet = this.bulletPool.getFirstExists(false);
+			// spawn right bullet slightly right off center
+			bullet.reset(this.player.x + (20 + i * 6), this.player.y - 20);
+			// the right bullets spread from -85 degrees to -45
+			this.physics.arcade.velocityFromAngle(-85 + i * 10, 300, bullet.body.velocity);
+		}
 
     }
 

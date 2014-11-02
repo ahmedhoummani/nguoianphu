@@ -60,6 +60,11 @@ Menu.prototype = {
 
     if (this.game.input.activePointer.justPressed()) {
       this.game.state.start('play');
+	  this.sea.destroy();
+	  this.enemy.destroy();
+	  this.player.destroy();
+	  this.titleText.destroy();
+	  this.instructionsText.destroy();
     }
 
   }
