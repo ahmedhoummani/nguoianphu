@@ -550,7 +550,7 @@ Play.prototype = {
       if (this.bulletPool.countDead() < 20) {
         return;
       }
-		for (var i = 0; i < 2; i++) {
+		for (var i = 0; i < 3; i++) {
 			this.nextShotAt = this.time.now + (this.shotDelay)*3;
 			bullet = this.bulletPool.getFirstExists(false);
 			// spawn left bullet slightly left off center
