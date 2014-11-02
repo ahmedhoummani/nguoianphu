@@ -160,8 +160,8 @@ Play.prototype = {
 
     this.score = 0;
     this.scoreText = this.add.text(
-      this.game.world.width / 2, 30, '' + this.score, {
-        font: '20px monospace',
+      this.game.width / 2, 30, '' + this.score, {
+        font: '17px monospace',
         fill: '#fff',
         align: 'center'
       }
@@ -200,6 +200,7 @@ Play.prototype = {
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
+		return;
       }
 
       this.physics.arcade.moveToPointer(this.player, this.player.speed);

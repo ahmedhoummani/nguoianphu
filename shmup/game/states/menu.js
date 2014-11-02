@@ -18,7 +18,7 @@ Menu.prototype = {
     this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
 
-    this.player = this.add.sprite(this.game.width/2, this.game.height/2 + 50, 'player');
+    this.player = this.add.sprite(this.game.width/2, this.game.height/2 + 70, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
     this.player.play('fly');
@@ -41,10 +41,10 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 15, 'Air War', style);
+    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 30, 'Air War', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 15, 'Click anywhere to play', {
+    this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 0, 'Click anywhere to play', {
       font: '12px Arial',
       fill: '#ffffff',
       align: 'center'

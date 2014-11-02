@@ -24,8 +24,6 @@ Boot.prototype = {
 
   preload: function() {
 
-    //    this.load.image('preloader', 'assets/preloader.gif');
-
   },
 
   create: function() {
@@ -39,7 +37,6 @@ Boot.prototype = {
     this.scale.pageAlignHorizontally = !0;
     this.scale.pageAlignVertically = !0;
 
-    this.scale.hasResized.add(this.gameResized, this);
     this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
     this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
     //screen size will be set automatically
@@ -48,8 +45,6 @@ Boot.prototype = {
     this.game.state.start('preload');
 
   },
-
-  gameResized: function() {},
 
   enterIncorrectOrientation: function() {
     this.orientated = !1, document.getElementById("orientation").style.display = "block"
@@ -111,7 +106,7 @@ Menu.prototype = {
     this.physics.enable(this.enemy, Phaser.Physics.ARCADE);
 
 
-    this.player = this.add.sprite(this.game.width/2, this.game.height/2 + 50, 'player');
+    this.player = this.add.sprite(this.game.width/2, this.game.height/2 + 70, 'player');
     this.player.anchor.setTo(0.5, 0.5);
     this.player.animations.add('fly', [0, 1, 2], 20, true);
     this.player.play('fly');
@@ -134,10 +129,10 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 15, 'Air War', style);
+    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 30, 'Air War', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
-    this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 15, 'Click anywhere to play', {
+    this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 0, 'Click anywhere to play', {
       font: '12px Arial',
       fill: '#ffffff',
       align: 'center'
@@ -323,8 +318,8 @@ Play.prototype = {
 
     this.score = 0;
     this.scoreText = this.add.text(
-      this.game.world.width / 2, 30, '' + this.score, {
-        font: '20px monospace',
+      this.game.width / 2, 30, '' + this.score, {
+        font: '17px monospace',
         fill: '#fff',
         align: 'center'
       }
@@ -363,6 +358,7 @@ Play.prototype = {
 
       if (this.returnText && this.returnText.exists) {
         this.quitGame();
+		return;
       }
 
       this.physics.arcade.moveToPointer(this.player, this.player.speed);
