@@ -90,6 +90,8 @@ Play.prototype = {
     this.boss = this.bossPool.getTop();
     this.bossApproaching = false;
     this.bossInitialHealth = 50;
+	this.bossPrevent = 0;
+	this.bossPrevent = 0;
 
 
     this.player = this.add.sprite(this.game.width / 2, this.game.height - 20, 'player');
@@ -98,7 +100,7 @@ Play.prototype = {
     this.player.animations.add('ghost', [3, 0, 3, 1], 20, true);
     this.player.play('fly');
     this.physics.enable(this.player, Phaser.Physics.ARCADE);
-    this.player.speed = 150;
+    this.player.speed = 180;
     this.player.body.collideWorldBounds = true; // have to put after enable the physic
     this.player.body.bounce.setTo(0.2, 0.2);
     this.weaponLevel = 0;
@@ -243,7 +245,7 @@ Play.prototype = {
     );
 
     if (this.nextEnemyAt < this.time.now && this.enemyPool.countDead() > 0) {
-      this.nextEnemyAt = this.time.now + this.enemyDelay;
+      this.nextEnemyAt = this.time.now + this.enemyDelay + this.bossPrevent;
       var enemy = this.enemyPool.getFirstExists(false);
       // spawn at a random location top of the screen
       //      enemy.reset(this.rnd.integerInRange(20, 780), 0);
@@ -257,7 +259,7 @@ Play.prototype = {
 
 
     if (this.nextShooterAt < this.time.now && this.shooterPool.countDead() > 0) {
-      this.nextShooterAt = this.time.now + this.shooterDelay;
+      this.nextShooterAt = this.time.now + this.shooterDelay + this.bossPrevent;
       var shooter = this.shooterPool.getFirstExists(false);
       // spawn at a random location at the top
       shooter.reset(this.rnd.integerInRange(32, this.game.width -32), 0,
@@ -491,6 +493,7 @@ Play.prototype = {
     // this approach prevents the boss from spawning again upon winning
     if (this.score >= 3500 && this.bossPool.countDead() == 1) {
       this.spawnBoss();
+	  this.bossPrevent = 30000;
     }
 
   },
