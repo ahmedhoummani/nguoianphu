@@ -19,16 +19,19 @@ window.onload = function () {
 'use strict';
 
 var Ball = function(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'ball');
+	Phaser.Sprite.call(this, game, x, y, 'ball');
 
-  // initialize your prefab here
-  this.game.physics.arcade.enableBody(this);
-  this.anchor.set(0.5, 0.5);
-  this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(1, 1);
+	// initialize your prefab here
+	this.game.physics.arcade.enableBody(this);
+	this.anchor.set(0.5, 0.5);
+	this.body.collideWorldBounds = true;
+	this.body.bounce.setTo(1, 1);
 
-  this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(30, 60), 200, this.body.velocity);
+	this.animations.add('down', [0, 1, 2, 3, 4, 5, 6], 10, true);
+	this.animations.add('up', [6, 5, 4, 3, 2, 1, 0], 10, true);
 
+	this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(
+					30, 60), 200, this.body.velocity);
 
 };
 
@@ -37,7 +40,16 @@ Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
 
-  // write your prefab's specific update code here
+	// write your prefab's specific update code here
+	if (this.body.velocity.y > 10) {
+
+		this.animations.play('down');
+
+	} else if (this.body.velocity.y < -10) {
+
+		this.animations.play('up');
+
+	}
 
 };
 
@@ -47,15 +59,21 @@ module.exports = Ball;
 'use strict';
 
 var Bubble = function(game, x, y) {
-  Phaser.Sprite.call(this, game, x, y, 'bubble');
+	Phaser.Sprite.call(this, game, x, y, 'bubble');
 
-  // initialize your prefab here
-  this.game.physics.arcade.enableBody(this);
-  this.anchor.set(0.5, 0.5);
-  this.body.collideWorldBounds = true;
-  this.body.bounce.setTo(1, 1);
-  
-    this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(30, 60), 200, this.body.velocity);
+	// initialize your prefab here
+	this.game.physics.arcade.enableBody(this);
+	this.anchor.set(0.5, 0.5);
+	this.body.collideWorldBounds = true;
+	this.body.bounce.setTo(1, 1);
+
+	this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(
+					30, 60), 200, this.body.velocity);
+	this.animations.add('bub1', [0, 1, 2], 5, true);
+	this.animations.add('bub2', [3, 4, 5], 5, true);
+	this.animations.add('bub3', [6, 7, 8], 10, true);
+	this.animations.add('bub4', [9, 10, 11], 10, true);
+	this.animations.add('bub5', [12, 13, 14], 10, true);
 
 };
 
@@ -64,7 +82,8 @@ Bubble.prototype.constructor = Bubble;
 
 Bubble.prototype.update = function() {
 
-  // write your prefab's specific update code here
+	// write your prefab's specific update code here
+	this.animations.play('bub2');
 
 };
 
@@ -202,29 +221,32 @@ module.exports = Play;
 },{"../prefabs/ball":2,"../prefabs/bubble":3}],8:[function(require,module,exports){
 'use strict';
 
-function Preload() {}
+function Preload() {
+}
 
 Preload.prototype = {
-  preload: function() {
+	preload : function() {
 
-    // Add the sprite
-    this.addSprite();
+		// Add the sprite
+		this.addSprite();
 
-  },
+	},
 
-  create: function() {},
+	create : function() {
+	},
 
-  update: function() {
+	update : function() {
 
-    this.game.state.start('play');
+		this.game.state.start('play');
 
-  },
+	},
 
-  addSprite: function() {
+	addSprite : function() {
 
-    this.load.image('ball', 'assets/ball.png');
-    this.load.image('bubble', 'assets/bubble.png');
-  }
+		// this.load.spritesheet('ball', 'assets/basketball_76x83.png', 76, 83);
+		this.load.spritesheet('ball', 'assets/ball_64x64.png', 64, 64);
+		this.load.spritesheet('bubble', 'assets/bubble_26x26.png', 26, 26);
+	}
 
 };
 

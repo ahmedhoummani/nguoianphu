@@ -1,28 +1,31 @@
 'use strict';
 
-function Preload() {}
+function Preload() {
+}
 
 Preload.prototype = {
-  preload: function() {
+	preload : function() {
 
-    // Add the sprite
-    this.addSprite();
+		// Add the sprite
+		this.addSprite();
 
-  },
+	},
 
-  create: function() {},
+	create : function() {
+	},
 
-  update: function() {
+	update : function() {
 
-    this.game.state.start('play');
+		this.game.state.start('play');
 
-  },
+	},
 
-  addSprite: function() {
+	addSprite : function() {
 
-    this.load.image('ball', 'assets/ball.png');
-    this.load.image('bubble', 'assets/bubble.png');
-  }
+		// this.load.spritesheet('ball', 'assets/basketball_76x83.png', 76, 83);
+		this.load.spritesheet('ball', 'assets/ball_64x64.png', 64, 64);
+		this.load.spritesheet('bubble', 'assets/bubble_26x26.png', 26, 26);
+	}
 
 };
 
