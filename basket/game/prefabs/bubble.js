@@ -9,9 +9,11 @@ var Bubble = function(game, x, y, color) {
 	this.anchor.set(0.5, 0.5);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
+		this.body.gravity.y = -1000;
 
 	this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(
 					30, 60), 200, this.body.velocity);
+					
 	this.animations.add('1', [0, 1, 2], 5, true);
 	this.animations.add('2', [3, 4, 5], 5, true);
 	this.animations.add('3', [6, 7, 8], 5, true);
