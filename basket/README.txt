@@ -1,0 +1,60 @@
+npm config set proxy http://proxy.company.com:8080
+npm config set https-proxy http://proxy.company.com:8080
+
+set HTTP_PROXY=http://proxy.company.com:8080
+set HTTPS_PROXY=https://proxy.company.com:8080
+
+
+Install libraries
+
+$ npm install
+
+Install the PHASER generator:
+
+$ npm install -g yo generator-phaser-official
+
+Create a project directory:
+
+$ mkdir phaser-bird && cd $_
+
+Run the generator:
+
+$ yo phaser-official
+
+Iphone 3:2 : 480x320px : 960x640px
+
+
+Answer the questions at the prompts. The generator will create the scaffolding and install the dependencies. It also has a very simple "hello, world!" game included so that you can see how this workflow operates.
+Run the server:
+
+$ grunt 
+
+This will build and compile the required index and bootstrapper files, start a server on port 9000, watch files for changes, and reload your browser when you've modified and saved a file.
+Write your code:
+
+All game code will reside in the game directory. You shouldn't need to modify the main.js file, and in fact, you shouldn't. On each build, the main.js file gets overridden with references to your game states.
+Extras:
+
+The generator contains two subgenerators that make it easy to modify your game:
+Generate a new game state:
+
+$ yo phaser-official:state "stateName" 
+
+This will create a new stateName.js file in the game/states directory as well as add it to the included scripts and bootstrapper.
+
+Generate a new prefab:
+
+$ yo phaser-official:prefab "prefabName" 
+
+This will create a new prefabName.js file in the game/prefabs directory with the options provided at the prompts
+
+
+Running these cmd for you to install the required dependencies.
+
+set HTTP_PROXY=http://proxy.company.com:8080
+set HTTPS_PROXY=https://proxy.company.com:8080
+MUST install GIT and add GIT_HOME to PATH
+
+npm install -g bower
+bower install
+
