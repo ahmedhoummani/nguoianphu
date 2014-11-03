@@ -13,9 +13,9 @@ var Bubble = function(game, x, y) {
 					30, 60), 200, this.body.velocity);
 	this.animations.add('bub1', [0, 1, 2], 5, true);
 	this.animations.add('bub2', [3, 4, 5], 5, true);
-	this.animations.add('bub3', [6, 7, 8], 10, true);
-	this.animations.add('bub4', [9, 10, 11], 10, true);
-	this.animations.add('bub5', [12, 13, 14], 10, true);
+	this.animations.add('bub3', [6, 7, 8], 5, true);
+	this.animations.add('bub4', [9, 10, 11], 5, true);
+	this.animations.add('bub5', [12, 13, 14], 5, true);
 
 };
 
