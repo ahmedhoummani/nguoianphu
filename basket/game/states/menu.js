@@ -1,5 +1,5 @@
-
 'use strict';
+
 function Menu() {}
 
 Menu.prototype = {
@@ -7,7 +7,7 @@ Menu.prototype = {
 
   },
   create: function() {
- 
+
   },
   update: function() {
 

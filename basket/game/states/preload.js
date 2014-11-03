@@ -1,30 +1,29 @@
-
 'use strict';
-function Preload() {
-  this.asset = null;
-  this.ready = false;
-}
+
+function Preload() {}
 
 Preload.prototype = {
   preload: function() {
-    this.asset = this.add.sprite(this.width/2,this.height/2, 'preloader');
-    this.asset.anchor.setTo(0.5, 0.5);
 
-    this.load.onLoadComplete.addOnce(this.onLoadComplete, this);
-    this.load.setPreloadSprite(this.asset);
+    // Add the sprite
+    this.addSprite();
 
   },
-  create: function() {
-    this.asset.cropEnabled = false;
-  },
+
+  create: function() {},
+
   update: function() {
-    if(!!this.ready) {
-      this.game.state.start('menu');
-    }
+
+    this.game.state.start('play');
+
   },
-  onLoadComplete: function() {
-    this.ready = true;
+
+  addSprite: function() {
+
+    this.load.image('ball', 'assets/ball.png');
+    this.load.image('bubble', 'assets/bubble.png');
   }
+
 };
 
 module.exports = Preload;
