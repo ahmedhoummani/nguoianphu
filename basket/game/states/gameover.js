@@ -1,16 +1,16 @@
-
 'use strict';
-function GameOver() {}
+function GameOver() {
+}
 
 GameOver.prototype = {
-  preload: function () {
+	preload : function() {
 
-  },
-  create: function () {
+	},
+	create : function() {
 
-  },
-  update: function () {
+	},
+	update : function() {
 
-  }
+	}
 };
 module.exports = GameOver;

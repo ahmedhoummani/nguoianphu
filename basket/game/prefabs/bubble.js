@@ -1,9 +1,10 @@
 'use strict';
 
-var Bubble = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y, 'bubble');
+var Bubble = function(game, x, y, color) {
+	Phaser.Sprite.call(this, game, x, y, 'bubble', color);
 
 	// initialize your prefab here
+	this.color = color;
 	this.game.physics.arcade.enableBody(this);
 	this.anchor.set(0.5, 0.5);
 	this.body.collideWorldBounds = true;
@@ -11,11 +12,11 @@ var Bubble = function(game, x, y) {
 
 	this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(
 					30, 60), 200, this.body.velocity);
-	this.animations.add('bub1', [0, 1, 2], 5, true);
-	this.animations.add('bub2', [3, 4, 5], 5, true);
-	this.animations.add('bub3', [6, 7, 8], 5, true);
-	this.animations.add('bub4', [9, 10, 11], 5, true);
-	this.animations.add('bub5', [12, 13, 14], 5, true);
+	this.animations.add('1', [0, 1, 2], 5, true);
+	this.animations.add('2', [3, 4, 5], 5, true);
+	this.animations.add('3', [6, 7, 8], 5, true);
+	this.animations.add('4', [9, 10, 11], 5, true);
+	this.animations.add('5', [12, 13, 14], 5, true);
 
 };
 
@@ -25,7 +26,7 @@ Bubble.prototype.constructor = Bubble;
 Bubble.prototype.update = function() {
 
 	// write your prefab's specific update code here
-	this.animations.play('bub2');
+	this.animations.play(this.color);
 
 };
 

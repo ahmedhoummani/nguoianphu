@@ -22,7 +22,6 @@ Preload.prototype = {
 
 	addSprite : function() {
 
-		// this.load.spritesheet('ball', 'assets/basketball_76x83.png', 76, 83);
 		this.load.spritesheet('ball', 'assets/ball_64x64.png', 64, 64);
 		this.load.spritesheet('bubble', 'assets/bubble_26x26.png', 26, 26);
 	}

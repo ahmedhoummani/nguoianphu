@@ -1,17 +1,18 @@
 'use strict';
 
-function Menu() {}
+function Menu() {
+}
 
 Menu.prototype = {
-  preload: function() {
+	preload : function() {
 
-  },
-  create: function() {
+	},
+	create : function() {
 
-  },
-  update: function() {
+	},
+	update : function() {
 
-  }
+	}
 };
 
 module.exports = Menu;

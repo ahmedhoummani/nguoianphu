@@ -8,6 +8,8 @@ var Ball = function(game, x, y) {
 	this.anchor.set(0.5, 0.5);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
+	
+	this.speed = 200;
 
 	this.animations.add('down', [0, 1, 2, 3, 4, 5, 6], 10, true);
 	this.animations.add('up', [6, 5, 4, 3, 2, 1, 0], 10, true);
@@ -32,6 +34,20 @@ Ball.prototype.update = function() {
 		this.animations.play('up');
 
 	}
+
+	// if (Math.abs(this.body.velocity.x) != this.speed) {
+	// if (this.body.velocity.x > 0)
+	// this.body.velocity.x = this.speed;
+	// else
+	// this.body.velocity.x = -this.speed;
+	// }
+	// if (Math.abs(this.body.velocity.y) != this.speed) {
+	// if (this.body.velocity.y > 0)
+	// this.body.velocity.y = this.speed;
+	// else
+	// this.body.velocity.y = -this.speed;
+	//	}
+	
 
 };
 

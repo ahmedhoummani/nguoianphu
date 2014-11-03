@@ -26,6 +26,8 @@ var Ball = function(game, x, y) {
 	this.anchor.set(0.5, 0.5);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
+	
+	this.speed = 200;
 
 	this.animations.add('down', [0, 1, 2, 3, 4, 5, 6], 10, true);
 	this.animations.add('up', [6, 5, 4, 3, 2, 1, 0], 10, true);
@@ -51,6 +53,20 @@ Ball.prototype.update = function() {
 
 	}
 
+	// if (Math.abs(this.body.velocity.x) != this.speed) {
+	// if (this.body.velocity.x > 0)
+	// this.body.velocity.x = this.speed;
+	// else
+	// this.body.velocity.x = -this.speed;
+	// }
+	// if (Math.abs(this.body.velocity.y) != this.speed) {
+	// if (this.body.velocity.y > 0)
+	// this.body.velocity.y = this.speed;
+	// else
+	// this.body.velocity.y = -this.speed;
+	//	}
+	
+
 };
 
 module.exports = Ball;
@@ -58,10 +74,11 @@ module.exports = Ball;
 },{}],3:[function(require,module,exports){
 'use strict';
 
-var Bubble = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y, 'bubble');
+var Bubble = function(game, x, y, color) {
+	Phaser.Sprite.call(this, game, x, y, 'bubble', color);
 
 	// initialize your prefab here
+	this.color = color;
 	this.game.physics.arcade.enableBody(this);
 	this.anchor.set(0.5, 0.5);
 	this.body.collideWorldBounds = true;
@@ -69,11 +86,11 @@ var Bubble = function(game, x, y) {
 
 	this.game.physics.arcade.velocityFromRotation(this.game.rnd.integerInRange(
 					30, 60), 200, this.body.velocity);
-	this.animations.add('bub1', [0, 1, 2], 5, true);
-	this.animations.add('bub2', [3, 4, 5], 5, true);
-	this.animations.add('bub3', [6, 7, 8], 5, true);
-	this.animations.add('bub4', [9, 10, 11], 5, true);
-	this.animations.add('bub5', [12, 13, 14], 5, true);
+	this.animations.add('1', [0, 1, 2], 5, true);
+	this.animations.add('2', [3, 4, 5], 5, true);
+	this.animations.add('3', [6, 7, 8], 5, true);
+	this.animations.add('4', [9, 10, 11], 5, true);
+	this.animations.add('5', [12, 13, 14], 5, true);
 
 };
 
@@ -83,78 +100,78 @@ Bubble.prototype.constructor = Bubble;
 Bubble.prototype.update = function() {
 
 	// write your prefab's specific update code here
-	this.animations.play('bub2');
+	this.animations.play(this.color);
 
 };
 
 module.exports = Bubble;
 
 },{}],4:[function(require,module,exports){
-
 'use strict';
 
 function Boot() {
 }
 
 Boot.prototype = {
-  preload: function() {
-  },
+	preload : function() {
+	},
 
-  create: function() {
+	create : function() {
 
-    this.game.input.maxPointers = 1;
-	this.stage.disableVisibilityChange = !0;
-	
-	//scaling options
-    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-    //have the game centered horizontally
-    this.scale.pageAlignHorizontally = !0;
-    this.scale.pageAlignVertically = !0;
+		this.game.input.maxPointers = 1;
+		this.stage.disableVisibilityChange = !0;
 
-    //screen size will be set automatically
-    this.scale.setScreenSize(!0);
+		// scaling options
+		this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		// have the game centered horizontally
+		this.scale.pageAlignHorizontally = !0;
+		this.scale.pageAlignVertically = !0;
 
-    this.game.state.start('preload');
+		// screen size will be set automatically
+		this.scale.setScreenSize(!0);
 
-  }
-  
+		this.game.state.start('preload');
+
+	}
+
 };
 
 module.exports = Boot;
 
 },{}],5:[function(require,module,exports){
-
 'use strict';
-function GameOver() {}
+function GameOver() {
+}
 
 GameOver.prototype = {
-  preload: function () {
+	preload : function() {
 
-  },
-  create: function () {
+	},
+	create : function() {
 
-  },
-  update: function () {
+	},
+	update : function() {
 
-  }
+	}
 };
 module.exports = GameOver;
 
 },{}],6:[function(require,module,exports){
 'use strict';
 
-function Menu() {}
+function Menu() {
+}
 
 Menu.prototype = {
-  preload: function() {
+	preload : function() {
 
-  },
-  create: function() {
+	},
+	create : function() {
 
-  },
-  update: function() {
+	},
+	update : function() {
 
-  }
+	}
 };
 
 module.exports = Menu;
@@ -165,54 +182,56 @@ var Bubble = require('../prefabs/bubble');
 
 'use strict';
 
-function Play() {}
+function Play() {
+}
 Play.prototype = {
-  create: function() {
+	create : function() {
 
-    // setup the game
-    this.game.world.setBounds(0, 0, 320, 480);
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+		// setup the game
+		this.game.world.setBounds(0, 0, 320, 480);
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // Init the object
-    this.initBall();
-    this.initBubble();
+		// Init the object
+		this.initBall();
+		this.initBubble();
 
-  },
-  update: function() {
+	},
+	update : function() {
 
-    // make everything collide
-    this.collideObject();
+		// make everything collide
+		this.collideObject();
 
-  },
-  initBall: function() {
+	},
+	initBall : function() {
 
-    this.ballGroup = this.game.add.group();
+		this.ballGroup = this.game.add.group();
 
-    for (var i = 0; i < 1; i++) {
-      this.ball = new Ball(this.game, 10, 50);
-      this.ballGroup.add(this.ball);
+		for (var i = 0; i < 1; i++) {
+			this.ball = new Ball(this.game, 10, 50);
+			this.ballGroup.add(this.ball);
 
-    }
+		}
 
-  },
-  initBubble: function() {
+	},
+	initBubble : function() {
 
-    this.bubbleGroup = this.game.add.group();
+		this.bubbleGroup = this.game.add.group();
 
-    for (var i = 0; i < 1; i++) {
-      this.bubble = new Bubble(this.game, 50, 50);
-      this.bubbleGroup.add(this.bubble);
+		// 5 colors
+		for (var i = 1; i <= 50; i++) {
+			this.color = this.rnd.between(1, 5);
+			this.bubble = new Bubble(this.game, 50, 50, this.color);
+			this.bubbleGroup.add(this.bubble);
 
-    }
+		}
 
-  },
+	},
 
-  collideObject: function() {
+	collideObject : function() {
 
-    this.game.physics.arcade.collide(this.ballGroup, this.bubbleGroup);
+		this.game.physics.arcade.collide(this.ballGroup, this.bubbleGroup);
 
-  },
-
+	}
 
 };
 
@@ -243,7 +262,6 @@ Preload.prototype = {
 
 	addSprite : function() {
 
-		// this.load.spritesheet('ball', 'assets/basketball_76x83.png', 76, 83);
 		this.load.spritesheet('ball', 'assets/ball_64x64.png', 64, 64);
 		this.load.spritesheet('bubble', 'assets/bubble_26x26.png', 26, 26);
 	}
