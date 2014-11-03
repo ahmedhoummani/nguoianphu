@@ -104,7 +104,6 @@ game/states/boot.js
   <link rel="apple-touch-icon" sizes="256x256" href="icons/app_icon_256x256.png">
   <link rel="apple-touch-icon" sizes="512x512" href="icons/app_icon_512x512.png">
   <link rel="apple-touch-icon" sizes="1024x1024" href="icons/app_icon_1024x1024.png">
-  <link rel="stylesheet" href="css/stylesheet.css" type="text/css" charset="utf-8" />
 </head>
 
 #########################################################################
@@ -116,27 +115,27 @@ function Boot() {}
 Boot.prototype = {
 
   preload: function() {
-
-    this.load.image('preloader', 'assets/preloader.gif');
-
   },
 
   create: function() {
 
     this.game.input.maxPointers = 1;
 	this.stage.disableVisibilityChange = !0;
-	this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-	this.scale.pageAlignHorizontally = !0;
-	this.scale.hasResized.add(this.gameResized, this);
-	this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
-	this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
-	this.scale.setScreenSize(!0);
+	
+	//scaling options
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    //have the game centered horizontally
+    this.scale.pageAlignHorizontally = !0;
+    this.scale.pageAlignVertically = !0;
+
+    this.scale.enterIncorrectOrientation.add(this.enterIncorrectOrientation, this);
+    this.scale.leaveIncorrectOrientation.add(this.leaveIncorrectOrientation, this);
+    //screen size will be set automatically
+    this.scale.setScreenSize(!0);
 
     this.game.state.start('preload');
 
   },
-
-  gameResized: function () {},
         
   enterIncorrectOrientation: function () {
             this.orientated = !1, document.getElementById("orientation").style.display = "block"
