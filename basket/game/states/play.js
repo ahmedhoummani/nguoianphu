@@ -38,7 +38,7 @@ Play.prototype = {
     this.bubbleGroup = this.game.add.group();
 
     // 5 colors
-    for (var i = 1; i <= 1; i++) {
+    for (var i = 1; i <= 10; i++) {
       this.color = this.rnd.between(1, 5);
       this.bubble = new Bubble(this.game, this.game.width / 2, this.game.height - 40, this.color);
       this.bubbleGroup.add(this.bubble);

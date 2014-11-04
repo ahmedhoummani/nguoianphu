@@ -252,7 +252,7 @@ Play.prototype = {
     this.bubbleGroup = this.game.add.group();
 
     // 5 colors
-    for (var i = 1; i <= 1; i++) {
+    for (var i = 1; i <= 10; i++) {
       this.color = this.rnd.between(1, 5);
       this.bubble = new Bubble(this.game, this.game.width / 2, this.game.height - 40, this.color);
       this.bubbleGroup.add(this.bubble);
@@ -296,8 +296,8 @@ Preload.prototype = {
 
 	addSprite : function() {
 
-		this.load.spritesheet('ball', 'assets/ball_64x64.png', 64, 64);
-		this.load.spritesheet('bubble', 'assets/bubble_26x26.png', 26, 26);
+		this.load.spritesheet('ball', 'assets/ball_32.png', 32, 32);
+		this.load.spritesheet('bubble', 'assets/bubble_color_13.png', 13, 13);
 	}
 
 };
