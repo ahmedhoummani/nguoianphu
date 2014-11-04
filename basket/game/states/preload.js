@@ -22,6 +22,7 @@ Preload.prototype = {
 
 	addSprite : function() {
 
+		this.load.image('sky', 'assets/sky_bg.png');
 		this.load.spritesheet('ball', 'assets/ball_32.png', 32, 32);
 		this.load.spritesheet('bubble', 'assets/bubble_color_13.png', 13, 13);
 	}

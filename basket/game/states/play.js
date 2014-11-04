@@ -1,57 +1,80 @@
 var Ball = require('../prefabs/ball');
-var Bubble = require('../prefabs/bubble');
+var BubbleGroup = require('../prefabs/bubblegroup');
+var Sky = require('../prefabs/sky');
 
 'use strict';
 
-function Play() {}
+function Play() {
+}
 Play.prototype = {
-  create: function() {
+	create : function() {
 
-    // setup the game
-    this.game.world.setBounds(0, 0, 320, 480);
-    this.game.physics.startSystem(Phaser.Physics.ARCADE);
+		// setup the game
+		this.game.world.setBounds(0, -480, 320, 960);
+		this.game.physics.startSystem(Phaser.Physics.ARCADE);
 
-    // Init the object
-    this.initBall();
-    this.initBubble();
+		// Init the object
 
-  },
-  update: function() {
+		this.initSky();
+		this.initBall();
 
-    // make everything collide
-    this.collideObject();
+		this.initBubbles();
 
-  },
-  initBall: function() {
+	},
+	update : function() {
 
-    this.ballGroup = this.game.add.group();
+		// make everything collide
+		this.collideBallSky();
+		this.collideBallBubble();
 
-    for (var i = 0; i < 1; i++) {
-      this.ball = new Ball(this.game, this.game.width / 2, 40);
-      this.ballGroup.add(this.ball);
+	},
+	initSky : function() {
 
-    }
+		this.sky = new Sky(this.game, 0, 20);
+		this.game.add.existing(this.sky);
 
-  },
-  initBubble: function() {
+	},
+	initBall : function() {
 
-    this.bubbleGroup = this.game.add.group();
+		this.ball = new Ball(this.game, 0, 400);
+		this.game.add.existing(this.ball);
+		this.game.camera.follow(this.ball);
+		this.game.camera.focusOnXY(0.5, 0.5);
 
-    // 5 colors
-    for (var i = 1; i <= 10; i++) {
-      this.color = this.rnd.between(1, 5);
-      this.bubble = new Bubble(this.game, this.game.width / 2, this.game.height - 40, this.color);
-      this.bubbleGroup.add(this.bubble);
+	},
+	initBubbles : function() {
 
-    }
+		this.bubbles = this.game.add.group();
+		var bubbleGroup = this.bubbles.getFirstExists(false);
 
-  },
+		if (!bubbleGroup) {
+			bubbleGroup = new BubbleGroup(this.game, this.bubbles);
+		}
+		bubbleGroup.reset(100, 100);
 
-  collideObject: function() {
+	},
 
-    this.game.physics.arcade.collide(this.ballGroup, this.bubbleGroup);
+	collideBallBubble : function() {
 
-  }
+		// enable collisions between the bird and each group in the pipes group
+		this.bubbles.forEach(function(bubbleGroup) {
+					this.game.physics.arcade.collide(this.ball, bubbleGroup);
+				}, this);
+
+	},
+
+	collideBallSky : function() {
+		if (!this.ball.ballFly) {
+			this.game.physics.arcade.collide(this.ball, this.sky);
+		}
+
+	},
+
+	clean : function() {
+		this.ball.destroy();
+		this.bubbles.destroy();
+
+	}
 
 };
 
