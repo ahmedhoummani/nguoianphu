@@ -1,0 +1,27 @@
+﻿{"frames": {
+
+"Panda_Back0000":
+{
+	"frame": {"x":1,"y":1,"w":234,"h":262},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":234,"h":262},
+	"sourceSize": {"w":234,"h":262}
+},
+"Panda_Front0000":
+{
+	"frame": {"x":1,"y":264,"w":216,"h":244},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":216,"h":244},
+	"sourceSize": {"w":216,"h":244}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "13.0.1.808",
+	"image": "preloader.png",
+	"format": "RGBA8888",
+	"size": {"w":256,"h":512},
+	"scale": "1"
+}
+}
