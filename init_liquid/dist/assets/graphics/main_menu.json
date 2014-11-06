@@ -1,0 +1,43 @@
+﻿{"frames": {
+
+"CreditsBoard0000":
+{
+	"frame": {"x":1,"y":1,"w":514,"h":324},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":514,"h":324},
+	"sourceSize": {"w":514,"h":324}
+},
+"Panda0000":
+{
+	"frame": {"x":516,"y":1,"w":428,"h":388},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":428,"h":388},
+	"sourceSize": {"w":428,"h":388}
+},
+"Title0000":
+{
+	"frame": {"x":1,"y":390,"w":529,"h":101},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":529,"h":101},
+	"sourceSize": {"w":529,"h":101}
+},
+"main_menu_bg":
+{
+	"frame": {"x":1,"y":492,"w":640,"h":832},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":640,"h":832},
+	"sourceSize": {"w":640,"h":832}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "13.0.1.808",
+	"image": "main_menu.png",
+	"format": "RGBA8888",
+	"size": {"w":1024,"h":2048},
+	"scale": "1"
+}
+}
