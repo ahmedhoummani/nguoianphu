@@ -24,6 +24,9 @@ $ yo phaser-official
 
 Iphone 3:2 : 480x320px : 960x640px
 
+640x832
+
+
 
 Answer the questions at the prompts. The generator will create the scaffolding and install the dependencies. It also has a very simple "hello, world!" game included so that you can see how this workflow operates.
 Run the server:
