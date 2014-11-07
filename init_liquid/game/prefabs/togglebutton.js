@@ -26,12 +26,6 @@ var Togglebutton = function(b, c, d, e, f, g) {
 Togglebutton.prototype = Object.create(Phaser.Image.prototype);
 Togglebutton.prototype.constructor = Togglebutton;
 
-Togglebutton.prototype.update = function() {
-
-	// write your prefab's specific update code here
-
-};
-
 Togglebutton.prototype.switchTextures = function() {
 	this.activeTextureKey = this.activeTextureKey === this.textureKey1
 			? this.textureKey2

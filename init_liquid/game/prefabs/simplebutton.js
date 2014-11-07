@@ -53,7 +53,6 @@ Simplebutton.prototype.setCallbackDelay = function(a) {
 };
 
 Simplebutton.prototype.destroy = function() {
-	this.prototype.destroy.call(this);
 	this._callback.dispose();
 	this._callback = null;
 };

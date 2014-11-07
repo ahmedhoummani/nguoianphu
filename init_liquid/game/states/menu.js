@@ -18,23 +18,26 @@ Menu.prototype = {
 		this.addBackground();
 		this.addOtherImages();
 		this.addButtons();
-		// this.initCredits();
-		// this.initAnimation();
-		// this.fromPreloader
-		// && (this.soundButton.input.enabled = !1, this.soundButton
-		// .switchTextures(), this.game.input.onTap.addOnce(
-		// this.onFirstTap, this), this.game.onBlur.add(
-		// this.onFocusLost, this), this.game.onFocus.add(
-		// this.onFocus, this));
+		this.initCredits();
+		this.initAnimation();
+
+		this.fromPreloader
+				&& (this.soundButton.input.enabled = !1, this.soundButton
+						.switchTextures(), this.game.input.onTap.addOnce(
+						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
+						.add(this.onFocusLost, this), this.game.onFocus.add(
+						this.onFocus, this));
 
 	},
 	update : function() {
 
 	},
 	onFocusLost : function() {
+		this.game.tweens.pauseAll();
 		this.game.sound.mute = !0;
 	},
 	onFocus : function() {
+		this.game.tweens.resumeAll();
 		this.game.sound.mute = !1;
 	},
 	addBackground : function() {
@@ -51,7 +54,7 @@ Menu.prototype = {
 	},
 	addButtons : function() {
 		var b = this;
-		var c = this.game.width / 2 - 110;
+		var c = this.game.width / 2 - 50;
 		var d = 140;
 
 		this.playButton = new SimpleButton(this.game, this.game.width / 2, c,
@@ -69,7 +72,6 @@ Menu.prototype = {
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
-
 		this.game.sound.mute && this.soundButton.switchTextures();
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
@@ -86,19 +88,18 @@ Menu.prototype = {
 				});
 	},
 	hideAndStartGame : function() {
-		this.playButton.input.enabled = !1, this.playButton.inputEnabled = !1, this.game
-				.changeState(a.Main.stats.tutorialViewed ? "Level" : "Tutorial");
+		this.playButton.input.enabled = !1;
+		this.playButton.inputEnabled = !1;
+		this.game.state.start("levelsmenu");
 	},
 	onMoreGamesClick : function() {
 		window.open("http://m.softgames.de", "_blank");
 	},
 	initCredits : function() {
 		this.credits = this.game.add.image(0, 0, "main_menu",
-				"CreditsBoard0000"), this.credits.position
-				.set(	Math.round(.5
-								* (a.Config.GAME_WIDTH - this.credits.width)),
-						Math.round(.5
-								* (a.Config.GAME_HEIGHT - this.credits.height))), this.credits.visible = !1;
+				"CreditsBoard0000"), this.credits.position.set(Math.round(.5
+						* (this.game.width - this.credits.width)), Math
+						.round(.5 * (this.game.height - this.credits.height))), this.credits.visible = !1;
 	},
 	toggleCredits : function() {
 		this.credits.visible ? this.hideCredits() : this.showCredits();
@@ -114,16 +115,31 @@ Menu.prototype = {
 				}, this);
 	},
 	showCredits : function() {
-		var b = this;
 		this.credits.visible = !0, this.credits.alpha = 0, this.credits.y = Math
-				.round(.5 * (a.Config.GAME_HEIGHT - this.credits.height))
+				.round(.5 * (this.game.width - this.credits.height))
 				+ 200, this.game.add.tween(this.credits).to({
 					y : this.credits.y - 200,
 					alpha : 1
 				}, 500, Phaser.Easing.Back.Out, !0), this.playButton.input.enabled = !1, this.creditsButton.input.enabled = !1, this.game.input.onTap
 				.addOnce(function() {
-							b.hideCredits();
+							this.hideCredits();
 						}, this);
+	},
+	initAnimation : function() {
+		var a = this;
+		this.title.y -= 280, this.game.add.tween(this.title).to({
+					y : this.title.y + 280
+				}, 600, Phaser.Easing.Back.Out, !0, 300);
+		var b = 800;
+		this.buttons.forEach(function(c) {
+					c.scale.set(0, 0), a.game.add.tween(c.scale).to({
+								x : 1,
+								y : 1
+							}, 300, Phaser.Easing.Back.Out, !0, b), b += 200
+				})
+	},
+	destroy : function() {
+		this.buttons = null
 	}
 
 };

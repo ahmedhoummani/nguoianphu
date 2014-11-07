@@ -62,18 +62,30 @@ Preload.prototype = {
 		this.load.atlasJSONHash("tutorial_hand",
 				"assets/graphics/tutorial_hand.png",
 				"assets/graphics/tutorial_hand.json");
-		// leafs
-		this.load.atlasJSONHash("leafs", "assets/graphics/leafs.png",
-				"assets/graphics/leafs.json");
-		// splashes
-		this.load.atlasJSONHash("splashes", "assets/graphics/splashes.png",
-				"assets/graphics/splashes.json");
+
+
+		// LET ME GROW
+		// the GUI
+		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
+				"assets/graphics/gui.json");
 
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");
 	}
 
+};
+
+Preload.prototype.prepareLockLevelIcon = function() {
+	var a = new Phaser.Image(this.game, 0, 0, "gui", "Button_Base0000");
+	var b = new Phaser.Image(this.game, 0, 0, "gui", "LevelIcon_Lock0000");
+	var c = new Phaser.RenderTexture(this.game, a.width, a.height);
+	c.renderXY(a, 0, 0);
+	c.renderXY(b, .5 * (a.width - b.width) + 1, .5 * (a.height - b.height) - 3,
+			!1);
+	this.cache.addRenderTexture("lockedLevelIcon", c);
+	a.destroy();
+	b.destroy();
 };
 
 module.exports = Preload;
