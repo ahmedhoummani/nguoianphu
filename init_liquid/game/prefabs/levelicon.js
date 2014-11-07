@@ -1,7 +1,7 @@
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
-	Phaser.Image.call(this, b, c, d, e, f);
+	Phaser.Image.call(this, b, c, d, "gui", "Button_Base0000");
 
 	// initialize your prefab here
 	"undefined" == typeof f && (f = !1);
@@ -40,13 +40,12 @@ var Levelicon = function(b, c, d, e, f) {
 Levelicon.prototype = Object.create(Phaser.Image.prototype);
 Levelicon.prototype.constructor = Levelicon;
 
-
 Levelicon.prototype.createGraphics = function() {
 	this.locked ? this.createLockedGraphics() : this.createUnlockedGraphics()
 };
 Levelicon.prototype.createLockedGraphics = function() {
 	var a = "lockedLevelIcon", b = this.game.cache.getTexture(a);
-	this.setTexture(b.texture)
+	this.setTexture(a)
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {

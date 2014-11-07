@@ -4,12 +4,13 @@ var ToggleButton = require('../prefabs/togglebutton');
 
 'use strict';
 function Levelsmenu() {
-
-	var LEVELS_NUM = 28;
 }
 Levelsmenu.prototype = {
 
 	create : function() {
+
+		this.levels_num = 28;
+
 		this.game.add.image(-16, 0, "gui", "LevelsMenu_Background0000");
 		this.initLevelIcons();
 		this.initButtons();
@@ -21,7 +22,7 @@ Levelsmenu.prototype = {
 				"LevelIcons Container");
 		this.levelIconsGroup.x = 85;
 		this.levelIconsGroup.y = 150;
-		for (var b = 118, c = 118, d = 59, e = 0, f = 1; f <= this.LEVELS_NUM; f++) {
+		for (var b = 118, c = 118, d = 59, e = 0, f = 1; f <= this.levels_num; f++) {
 			var g = f, h = this.levelIsLocked(g), i = new LevelIcon(this.game,
 					d - .5, e, g, h);
 			h === !1
@@ -47,13 +48,16 @@ Levelsmenu.prototype = {
 	},
 	initButtons : function() {
 		var b = this, c = 60;
-		this.backButton = new SimpleButton(this.game, c, c, "Back_Button0000");
+
+		this.backButton = new SimpleButton(this.game, c, c, "gui",
+				"Back_Button0000");
 		this.backButton.callback.addOnce(function() {
 					b.game.state.start("menu")
 				}, this);
 		this.world.add(this.backButton);
+
 		this.soundButton = new ToggleButton(this.game, this.game.width - c, c,
-				"Music_ON_Button0000", "Music_OFF_Button0000");
+				"gui", "Music_ON_Button0000", "Music_OFF_Button0000");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute
 				});
@@ -67,9 +71,12 @@ Levelsmenu.prototype = {
 					y : this.levelIconsGroup.y - 200,
 					alpha : 1
 				}, 600, Phaser.Easing.Back.Out, !0, 300);
-		this.backButton.x -= 300, this.game.add.tween(this.backButton).to({
+
+		this.backButton.x -= 300;
+		this.game.add.tween(this.backButton).to({
 					x : this.backButton.x + 300
 				}, 300, Phaser.Easing.Back.Out, !0, 700);
+
 		this.soundButton.x += 300;
 		this.game.add.tween(this.soundButton).to({
 					x : this.soundButton.x - 300
