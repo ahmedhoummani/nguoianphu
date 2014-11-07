@@ -15,7 +15,115 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":2,"./states/gameover":3,"./states/menu":4,"./states/play":5,"./states/preload":6}],2:[function(require,module,exports){
+},{"./states/boot":4,"./states/gameover":5,"./states/menu":6,"./states/play":7,"./states/preload":8}],2:[function(require,module,exports){
+'use strict';
+
+var Simplebutton = function(b, c, d, e, f) {
+	Phaser.Image.call(this, b, c, d, e, f);
+
+	// initialize your prefab here
+	var g = this;
+	this.callbackDelay = 20;
+	this.callbackTimer = 0;
+	this.clicked = !1;
+	this._callback = new Phaser.Signal();
+	this.anchor.set(.5, .5);
+	this.inputEnabled = !0;
+	this.game.device.desktop && (this.input.useHandCursor = !0);
+	this.inputEnabled && this.events.onInputDown.add(function() {
+				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
+						.tween(g.scale).to({
+									x : 1.2,
+									y : .8
+								}, 200, Phaser.Easing.Back.Out, !0).onComplete
+						.addOnce(function() {
+							g.clicked = !0, g.callbackTimer = 0, g.game.add
+									.tween(g.scale).to({
+												x : 1,
+												y : 1
+											}, 200, Phaser.Easing.Back.Out, !0);
+						}, g);
+			});
+
+	Object.defineProperty(this, "callback", {
+				get : function() {
+					return this._callback;
+				},
+				enumerable : !0,
+				configurable : !0
+			});
+
+};
+
+Simplebutton.prototype = Object.create(Phaser.Image.prototype);
+Simplebutton.prototype.constructor = Simplebutton;
+
+Simplebutton.prototype.update = function() {
+
+	// write your prefab's specific update code here
+	this.clicked
+			&& (this.callbackTimer += this.game.time.elapsed, this.callbackTimer >= this.callbackDelay
+					&& (this._callback.dispatch(), this.clicked = !1, this.callbackTimer = 0));
+};
+
+Simplebutton.prototype.setCallbackDelay = function(a) {
+	this.callbackDelay = a;
+};
+
+Simplebutton.prototype.destroy = function() {
+	this.prototype.destroy.call(this);
+	this._callback.dispose();
+	this._callback = null;
+};
+
+module.exports = Simplebutton;
+
+},{}],3:[function(require,module,exports){
+'use strict';
+
+var Simplebutton = require('./simplebutton');
+
+var Togglebutton = function(b, c, d, e, f) {
+	Simplebutton.call(this, b, c, d, e, f);
+
+	// initialize your prefab here
+	this.spriteSheet = e;
+	this.textureKey1 = f;
+	this.textureKey2 = g;
+	this.activeTextureKey = this.textureKey1;
+	this._state = 1;
+	this.events.onInputUp.add(this.switchTextures, this, 2);
+	
+	Object.defineProperty(this, "state", {
+				get : function() {
+					return this._state;
+				},
+				enumerable : !0,
+				configurable : !0
+			});
+
+};
+
+Togglebutton.prototype = Object.create(Phaser.Sprite.prototype);
+Togglebutton.prototype.constructor = Togglebutton;
+
+Togglebutton.prototype.update = function() {
+
+	// write your prefab's specific update code here
+
+};
+
+Togglebutton.prototype.switchTextures = function() {
+	this.activeTextureKey = this.activeTextureKey === this.textureKey1
+			? this.textureKey2
+			: this.textureKey1;
+	this.loadTexture(this.spriteSheet, this.activeTextureKey);
+	this._state = this.activeTextureKey === this.textureKey1 ? 1 : 2;
+};
+
+module.exports = Togglebutton;
+
+},{"./simplebutton":2}],4:[function(require,module,exports){
 'use strict';
 
 function Boot() {
@@ -76,7 +184,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 
 'use strict';
 function GameOver() {}
@@ -104,8 +212,12 @@ GameOver.prototype = {
 };
 module.exports = GameOver;
 
-},{}],4:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
+var SimpleButton = require('../prefabs/simplebutton');
+var ToggleButton = require('../prefabs/togglebutton');
+
 'use strict';
+
 function Menu() {
 	this.fromPreloader = !1;
 }
@@ -120,7 +232,7 @@ Menu.prototype = {
 
 		this.addBackground();
 		this.addOtherImages();
-		 this.addButtons();
+		this.addButtons();
 		// this.initCredits();
 		// this.initAnimation();
 		// this.fromPreloader
@@ -153,38 +265,87 @@ Menu.prototype = {
 		this.panda.angle = -1;
 	},
 	addButtons : function() {
-		var b = this, c = this.game.width / 2 - 110, d = 140;
-		this.playButton = new this.game.SimpleButton(this.game, this.game.width / 2, c,
+		var b = this;
+		var c = this.game.width / 2 - 110;
+		var d = 140;
+
+		this.playButton = new SimpleButton(this.game, this.game.width / 2, c,
 				"buttons", "Button_Play0000");
 		this.playButton.setCallbackDelay(250);
 		this.playButton.callback.addOnce(this.hideAndStartGame, this);
-		this.creditsButton = new this.game.SimpleButton(this.game, this.playButton.x
-						+ d, this.playButton.y, "buttons", "Button_Credits0000");
+
+		this.creditsButton = new SimpleButton(this.game, this.playButton.x + d,
+				this.playButton.y, "buttons", "Button_Credits0000");
 		this.creditsButton.callback.add(this.toggleCredits, this);
-		this.soundButton = new this.game.ToggleButton(this.game, this.playButton.x - d,
+
+		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
 				this.playButton.y, "buttons", "Button_Music_On0000",
 				"Button_Music_Off0000");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
+
 		this.game.sound.mute && this.soundButton.switchTextures();
-		this.moreGamesButton = new this.game.SimpleButton(this.game, this.playButton.x
+
+		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
 						+ d, this.playButton.y, "buttons",
 				"Button_MoreGames0000");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
+
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
+
 		this.buttons.forEach(function(a) {
 					b.world.add(a);
 				});
+	},
+	hideAndStartGame : function() {
+		this.playButton.input.enabled = !1, this.playButton.inputEnabled = !1, this.game
+				.changeState(a.Main.stats.tutorialViewed ? "Level" : "Tutorial");
+	},
+	onMoreGamesClick : function() {
+		window.open("http://m.softgames.de", "_blank");
+	},
+	initCredits : function() {
+		this.credits = this.game.add.image(0, 0, "main_menu",
+				"CreditsBoard0000"), this.credits.position
+				.set(	Math.round(.5
+								* (a.Config.GAME_WIDTH - this.credits.width)),
+						Math.round(.5
+								* (a.Config.GAME_HEIGHT - this.credits.height))), this.credits.visible = !1;
+	},
+	toggleCredits : function() {
+		this.credits.visible ? this.hideCredits() : this.showCredits();
+	},
+	hideCredits : function() {
+		var a = this;
+		this.game.add.tween(this.credits).to({
+					y : this.credits.y + 200,
+					alpha : 0
+				}, 500, Phaser.Easing.Back.In, !0).onComplete.addOnce(
+				function() {
+					a.playButton.input.enabled = !0, a.creditsButton.input.enabled = !0, a.credits.visible = !1;
+				}, this);
+	},
+	showCredits : function() {
+		var b = this;
+		this.credits.visible = !0, this.credits.alpha = 0, this.credits.y = Math
+				.round(.5 * (a.Config.GAME_HEIGHT - this.credits.height))
+				+ 200, this.game.add.tween(this.credits).to({
+					y : this.credits.y - 200,
+					alpha : 1
+				}, 500, Phaser.Easing.Back.Out, !0), this.playButton.input.enabled = !1, this.creditsButton.input.enabled = !1, this.game.input.onTap
+				.addOnce(function() {
+							b.hideCredits();
+						}, this);
 	}
 
 };
 
 module.exports = Menu;
 
-},{}],5:[function(require,module,exports){
+},{"../prefabs/simplebutton":2,"../prefabs/togglebutton":3}],7:[function(require,module,exports){
 
   'use strict';
   function Play() {}
@@ -211,7 +372,7 @@ module.exports = Menu;
   };
   
   module.exports = Play;
-},{}],6:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 function Preload() {
 }
