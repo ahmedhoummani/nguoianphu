@@ -1,0 +1,51 @@
+﻿{"frames": {
+
+"BottomLeft_Leafs0000":
+{
+	"frame": {"x":1,"y":1,"w":179,"h":142},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":179,"h":142},
+	"sourceSize": {"w":179,"h":142}
+},
+"BottomRight_Leafs0000":
+{
+	"frame": {"x":181,"y":1,"w":151,"h":176},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":151,"h":176},
+	"sourceSize": {"w":151,"h":176}
+},
+"Bottom_Leafs0000":
+{
+	"frame": {"x":333,"y":1,"w":81,"h":36},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":81,"h":36},
+	"sourceSize": {"w":81,"h":36}
+},
+"TopLeft_Leafs0000":
+{
+	"frame": {"x":1,"y":178,"w":156,"h":214},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":156,"h":214},
+	"sourceSize": {"w":156,"h":214}
+},
+"TopRight_Leafs0000":
+{
+	"frame": {"x":158,"y":178,"w":214,"h":190},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":214,"h":190},
+	"sourceSize": {"w":214,"h":190}
+}},
+"meta": {
+	"app": "Adobe Flash Professional",
+	"version": "13.0.1.808",
+	"image": "leafs.png",
+	"format": "RGBA8888",
+	"size": {"w":512,"h":512},
+	"scale": "1"
+}
+}

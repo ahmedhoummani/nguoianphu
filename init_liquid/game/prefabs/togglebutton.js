@@ -2,7 +2,7 @@
 
 var Simplebutton = require('./simplebutton');
 
-var Togglebutton = function(b, c, d, e, f) {
+var Togglebutton = function(b, c, d, e, f, g) {
 	Simplebutton.call(this, b, c, d, e, f);
 
 	// initialize your prefab here
@@ -12,7 +12,7 @@ var Togglebutton = function(b, c, d, e, f) {
 	this.activeTextureKey = this.textureKey1;
 	this._state = 1;
 	this.events.onInputUp.add(this.switchTextures, this, 2);
-	
+
 	Object.defineProperty(this, "state", {
 				get : function() {
 					return this._state;
@@ -23,7 +23,7 @@ var Togglebutton = function(b, c, d, e, f) {
 
 };
 
-Togglebutton.prototype = Object.create(Phaser.Sprite.prototype);
+Togglebutton.prototype = Object.create(Phaser.Image.prototype);
 Togglebutton.prototype.constructor = Togglebutton;
 
 Togglebutton.prototype.update = function() {

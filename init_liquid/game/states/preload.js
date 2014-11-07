@@ -46,8 +46,29 @@ Preload.prototype = {
 		// MENU
 		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",
 				"assets/graphics/main_menu.json");
-				
-				
+		// Levels
+		this.load.atlasJSONHash("graphics_1",
+				"assets/graphics/level_graphics.png",
+				"assets/graphics/level_graphics.json");
+		// Buttons
+		this.load.atlasJSONHash("buttons", "assets/graphics/buttons.png",
+				"assets/graphics/buttons.json");
+		// Panda
+		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
+				"assets/graphics/panda.json");
+		// tuttorial
+		this.load.atlasJSONHash("tutorial", "assets/graphics/tutorial.png",
+				"assets/graphics/tutorial.json");
+		this.load.atlasJSONHash("tutorial_hand",
+				"assets/graphics/tutorial_hand.png",
+				"assets/graphics/tutorial_hand.json");
+		// leafs
+		this.load.atlasJSONHash("leafs", "assets/graphics/leafs.png",
+				"assets/graphics/leafs.json");
+		// splashes
+		this.load.atlasJSONHash("splashes", "assets/graphics/splashes.png",
+				"assets/graphics/splashes.json");
+
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");
