@@ -80,6 +80,10 @@ Preload.prototype = {
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
 
+				
+		// credit bg
+		this.load.image('creditbg', 'assets/graphics/creditbg.png');
+
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");

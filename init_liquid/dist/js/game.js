@@ -495,8 +495,7 @@ Menu.prototype = {
 	initCredits : function() {
 
 		// credit background
-		this.credits = this.game.add.image(0, 0, "main_menu",
-				"CreditsBoard0000");
+		this.credits = this.game.add.image(0, 0, "creditbg");
 
 		this.credits.position.set(Math.round(.5
 						* (this.game.width - this.credits.width)), Math
@@ -522,6 +521,17 @@ Menu.prototype = {
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
+
+		// credit bg
+		// this.completionSprite = this.game.add.graphics(0, 0);
+		// this.completionSprite.beginFill(0xFFFF00, 1);
+		// this.completionSprite.bounds = new PIXI.Rectangle(0, 0, 200, 200);
+		//
+		// this.completionSprite.boundsPadding = 0;
+		// // set the line style to have a width of 5 and set the color to red
+		// this.completionSprite.lineStyle(5, 0xFF0000);
+		// this.completionSprite.drawRect(0, 0, 150, 150);
+		// this.completionSprite.alpha = 0.3;
 	},
 	toggleCredits : function() {
 		this.credits.visible ? this.hideCredits() : this.showCredits();
@@ -549,7 +559,7 @@ Menu.prototype = {
 		this.credits.visible = !0;
 		this.creditText.visible = !0;
 		this.credits.alpha = 0;
-
+		
 		this.credits.y = Math.round(.5
 				* (this.game.width - this.credits.height))
 				+ 200;
@@ -722,6 +732,10 @@ Preload.prototype = {
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
+
+				
+		// credit bg
+		this.load.image('creditbg', 'assets/graphics/creditbg.png');
 
 	},
 	loadUpdate : function() {
