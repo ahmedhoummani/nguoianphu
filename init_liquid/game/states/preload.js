@@ -62,12 +62,11 @@ Preload.prototype = {
 		this.load.atlasJSONHash("graphics_1",
 				"assets/graphics/level_graphics.png",
 				"assets/graphics/level_graphics.json");
+
 		// Buttons
-		this.load.atlasJSONHash("buttons", "assets/graphics/buttons.png",
-				"assets/graphics/buttons.json");
-		this.load.atlasJSONHash("buttonsgroup",
-				"assets/graphics/buttonsgroup.png",
+		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",
 				"assets/graphics/buttonsgroup.json");
+
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
@@ -82,8 +81,6 @@ Preload.prototype = {
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
-		this.load.atlasJSONHash("gui_aqua", "assets/graphics/gui_aqua.png",
-				"assets/graphics/gui_aqua.json");
 
 	},
 	loadUpdate : function() {

@@ -58,25 +58,25 @@ Menu.prototype = {
 		var d = 140;
 
 		this.playButton = new SimpleButton(this.game, this.game.width / 2, c,
-				"buttons", "Button_Play0000");
+				"buttonsgroup", "play2.png");
 		this.playButton.setCallbackDelay(250);
 		this.playButton.callback.addOnce(this.hideAndStartGame, this);
 
 		this.creditsButton = new SimpleButton(this.game, this.playButton.x + d,
-				this.playButton.y, "buttons", "Button_Credits0000");
+				this.playButton.y, "buttonsgroup", "creditblue.png");
 		this.creditsButton.callback.add(this.toggleCredits, this);
 
 		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
-				this.playButton.y, "buttons", "Button_Music_On0000",
-				"Button_Music_Off0000");
+				this.playButton.y, "buttonsgroup", "soundonblue.png",
+				"muteblue.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-						+ d, this.playButton.y, "buttons",
-				"Button_MoreGames0000");
+						+ d, this.playButton.y, "buttonsgroup",
+				"buttonblue.png");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
@@ -93,7 +93,7 @@ Menu.prototype = {
 		this.game.state.start("levelsmenu");
 	},
 	onMoreGamesClick : function() {
-		window.open("http://m.softgames.de", "_blank");
+		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
 		this.credits = this.game.add.image(0, 0, "main_menu",
@@ -127,17 +127,51 @@ Menu.prototype = {
 	},
 	initAnimation : function() {
 		var a = this;
-		this.title.y -= 280, this.game.add.tween(this.title).to({
-					y : this.title.y + 280
+		this.title.y -= 250;
+		this.title.scale.set(0, 1);
+		this.game.add.tween(this.title).to({
+					y : this.title.y + 250
 				}, 600, Phaser.Easing.Back.Out, !0, 300);
-		var b = 800;
+		this.game.add.tween(this.title.scale).to({
+					x : 1
+				}, 600, Phaser.Easing.Back.Out, !0, 500).onComplete.addOnce(
+				this.onTitleAnimationComplete, this);
+		this.panda.scale.set(0, 0);
+		this.game.add.tween(this.panda.scale).to({
+					x : .85,
+					y : .85
+				}, 500, Phaser.Easing.Back.Out, !0, 1200).onComplete.addOnce(
+				this.onPandaAnimationComplete, this);
+		var b = 1500;
 		this.buttons.forEach(function(c) {
 					c.scale.set(0, 0), a.game.add.tween(c.scale).to({
 								x : 1,
 								y : 1
-							}, 300, Phaser.Easing.Back.Out, !0, b), b += 200
-				})
+							}, 300, Phaser.Easing.Back.Out, !0, b), b += 200;
+				});
+		this.game.time.events.repeat(2e3, 1e3, this.shakePlayButton, this);
 	},
+	shakePlayButton : function() {
+		this.game.add.tween(this.playButton.scale).to({
+					x : 1.1,
+					y : .9
+				}, 150, Phaser.Easing.Cubic.Out, !0, 0, 3, !0);
+	},
+	onTitleAnimationComplete : function() {
+		this.game.add.tween(this.title.scale).to({
+					x : 1.1,
+					y : .9
+				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+	},
+	onPandaAnimationComplete : function() {
+		this.game.add.tween(this.panda.scale).to({
+					y : .88
+				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0), this.game.add
+				.tween(this.panda).to({
+							angle : 1
+						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+	},
+
 	destroy : function() {
 		this.buttons = null
 	}

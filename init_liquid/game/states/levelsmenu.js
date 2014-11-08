@@ -54,15 +54,15 @@ Levelsmenu.prototype = {
 	initButtons : function() {
 		var b = this, c = 60;
 
-		this.backButton = new SimpleButton(this.game, c, c, "gui",
-				"Back_Button0000");
+		this.backButton = new SimpleButton(this.game, c, c, "buttonsgroup",
+				"home.png");
 		this.backButton.callback.addOnce(function() {
 					b.game.state.start("menu")
 				}, this);
 		this.world.add(this.backButton);
 
 		this.soundButton = new ToggleButton(this.game, this.game.width - c, c,
-				"gui", "Music_ON_Button0000", "Music_OFF_Button0000");
+				"buttonsgroup", "soundonblue.png", "muteblue.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute
 				});

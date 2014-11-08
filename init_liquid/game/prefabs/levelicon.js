@@ -1,7 +1,7 @@
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
-	Phaser.Image.call(this, b, c, d, "gui", "Button_Base0000");
+	Phaser.Image.call(this, b, c, d, "buttonsgroup", "buttonblue.png");
 
 	// initialize your prefab here
 	"undefined" == typeof f && (f = !1);
@@ -44,12 +44,12 @@ Levelicon.prototype.createGraphics = function() {
 	this.locked ? this.createLockedGraphics() : this.createUnlockedGraphics()
 };
 Levelicon.prototype.createLockedGraphics = function() {
-	this.loadTexture("gui_aqua", "Button_Lock0000")
+	this.loadTexture("buttonsgroup", "buttonlock.png")
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {
 		font : "48px TF2 Build",
-		fill : "#A07B08",
+		fill : "#218DB7",
 		align : "center"
 	};
 	var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
