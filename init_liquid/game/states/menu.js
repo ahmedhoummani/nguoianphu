@@ -47,10 +47,10 @@ Menu.prototype = {
 	addTitle : function() {
 
 		var style = {
-			font : "85px cantoraone",
-			fill : "#fcfcfc",
-			stroke : "#d4dbd9",
-			strokeThickness : 2,
+			font : "bold 75px cantoraone",
+			fill : "#F5CE31",
+			stroke : "#DBDBDB",
+			strokeThickness : 5,
 			align : "center"
 		};
 
@@ -59,7 +59,7 @@ Menu.prototype = {
 		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), style);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
-		this.titleText.setShadow(2, 2, "#666666", 2);
+		this.titleText.setShadow(5, 5, "#DBDBDB", 3);
 
 	},
 	addOtherImages : function() {
@@ -126,9 +126,9 @@ Menu.prototype = {
 		// credit text
 		var style = {
 			font : "45px cantoraone",
-			fill : "#fcfcfc",
-			stroke : "#d4dbd9",
-			strokeThickness : 2,
+			fill : "#fff",
+			stroke : "#000",
+			strokeThickness : 1,
 			align : "center"
 		};
 
@@ -180,7 +180,7 @@ Menu.prototype = {
 		this.credits.visible = !0;
 		this.creditText.visible = !0;
 		this.credits.alpha = 0;
-		
+
 		this.credits.y = Math.round(.5
 				* (this.game.width - this.credits.height))
 				+ 200;
