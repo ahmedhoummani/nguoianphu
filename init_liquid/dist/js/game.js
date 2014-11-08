@@ -73,8 +73,11 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 	var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
 	b.anchor.set(.5, .5);
 	var c = this.game.add.renderTexture(this.width, this.height);
-	c.renderXY(this, .5 * this.width, .5 * this.height), c.renderXY(b, Math
-					.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+	c.renderXY(this, .5 * this.width, .5 * this.height);
+	c
+			.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
+							* this.height)
+							- 1);
 	this.setTexture(c);
 	b.destroy();
 };
@@ -322,9 +325,10 @@ Levelsmenu.prototype = {
 	onLevelIconInputUp : function(a) {
 		var b = this;
 		this.game.time.events.add(200, function() {
-					var c = a.levelNumber;
-					b.game.state.start("Level", !0, !1, c)
-				}, this)
+			var c = a.levelNumber;
+			b.game.state.start("Level", !0, !1, c);
+				// this.destroy();
+			}, this)
 	},
 	initButtons : function() {
 		var b = this, c = 60;
@@ -361,6 +365,12 @@ Levelsmenu.prototype = {
 		this.game.add.tween(this.soundButton).to({
 					x : this.soundButton.x - 300
 				}, 300, Phaser.Easing.Back.Out, !0, 700)
+	},
+	destroy : function() {
+		this.levelIconsGroup.destroy();
+		this.backButton.destroy();
+		this.soundButton.destroy();
+
 	}
 
 };
@@ -385,6 +395,7 @@ Menu.prototype = {
 		// add menu object
 
 		this.addBackground();
+		this.addTitle();
 		this.addOtherImages();
 		this.addButtons();
 		this.initCredits();
@@ -412,10 +423,26 @@ Menu.prototype = {
 	addBackground : function() {
 		this.game.add.image(0, 0, "main_menu", "main_menu_bg");
 	},
+	addTitle : function() {
+
+		var style = {
+			font : "85px cantoraone",
+			fill : "#fcfcfc",
+			stroke : "#d4dbd9",
+			strokeThickness : 2,
+			align : "center"
+		};
+
+		var titleTexts = "GAME TITLE";
+
+		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), style);
+		this.titleText.anchor.set(.5, .5);
+		this.titleText.position.set(this.game.width / 2, 130);
+		this.titleText.setShadow(2, 2, "#666666", 2);
+
+	},
 	addOtherImages : function() {
-		this.title = this.game.add.image(this.game.width / 2, 130, "main_menu",
-				"Title0000");
-		this.title.anchor.set(.5, .5);
+
 		this.panda = this.game.add.image(this.game.width / 2, this.game.height
 						- 50, "main_menu", "Panda0000");
 		this.panda.anchor.set(.5, 1);
@@ -460,51 +487,109 @@ Menu.prototype = {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
+		this.destroy();
 	},
 	onMoreGamesClick : function() {
 		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
+
+		// credit background
 		this.credits = this.game.add.image(0, 0, "main_menu",
-				"CreditsBoard0000"), this.credits.position.set(Math.round(.5
+				"CreditsBoard0000");
+
+		this.credits.position.set(Math.round(.5
 						* (this.game.width - this.credits.width)), Math
-						.round(.5 * (this.game.height - this.credits.height))), this.credits.visible = !1;
+						.round(.5 * (this.game.height - this.credits.height)));
+		this.credits.visible = !1;
+
+		// credit text
+		var style = {
+			font : "45px cantoraone",
+			fill : "#fcfcfc",
+			stroke : "#d4dbd9",
+			strokeThickness : 2,
+			align : "center"
+		};
+
+		var creditTextContent = "Hello\n" + "Phaser is very good!\n"
+				+ "Let's go!";
+
+		this.creditText = this.game.add.text(0, 0,
+				creditTextContent.toString(), style);
+		this.creditText.anchor.set(.5, .5);
+		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
+		this.creditText.setShadow(2, 2, "#666666", 2);
+
+		this.creditText.visible = !1;
 	},
 	toggleCredits : function() {
 		this.credits.visible ? this.hideCredits() : this.showCredits();
 	},
 	hideCredits : function() {
 		var a = this;
+
+		this.game.add.tween(this.creditText).to({
+					y : this.creditText.y + 200,
+					alpha : 0
+				}, 500, Phaser.Easing.Back.In, !0);
+
 		this.game.add.tween(this.credits).to({
 					y : this.credits.y + 200,
 					alpha : 0
 				}, 500, Phaser.Easing.Back.In, !0).onComplete.addOnce(
 				function() {
-					a.playButton.input.enabled = !0, a.creditsButton.input.enabled = !0, a.credits.visible = !1;
+					a.playButton.input.enabled = !0;
+					a.creditsButton.input.enabled = !0;
+					a.credits.visible = !1;
+					a.creditText.visible = !1;
 				}, this);
 	},
 	showCredits : function() {
-		this.credits.visible = !0, this.credits.alpha = 0, this.credits.y = Math
-				.round(.5 * (this.game.width - this.credits.height))
-				+ 200, this.game.add.tween(this.credits).to({
+		this.credits.visible = !0;
+		this.creditText.visible = !0;
+		this.credits.alpha = 0;
+
+		this.credits.y = Math.round(.5
+				* (this.game.width - this.credits.height))
+				+ 200;
+
+		this.creditText.y = Math.round(.5
+				* (this.game.width - this.creditText.height))
+				+ 200;
+
+		this.game.add.tween(this.credits).to({
 					y : this.credits.y - 200,
 					alpha : 1
-				}, 500, Phaser.Easing.Back.Out, !0), this.playButton.input.enabled = !1, this.creditsButton.input.enabled = !1, this.game.input.onTap
-				.addOnce(function() {
-							this.hideCredits();
-						}, this);
+				}, 500, Phaser.Easing.Back.Out, !0);
+
+		this.game.add.tween(this.creditText).to({
+					y : this.creditText.y - 200,
+					alpha : 1
+				}, 500, Phaser.Easing.Back.Out, !0);
+
+		this.playButton.input.enabled = !1;
+		this.creditsButton.input.enabled = !1;
+
+		this.game.input.onTap.addOnce(function() {
+					this.hideCredits();
+				}, this);
 	},
 	initAnimation : function() {
 		var a = this;
-		this.title.y -= 250;
-		this.title.scale.set(0, 1);
-		this.game.add.tween(this.title).to({
-					y : this.title.y + 250
+
+		// tween title
+		this.titleText.y -= 250;
+		this.titleText.scale.set(0, 1);
+		this.game.add.tween(this.titleText).to({
+					y : this.titleText.y + 250
 				}, 600, Phaser.Easing.Back.Out, !0, 300);
-		this.game.add.tween(this.title.scale).to({
+		this.game.add.tween(this.titleText.scale).to({
 					x : 1
 				}, 600, Phaser.Easing.Back.Out, !0, 500).onComplete.addOnce(
 				this.onTitleAnimationComplete, this);
+
+		// tween panda
 		this.panda.scale.set(0, 0);
 		this.game.add.tween(this.panda.scale).to({
 					x : .85,
@@ -512,6 +597,8 @@ Menu.prototype = {
 				}, 500, Phaser.Easing.Back.Out, !0, 1200).onComplete.addOnce(
 				this.onPandaAnimationComplete, this);
 		var b = 1500;
+
+		// tween buttons
 		this.buttons.forEach(function(c) {
 					c.scale.set(0, 0), a.game.add.tween(c.scale).to({
 								x : 1,
@@ -527,7 +614,7 @@ Menu.prototype = {
 				}, 150, Phaser.Easing.Cubic.Out, !0, 0, 3, !0);
 	},
 	onTitleAnimationComplete : function() {
-		this.game.add.tween(this.title.scale).to({
+		this.game.add.tween(this.titleText.scale).to({
 					x : 1.1,
 					y : .9
 				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
@@ -542,6 +629,10 @@ Menu.prototype = {
 	},
 
 	destroy : function() {
+		this.titleText.destroy();
+		this.panda.destroy();
+		this.credits.destroy();
+		this.creditText.destroy();
 		this.buttons = null
 	}
 
@@ -587,25 +678,23 @@ Preload.prototype = {
 		this.load.setPreloadSprite(this.LoadingBar_Inner);
 	},
 	addLoadingText : function() {
-		var b = {
-			font : "45px GrilledCheeseBTNToasted",
+		var style = {
+			font : "45px cantoraone",
 			fill : "#FFFFFF",
 			align : "center"
 		};
-		this.loadingText = this.game.add.text(0, 0, "0%", b), this.loadingText.anchor
-				.set(.5, .5), this.loadingText.position.set(
-				this.game.world.width / 2, this.game.world.height / 2 + 180), this.loadingText
-				.setShadow(2, 2, "#666666", 2), this.loadingText.update();
+		this.loadingText = this.game.add.text(0, 0, "0%", style);
+		this.loadingText.anchor.set(.5, .5);
+		this.loadingText.position.set(this.game.world.width / 2,
+				this.game.world.height / 2 + 180);
+		this.loadingText.setShadow(2, 2, "#666666", 2);
+		this.loadingText.update();
 	},
 	loadAssets : function() {
 
 		// FONTS
-		this.load.bitmapFont("timer", "assets/fonts/timer.png",
-				"assets/fonts/timer.fnt", null, 1);
-		this.load.bitmapFont("level_label", "assets/fonts/level_label.png",
-				"assets/fonts/level_label.fnt", null, 1);
-		this.load.bitmapFont("fruit_labels", "assets/fonts/fruit_labels.png",
-				"assets/fonts/fruit_labels.fnt", null, 3);
+		this.load.bitmapFont("cantoraone", "assets/fonts/cantoraone.png",
+				"assets/fonts/cantoraone.fnt", null, 1);
 
 		// MENU
 		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",

@@ -55,8 +55,11 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 	var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
 	b.anchor.set(.5, .5);
 	var c = this.game.add.renderTexture(this.width, this.height);
-	c.renderXY(this, .5 * this.width, .5 * this.height), c.renderXY(b, Math
-					.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+	c.renderXY(this, .5 * this.width, .5 * this.height);
+	c
+			.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
+							* this.height)
+							- 1);
 	this.setTexture(c);
 	b.destroy();
 };
