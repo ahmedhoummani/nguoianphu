@@ -5,7 +5,8 @@ function Boot() {
 
 Boot.prototype = {
 	preload : function() {
-		this.load.image('preloader', 'assets/LoadingBar_Inner.png');
+		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
+		this.load.image('LoadingBar_Inner', 'assets/LoadingBar_Inner.png');
 	},
 	create : function() {
 

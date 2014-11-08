@@ -17,11 +17,22 @@ Preload.prototype = {
 
 	},
 	initPreloadBar : function() {
-		this.asset = this.add.sprite(0, 0, 'preloader');
+
+		// loadding bars
+		this.LoadingBar_Outer = this.add.image(0, 0, 'LoadingBar_Outer');
+		this.LoadingBar_Inner = this.add.sprite(0, 0, 'LoadingBar_Inner');
+
 		// Center the preload bar
-		this.asset.x = this.game.world.centerX - this.asset.width / 2;
-		this.asset.y = this.game.world.centerY - this.asset.height / 2;
-		this.load.setPreloadSprite(this.asset);
+		this.LoadingBar_Outer.anchor.set(.5, .5);
+		this.LoadingBar_Outer.x = this.game.width / 2 - .5;
+		this.LoadingBar_Outer.y = this.game.height / 2;
+
+		this.LoadingBar_Inner.x = this.game.width / 2 - .5
+				- this.LoadingBar_Inner.width / 2;
+		this.LoadingBar_Inner.y = this.game.height / 2
+				- this.LoadingBar_Inner.height / 2 - 1.5;
+
+		this.load.setPreloadSprite(this.LoadingBar_Inner);
 	},
 	addLoadingText : function() {
 		var b = {
@@ -54,6 +65,9 @@ Preload.prototype = {
 		// Buttons
 		this.load.atlasJSONHash("buttons", "assets/graphics/buttons.png",
 				"assets/graphics/buttons.json");
+		this.load.atlasJSONHash("buttonsgroup",
+				"assets/graphics/buttonsgroup.png",
+				"assets/graphics/buttonsgroup.json");
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");

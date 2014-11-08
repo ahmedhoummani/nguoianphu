@@ -57,7 +57,8 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 	var c = this.game.add.renderTexture(this.width, this.height);
 	c.renderXY(this, .5 * this.width, .5 * this.height), c.renderXY(b, Math
 					.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
-	this.setTexture(c), b.destroy();
+	this.setTexture(c);
+	b.destroy();
 };
 
 module.exports = Levelicon;
