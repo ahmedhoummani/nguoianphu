@@ -22,9 +22,12 @@ Levelsmenu.prototype = {
 				"LevelIcons Container");
 		this.levelIconsGroup.x = 85;
 		this.levelIconsGroup.y = 150;
-		for (var b = 118, c = 118, d = 59, e = 0, f = 1; f <= this.levels_num; f++) {
-			var g = f, h = this.levelIsLocked(g), i = new LevelIcon(this.game,
-					d - .5, e, g, h);
+
+		var b = 118, c = 118, d = 59, e = 0;
+		for (var f = 1; f <= this.levels_num; f++) {
+			var g = f;
+			var h = this.levelIsLocked(g);
+			var i = new LevelIcon(this.game, d - .5, e, g, h);
 			h === !1
 					&& i.events.onInputUp.add(this.onLevelIconInputUp, this, 2);
 			this.levelIconsGroup.add(i);
@@ -32,10 +35,12 @@ Levelsmenu.prototype = {
 			4 === f && (d = 0, e += c);
 			f > 4 && (f - 4) % 5 === 0 && (d = 0, e += c), 24 === f && (d = 59);
 		}
+
 	},
 	levelIsLocked : function(a) {
 		if (1 === a)
 			return !1;
+
 		var b = a - 1;
 		return !("true" === window.localStorage.getItem(b.toString()))
 	},

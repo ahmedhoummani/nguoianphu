@@ -8,8 +8,10 @@ Preload.prototype = {
 		this.initPreloadBar();
 		this.addLoadingText();
 		this.loadAssets();
+
 	},
 	create : function() {
+		this.prepareLockLevelIcon();
 		this.game.state.start("menu", !0, !1, !0);
 	},
 	update : function() {
@@ -63,7 +65,6 @@ Preload.prototype = {
 				"assets/graphics/tutorial_hand.png",
 				"assets/graphics/tutorial_hand.json");
 
-
 		// LET ME GROW
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
@@ -72,20 +73,21 @@ Preload.prototype = {
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");
+	},
+	prepareLockLevelIcon : function() {
+		var a = new Phaser.Image(this.game, 0, 0, "gui", "Button_Base0000");
+		var b = new Phaser.Image(this.game, 0, 0, "gui", "LevelIcon_Lock0000");
+		var c = new Phaser.RenderTexture(this.game, a.width, a.height);
+		
+		c.renderXY(a, 0, 0);
+		c.renderXY(b, .5 * (a.width - b.width) + 1, .5 * (a.height - b.height)
+						- 3, !1);
+						
+		this.game.cache.addRenderTexture("lockedLevelIcon", c);
+		a.destroy();
+		b.destroy();
 	}
 
-};
-
-Preload.prototype.prepareLockLevelIcon = function() {
-	var a = new Phaser.Image(this.game, 0, 0, "gui", "Button_Base0000");
-	var b = new Phaser.Image(this.game, 0, 0, "gui", "LevelIcon_Lock0000");
-	var c = new Phaser.RenderTexture(this.game, a.width, a.height);
-	c.renderXY(a, 0, 0);
-	c.renderXY(b, .5 * (a.width - b.width) + 1, .5 * (a.height - b.height) - 3,
-			!1);
-	this.cache.addRenderTexture("lockedLevelIcon", c);
-	a.destroy();
-	b.destroy();
 };
 
 module.exports = Preload;

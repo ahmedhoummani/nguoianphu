@@ -2,7 +2,7 @@
 
 var Levelsettings = function(a) {
 	this._levelNumber = a;
-	Object.defineProperty(this, "levelNumber", {
+	return Object.defineProperty(this, "levelNumber", {
 				get : function() {
 					return this._levelNumber
 				},
