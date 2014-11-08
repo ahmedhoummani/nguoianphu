@@ -44,8 +44,7 @@ Levelicon.prototype.createGraphics = function() {
 	this.locked ? this.createLockedGraphics() : this.createUnlockedGraphics()
 };
 Levelicon.prototype.createLockedGraphics = function() {
-	var a = "lockedLevelIcon", b = this.game.cache.getTexture(a);
-	this.setTexture(a)
+	this.loadTexture("gui_aqua", "Button_Lock0000")
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {

@@ -62,8 +62,7 @@ Levelicon.prototype.createGraphics = function() {
 	this.locked ? this.createLockedGraphics() : this.createUnlockedGraphics()
 };
 Levelicon.prototype.createLockedGraphics = function() {
-	var a = "lockedLevelIcon", b = this.game.cache.getTexture(a);
-	this.setTexture(a)
+	this.loadTexture("gui_aqua", "Button_Lock0000")
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {
@@ -528,7 +527,6 @@ Preload.prototype = {
 
 	},
 	create : function() {
-		this.prepareLockLevelIcon();
 		this.game.state.start("menu", !0, !1, !0);
 	},
 	update : function() {
@@ -586,23 +584,12 @@ Preload.prototype = {
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
+		this.load.atlasJSONHash("gui_aqua", "assets/graphics/gui_aqua.png",
+				"assets/graphics/gui_aqua.json");
 
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");
-	},
-	prepareLockLevelIcon : function() {
-		var a = new Phaser.Image(this.game, 0, 0, "gui", "Button_Base0000");
-		var b = new Phaser.Image(this.game, 0, 0, "gui", "LevelIcon_Lock0000");
-		var c = new Phaser.RenderTexture(this.game, a.width, a.height);
-		
-		c.renderXY(a, 0, 0);
-		c.renderXY(b, .5 * (a.width - b.width) + 1, .5 * (a.height - b.height)
-						- 3, !1);
-						
-		this.game.cache.addRenderTexture("lockedLevelIcon", c);
-		a.destroy();
-		b.destroy();
 	}
 
 };
