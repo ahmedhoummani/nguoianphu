@@ -47,10 +47,9 @@ Levelsmenu.prototype = {
 	onLevelIconInputUp : function(a) {
 		var b = this;
 		this.game.time.events.add(200, function() {
-			var c = a.levelNumber;
-			b.game.state.start("Level", !0, !1, c);
-				// this.destroy();
-			}, this)
+					var c = a.levelNumber;
+					b.game.state.start("level", !0, !1, c);
+				}, this)
 	},
 	initButtons : function() {
 		var b = this, c = 60;
@@ -63,7 +62,7 @@ Levelsmenu.prototype = {
 		this.world.add(this.backButton);
 
 		this.soundButton = new ToggleButton(this.game, this.game.width - c, c,
-				"buttonsgroup", "soundonblue.png", "muteblue.png");
+				"buttonsgroup", "sound.png", "mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute
 				});
@@ -88,11 +87,10 @@ Levelsmenu.prototype = {
 					x : this.soundButton.x - 300
 				}, 300, Phaser.Easing.Back.Out, !0, 700)
 	},
-	destroy : function() {
+	shutdown : function() {
 		this.levelIconsGroup.destroy();
 		this.backButton.destroy();
 		this.soundButton.destroy();
-
 	}
 
 };

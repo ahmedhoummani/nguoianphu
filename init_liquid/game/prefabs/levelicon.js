@@ -1,7 +1,7 @@
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
-	Phaser.Image.call(this, b, c, d, "buttonsgroup", "buttonblue.png");
+	Phaser.Image.call(this, b, c, d, "buttonsgroup", "button.png");
 
 	// initialize your prefab here
 	"undefined" == typeof f && (f = !1);

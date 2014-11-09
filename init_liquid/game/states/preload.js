@@ -57,9 +57,6 @@ Preload.prototype = {
 		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",
 				"assets/graphics/main_menu.json");
 		// Levels
-		this.load.atlasJSONHash("graphics_1",
-				"assets/graphics/level_graphics.png",
-				"assets/graphics/level_graphics.json");
 
 		// Buttons
 		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",
@@ -69,17 +66,11 @@ Preload.prototype = {
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
 		// tuttorial
-		this.load.atlasJSONHash("tutorial", "assets/graphics/tutorial.png",
-				"assets/graphics/tutorial.json");
-		this.load.atlasJSONHash("tutorial_hand",
-				"assets/graphics/tutorial_hand.png",
-				"assets/graphics/tutorial_hand.json");
 
 		// LET ME GROW
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
-
 				
 		// credit bg
 		this.load.image('creditbg', 'assets/graphics/creditbg.png');

@@ -52,9 +52,4 @@ Simplebutton.prototype.setCallbackDelay = function(a) {
 	this.callbackDelay = a;
 };
 
-Simplebutton.prototype.destroy = function() {
-	this._callback.dispose();
-	this._callback = null;
-};
-
 module.exports = Simplebutton;

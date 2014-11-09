@@ -48,9 +48,9 @@ Menu.prototype = {
 
 		var style = {
 			font : "bold 75px cantoraone",
-			fill : "#F5CE31",
-			stroke : "#DBDBDB",
-			strokeThickness : 5,
+			fill : "#FFA500",
+			stroke : "#808080",
+			strokeThickness : 1,
 			align : "center"
 		};
 
@@ -59,7 +59,7 @@ Menu.prototype = {
 		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), style);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
-		this.titleText.setShadow(5, 5, "#DBDBDB", 3);
+		this.titleText.setShadow(7, 5, "#F5F5F5", 5);
 
 	},
 	addOtherImages : function() {
@@ -75,17 +75,17 @@ Menu.prototype = {
 		var d = 140;
 
 		this.playButton = new SimpleButton(this.game, this.game.width / 2, c,
-				"buttonsgroup", "play2.png");
+				"buttonsgroup", "play.png");
 		this.playButton.setCallbackDelay(250);
 		this.playButton.callback.addOnce(this.hideAndStartGame, this);
 
 		this.creditsButton = new SimpleButton(this.game, this.playButton.x + d,
-				this.playButton.y, "buttonsgroup", "creditblue.png");
+				this.playButton.y, "buttonsgroup", "credit.png");
 		this.creditsButton.callback.add(this.toggleCredits, this);
 
 		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
-				this.playButton.y, "buttonsgroup", "soundonblue.png",
-				"muteblue.png");
+				this.playButton.y, "buttonsgroup", "sound.png",
+				"mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
@@ -93,7 +93,7 @@ Menu.prototype = {
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
 						+ d, this.playButton.y, "buttonsgroup",
-				"buttonblue.png");
+				"button.png");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
@@ -108,7 +108,6 @@ Menu.prototype = {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
-		this.destroy();
 	},
 	onMoreGamesClick : function() {
 		window.open("http://play.nguoianphu.com", "_blank");
@@ -142,17 +141,6 @@ Menu.prototype = {
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
-
-		// credit bg
-		// this.completionSprite = this.game.add.graphics(0, 0);
-		// this.completionSprite.beginFill(0xFFFF00, 1);
-		// this.completionSprite.bounds = new PIXI.Rectangle(0, 0, 200, 200);
-		//
-		// this.completionSprite.boundsPadding = 0;
-		// // set the line style to have a width of 5 and set the color to red
-		// this.completionSprite.lineStyle(5, 0xFF0000);
-		// this.completionSprite.drawRect(0, 0, 150, 150);
-		// this.completionSprite.alpha = 0.3;
 	},
 	toggleCredits : function() {
 		this.credits.visible ? this.hideCredits() : this.showCredits();
@@ -259,7 +247,7 @@ Menu.prototype = {
 						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 
-	destroy : function() {
+	shutdown : function() {
 		this.titleText.destroy();
 		this.panda.destroy();
 		this.credits.destroy();

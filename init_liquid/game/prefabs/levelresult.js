@@ -1,9 +1,7 @@
 'use strict';
 
-var Levelsettings = function(a) {
-	
+var Levelresult = function(a) {
 	this._levelNumber = a;
-	
 	return Object.defineProperty(this, "levelNumber", {
 				get : function() {
 					return this._levelNumber
@@ -14,4 +12,4 @@ var Levelsettings = function(a) {
 
 };
 
-module.exports = Levelsettings;
+module.exports = Levelresult;

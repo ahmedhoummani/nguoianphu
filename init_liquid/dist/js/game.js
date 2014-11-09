@@ -15,11 +15,141 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":5,"./states/level":6,"./states/levelsmenu":7,"./states/menu":8,"./states/preload":9}],2:[function(require,module,exports){
+},{"./states/boot":9,"./states/level":10,"./states/levelsmenu":11,"./states/menu":12,"./states/preload":13}],2:[function(require,module,exports){
+var SimpleButton = require('./simplebutton');
+
+'use strict';
+
+var Levelcompleteboard = function(b, c, d) {
+	Phaser.Group.call(this, b, c, "Level Complete Board");
+
+	this.levels_num = 28;
+	this.levelNumber = d;
+	this.addBack();
+	this.addButtons();
+	this.board = this.game.add.image(-10, 250, "gui", "LevelCompleteBoard0000",
+			this)
+
+};
+
+Levelcompleteboard.prototype = Object.create(Phaser.Group.prototype);
+Levelcompleteboard.prototype.constructor = Levelcompleteboard;
+
+Levelcompleteboard.prototype.addBack = function() {
+	var a = this.game.add.graphics(0, 0, this);
+	a.beginFill(0, .5);
+	a.drawRect(0, 0, this.game.width, this.game.height);
+	a.endFill()
+};
+Levelcompleteboard.prototype.addButtons = function() {
+	var a = this, b = 550, c = 120, d = new SimpleButton(this.game,
+			this.game.width / 2, b, "buttonsgroup", "restart.png");
+	d.callback.addOnce(function() {
+				a.game.state.start("level", !0, !1, a.levelNumber)
+			}, this);
+
+	var e = new SimpleButton(this.game, d.x - c, b, "buttonsgroup", "menu.png");
+	e.callback.addOnce(function() {
+				a.game.state.start("levelsmenu")
+			}, this);
+
+	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
+			"play76.png");
+	f.callback.addOnce(function() {
+				a.levelNumber === this.levels_num ? a.game.state
+						.start("levelsmenu") : a.game.state.start("level", !0,
+						!1, a.levelNumber + 1)
+			}, this);
+
+	this.buttons = [e, d, f];
+	this.buttons.forEach(function(b) {
+				a.add(b)
+			})
+};
+Levelcompleteboard.prototype.show = function() {
+	var a = this;
+	this.visible = !0;
+	this.board.y -= 200;
+	this.board.alpha = 0;
+	var b = 500;
+	this.game.add.tween(this.board).to({
+				alpha : 1
+			}, 200, Phaser.Easing.Linear.None, !0), this.game.add
+			.tween(this.board).to({
+						y : this.board.y + 200
+					}, b, Phaser.Easing.Back.Out, !0);
+	var c = b;
+	this.buttons.forEach(function(d) {
+				d.y -= 200, d.visible = !1, a.game.add.tween(d).to({
+							y : d.y + 200
+						}, b, Phaser.Easing.Back.Out, !0, c).onStart.addOnce(
+						function() {
+							d.visible = !0
+						}, a), c += 100
+			})
+};
+
+module.exports = Levelcompleteboard;
+
+},{"./simplebutton":7}],3:[function(require,module,exports){
+var SimpleButton = require('./simplebutton');
+var LevelCompleteBoard = require('./levelcompleteboard');
+
+'use strict';
+
+var Levelgui = function(b, c) {
+	Phaser.Group.call(this, b, b.world, "gui");
+
+	this.levelSettings = c;
+	this.initLevelCompleteBoard();
+	this.initButtons();
+
+};
+
+Levelgui.prototype = Object.create(Phaser.Group.prototype);
+Levelgui.prototype.constructor = Levelgui;
+
+Levelgui.prototype.initButtons = function() {
+	var a = this, b = 60, c = new SimpleButton(this.game,
+			this.game.width - 160, b, "buttonsgroup", "restart.png");
+	c.callback.addOnce(function() {
+				a.game.state
+						.start("level", !0, !1, a.levelSettings.levelNumber)
+			}, this);
+
+	var d = new SimpleButton(this.game, this.game.width - 60, b,
+			"buttonsgroup", "menu.png");
+	d.callback.addOnce(function() {
+				a.game.state.start("levelsmenu")
+			});
+
+	
+
+	this.buttons = [c, d];
+	this.buttons.forEach(function(b) {
+				a.add(b)
+			})
+};
+
+Levelgui.prototype.initLevelCompleteBoard = function() {
+	this.levelCompleteBoard = new LevelCompleteBoard(this.game, this,
+			this.levelSettings.levelNumber);
+	this.levelCompleteBoard.visible = !1
+};
+Levelgui.prototype.onLevelComplete = function() {
+	this.buttons.forEach(function(a) {
+				a.visible = !1
+			});
+	this.levelCompleteBoard.show()
+};
+
+module.exports = Levelgui;
+
+},{"./levelcompleteboard":2,"./simplebutton":7}],4:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
-	Phaser.Image.call(this, b, c, d, "buttonsgroup", "buttonblue.png");
+	Phaser.Image.call(this, b, c, d, "buttonsgroup", "button.png");
 
 	// initialize your prefab here
 	"undefined" == typeof f && (f = !1);
@@ -84,7 +214,43 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 
 module.exports = Levelicon;
 
-},{}],3:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
+'use strict';
+
+var Levelresult = function(a) {
+	this._levelNumber = a;
+	return Object.defineProperty(this, "levelNumber", {
+				get : function() {
+					return this._levelNumber
+				},
+				enumerable : !0,
+				configurable : !0
+			})
+
+};
+
+module.exports = Levelresult;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+var Levelsettings = function(a) {
+	
+	this._levelNumber = a;
+	
+	return Object.defineProperty(this, "levelNumber", {
+				get : function() {
+					return this._levelNumber
+				},
+				enumerable : !0,
+				configurable : !0
+			})
+
+};
+
+module.exports = Levelsettings;
+
+},{}],7:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = function(b, c, d, e, f) {
@@ -139,14 +305,9 @@ Simplebutton.prototype.setCallbackDelay = function(a) {
 	this.callbackDelay = a;
 };
 
-Simplebutton.prototype.destroy = function() {
-	this._callback.dispose();
-	this._callback = null;
-};
-
 module.exports = Simplebutton;
 
-},{}],4:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = require('./simplebutton');
@@ -185,7 +346,7 @@ Togglebutton.prototype.switchTextures = function() {
 
 module.exports = Togglebutton;
 
-},{"./simplebutton":3}],5:[function(require,module,exports){
+},{"./simplebutton":7}],9:[function(require,module,exports){
 'use strict';
 
 function Boot() {
@@ -247,35 +408,123 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],6:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+var LevelSettings = require('../prefabs/levelsettings');
+var LevelResult = require('../prefabs/levelresult');
+var LevelGUI = require('../prefabs/levelgui');
+var SimpleButton = require('../prefabs/simplebutton');
+
 'use strict';
-  function Level() {}
-  Level.prototype = {
-    preload: function() {
-      // Override this method to add some load operations. 
-      // If you need to use the loader, you may need to use them here.
-    },
-    create: function() {
-      // This method is called after the game engine successfully switches states. 
-      // Feel free to add any setup code here (do not load anything here, override preload() instead).
-    },
-    update: function() {
-      // state update code
-    },
-    paused: function() {
-      // This method will be called when game paused.
-    },
-    render: function() {
-      // Put render operations here.
-    },
-    shutdown: function() {
-      // This method will be called when the state is shut down 
-      // (i.e. you switch to another state from this one).
-    }
-  };
+
+var b;
+!function(a) {
+	a[a.ACTIVE = 0] = "ACTIVE", a[a.PAUSED = 1] = "PAUSED", a[a.RESTART = 2] = "RESTART"
+}(b || (b = {}));
+
+function Level() {
+}
+Object.defineProperty(this, "settings", {
+			get : function() {
+				return this._settings
+			},
+			enumerable : !0,
+			configurable : !0
+		});
+
+Level.prototype = {
+
+	init : function(b) {
+		this.state = 1;
+		this._settings = new LevelSettings(b);
+		this.result = new LevelResult(b)
+	},
+
+	create : function() {
+		this.levels_num = 28;
+		// this.state = 1;
+		// this._settings = new LevelSettings(this);
+		// this.result = new LevelResult(this);
+
+		this.game.add.text(100, 100, this._settings.levelNumber.toString());
+
+		// hack
+		var e = new SimpleButton(this.game, 200, 200, "buttonsgroup",
+				"play76.png");
+		this.world.add(e);
+		e.callback.addOnce(this.levelComplete, this);
+
+		// level gui menu
+		this.addGui();
+
+	},
+
+	update : function() {
+		switch (this.state) {
+			case 0 :
+				this.doUpdate();
+				break;
+			case 2 :
+				this.doRestart(), this.state = 0
+		}
+	},
+
+	addGui : function() {
+		this.gui = new LevelGUI(this.game, this._settings)
+	},
+
+	gotoPrevLevel : function() {
+		var b = this._settings.levelNumber;
+		c = 1 === b ? this.levels_num : b - 1;
+		this.gotoLevel(c)
+	},
+	gotoNextLevel : function() {
+		var b = this._settings.levelNumber;
+		c = b >= this.levels_num ? 1 : b + 1;
+		this.gotoLevel(c)
+	},
+	gotoLevel : function(a) {
+		this.game.state.start("level", !0, !1, a)
+	},
+	restart : function() {
+		this.state = 2
+	},
+	gotoChooseLevelMenu : function() {
+		this.game.state.start("levelsmenu", !0, !1)
+	},
+	togglePause : function() {
+		this.game.paused = !this.game.paused, this.game.paused
+				? this.onPause()
+				: this.onResume()
+	},
+	onPause : function() {
+		this.state = 1
+	},
+	onResume : function() {
+		this.state = 1
+	},
+
+	doRestart : function() {
+		this.gotoLevel(this._settings.levelNumber)
+	},
+	doUpdate : function() {
+	},
+	levelComplete : function() {
+		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.saveLevelResult();
+		this.gui.onLevelComplete()
+	},
+	saveLevelResult : function() {
+		window.localStorage.setItem(this._settings.levelNumber.toString(),
+				"true")
+	},
+
+	shutdown : function() {
+
+	}
+};
 module.exports = Level;
 
-},{}],7:[function(require,module,exports){
+},{"../prefabs/levelgui":3,"../prefabs/levelresult":5,"../prefabs/levelsettings":6,"../prefabs/simplebutton":7}],11:[function(require,module,exports){
 var LevelIcon = require('../prefabs/levelicon');
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
@@ -325,10 +574,9 @@ Levelsmenu.prototype = {
 	onLevelIconInputUp : function(a) {
 		var b = this;
 		this.game.time.events.add(200, function() {
-			var c = a.levelNumber;
-			b.game.state.start("Level", !0, !1, c);
-				// this.destroy();
-			}, this)
+					var c = a.levelNumber;
+					b.game.state.start("level", !0, !1, c);
+				}, this)
 	},
 	initButtons : function() {
 		var b = this, c = 60;
@@ -341,7 +589,7 @@ Levelsmenu.prototype = {
 		this.world.add(this.backButton);
 
 		this.soundButton = new ToggleButton(this.game, this.game.width - c, c,
-				"buttonsgroup", "soundonblue.png", "muteblue.png");
+				"buttonsgroup", "sound.png", "mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute
 				});
@@ -366,17 +614,16 @@ Levelsmenu.prototype = {
 					x : this.soundButton.x - 300
 				}, 300, Phaser.Easing.Back.Out, !0, 700)
 	},
-	destroy : function() {
+	shutdown : function() {
 		this.levelIconsGroup.destroy();
 		this.backButton.destroy();
 		this.soundButton.destroy();
-
 	}
 
 };
 module.exports = Levelsmenu;
 
-},{"../prefabs/levelicon":2,"../prefabs/simplebutton":3,"../prefabs/togglebutton":4}],8:[function(require,module,exports){
+},{"../prefabs/levelicon":4,"../prefabs/simplebutton":7,"../prefabs/togglebutton":8}],12:[function(require,module,exports){
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
 
@@ -427,9 +674,9 @@ Menu.prototype = {
 
 		var style = {
 			font : "bold 75px cantoraone",
-			fill : "#F5CE31",
-			stroke : "#DBDBDB",
-			strokeThickness : 5,
+			fill : "#FFA500",
+			stroke : "#808080",
+			strokeThickness : 1,
 			align : "center"
 		};
 
@@ -438,7 +685,7 @@ Menu.prototype = {
 		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), style);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
-		this.titleText.setShadow(5, 5, "#DBDBDB", 3);
+		this.titleText.setShadow(7, 5, "#F5F5F5", 5);
 
 	},
 	addOtherImages : function() {
@@ -454,17 +701,17 @@ Menu.prototype = {
 		var d = 140;
 
 		this.playButton = new SimpleButton(this.game, this.game.width / 2, c,
-				"buttonsgroup", "play2.png");
+				"buttonsgroup", "play.png");
 		this.playButton.setCallbackDelay(250);
 		this.playButton.callback.addOnce(this.hideAndStartGame, this);
 
 		this.creditsButton = new SimpleButton(this.game, this.playButton.x + d,
-				this.playButton.y, "buttonsgroup", "creditblue.png");
+				this.playButton.y, "buttonsgroup", "credit.png");
 		this.creditsButton.callback.add(this.toggleCredits, this);
 
 		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
-				this.playButton.y, "buttonsgroup", "soundonblue.png",
-				"muteblue.png");
+				this.playButton.y, "buttonsgroup", "sound.png",
+				"mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
@@ -472,7 +719,7 @@ Menu.prototype = {
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
 						+ d, this.playButton.y, "buttonsgroup",
-				"buttonblue.png");
+				"button.png");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
@@ -487,7 +734,6 @@ Menu.prototype = {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
-		this.destroy();
 	},
 	onMoreGamesClick : function() {
 		window.open("http://play.nguoianphu.com", "_blank");
@@ -521,17 +767,6 @@ Menu.prototype = {
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
-
-		// credit bg
-		// this.completionSprite = this.game.add.graphics(0, 0);
-		// this.completionSprite.beginFill(0xFFFF00, 1);
-		// this.completionSprite.bounds = new PIXI.Rectangle(0, 0, 200, 200);
-		//
-		// this.completionSprite.boundsPadding = 0;
-		// // set the line style to have a width of 5 and set the color to red
-		// this.completionSprite.lineStyle(5, 0xFF0000);
-		// this.completionSprite.drawRect(0, 0, 150, 150);
-		// this.completionSprite.alpha = 0.3;
 	},
 	toggleCredits : function() {
 		this.credits.visible ? this.hideCredits() : this.showCredits();
@@ -638,7 +873,7 @@ Menu.prototype = {
 						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 
-	destroy : function() {
+	shutdown : function() {
 		this.titleText.destroy();
 		this.panda.destroy();
 		this.credits.destroy();
@@ -650,7 +885,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{"../prefabs/simplebutton":3,"../prefabs/togglebutton":4}],9:[function(require,module,exports){
+},{"../prefabs/simplebutton":7,"../prefabs/togglebutton":8}],13:[function(require,module,exports){
 'use strict';
 function Preload() {
 }
@@ -710,9 +945,6 @@ Preload.prototype = {
 		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",
 				"assets/graphics/main_menu.json");
 		// Levels
-		this.load.atlasJSONHash("graphics_1",
-				"assets/graphics/level_graphics.png",
-				"assets/graphics/level_graphics.json");
 
 		// Buttons
 		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",
@@ -722,17 +954,11 @@ Preload.prototype = {
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
 		// tuttorial
-		this.load.atlasJSONHash("tutorial", "assets/graphics/tutorial.png",
-				"assets/graphics/tutorial.json");
-		this.load.atlasJSONHash("tutorial_hand",
-				"assets/graphics/tutorial_hand.png",
-				"assets/graphics/tutorial_hand.json");
 
 		// LET ME GROW
 		// the GUI
 		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
 				"assets/graphics/gui.json");
-
 				
 		// credit bg
 		this.load.image('creditbg', 'assets/graphics/creditbg.png');
