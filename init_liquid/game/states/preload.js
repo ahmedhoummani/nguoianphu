@@ -53,27 +53,18 @@ Preload.prototype = {
 		this.load.bitmapFont("cantoraone", "assets/fonts/cantoraone.png",
 				"assets/fonts/cantoraone.fnt", null, 1);
 
-		// MENU
-		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",
-				"assets/graphics/main_menu.json");
-		// Levels
-
 		// Buttons
 		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",
 				"assets/graphics/buttonsgroup.json");
 
+		// background
+		// level complete
+		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
+				"assets/graphics/bggroup.json");
+				
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
-		// tuttorial
-
-		// LET ME GROW
-		// the GUI
-		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
-				"assets/graphics/gui.json");
-				
-		// credit bg
-		this.load.image('creditbg', 'assets/graphics/creditbg.png');
 
 	},
 	loadUpdate : function() {

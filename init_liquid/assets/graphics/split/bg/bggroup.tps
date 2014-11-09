@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>json-array</string>
         <key>textureFileName</key>
-        <filename>buttonsgroup.png</filename>
+        <filename>bggroup.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -54,7 +54,7 @@
         <key>maxTextureSize</key>
         <QSize>
             <key>width</key>
-            <int>2048</int>
+            <int>1024</int>
             <key>height</key>
             <int>2048</int>
         </QSize>
@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>buttonsgroup.java</filename>
+            <filename>bggroup.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>buttonsgroup.json</filename>
+        <filename>bggroup.json</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -141,20 +141,9 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>button.png</filename>
-            <filename>buttonlock.png</filename>
-            <filename>credit.png</filename>
-            <filename>home.png</filename>
-            <filename>menu.png</filename>
-            <filename>moregame.png</filename>
-            <filename>mute.png</filename>
-            <filename>pause.png</filename>
-            <filename>play.png</filename>
-            <filename>restart.png</filename>
-            <filename>sound.png</filename>
-            <filename>play76.png</filename>
-            <filename>star.png</filename>
-            <filename>starblue.png</filename>
+            <filename>bg.png</filename>
+            <filename>creditbg.png</filename>
+            <filename>levelcomplete.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

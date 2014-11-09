@@ -11,7 +11,7 @@ Levelsmenu.prototype = {
 
 		this.levels_num = 28;
 
-		this.game.add.image(-16, 0, "gui", "LevelsMenu_Background0000");
+		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();
 		this.initButtons();
 		this.initAnimations();

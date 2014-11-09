@@ -9,7 +9,7 @@ var Levelcompleteboard = function(b, c, d) {
 	this.levelNumber = d;
 	this.addBack();
 	this.addButtons();
-	this.board = this.game.add.image(-10, 250, "gui", "LevelCompleteBoard0000",
+	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
 			this)
 
 };

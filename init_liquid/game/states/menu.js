@@ -42,7 +42,7 @@ Menu.prototype = {
 		this.game.sound.mute = !1;
 	},
 	addBackground : function() {
-		this.game.add.image(0, 0, "main_menu", "main_menu_bg");
+		this.game.add.image(0, 0, "bggroup", "bg.png");
 	},
 	addTitle : function() {
 
@@ -65,7 +65,7 @@ Menu.prototype = {
 	addOtherImages : function() {
 
 		this.panda = this.game.add.image(this.game.width / 2, this.game.height
-						- 50, "main_menu", "Panda0000");
+						- 50, "panda", "Panda0000");
 		this.panda.anchor.set(.5, 1);
 		this.panda.angle = -1;
 	},
@@ -113,9 +113,10 @@ Menu.prototype = {
 		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
-
+	
+	
 		// credit background
-		this.credits = this.game.add.image(0, 0, "creditbg");
+		this.credits = this.game.add.image(0, 0, "bggroup", "creditbg.png");
 
 		this.credits.position.set(Math.round(.5
 						* (this.game.width - this.credits.width)), Math

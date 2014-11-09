@@ -27,7 +27,7 @@ var Levelcompleteboard = function(b, c, d) {
 	this.levelNumber = d;
 	this.addBack();
 	this.addButtons();
-	this.board = this.game.add.image(-10, 250, "gui", "LevelCompleteBoard0000",
+	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
 			this)
 
 };
@@ -538,7 +538,7 @@ Levelsmenu.prototype = {
 
 		this.levels_num = 28;
 
-		this.game.add.image(-16, 0, "gui", "LevelsMenu_Background0000");
+		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();
 		this.initButtons();
 		this.initAnimations();
@@ -668,7 +668,7 @@ Menu.prototype = {
 		this.game.sound.mute = !1;
 	},
 	addBackground : function() {
-		this.game.add.image(0, 0, "main_menu", "main_menu_bg");
+		this.game.add.image(0, 0, "bggroup", "bg.png");
 	},
 	addTitle : function() {
 
@@ -691,7 +691,7 @@ Menu.prototype = {
 	addOtherImages : function() {
 
 		this.panda = this.game.add.image(this.game.width / 2, this.game.height
-						- 50, "main_menu", "Panda0000");
+						- 50, "panda", "Panda0000");
 		this.panda.anchor.set(.5, 1);
 		this.panda.angle = -1;
 	},
@@ -739,9 +739,10 @@ Menu.prototype = {
 		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
-
+	
+	
 		// credit background
-		this.credits = this.game.add.image(0, 0, "creditbg");
+		this.credits = this.game.add.image(0, 0, "bggroup", "creditbg.png");
 
 		this.credits.position.set(Math.round(.5
 						* (this.game.width - this.credits.width)), Math
@@ -941,27 +942,18 @@ Preload.prototype = {
 		this.load.bitmapFont("cantoraone", "assets/fonts/cantoraone.png",
 				"assets/fonts/cantoraone.fnt", null, 1);
 
-		// MENU
-		this.load.atlasJSONHash("main_menu", "assets/graphics/main_menu.png",
-				"assets/graphics/main_menu.json");
-		// Levels
-
 		// Buttons
 		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",
 				"assets/graphics/buttonsgroup.json");
 
+		// background
+		// level complete
+		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
+				"assets/graphics/bggroup.json");
+				
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
-		// tuttorial
-
-		// LET ME GROW
-		// the GUI
-		this.load.atlasJSONHash("gui", "assets/graphics/gui.png",
-				"assets/graphics/gui.json");
-				
-		// credit bg
-		this.load.image('creditbg', 'assets/graphics/creditbg.png');
 
 	},
 	loadUpdate : function() {
