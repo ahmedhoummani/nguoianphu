@@ -61,10 +61,15 @@ Preload.prototype = {
 		// level complete
 		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
 				"assets/graphics/bggroup.json");
-				
+
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
+
+		// Sound
+		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+						"assets/audio/MainLoop.m4a"], !0);
+		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
 
 	},
 	loadUpdate : function() {

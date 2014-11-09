@@ -8,8 +8,9 @@ function Menu() {
 }
 
 Menu.prototype = {
-	preload : function() {
 
+	init : function(a) {
+		this.fromPreloader = a
 	},
 	create : function() {
 
@@ -28,9 +29,6 @@ Menu.prototype = {
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-
-	},
-	update : function() {
 
 	},
 	onFocusLost : function() {
@@ -84,16 +82,14 @@ Menu.prototype = {
 		this.creditsButton.callback.add(this.toggleCredits, this);
 
 		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
-				this.playButton.y, "buttonsgroup", "sound.png",
-				"mute.png");
+				this.playButton.y, "buttonsgroup", "sound.png", "mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-						+ d, this.playButton.y, "buttonsgroup",
-				"button.png");
+						+ d, this.playButton.y, "buttonsgroup", "button.png");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
@@ -113,8 +109,7 @@ Menu.prototype = {
 		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
-	
-	
+
 		// credit background
 		this.credits = this.game.add.image(0, 0, "bggroup", "creditbg.png");
 
@@ -194,6 +189,12 @@ Menu.prototype = {
 		this.game.input.onTap.addOnce(function() {
 					this.hideCredits();
 				}, this);
+	},
+	startMusic : function() {
+		this.game.sound.play("main_loop", .33, !0);
+		this.soundButton.switchTextures();
+		this.soundButton.input.enabled = !0;
+		// this.game.sound.mute = !0;
 	},
 	initAnimation : function() {
 		var a = this;

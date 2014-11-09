@@ -151,8 +151,6 @@ module.exports = Levelgui;
 var Levelicon = function(b, c, d, e, f) {
 	Phaser.Image.call(this, b, c, d, "buttonsgroup", "button.png");
 
-	// initialize your prefab here
-	"undefined" == typeof f && (f = !1);
 	var g = this;
 	this.inputEnabled = !f;
 	this.locked = f;
@@ -261,24 +259,24 @@ var Simplebutton = function(b, c, d, e, f) {
 	this.callbackDelay = 20;
 	this.callbackTimer = 0;
 	this.clicked = !1;
-	this._callback = new Phaser.Signal();
+	this._callback = new Phaser.Signal;
 	this.anchor.set(.5, .5);
 	this.inputEnabled = !0;
 	this.game.device.desktop && (this.input.useHandCursor = !0);
-	this.inputEnabled && this.events.onInputDown.add(function() {
+	
+	this.inputEnabled && (this.events.onInputDown.add(function() {
 				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
 						.tween(g.scale).to({
-									x : 1.2,
-									y : .8
-								}, 200, Phaser.Easing.Back.Out, !0).onComplete
-						.addOnce(function() {
-							g.clicked = !0, g.callbackTimer = 0, g.game.add
-									.tween(g.scale).to({
-												x : 1,
-												y : 1
-											}, 200, Phaser.Easing.Back.Out, !0);
-						}, g);
-			});
+									x : .9,
+									y : .9
+								}, 200, Phaser.Easing.Cubic.Out, !0)
+			}), this.events.onInputUp.add(function() {
+				g.game.add.tween(g.scale).to({
+							x : 1,
+							y : 1
+						}, 100, Phaser.Easing.Cubic.Out, !0).onComplete
+						.addOnce(g._callback.dispatch, g)
+			}));
 
 	Object.defineProperty(this, "callback", {
 				get : function() {
@@ -292,14 +290,6 @@ var Simplebutton = function(b, c, d, e, f) {
 
 Simplebutton.prototype = Object.create(Phaser.Image.prototype);
 Simplebutton.prototype.constructor = Simplebutton;
-
-Simplebutton.prototype.update = function() {
-
-	// write your prefab's specific update code here
-	this.clicked
-			&& (this.callbackTimer += this.game.time.elapsed, this.callbackTimer >= this.callbackDelay
-					&& (this._callback.dispatch(), this.clicked = !1, this.callbackTimer = 0));
-};
 
 Simplebutton.prototype.setCallbackDelay = function(a) {
 	this.callbackDelay = a;
@@ -634,8 +624,9 @@ function Menu() {
 }
 
 Menu.prototype = {
-	preload : function() {
 
+	init : function(a) {
+		this.fromPreloader = a
 	},
 	create : function() {
 
@@ -654,9 +645,6 @@ Menu.prototype = {
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-
-	},
-	update : function() {
 
 	},
 	onFocusLost : function() {
@@ -710,16 +698,14 @@ Menu.prototype = {
 		this.creditsButton.callback.add(this.toggleCredits, this);
 
 		this.soundButton = new ToggleButton(this.game, this.playButton.x - d,
-				this.playButton.y, "buttonsgroup", "sound.png",
-				"mute.png");
+				this.playButton.y, "buttonsgroup", "sound.png", "mute.png");
 		this.soundButton.callback.add(function() {
 					b.game.sound.mute = !b.game.sound.mute;
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
 		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-						+ d, this.playButton.y, "buttonsgroup",
-				"button.png");
+						+ d, this.playButton.y, "buttonsgroup", "button.png");
 		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
 		this.moreGamesButton.visible = !1;
 		this.moreGamesButton.exists = !1;
@@ -739,8 +725,7 @@ Menu.prototype = {
 		window.open("http://play.nguoianphu.com", "_blank");
 	},
 	initCredits : function() {
-	
-	
+
 		// credit background
 		this.credits = this.game.add.image(0, 0, "bggroup", "creditbg.png");
 
@@ -820,6 +805,12 @@ Menu.prototype = {
 		this.game.input.onTap.addOnce(function() {
 					this.hideCredits();
 				}, this);
+	},
+	startMusic : function() {
+		this.game.sound.play("main_loop", .33, !0);
+		this.soundButton.switchTextures();
+		this.soundButton.input.enabled = !0;
+		// this.game.sound.mute = !0;
 	},
 	initAnimation : function() {
 		var a = this;
@@ -950,10 +941,15 @@ Preload.prototype = {
 		// level complete
 		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
 				"assets/graphics/bggroup.json");
-				
+
 		// Panda
 		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
 				"assets/graphics/panda.json");
+
+		// Sound
+		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+						"assets/audio/MainLoop.m4a"], !0);
+		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
 
 	},
 	loadUpdate : function() {
