@@ -1571,7 +1571,7 @@ var game;
 			this.game.device.webAudio && this.game.sound.play("levelComplete"), this
 					.saveLevelResult(), this.gui.onLevelComplete()
 		}, c.prototype.saveLevelResult = function() {
-			window.localStorage.setItem(this.settings.levelNumber.toString(),
+			window.localStorage.setItem(this._settings.levelNumber.toString(),
 					"true")
 		}, c.prototype.render = function() {
 			this.debugRenderFlag && this.debugRender()
