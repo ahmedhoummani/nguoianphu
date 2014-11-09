@@ -44,20 +44,20 @@ Menu.prototype = {
 	},
 	addTitle : function() {
 
-		var style = {
+		var titleStyle = {
 			font : "bold 75px cantoraone",
-			fill : "#FFA500",
-			stroke : "#808080",
-			strokeThickness : 1,
-			align : "center"
+			fill : "#FBAF05",
+			align : "center",
+			stroke : "#FFFFFF",
+			strokeThickness : 12
 		};
 
 		var titleTexts = "GAME TITLE";
 
-		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), style);
+		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), titleStyle);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
-		this.titleText.setShadow(7, 5, "#F5F5F5", 5);
+		this.titleText.setShadow(2, 2, "#FB1A05", 2);
 
 	},
 	addOtherImages : function() {

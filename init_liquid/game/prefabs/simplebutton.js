@@ -8,7 +8,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	this.callbackDelay = 20;
 	this.callbackTimer = 0;
 	this.clicked = !1;
-	this._callback = new Phaser.Signal;
+	this._callback = new Phaser.Signal();
 	this.anchor.set(.5, .5);
 	this.inputEnabled = !0;
 	this.game.device.desktop && (this.input.useHandCursor = !0);

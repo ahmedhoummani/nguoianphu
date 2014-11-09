@@ -6,9 +6,10 @@ var SimpleButton = require('../prefabs/simplebutton');
 'use strict';
 
 var b;
-!function(a) {
-	a[a.ACTIVE = 0] = "ACTIVE", a[a.PAUSED = 1] = "PAUSED", a[a.RESTART = 2] = "RESTART"
-}(b || (b = {}));
+// !function(a) {
+// a[a.ACTIVE = 0] = "ACTIVE", a[a.PAUSED = 1] = "PAUSED", a[a.RESTART = 2] =
+// "RESTART"
+// }(b || (b = {}));
 
 function Level() {
 }
@@ -25,7 +26,7 @@ Level.prototype = {
 	init : function(b) {
 		this.state = 1;
 		this._settings = new LevelSettings(b);
-		this.result = new LevelResult(b)
+		// this.result = new LevelResult(b)
 	},
 
 	create : function() {
@@ -58,7 +59,7 @@ Level.prototype = {
 	},
 
 	addGui : function() {
-		this.gui = new LevelGUI(this.game, this._settings)
+		this.gui = new LevelGUI(this.game, this._settings);
 	},
 
 	gotoPrevLevel : function() {
@@ -74,29 +75,7 @@ Level.prototype = {
 	gotoLevel : function(a) {
 		this.game.state.start("level", !0, !1, a)
 	},
-	restart : function() {
-		this.state = 2
-	},
-	gotoChooseLevelMenu : function() {
-		this.game.state.start("levelsmenu", !0, !1)
-	},
-	togglePause : function() {
-		this.game.paused = !this.game.paused, this.game.paused
-				? this.onPause()
-				: this.onResume()
-	},
-	onPause : function() {
-		this.state = 1
-	},
-	onResume : function() {
-		this.state = 1
-	},
 
-	doRestart : function() {
-		this.gotoLevel(this._settings.levelNumber)
-	},
-	doUpdate : function() {
-	},
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
 		this.saveLevelResult();
