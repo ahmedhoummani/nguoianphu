@@ -7,7 +7,7 @@ var Levelcompleteboard = function(b, c, d) {
 
 	this.levels_num = 28;
 	this.levelNumber = d;
-	this.addBack();
+	this.addBackGround();
 	this.addButtons();
 	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
 			this)
@@ -17,7 +17,7 @@ var Levelcompleteboard = function(b, c, d) {
 Levelcompleteboard.prototype = Object.create(Phaser.Group.prototype);
 Levelcompleteboard.prototype.constructor = Levelcompleteboard;
 
-Levelcompleteboard.prototype.addBack = function() {
+Levelcompleteboard.prototype.addBackGround = function() {
 	var a = this.game.add.graphics(0, 0, this);
 	a.beginFill(0, .5);
 	a.drawRect(0, 0, this.game.width, this.game.height);
@@ -36,7 +36,7 @@ Levelcompleteboard.prototype.addButtons = function() {
 			}, this);
 
 	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
-			"play76.png");
+			"play2.png");
 	f.callback.addOnce(function() {
 				a.levelNumber === this.levels_num ? a.game.state
 						.start("levelsmenu") : a.game.state.start("level", !0,

@@ -144,7 +144,6 @@
             <filename>button.png</filename>
             <filename>buttonlock.png</filename>
             <filename>credit.png</filename>
-            <filename>home.png</filename>
             <filename>menu.png</filename>
             <filename>moregame.png</filename>
             <filename>mute.png</filename>
@@ -152,9 +151,10 @@
             <filename>play.png</filename>
             <filename>restart.png</filename>
             <filename>sound.png</filename>
-            <filename>play76.png</filename>
             <filename>star.png</filename>
             <filename>starblue.png</filename>
+            <filename>home.png</filename>
+            <filename>play2.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

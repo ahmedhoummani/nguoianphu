@@ -39,7 +39,7 @@ Level.prototype = {
 
 		// hack
 		var e = new SimpleButton(this.game, 200, 200, "buttonsgroup",
-				"play76.png");
+				"play2.png");
 		this.world.add(e);
 		e.callback.addOnce(this.levelComplete, this);
 

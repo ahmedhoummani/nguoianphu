@@ -20,17 +20,17 @@ Levelgui.prototype.constructor = Levelgui;
 Levelgui.prototype.initButtons = function() {
 	var b = this, c = 60;
 
-	this.pauseButton = new SimpleButton(this.game, this.game.width - 160, c,
+	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png");
 	this.pauseButton.callback.addOnce(this.onPause, this);
 
-	var d = new SimpleButton(this.game, this.game.width - 60, c,
-			"buttonsgroup", "menu.png");
-	d.callback.addOnce(function() {
-				b.game.state.start("levelsmenu")
-			});
+//	var d = new SimpleButton(this.game, this.game.width - 160, c,
+//			"buttonsgroup", "menu.png");
+//	d.callback.addOnce(function() {
+//				b.game.state.start("levelsmenu")
+//			});
 
-	this.buttons = [this.pauseButton, d];
+	this.buttons = [this.pauseButton];
 	this.buttons.forEach(function(a) {
 				b.add(a)
 			})

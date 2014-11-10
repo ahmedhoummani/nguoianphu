@@ -74,6 +74,13 @@ Preload.prototype = {
 	},
 	loadUpdate : function() {
 		this.loadingText.setText(this.load.progress.toString() + "%");
+	},
+	shudown : function() {
+
+		this.LoadingBar_Outer.destroy();
+		this.LoadingBar_Inner.destroy();
+		this.loadingText.destroy();
+
 	}
 
 };

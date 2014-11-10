@@ -6,23 +6,21 @@ var ToggleButton = require('./togglebutton');
 var Pauseboard = function(b, c) {
 	Phaser.Group.call(this, b, c, "Pause Board");
 
-	this.addBack();
-
-	this.addButtons();
-
+	this.addBackGround();
 	this.board = this.game.add.image(0, 0, "bggroup", "creditbg.png", this);
 	this.board.position.set(Math.round(.5
 					* (this.game.width - this.board.width)), Math.round(.5
 					* (this.game.height - this.board.height)));
 	// this.board.visible = !1;
 	this.initText();
+	this.addButtons();
 
 };
 
 Pauseboard.prototype = Object.create(Phaser.Group.prototype);
 Pauseboard.prototype.constructor = Pauseboard;
 
-Pauseboard.prototype.addBack = function() {
+Pauseboard.prototype.addBackGround = function() {
 	var a = this.game.add.graphics(0, 0, this);
 	a.beginFill(0, .5);
 	a.drawRect(0, 0, this.game.width, this.game.height);
@@ -32,37 +30,34 @@ Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
 		font : "56px cantoraone",
 		fill : "#FBAF05",
-		align : "center"
+		align : "center",
+		stroke : "#FFFFFF",
+		strokeThickness : 12
 	}, d = new Phaser.Text(this.game, this.game.width / 2,
 			this.game.height / 2, b, c);
 	d.anchor.set(.5, .5);
-	d.stroke = "#FFFFFF";
-	d.strokeThickness = 12;
 	d.setShadow(2, 2, "#FB1A05", 2);
 	this.add(d);
 
 };
 Pauseboard.prototype.addButtons = function() {
 	var a = this, b = 550, c = 120, d = new SimpleButton(this.game,
-			this.game.width / 2, b, "buttonsgroup", "restart.png");
-	// d.callback.addOnce(function() {
-	// a.game.state.start("level", !0, !1, a.levelNumber)
-	// }, this);
-
-	var e = new SimpleButton(this.game, d.x - c, b, "buttonsgroup", "menu.png");
-	e.callback.addOnce(function() {
+			this.game.width / 2, b, "buttonsgroup", "menu.png");
+	d.callback.addOnce(function() {
 				a.game.state.start("levelsmenu")
 			}, this);
 
-	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
-			"play76.png");
-	// f.callback.addOnce(function() {
-	// a.levelNumber === this.levels_num ? a.game.state
-	// .start("levelsmenu") : a.game.state.start("level", !0,
-	// !1, a.levelNumber + 1)
-	// }, this);
+	var e = new ToggleButton(this.game, d.x - c, b, "buttonsgroup",
+			"sound.png", "mute.png");
+	e.callback.add(function() {
+				a.game.sound.mute = !a.game.sound.mute
+			});
+	a.game.sound.mute && e.switchTextures();
 
-	this.buttons = [e, d, f];
+	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
+			"play2.png");
+
+	this.buttons = [d, e, f];
 	this.buttons.forEach(function(b) {
 				a.add(b)
 			})

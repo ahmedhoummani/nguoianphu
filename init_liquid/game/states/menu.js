@@ -88,11 +88,11 @@ Menu.prototype = {
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
-		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-						+ d, this.playButton.y, "buttonsgroup", "button.png");
-		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
-		this.moreGamesButton.visible = !1;
-		this.moreGamesButton.exists = !1;
+//		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
+//						+ d, this.playButton.y, "buttonsgroup", "button.png");
+//		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
+//		this.moreGamesButton.visible = !1;
+//		this.moreGamesButton.exists = !1;
 
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
 
@@ -105,9 +105,9 @@ Menu.prototype = {
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
 	},
-	onMoreGamesClick : function() {
-		window.open("http://play.nguoianphu.com", "_blank");
-	},
+	// onMoreGamesClick : function() {
+	// window.open("http://play.nguoianphu.com", "_blank");
+	// },
 	initCredits : function() {
 
 		// credit background
