@@ -1,4 +1,4 @@
-var SimpleButton = require('./simplebutton');
+var ToggleButton = require('./togglebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
 var PauseBoard = require('./pauseboard');
 
@@ -20,10 +20,15 @@ Levelgui.prototype.constructor = Levelgui;
 Levelgui.prototype.initButtons = function() {
 	var b = this, c = 60;
 
-	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
-			"buttonsgroup", "pause.png");
-	this.pauseButton.callback.addOnce(this.onPause, this);
-	b.add(this.pauseButton)
+	this.pauseButton = new ToggleButton(this.game, this.game.width - 60, c,
+			"buttonsgroup", "pause.png", "play2.png");
+	b.add(this.pauseButton);
+	// this.pauseButton.callback.addOnce(this.onPause, this);
+	this.pauseButton.callback.add(function() {
+		b.game.state.getCurrentState().pauseGame();
+			// b.onPause();
+			// alert("sas");
+		});
 
 };
 

@@ -23,6 +23,9 @@ Level.prototype = {
 	},
 
 	create : function() {
+
+		this.paused = !0;
+
 		this.levels_num = 28;
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
@@ -36,10 +39,13 @@ Level.prototype = {
 		// level gui menu
 		this.addGui();
 
+		// Enter play mode
+		this.playGame();
+
 	},
 
 	update : function() {
-	
+
 	},
 
 	addGui : function() {
@@ -68,6 +74,22 @@ Level.prototype = {
 	saveLevelResult : function() {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
 				"true")
+	},
+
+	pauseGame : function() {
+		if (this.paused) {
+			// Show panel
+			this.paused = !this.paused;
+			this.gui.onPause();
+		}
+	},
+
+	playGame : function() {
+		if (!this.paused) {
+			// Leaving pause
+			this.paused = !this.paused;
+			this.gui.onResume();
+		}
 	},
 
 	shutdown : function() {

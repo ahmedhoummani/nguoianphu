@@ -56,6 +56,7 @@ Pauseboard.prototype.addButtons = function() {
 	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
 			"play2.png");
 	f.callback.add(function() {
+				a.game.state.getCurrentState().playGame();
 				a.hide();
 			});
 

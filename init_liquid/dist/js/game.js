@@ -92,7 +92,7 @@ Levelcompleteboard.prototype.show = function() {
 module.exports = Levelcompleteboard;
 
 },{"./simplebutton":8}],3:[function(require,module,exports){
-var SimpleButton = require('./simplebutton');
+var ToggleButton = require('./togglebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
 var PauseBoard = require('./pauseboard');
 
@@ -114,10 +114,15 @@ Levelgui.prototype.constructor = Levelgui;
 Levelgui.prototype.initButtons = function() {
 	var b = this, c = 60;
 
-	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
-			"buttonsgroup", "pause.png");
-	this.pauseButton.callback.addOnce(this.onPause, this);
-	b.add(this.pauseButton)
+	this.pauseButton = new ToggleButton(this.game, this.game.width - 60, c,
+			"buttonsgroup", "pause.png", "play2.png");
+	b.add(this.pauseButton);
+	// this.pauseButton.callback.addOnce(this.onPause, this);
+	this.pauseButton.callback.add(function() {
+		b.game.state.getCurrentState().pauseGame();
+			// b.onPause();
+			// alert("sas");
+		});
 
 };
 
@@ -146,7 +151,7 @@ Levelgui.prototype.onResume = function() {
 
 module.exports = Levelgui;
 
-},{"./levelcompleteboard":2,"./pauseboard":7,"./simplebutton":8}],4:[function(require,module,exports){
+},{"./levelcompleteboard":2,"./pauseboard":7,"./togglebutton":9}],4:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
@@ -308,6 +313,7 @@ Pauseboard.prototype.addButtons = function() {
 	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
 			"play2.png");
 	f.callback.add(function() {
+				a.game.state.getCurrentState().playGame();
 				a.hide();
 			});
 
@@ -529,6 +535,9 @@ Level.prototype = {
 	},
 
 	create : function() {
+
+		this.paused = !0;
+
 		this.levels_num = 28;
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
@@ -542,10 +551,13 @@ Level.prototype = {
 		// level gui menu
 		this.addGui();
 
+		// Enter play mode
+		this.playGame();
+
 	},
 
 	update : function() {
-	
+
 	},
 
 	addGui : function() {
@@ -574,6 +586,22 @@ Level.prototype = {
 	saveLevelResult : function() {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
 				"true")
+	},
+
+	pauseGame : function() {
+		if (this.paused) {
+			// Show panel
+			this.paused = !this.paused;
+			this.gui.onPause();
+		}
+	},
+
+	playGame : function() {
+		if (!this.paused) {
+			// Leaving pause
+			this.paused = !this.paused;
+			this.gui.onResume();
+		}
 	},
 
 	shutdown : function() {
