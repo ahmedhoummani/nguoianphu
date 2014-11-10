@@ -18,13 +18,11 @@ Object.defineProperty(this, "settings", {
 Level.prototype = {
 
 	init : function(b) {
-		this.state = 1;
+	
 		this._settings = new LevelSettings(b);
 	},
 
 	create : function() {
-
-		this.paused = !0;
 
 		this.levels_num = 28;
 
@@ -38,20 +36,7 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
-
-		// Enter play mode
-		this.playGame();
-
 	},
-
-	update : function() {
-
-	},
-
-	addGui : function() {
-		this.gui = new LevelGUI(this.game, this._settings);
-	},
-
 	gotoPrevLevel : function() {
 		var b = this._settings.levelNumber;
 		c = 1 === b ? this.levels_num : b - 1;
@@ -75,21 +60,20 @@ Level.prototype = {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
 				"true")
 	},
-
-	pauseGame : function() {
-		if (this.paused) {
-			// Show panel
-			this.paused = !this.paused;
-			this.gui.onPause();
-		}
+	
+	addGui : function() {
+		this.gui = new LevelGUI(this.game, this._settings);
+		this.gui.pauseSignal.add(this.togglePause, this);
 	},
-
-	playGame : function() {
-		if (!this.paused) {
-			// Leaving pause
-			this.paused = !this.paused;
+	togglePause : function(a) {
+			"pause" === a ? this.pauseGame() : "resume" === a
+					&& this.resumeGame();
+	},
+	pauseGame : function() {
+			 this.gui.onPause();
+	}, 
+	resumeGame : function() {
 			this.gui.onResume();
-		}
 	},
 
 	shutdown : function() {

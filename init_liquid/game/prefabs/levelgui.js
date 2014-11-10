@@ -7,10 +7,19 @@ var PauseBoard = require('./pauseboard');
 var Levelgui = function(b, c) {
 	Phaser.Group.call(this, b, b.world, "gui");
 
+	this._pauseSignal = new Phaser.Signal();
 	this.levelSettings = c;
 	this.initLevelCompleteBoard();
 	this.initButtons();
 	this.addPauseBoard();
+	
+	Object.defineProperty(this, "pauseSignal", {
+					get : function() {
+						return this._pauseSignal;
+					},
+					enumerable : !0,
+					configurable : !0
+				});
 
 };
 
@@ -23,12 +32,10 @@ Levelgui.prototype.initButtons = function() {
 	this.pauseButton = new ToggleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png", "play2.png");
 	b.add(this.pauseButton);
-	// this.pauseButton.callback.addOnce(this.onPause, this);
-	this.pauseButton.callback.add(function() {
-		b.game.state.getCurrentState().pauseGame();
-			// b.onPause();
-			// alert("sas");
-		});
+	this.pauseButton.callback.add(
+					function() {
+						b._pauseSignal.dispatch("pause");
+					}, this)
 
 };
 
@@ -43,15 +50,17 @@ Levelgui.prototype.onLevelComplete = function() {
 };
 
 Levelgui.prototype.addPauseBoard = function() {
+	var a = this;
 	this.pauseBoard = new PauseBoard(this.game, this);
-	this.pauseBoard.visible = !1;
+	this.pauseBoard.resumeButton.callback
+					.add(function() {
+								a._pauseSignal.dispatch("resume");
+							}, this);
 };
 Levelgui.prototype.onPause = function() {
-	// this.pauseButton.visible = !1;
 	this.pauseBoard.show();
 };
 Levelgui.prototype.onResume = function() {
-	// this.pauseButton.visible = !1;
 	this.pauseBoard.hide();
 };
 
