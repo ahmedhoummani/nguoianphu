@@ -117,17 +117,8 @@ Levelgui.prototype.initButtons = function() {
 	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png");
 	this.pauseButton.callback.addOnce(this.onPause, this);
+	b.add(this.pauseButton)
 
-//	var d = new SimpleButton(this.game, this.game.width - 160, c,
-//			"buttonsgroup", "menu.png");
-//	d.callback.addOnce(function() {
-//				b.game.state.start("levelsmenu")
-//			});
-
-	this.buttons = [this.pauseButton];
-	this.buttons.forEach(function(a) {
-				b.add(a)
-			})
 };
 
 Levelgui.prototype.initLevelCompleteBoard = function() {
@@ -136,38 +127,22 @@ Levelgui.prototype.initLevelCompleteBoard = function() {
 	this.levelCompleteBoard.visible = !1
 };
 Levelgui.prototype.onLevelComplete = function() {
-	this.buttons.forEach(function(a) {
-				a.visible = !1
-			});
+	this.pauseButton.visible = !1;
 	this.levelCompleteBoard.show()
 };
 
 Levelgui.prototype.addPauseBoard = function() {
 	this.pauseBoard = new PauseBoard(this.game, this);
-	this.pauseBoard.visible = !1
+	this.pauseBoard.visible = !1;
 };
-//Levelgui.prototype.hidePauseButton = function() {
-//	this.pauseButton.inputEnabled = !1;
-//	this.game.add.tween(this.pauseButton).to({
-//				alpha : 0
-//			}, 200, Phaser.Easing.Linear.None, !0);
-//};
-//Levelgui.prototype.showPauseButton = function() {
-//	this.pauseButton.inputEnabled = !0;
-//	this.game.add.tween(this.pauseButton).to({
-//				alpha : 1
-//			}, 100, Phaser.Easing.Linear.None, !0);
-//};
 Levelgui.prototype.onPause = function() {
-	this.buttons.forEach(function(a) {
-				a.visible = !1
-			});
+	// this.pauseButton.visible = !1;
 	this.pauseBoard.show();
 };
-//Levelgui.prototype.onResume = function() {
-//	this.showPauseButton();
-//	this.pauseBoard.hide();
-//};
+Levelgui.prototype.onResume = function() {
+	// this.pauseButton.visible = !1;
+	this.pauseBoard.hide();
+};
 
 module.exports = Levelgui;
 
@@ -288,7 +263,6 @@ var Pauseboard = function(b, c) {
 	this.board.position.set(Math.round(.5
 					* (this.game.width - this.board.width)), Math.round(.5
 					* (this.game.height - this.board.height)));
-	// this.board.visible = !1;
 	this.initText();
 	this.addButtons();
 
@@ -333,13 +307,16 @@ Pauseboard.prototype.addButtons = function() {
 
 	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
 			"play2.png");
+	f.callback.add(function() {
+				a.hide();
+			});
 
 	this.buttons = [d, e, f];
 	this.buttons.forEach(function(b) {
 				a.add(b)
 			})
 };
-Pauseboard.prototype.show = function() {
+Pauseboard.prototype.show = function(level) {
 	var a = this;
 	this.visible = !0;
 	this.board.y -= 200;
@@ -362,7 +339,6 @@ Pauseboard.prototype.show = function() {
 			})
 };
 Pauseboard.prototype.hide = function() {
-	// this.game.sound.usingWebAudio && this.game.sound.play("whoosh_out", .33);
 	this.game.add.tween(this).to({
 				alpha : 0
 			}, 100, Phaser.Easing.Linear.None, !0, 400);
@@ -535,12 +511,6 @@ var SimpleButton = require('../prefabs/simplebutton');
 
 'use strict';
 
-var b;
-// !function(a) {
-// a[a.ACTIVE = 0] = "ACTIVE", a[a.PAUSED = 1] = "PAUSED", a[a.RESTART = 2] =
-// "RESTART"
-// }(b || (b = {}));
-
 function Level() {
 }
 Object.defineProperty(this, "settings", {
@@ -556,14 +526,10 @@ Level.prototype = {
 	init : function(b) {
 		this.state = 1;
 		this._settings = new LevelSettings(b);
-		// this.result = new LevelResult(b)
 	},
 
 	create : function() {
 		this.levels_num = 28;
-		// this.state = 1;
-		// this._settings = new LevelSettings(this);
-		// this.result = new LevelResult(this);
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
 
@@ -579,13 +545,7 @@ Level.prototype = {
 	},
 
 	update : function() {
-		switch (this.state) {
-			case 0 :
-				this.doUpdate();
-				break;
-			case 2 :
-				this.doRestart(), this.state = 0
-		}
+	
 	},
 
 	addGui : function() {

@@ -5,12 +5,6 @@ var SimpleButton = require('../prefabs/simplebutton');
 
 'use strict';
 
-var b;
-// !function(a) {
-// a[a.ACTIVE = 0] = "ACTIVE", a[a.PAUSED = 1] = "PAUSED", a[a.RESTART = 2] =
-// "RESTART"
-// }(b || (b = {}));
-
 function Level() {
 }
 Object.defineProperty(this, "settings", {
@@ -26,14 +20,10 @@ Level.prototype = {
 	init : function(b) {
 		this.state = 1;
 		this._settings = new LevelSettings(b);
-		// this.result = new LevelResult(b)
 	},
 
 	create : function() {
 		this.levels_num = 28;
-		// this.state = 1;
-		// this._settings = new LevelSettings(this);
-		// this.result = new LevelResult(this);
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
 
@@ -49,13 +39,7 @@ Level.prototype = {
 	},
 
 	update : function() {
-		switch (this.state) {
-			case 0 :
-				this.doUpdate();
-				break;
-			case 2 :
-				this.doRestart(), this.state = 0
-		}
+	
 	},
 
 	addGui : function() {

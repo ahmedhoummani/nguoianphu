@@ -11,7 +11,6 @@ var Pauseboard = function(b, c) {
 	this.board.position.set(Math.round(.5
 					* (this.game.width - this.board.width)), Math.round(.5
 					* (this.game.height - this.board.height)));
-	// this.board.visible = !1;
 	this.initText();
 	this.addButtons();
 
@@ -56,13 +55,16 @@ Pauseboard.prototype.addButtons = function() {
 
 	var f = new SimpleButton(this.game, d.x + c + .25, b, "buttonsgroup",
 			"play2.png");
+	f.callback.add(function() {
+				a.hide();
+			});
 
 	this.buttons = [d, e, f];
 	this.buttons.forEach(function(b) {
 				a.add(b)
 			})
 };
-Pauseboard.prototype.show = function() {
+Pauseboard.prototype.show = function(level) {
 	var a = this;
 	this.visible = !0;
 	this.board.y -= 200;
@@ -85,7 +87,6 @@ Pauseboard.prototype.show = function() {
 			})
 };
 Pauseboard.prototype.hide = function() {
-	// this.game.sound.usingWebAudio && this.game.sound.play("whoosh_out", .33);
 	this.game.add.tween(this).to({
 				alpha : 0
 			}, 100, Phaser.Easing.Linear.None, !0, 400);
