@@ -77,7 +77,7 @@ Level.prototype = {
 	},
 
 	shutdown : function() {
-
+		this.gui.destroy();
 	}
 };
 module.exports = Level;

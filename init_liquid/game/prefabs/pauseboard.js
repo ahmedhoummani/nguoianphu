@@ -55,24 +55,24 @@ Pauseboard.prototype.addButtons = function() {
 
 	this.menuBtn = new SimpleButton(this.game,
 			this.game.width / 2, b, "buttonsgroup", "menu.png");
-	this.menuBtn.callback.addOnce(function() {
+	this.menuBtn.callback.add(function() {
 				a.game.state.start("levelsmenu")
 			}, this);
 
-	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b, "buttonsgroup",
+	this.soundButton = new ToggleButton(this.game, this.menuBtn.x - c, b, "buttonsgroup",
 			"sound.png", "mute.png");
-	this.soundBtn.callback.add(function() {
-				a.game.sound.mute = !a.game.sound.mute
-			});
-			a.game.sound.mute && e.switchTextures();
+	this.soundButton.callback.add(function() {
+					a.game.sound.mute = !a.game.sound.mute
+				});
+	this.game.sound.mute && this.soundButton.switchTextures();
 
 	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25, b, "buttonsgroup",
 			"play2.png");
 
-	this.buttons = [this.menuBtn, this.soundBtn, this._resumeButton];
+	this.buttons = [this.menuBtn, this.soundButton, this._resumeButton];
 	this.buttons.forEach(function(b) {
 				a.add(b)
-			})
+			});
 };
 Pauseboard.prototype.show = function() {
 	this.exists = !0;
