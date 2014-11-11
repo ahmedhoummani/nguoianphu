@@ -11,7 +11,7 @@ var Togglebutton = function(b, c, d, e, f, g) {
 	this.textureKey2 = g;
 	this.activeTextureKey = this.textureKey1;
 	this._state = 1;
-	this.events.onInputUp.add(this.switchTextures, this, 2);
+	this.events.onInputUp.add(this.switchTextures, this, 0);
 
 	Object.defineProperty(this, "state", {
 				get : function() {
