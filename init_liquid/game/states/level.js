@@ -37,19 +37,19 @@ Level.prototype = {
 		// level gui menu
 		this.addGui();
 	},
-	gotoPrevLevel : function() {
-		var b = this._settings.levelNumber;
-		c = 1 === b ? this.levels_num : b - 1;
-		this.gotoLevel(c)
-	},
-	gotoNextLevel : function() {
-		var b = this._settings.levelNumber;
-		c = b >= this.levels_num ? 1 : b + 1;
-		this.gotoLevel(c)
-	},
-	gotoLevel : function(a) {
-		this.game.state.start("level", !0, !1, a)
-	},
+	// gotoPrevLevel : function() {
+	// var b = this._settings.levelNumber;
+	// c = 1 === b ? this.levels_num : b - 1;
+	// this.gotoLevel(c)
+	// },
+	// gotoNextLevel : function() {
+	// var b = this._settings.levelNumber;
+	// c = b >= this.levels_num ? 1 : b + 1;
+	// this.gotoLevel(c)
+	// },
+	// gotoLevel : function(a) {
+	// this.game.state.start("level", !0, !1, a)
+	//	},
 
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
@@ -74,10 +74,10 @@ Level.prototype = {
 	}, 
 	resumeGame : function() {
 			this.gui.onResume();
-	},
-
-	shutdown : function() {
-		this.gui.destroy();
 	}
+
+//	shutdown : function() {
+////		this.gui.destroy();
+//	}
 };
 module.exports = Level;

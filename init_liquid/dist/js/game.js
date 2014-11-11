@@ -88,11 +88,11 @@ Levelcompleteboard.prototype.show = function() {
 						}, a), c += 100
 			})
 };
-Levelcompleteboard.prototype.destroy = function() {
-	this.board.destroy();
-	this.buttons = null;
-	
-};
+//Levelcompleteboard.prototype.destroy = function() {
+//	this.board.destroy();
+//	this.buttons = null;
+//	
+//};
 
 module.exports = Levelcompleteboard;
 
@@ -162,12 +162,12 @@ Levelgui.prototype.onPause = function() {
 Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 };
-Levelgui.prototype.destroy = function() {
-	this.pauseButton.destroy();
-	this.levelCompleteBoard.destroy();
-	this.pauseBoard.destroy();
-	
-};
+//Levelgui.prototype.destroy = function() {
+//	this.pauseButton.destroy();
+//	this.levelCompleteBoard.destroy();
+//	this.pauseBoard.destroy();
+//	
+//};
 
 module.exports = Levelgui;
 
@@ -285,22 +285,21 @@ var Pauseboard = function(b, c) {
 
 	this.addBackGround();
 	this.board = this.game.add.image(0, 0, "bggroup", "creditbg.png", this);
-	this.board.position.set(Math.round(.5
-					* (this.game.width - this.board.width)), Math.round(.5
-					* (this.game.height - this.board.height)));
+	this.board.position.set(this.game.width / 2 - this.board.width / 2,
+			this.game.height / 2 - this.board.height / 2);
 
 	this.initText();
 	this.addButtons();
 	this.exists = !1;
 	this.visible = !1;
-	
+
 	Object.defineProperty(this, "resumeButton", {
-					get : function() {
-						return this._resumeButton;
-					},
-					enumerable : !0,
-					configurable : !0
-				});
+				get : function() {
+					return this._resumeButton;
+				},
+				enumerable : !0,
+				configurable : !0
+			});
 
 };
 
@@ -330,23 +329,21 @@ Pauseboard.prototype.initText = function() {
 Pauseboard.prototype.addButtons = function() {
 	var a = this, b = 550, c = 120;
 
-	this.menuBtn = new SimpleButton(this.game,
-			this.game.width / 2, b, "buttonsgroup", "menu.png");
+	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
+			"buttonsgroup", "menu.png");
 	this.menuBtn.callback.add(function() {
-				a.game.state.start("levelsmenu")
+				a.game.state.start("menu")
 			});
 
-	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c -100, b, "buttonsgroup",
-			"sound.png", "mute.png");
+	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,
+			"buttonsgroup", "sound.png", "mute.png");
 	this.soundBtn.callback.add(function() {
-					a.game.sound.mute = !a.game.sound.mute;
-					alert("callback: " + a.game.sound.mute.toString());
-				});
+				a.game.sound.mute = !a.game.sound.mute;
+			});
 	this.game.sound.mute && this.soundBtn.switchTextures();
-	alert("switch " + this.game.sound.mute.toString());
 
-	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25, b, "buttonsgroup",
-			"play2.png");
+	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25,
+			b, "buttonsgroup", "play2.png");
 
 	this.buttons = [this.menuBtn, this.soundBtn, this._resumeButton];
 	this.buttons.forEach(function(b) {
@@ -356,35 +353,49 @@ Pauseboard.prototype.addButtons = function() {
 Pauseboard.prototype.show = function() {
 	this.exists = !0;
 	this.visible = !0;
+
 	this.alpha = 0;
+	this.board.y -= 200;
 	this.game.add.tween(this).to({
-		alpha : 1
-	}, 200, Phaser.Easing.Linear.None, !0);
-	this.game.add
-	.tween(this.position).to({
-				y : -100
-			}, 500, Phaser.Easing.Back.Out, !0).onComplete
-	.addOnce(this.onShowComplete, this);
+				alpha : 1
+			}, 200, Phaser.Easing.Linear.None, !0);
+	this.game.add.tween(this.board).to({
+				y : 200
+			}, 500, Phaser.Easing.Back.Out, !0).onComplete.addOnce(
+			this.onShowComplete, this);
+
+	var a = this, b = 500, c = b;
+	this.buttons.forEach(function(d) {
+				d.y -= 200;
+				d.visible = !1;
+				a.game.add.tween(d).to({
+							y : d.y + 200
+						}, b, Phaser.Easing.Back.Out, !0, c).onStart.addOnce(
+						function() {
+							d.visible = !0
+						}, a), c += 100
+			});
 };
 Pauseboard.prototype.onShowComplete = function() {
-		};
+};
 Pauseboard.prototype.hide = function() {
 	this.game.add.tween(this).to({
 				alpha : 0
 			}, 100, Phaser.Easing.Linear.None, !0, 400);
-	this.game.add.tween(this.position).to({
-				y :  100
+	this.game.add.tween(this.board).to({
+				y : 500
 			}, 500, Phaser.Easing.Back.In, !0).onComplete.addOnce(
 			this.onHideComplete, this);
+
 };
 Pauseboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
 };
-Pauseboard.prototype.destroy = function() {
-	this.board.destroy();
-	this.buttons = null;
-},
+// Pauseboard.prototype.destroy = function() {
+// this.board.destroy();
+// this.buttons = null;
+// },
 
 module.exports = Pauseboard;
 
@@ -578,19 +589,19 @@ Level.prototype = {
 		// level gui menu
 		this.addGui();
 	},
-	gotoPrevLevel : function() {
-		var b = this._settings.levelNumber;
-		c = 1 === b ? this.levels_num : b - 1;
-		this.gotoLevel(c)
-	},
-	gotoNextLevel : function() {
-		var b = this._settings.levelNumber;
-		c = b >= this.levels_num ? 1 : b + 1;
-		this.gotoLevel(c)
-	},
-	gotoLevel : function(a) {
-		this.game.state.start("level", !0, !1, a)
-	},
+	// gotoPrevLevel : function() {
+	// var b = this._settings.levelNumber;
+	// c = 1 === b ? this.levels_num : b - 1;
+	// this.gotoLevel(c)
+	// },
+	// gotoNextLevel : function() {
+	// var b = this._settings.levelNumber;
+	// c = b >= this.levels_num ? 1 : b + 1;
+	// this.gotoLevel(c)
+	// },
+	// gotoLevel : function(a) {
+	// this.game.state.start("level", !0, !1, a)
+	//	},
 
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
@@ -615,11 +626,11 @@ Level.prototype = {
 	}, 
 	resumeGame : function() {
 			this.gui.onResume();
-	},
-
-	shutdown : function() {
-		this.gui.destroy();
 	}
+
+//	shutdown : function() {
+////		this.gui.destroy();
+//	}
 };
 module.exports = Level;
 
