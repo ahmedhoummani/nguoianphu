@@ -36,7 +36,7 @@ Preload.prototype = {
 	},
 	addLoadingText : function() {
 		var style = {
-			font : "45px cantoraone",
+			font : "45px font",
 			fill : "#FFFFFF",
 			align : "center"
 		};
@@ -50,8 +50,8 @@ Preload.prototype = {
 	loadAssets : function() {
 
 		// FONTS
-		this.load.bitmapFont("cantoraone", "assets/fonts/cantoraone.png",
-				"assets/fonts/cantoraone.fnt", null, 1);
+		this.load.bitmapFont("font", "assets/fonts/font.png",
+				"assets/fonts/font.fnt", null, 1);
 
 		// Buttons
 		this.load.atlas("buttonsgroup", "assets/graphics/buttonsgroup.png",

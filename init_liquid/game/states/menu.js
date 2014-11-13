@@ -45,7 +45,7 @@ Menu.prototype = {
 	addTitle : function() {
 
 		var titleStyle = {
-			font : "bold 75px cantoraone",
+			font : "bold 75px font",
 			fill : "#FBAF05",
 			align : "center",
 			stroke : "#FFFFFF",
