@@ -70,10 +70,5 @@ Levelcompleteboard.prototype.show = function() {
 						}, a), c += 100
 			})
 };
-//Levelcompleteboard.prototype.destroy = function() {
-//	this.board.destroy();
-//	this.buttons = null;
-//	
-//};
 
 module.exports = Levelcompleteboard;

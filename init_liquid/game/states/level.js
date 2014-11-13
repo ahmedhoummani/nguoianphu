@@ -75,9 +75,5 @@ Level.prototype = {
 	resumeGame : function() {
 			this.gui.onResume();
 	}
-
-//	shutdown : function() {
-////		this.gui.destroy();
-//	}
 };
 module.exports = Level;

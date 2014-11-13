@@ -114,9 +114,5 @@ Pauseboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
 };
-// Pauseboard.prototype.destroy = function() {
-// this.board.destroy();
-// this.buttons = null;
-// },
 
 module.exports = Pauseboard;

@@ -65,11 +65,6 @@ Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 	this.pauseButton.visible = !0;
 };
-//Levelgui.prototype.destroy = function() {
-//	this.pauseButton.destroy();
-//	this.levelCompleteBoard.destroy();
-//	this.pauseBoard.destroy();
-//	
-//};
+
 
 module.exports = Levelgui;

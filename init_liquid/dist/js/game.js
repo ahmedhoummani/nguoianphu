@@ -88,11 +88,6 @@ Levelcompleteboard.prototype.show = function() {
 						}, a), c += 100
 			})
 };
-//Levelcompleteboard.prototype.destroy = function() {
-//	this.board.destroy();
-//	this.buttons = null;
-//	
-//};
 
 module.exports = Levelcompleteboard;
 
@@ -164,12 +159,7 @@ Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 	this.pauseButton.visible = !0;
 };
-//Levelgui.prototype.destroy = function() {
-//	this.pauseButton.destroy();
-//	this.levelCompleteBoard.destroy();
-//	this.pauseBoard.destroy();
-//	
-//};
+
 
 module.exports = Levelgui;
 
@@ -393,10 +383,6 @@ Pauseboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
 };
-// Pauseboard.prototype.destroy = function() {
-// this.board.destroy();
-// this.buttons = null;
-// },
 
 module.exports = Pauseboard;
 
@@ -628,10 +614,6 @@ Level.prototype = {
 	resumeGame : function() {
 			this.gui.onResume();
 	}
-
-//	shutdown : function() {
-////		this.gui.destroy();
-//	}
 };
 module.exports = Level;
 
