@@ -97,7 +97,7 @@ Levelcompleteboard.prototype.show = function() {
 module.exports = Levelcompleteboard;
 
 },{"./simplebutton":8}],3:[function(require,module,exports){
-var ToggleButton = require('./togglebutton');
+var SimpleButton = require('./simplebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
 var PauseBoard = require('./pauseboard');
 
@@ -128,8 +128,8 @@ Levelgui.prototype.constructor = Levelgui;
 Levelgui.prototype.initButtons = function() {
 	var b = this, c = 60;
 
-	this.pauseButton = new ToggleButton(this.game, this.game.width - 60, c,
-			"buttonsgroup", "pause.png", "play2.png");
+	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
+			"buttonsgroup", "pause.png");
 	b.add(this.pauseButton);
 	this.pauseButton.callback.add(
 					function() {
@@ -158,9 +158,11 @@ Levelgui.prototype.addPauseBoard = function() {
 };
 Levelgui.prototype.onPause = function() {
 	this.pauseBoard.show();
+	this.pauseButton.visible = !1;
 };
 Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
+	this.pauseButton.visible = !0;
 };
 //Levelgui.prototype.destroy = function() {
 //	this.pauseButton.destroy();
@@ -171,7 +173,7 @@ Levelgui.prototype.onResume = function() {
 
 module.exports = Levelgui;
 
-},{"./levelcompleteboard":2,"./pauseboard":7,"./togglebutton":9}],4:[function(require,module,exports){
+},{"./levelcompleteboard":2,"./pauseboard":7,"./simplebutton":8}],4:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
@@ -314,20 +316,20 @@ Pauseboard.prototype.addBackGround = function() {
 };
 Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
-		font : "56px cantoraone1",
+		font : "56px cantoraone",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
 		strokeThickness : 12
-	}, d = new Phaser.Text(this.game, this.game.width / 2,
-			this.game.height / 2, b, c);
+	}, d = new Phaser.Text(this.game, this.game.width / 2, this.game.height / 2
+					- 100, b, c);
 	d.anchor.set(.5, .5);
 	d.setShadow(2, 2, "#FB1A05", 2);
 	this.add(d);
 
 };
 Pauseboard.prototype.addButtons = function() {
-	var a = this, b = 550, c = 120;
+	var a = this, b = this.game.height / 2, c = 120;
 
 	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
 			"buttonsgroup", "menu.png");
@@ -336,14 +338,13 @@ Pauseboard.prototype.addButtons = function() {
 			});
 
 	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,
-			"buttonsgroup", "sound.png", "mute.png"),
-	this.soundBtn.callback.add(function() {
-				a.game.sound.mute = !a.game.sound.mute;
-			}),
-	this.game.sound.mute && this.soundBtn.switchTextures(),
+			"buttonsgroup", "sound.png", "mute.png"), this.soundBtn.callback
+			.add(function() {
+						a.game.sound.mute = !a.game.sound.mute;
+					}), this.game.sound.mute && this.soundBtn.switchTextures(),
 
 	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25,
-			b, "buttonsgroup", "play2.png"),
+			b, "buttonsgroup", "restart.png"),
 
 	this.buttons = [this.menuBtn, this.soundBtn, this._resumeButton];
 	this.buttons.forEach(function(b) {

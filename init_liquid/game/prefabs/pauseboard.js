@@ -37,20 +37,20 @@ Pauseboard.prototype.addBackGround = function() {
 };
 Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
-		font : "56px cantoraone1",
+		font : "56px cantoraone",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
 		strokeThickness : 12
-	}, d = new Phaser.Text(this.game, this.game.width / 2,
-			this.game.height / 2, b, c);
+	}, d = new Phaser.Text(this.game, this.game.width / 2, this.game.height / 2
+					- 100, b, c);
 	d.anchor.set(.5, .5);
 	d.setShadow(2, 2, "#FB1A05", 2);
 	this.add(d);
 
 };
 Pauseboard.prototype.addButtons = function() {
-	var a = this, b = 550, c = 120;
+	var a = this, b = this.game.height / 2, c = 120;
 
 	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
 			"buttonsgroup", "menu.png");
@@ -59,14 +59,13 @@ Pauseboard.prototype.addButtons = function() {
 			});
 
 	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,
-			"buttonsgroup", "sound.png", "mute.png"),
-	this.soundBtn.callback.add(function() {
-				a.game.sound.mute = !a.game.sound.mute;
-			}),
-	this.game.sound.mute && this.soundBtn.switchTextures(),
+			"buttonsgroup", "sound.png", "mute.png"), this.soundBtn.callback
+			.add(function() {
+						a.game.sound.mute = !a.game.sound.mute;
+					}), this.game.sound.mute && this.soundBtn.switchTextures(),
 
 	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25,
-			b, "buttonsgroup", "play2.png"),
+			b, "buttonsgroup", "restart.png"),
 
 	this.buttons = [this.menuBtn, this.soundBtn, this._resumeButton];
 	this.buttons.forEach(function(b) {
