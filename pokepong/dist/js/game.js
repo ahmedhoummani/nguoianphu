@@ -535,9 +535,18 @@ var Pokemon = function(game, x, y, frame, ball) {
 	this.ball = ball;
 	this.health = 3;
 
+	this.lives = this.game.add.group();
+	for (var i = 0; i < this.health; i++) {
+
+		var life = this.lives.create(this.game.width / 2 + (30 * i), 30,
+				'pokemon', frame[0]);
+		life.scale.setTo(0.5, 0.5);
+		life.anchor.setTo(0.5, 0.5);
+	}
+
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(36, 40 ,0, 0);
+	this.body.setSize(36, 40, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
@@ -546,13 +555,23 @@ var Pokemon = function(game, x, y, frame, ball) {
 	this.body.maxVelocity.x = 100;
 	this.body.maxVelocity.y = 50;
 
-	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
+	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
 					+ 50, 100, this.body.velocity);
 	this.game.add.existing(this);
+
+	this._levelCompleteSignal = new Phaser.Signal;
+
+	Object.defineProperty(this, "levelCompleteSignal", {
+				get : function() {
+					return this._levelCompleteSignal
+				},
+				enumerable : !0,
+				configurable : !0
+			})
 
 };
 
@@ -588,7 +607,11 @@ Pokemon.prototype.update = function() {
 
 Pokemon.prototype.hitBall = function() {
 
-	// this.damage();
+	this.damage();
+	var life = this.lives.getFirstAlive();
+	if (life) {
+		life.kill();
+	}
 
 };
 
@@ -597,6 +620,7 @@ Pokemon.prototype.damage = function() {
 	this.health -= 1;
 
 	if (this.health <= 0) {
+		this._levelCompleteSignal.dispatch();
 		this.alive = false;
 		this.kill();
 
@@ -814,7 +838,10 @@ Level.prototype = {
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
 		this.saveLevelResult();
-		this.gui.onLevelComplete()
+		this.gui.onLevelComplete();
+
+		this.ball.visible = !1;
+		this.pikachu.visible = !1;
 	},
 	saveLevelResult : function() {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
@@ -832,8 +859,9 @@ Level.prototype = {
 	addPokemon : function() {
 
 		var frame = [0, 1, 2, 3, 4, 5];
-		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
-				 frame, this.ball);
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
+				this.ball);
+		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this)
 	},
 
 	addGui : function() {
@@ -848,6 +876,12 @@ Level.prototype = {
 	},
 	resumeGame : function() {
 		this.gui.onResume();
+	},
+	shutdown : function() {
+
+		this.ball.destroy();
+		this.pikachu.destroy();
+		this.pokemon.destroy();
 	}
 };
 module.exports = Level;

@@ -52,7 +52,10 @@ Level.prototype = {
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
 		this.saveLevelResult();
-		this.gui.onLevelComplete()
+		this.gui.onLevelComplete();
+
+		this.ball.visible = !1;
+		this.pikachu.visible = !1;
 	},
 	saveLevelResult : function() {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
@@ -70,8 +73,9 @@ Level.prototype = {
 	addPokemon : function() {
 
 		var frame = [0, 1, 2, 3, 4, 5];
-		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
-				 frame, this.ball);
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
+				this.ball);
+		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this)
 	},
 
 	addGui : function() {
@@ -86,6 +90,12 @@ Level.prototype = {
 	},
 	resumeGame : function() {
 		this.gui.onResume();
+	},
+	shutdown : function() {
+
+		this.ball.destroy();
+		this.pikachu.destroy();
+		this.pokemon.destroy();
 	}
 };
 module.exports = Level;
