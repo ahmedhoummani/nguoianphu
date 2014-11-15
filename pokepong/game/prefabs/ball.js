@@ -4,7 +4,7 @@ var Ball = function(game, x, y, pikachu) {
 	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu);
 
 	// initialize your prefab here
-
+	var x = x, y = y;
 	this.pikachu = pikachu;
 	this.health = 3;
 
@@ -14,7 +14,11 @@ var Ball = function(game, x, y, pikachu) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	this.body.maxVelocity = 200;
+	// Damping is specified as a value between 0 and 1, which is the proportion
+	// of velocity lost per second.
+	// this.body.damping = 5;
+	this.body.maxVelocity.x = 200;
+	this.body.maxVelocity.y = 200;
 
 	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
 	// true);
@@ -37,8 +41,8 @@ Ball.prototype.update = function() {
 		this.body.velocity.y = -200
 	}
 
-	this.game.physics.arcade
-			.collide(this, this.pikachu, this.hitPikachu, null, this);
+	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
+			this);
 
 };
 

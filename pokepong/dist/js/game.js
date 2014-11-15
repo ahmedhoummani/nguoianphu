@@ -22,7 +22,7 @@ var Ball = function(game, x, y, pikachu) {
 	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu);
 
 	// initialize your prefab here
-
+	var x = x, y = y;
 	this.pikachu = pikachu;
 	this.health = 3;
 
@@ -32,7 +32,11 @@ var Ball = function(game, x, y, pikachu) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	this.body.maxVelocity = 200;
+	// Damping is specified as a value between 0 and 1, which is the proportion
+	// of velocity lost per second.
+	// this.body.damping = 5;
+	this.body.maxVelocity.x = 200;
+	this.body.maxVelocity.y = 200;
 
 	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
 	// true);
@@ -55,8 +59,8 @@ Ball.prototype.update = function() {
 		this.body.velocity.y = -200
 	}
 
-	this.game.physics.arcade
-			.collide(this, this.pikachu, this.hitPikachu, null, this);
+	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
+			this);
 
 };
 
@@ -295,7 +299,7 @@ Levelicon.prototype.createLockedGraphics = function() {
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {
-		font : "48px TF2 Build",
+		font : "48px font",
 		fill : "#218DB7",
 		align : "center"
 	};
@@ -389,7 +393,7 @@ Pauseboard.prototype.addBackGround = function() {
 };
 Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
-		font : "56px cantoraone",
+		font : "56px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
@@ -987,7 +991,7 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px cantoraone",
+			font : "45px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
