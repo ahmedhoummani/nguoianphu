@@ -52,7 +52,7 @@ Menu.prototype = {
 			strokeThickness : 12
 		};
 
-		var titleTexts = "GAME TITLE";
+		var titleTexts = "Poke Pong";
 
 		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), titleStyle);
 		this.titleText.anchor.set(.5, .5);
@@ -62,10 +62,12 @@ Menu.prototype = {
 	},
 	addOtherImages : function() {
 
-		this.panda = this.game.add.image(this.game.width / 2, this.game.height
-						- 50, "panda", "Panda0000");
-		this.panda.anchor.set(.5, 1);
-		this.panda.angle = -1;
+		this.pikachu = this.game.add.sprite(this.game.width / 2, this.game.height
+						- 80, "pikachu_ball");
+		this.pikachu.anchor.set(.5, 1);
+		this.pikachu.angle = -2;
+		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5 ,6 ,7], 10, true);
+		this.pikachu.animations.play('ball');
 	},
 	addButtons : function() {
 		var b = this;
@@ -210,11 +212,11 @@ Menu.prototype = {
 				}, 600, Phaser.Easing.Back.Out, !0, 500).onComplete.addOnce(
 				this.onTitleAnimationComplete, this);
 
-		// tween panda
-		this.panda.scale.set(0, 0);
-		this.game.add.tween(this.panda.scale).to({
-					x : .85,
-					y : .85
+		// tween pikachu
+		this.pikachu.scale.set(2.5, 2.5);
+		this.game.add.tween(this.pikachu.scale).to({
+					x : 3,
+					y : 3
 				}, 500, Phaser.Easing.Back.Out, !0, 1200).onComplete.addOnce(
 				this.onPandaAnimationComplete, this);
 		var b = 1500;
@@ -241,17 +243,15 @@ Menu.prototype = {
 				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 	onPandaAnimationComplete : function() {
-		this.game.add.tween(this.panda.scale).to({
-					y : .88
-				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0), this.game.add
-				.tween(this.panda).to({
+		 this.game.add
+				.tween(this.pikachu).to({
 							angle : 1
 						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 
 	shutdown : function() {
 		this.titleText.destroy();
-		this.panda.destroy();
+		this.pikachu.destroy();
 		this.credits.destroy();
 		this.creditText.destroy();
 		this.buttons = null

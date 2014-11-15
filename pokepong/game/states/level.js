@@ -2,6 +2,7 @@ var LevelSettings = require('../prefabs/levelsettings');
 var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
 var SimpleButton = require('../prefabs/simplebutton');
+var Pikachu = require('../prefabs/pikachu');
 
 'use strict';
 
@@ -18,7 +19,7 @@ Object.defineProperty(this, "settings", {
 Level.prototype = {
 
 	init : function(b) {
-	
+
 		this._settings = new LevelSettings(b);
 	},
 
@@ -28,11 +29,8 @@ Level.prototype = {
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
 
-		// hack
-		var e = new SimpleButton(this.game, 200, 200, "buttonsgroup",
-				"play2.png");
-		this.world.add(e);
-		e.callback.addOnce(this.levelComplete, this);
+		// add pikachu
+		this.addPikachu();
 
 		// level gui menu
 		this.addGui();
@@ -49,7 +47,7 @@ Level.prototype = {
 	// },
 	// gotoLevel : function(a) {
 	// this.game.state.start("level", !0, !1, a)
-	//	},
+	// },
 
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
@@ -60,20 +58,24 @@ Level.prototype = {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
 				"true")
 	},
-	
+
+	addPikachu : function() {
+		var pikachu = new Pikachu(this.game, this.game.width / 2, this.game.height - 80);
+//		this.world.add(pikachu);
+	},
+
 	addGui : function() {
 		this.gui = new LevelGUI(this.game, this._settings);
 		this.gui.pauseSignal.add(this.togglePause, this);
 	},
 	togglePause : function(a) {
-			"pause" === a ? this.pauseGame() : "resume" === a
-					&& this.resumeGame();
+		"pause" === a ? this.pauseGame() : "resume" === a && this.resumeGame();
 	},
 	pauseGame : function() {
-			 this.gui.onPause();
-	}, 
+		this.gui.onPause();
+	},
 	resumeGame : function() {
-			this.gui.onResume();
+		this.gui.onResume();
 	}
 };
 module.exports = Level;

@@ -62,9 +62,11 @@ Preload.prototype = {
 		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
 				"assets/graphics/bggroup.json");
 
-		// Panda
-		this.load.atlasJSONHash("panda", "assets/graphics/panda.png",
-				"assets/graphics/panda.json");
+		// Pikachu
+		this.load.atlas("pikachu", "assets/graphics/pikachu.png",
+				"assets/graphics/pikachu.json");
+		this.load.spritesheet("pikachu_ball",
+				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 
 		// Sound
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

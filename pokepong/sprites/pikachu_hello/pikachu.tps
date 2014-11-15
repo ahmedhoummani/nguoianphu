@@ -74,7 +74,7 @@
             <key>freeSizeMode</key>
             <enum type="AlgorithmSettings::AlgorithmFreeSizeMode">Best</enum>
             <key>sizeConstraints</key>
-            <enum type="AlgorithmSettings::SizeConstraints">POT</enum>
+            <enum type="AlgorithmSettings::SizeConstraints">AnySize</enum>
             <key>forceSquared</key>
             <false/>
             <key>forceWordAligned</key>
@@ -149,6 +149,10 @@
             <filename>run2.png</filename>
             <filename>run3.png</filename>
             <filename>run4.png</filename>
+            <filename>run5.png</filename>
+            <filename>run6.png</filename>
+            <filename>run7.png</filename>
+            <filename>run8.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
