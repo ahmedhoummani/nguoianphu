@@ -212,7 +212,7 @@ Levelicon.prototype.createLockedGraphics = function() {
 };
 Levelicon.prototype.createUnlockedGraphics = function() {
 	var a = {
-		font : "48px TF2 Build",
+		font : "48px font",
 		fill : "#218DB7",
 		align : "center"
 	};
@@ -306,7 +306,7 @@ Pauseboard.prototype.addBackGround = function() {
 };
 Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
-		font : "56px cantoraone",
+		font : "56px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
@@ -839,7 +839,7 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px cantoraone",
+			font : "45px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
