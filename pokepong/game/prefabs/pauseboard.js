@@ -37,7 +37,7 @@ Pauseboard.prototype.addBackGround = function() {
 };
 Pauseboard.prototype.initText = function() {
 	var b = "Game Paused", c = {
-		font : "56px cantoraone",
+		font : "56px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",

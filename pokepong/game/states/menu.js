@@ -122,7 +122,7 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px cantoraone",
+			font : "45px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
