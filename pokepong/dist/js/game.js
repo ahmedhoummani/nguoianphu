@@ -873,6 +873,7 @@ Level.prototype = {
 	},
 	pauseGame : function() {
 		this.gui.onPause();
+
 	},
 	resumeGame : function() {
 		this.gui.onResume();
