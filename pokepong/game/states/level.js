@@ -3,6 +3,7 @@ var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
 var SimpleButton = require('../prefabs/simplebutton');
 var Pikachu = require('../prefabs/pikachu');
+var Ball = require('../prefabs/Ball');
 
 'use strict';
 
@@ -27,10 +28,12 @@ Level.prototype = {
 
 		this.levels_num = 28;
 
-		this.game.add.text(100, 100, this._settings.levelNumber.toString());
+		this.game.add.text(50, 50, this._settings.levelNumber.toString());
 
 		// add pikachu
 		this.addPikachu();
+		// add ball
+		this.addBall();
 
 		// level gui menu
 		this.addGui();
@@ -60,8 +63,12 @@ Level.prototype = {
 	},
 
 	addPikachu : function() {
-		var pikachu = new Pikachu(this.game, this.game.width / 2, this.game.height - 80);
-//		this.world.add(pikachu);
+		this.pikachu = new Pikachu(this.game, this.game.width / 2,
+				this.game.height - 80);
+	},
+	addBall : function() {
+		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
+						- 45, this.pikachu);
 	},
 
 	addGui : function() {

@@ -68,6 +68,9 @@ Preload.prototype = {
 		this.load.spritesheet("pikachu_ball",
 				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 
+		// Ball
+		this.load.image("ballred", "assets/graphics/ballred40.png");
+
 		// Sound
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
 						"assets/audio/MainLoop.m4a"], !0);

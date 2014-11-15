@@ -11,8 +11,8 @@ var Pikachu = function(game, x, y) {
 	this.body.allowRotation = false;
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
-	this.body.maxVelocity.y = 0;
-	this.body.maxVelocity.x = 200;
+	// this.body.maxVelocity.y = 0;
+	// this.body.maxVelocity.x = 300;
 
 	this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7, true);
 	this.animations.add('right', ['run1.png', 'run2.png', 'run3.png',
@@ -31,18 +31,20 @@ Pikachu.prototype.constructor = Pikachu;
 
 Pikachu.prototype.update = function() {
 
-	// this.animations.play('stand');
-	this.body.velocity.y = 0;
-
-	if (this.game.input.activePointer.isDown) {
+	if (this.game.input.activePointer.isDown
+			&& this.game.physics.arcade.distanceToPointer(this) > 15) {
 
 		if (this.x < this.game.input.x) {
 			this.animations.play('right');
-			this.body.velocity.x += 150;
+			this.body.velocity.x = 300;
 		} else if (this.x > this.game.input.x) {
 			this.animations.play('left');
-			this.body.velocity.x -= 150;
+			this.body.velocity.x = -300;
 		}
+	} else {
+		this.animations.play('stand');
+		this.body.velocity.x = 0;
+		this.body.velocity.y = 0;
 	}
 
 };
