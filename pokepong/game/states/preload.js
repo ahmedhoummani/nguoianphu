@@ -70,6 +70,7 @@ Preload.prototype = {
 
 		// Ball
 		this.load.image("ballred", "assets/graphics/ballred40.png");
+		this.load.image("ballblue", "assets/graphics/ballblue40.png");
 
 		// Sound
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

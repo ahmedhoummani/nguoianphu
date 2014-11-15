@@ -1,7 +1,7 @@
 'use strict';
 
-var Ball = function(game, x, y, pikachu) {
-	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu);
+var Ball = function(game, x, y, ball, pikachu) {
+	Phaser.Sprite.call(this, game, x, y, ball, pikachu);
 
 	// initialize your prefab here
 	var x = x, y = y;
@@ -12,11 +12,8 @@ var Ball = function(game, x, y, pikachu) {
 
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
-	this.body.allowRotation = false;
+	this.body.allowRotation = true;
 	this.anchor.setTo(.5, .5);
-	// Damping is specified as a value between 0 and 1, which is the proportion
-	// of velocity lost per second.
-	// this.body.damping = 5;
 	this.body.maxVelocity.x = 200;
 	this.body.maxVelocity.y = 200;
 
@@ -46,23 +43,22 @@ Ball.prototype.update = function() {
 
 };
 
-Ball.prototype.hitPikachu = function(pikachu) {
+Ball.prototype.hitPikachu = function() {
 
-	pikachu = this.pikachu;
 	var diff = 0;
 
-	if (pikachu.x > this.x) {
+	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
-		diff = pikachu.x - this.x;
-		this.body.velocity.x = (10 * diff);
-	} else if (pikachu.x < this.x) {
+		diff = this.pikachu.x - this.x;
+		this.body.velocity.x += (50 * diff);
+	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
-		diff = this.x - pikachu.x;
-		this.body.velocity.x = (-10 * diff);
+		diff = this.x - this.pikachu.x;
+		this.body.velocity.x -= (-50 * diff);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = 2 + Math.random() * 8;
+		this.body.velocity.x = 2 + Math.random() * 50;
 	}
 
 };
