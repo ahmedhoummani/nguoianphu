@@ -1,7 +1,7 @@
 'use strict';
 
-var Pokemon = function(game, x, y, key, frame, ball) {
-	Phaser.Sprite.call(this, game, x, y, key, frame, ball);
+var Pokemon = function(game, x, y, frame, ball) {
+	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball);
 
 	// initialize your prefab here
 	var x = x, y = y;
@@ -10,22 +10,21 @@ var Pokemon = function(game, x, y, key, frame, ball) {
 
 	this.game.physics.arcade.enableBody(this);
 
+	this.body.setSize(36, 40 ,0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 200;
-	this.body.maxVelocity.y = 200;
+	this.body.maxVelocity.x = 100;
+	this.body.maxVelocity.y = 50;
 
-	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
-	// true);
-	// this.animations.add('right', ['run1.png', 'run2.png', 'run3.png',
-	// 'run4.png'], 10, true);
-	// this.animations.add('left',
-	// ['run5.png', 'run6.png', 'run7.png', 'run8.png'], 10, true);
-	// this.animations.play('stand');
+	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
+	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
 
+	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
+					* 100)
+					+ 50, 100, this.body.velocity);
 	this.game.add.existing(this);
 
 };
@@ -35,18 +34,34 @@ Pokemon.prototype.constructor = Pokemon;
 
 Pokemon.prototype.update = function() {
 
-	if (this.game.input.activePointer.isDown && this.body.velocity.y === 0) {
-		this.body.velocity.y = -200
+	if (this.body.velocity.x < 0) {
+
+		this.animations.play('left');
+
+	} else if (this.body.velocity.x > 0) {
+
+		this.animations.play('right');
 	}
 
 	this.game.physics.arcade.collide(this, this.ball, this.hitBall, null, this);
 
+	if (this.y > (this.game.height - 200)) {
+
+		this.body.velocity.y -= Math.floor(Math.random() * 10);
+
+		if (this.body.velocity.x > 0) {
+			this.body.velocity.x += Math.floor(Math.random() * 50);
+		} else {
+			this.body.velocity.x -= Math.floor(Math.random() * 50);
+		}
+
+	}
+
 };
 
-Pokemon.prototype.hitBall = function(ball) {
+Pokemon.prototype.hitBall = function() {
 
-	var ball = this.ball;
-	this.damage();
+	// this.damage();
 
 };
 

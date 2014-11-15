@@ -6,6 +6,7 @@ var Pikachu = function(game, x, y) {
 	// initialize your prefab here
 	this.game.physics.arcade.enableBody(this);
 
+	this.body.setSize(72, 57 ,0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(0, 0);
 	this.body.allowRotation = false;

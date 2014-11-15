@@ -71,6 +71,10 @@ Preload.prototype = {
 		// Ball
 		this.load.image("ballred", "assets/graphics/ballred40.png");
 		this.load.image("ballblue", "assets/graphics/ballblue40.png");
+		
+		// Pokemon
+		this.load.atlas("pokemon",
+				"assets/graphics/worm.png", "assets/graphics/worm.json");
 
 		// Sound
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

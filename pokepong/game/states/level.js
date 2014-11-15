@@ -3,7 +3,8 @@ var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
 var SimpleButton = require('../prefabs/simplebutton');
 var Pikachu = require('../prefabs/pikachu');
-var Ball = require('../prefabs/Ball');
+var Ball = require('../prefabs/ball');
+var Pokemon = require('../prefabs/pokemon');
 
 'use strict';
 
@@ -34,23 +35,19 @@ Level.prototype = {
 		this.addPikachu();
 		// add ball
 		this.addBall();
+		// add pokemon
+		this.addPokemon();
 
 		// level gui menu
 		this.addGui();
 	},
-	// gotoPrevLevel : function() {
-	// var b = this._settings.levelNumber;
-	// c = 1 === b ? this.levels_num : b - 1;
-	// this.gotoLevel(c)
-	// },
-	// gotoNextLevel : function() {
-	// var b = this._settings.levelNumber;
-	// c = b >= this.levels_num ? 1 : b + 1;
-	// this.gotoLevel(c)
-	// },
-	// gotoLevel : function(a) {
-	// this.game.state.start("level", !0, !1, a)
-	// },
+
+	render : function() {
+
+		this.game.debug.body(this.pikachu);
+		this.game.debug.body(this.ball);
+		this.game.debug.body(this.pokemon);
+	},
 
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
@@ -68,7 +65,13 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ballblue" , this.pikachu);
+						- 45, "ballred", this.pikachu);
+	},
+	addPokemon : function() {
+
+		var frame = [0, 1, 2, 3, 4, 5];
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
+				 frame, this.ball);
 	},
 
 	addGui : function() {
