@@ -1,12 +1,16 @@
 'use strict';
 
-var Pokemon = function(game, x, y, frame, ball) {
-	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball);
+var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
+	Phaser.Sprite
+			.call(this, game, x, y, 'pokemon', frame, pikachu, ball, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
+
+	this.pikachu = pikachu;
 	this.ball = ball;
+	this.level = level;
 	this.health = 3;
 
 	this.lives = this.game.add.group();
@@ -26,19 +30,19 @@ var Pokemon = function(game, x, y, frame, ball) {
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 100;
-	this.body.maxVelocity.y = 50;
+	this.body.maxVelocity.x = 100 * this.level;
+	this.body.maxVelocity.y = 50 * this.level;
 
 	this.cachedVelocity = {};
 
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
 	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
 
+	this.game.add.existing(this);
+
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
-					+ 50, 100, this.body.velocity);
-
-	this.game.add.existing(this);
+					+ 50, 100 * this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -67,18 +71,8 @@ Pokemon.prototype.update = function() {
 	}
 
 	this.game.physics.arcade.collide(this, this.ball, this.hitBall, null, this);
-
-	if (this.y > (this.game.height - 200)) {
-
-		this.body.velocity.y -= Math.floor(Math.random() * 10);
-
-		if (this.body.velocity.x > 0) {
-			this.body.velocity.x += Math.floor(Math.random() * 50);
-		} else {
-			this.body.velocity.x -= Math.floor(Math.random() * 50);
-		}
-
-	}
+	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
+			this);
 
 };
 
@@ -92,13 +86,26 @@ Pokemon.prototype.hitBall = function() {
 
 };
 
-Pokemon.prototype.start = function() {
-	if (this.game.input.activePointer.isDown && this.x == this._x
-			&& this.y == this._y) {
-		this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
-						* 100)
-						+ 50, 100, this.body.velocity);
+Pokemon.prototype.hitPikachu = function() {
+	
+	alert("ffuf");
+
+	var diff = 0;
+
+	if (this.pikachu.x > this.x) {
+		// If ball is in the left hand side on the racket
+		diff = this.pikachu.x - this.x;
+		this.body.velocity.x += (50 * diff * this.level);
+	} else if (this.pikachu.x < this.x) {
+		// If ball is in the right hand side on the racket
+		diff = this.x - this.pikachu.x;
+		this.body.velocity.x -= (-50 * diff * this.level);
+	} else {
+		// The ball hit the center of the racket, let's add a little bit of a
+		// tragic accident(random) of his movement
+		this.body.velocity.x = 2 + Math.random() * 50 * this.level;
 	}
+
 };
 
 Pokemon.prototype.damage = function() {

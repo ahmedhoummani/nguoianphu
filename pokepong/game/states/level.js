@@ -48,9 +48,9 @@ Level.prototype = {
 
 	render : function() {
 
-		this.game.debug.body(this.pikachu);
-		this.game.debug.body(this.ball);
-		this.game.debug.body(this.pokemon);
+		// this.game.debug.body(this.pikachu);
+		// this.game.debug.body(this.ball);
+		// this.game.debug.body(this.pokemon);
 	},
 
 	levelComplete : function() {
@@ -68,19 +68,19 @@ Level.prototype = {
 
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 80);
+				this.game.height - 80, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ballred", this.pikachu);
+						- 45, "ballred", this.pikachu,
+				this._settings.levelNumber);
 
 	},
 	addPokemon : function() {
 
 		var frame = [0, 1, 2, 3, 4, 5];
 		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
-				this.ball);
-		this.pokemon.start();
+				this.pikachu, this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 
@@ -95,12 +95,14 @@ Level.prototype = {
 		this.gui.onPause();
 		this.ball.pause('on');
 		this.pokemon.pause('on');
+		this.pikachu.notPause = !1;
 
 	},
 	resumeGame : function() {
 		this.gui.onResume();
 		this.ball.pause('off');
 		this.pokemon.pause('off');
+		this.pikachu.notPause = !0;
 	},
 	shutdown : function() {
 		this.ball.destroy();

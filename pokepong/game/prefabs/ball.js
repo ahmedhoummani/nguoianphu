@@ -1,12 +1,13 @@
 'use strict';
 
-var Ball = function(game, x, y, ball, pikachu) {
-	Phaser.Sprite.call(this, game, x, y, ball, pikachu);
+var Ball = function(game, x, y, ball, pikachu, level) {
+	Phaser.Sprite.call(this, game, x, y, ball, pikachu, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
+	this.level = level;
 	this.health = 3;
 
 	this.game.physics.arcade.enableBody(this);
@@ -15,8 +16,8 @@ var Ball = function(game, x, y, ball, pikachu) {
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
-	this.body.maxVelocity.x = 300;
-	this.body.maxVelocity.y = 300;
+	this.body.maxVelocity.x = 100 * (this.level);
+	this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 
@@ -49,15 +50,15 @@ Ball.prototype.hitPikachu = function() {
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
-		this.body.velocity.x += (50 * diff);
+		this.body.velocity.x += (50 * diff * this.level);
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x -= (-50 * diff);
+		this.body.velocity.x -= (-50 * diff * this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = 2 + Math.random() * 50;
+		this.body.velocity.x = 2 + Math.random() * 50 * this.level;
 	}
 
 };
@@ -65,7 +66,7 @@ Ball.prototype.hitPikachu = function() {
 Ball.prototype.start = function() {
 	if (this.game.input.activePointer.isDown && this.x == this._x
 			&& this.y == this._y) {
-		this.body.velocity.y = -300
+		this.body.velocity.y = -100 * this.level;
 	}
 };
 
