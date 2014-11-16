@@ -4,7 +4,8 @@ var Pokemon = function(game, x, y, frame, ball) {
 	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball);
 
 	// initialize your prefab here
-	var x = x, y = y;
+	this._x = x;
+	this._y = y;
 	this.ball = ball;
 	this.health = 3;
 
@@ -28,12 +29,15 @@ var Pokemon = function(game, x, y, frame, ball) {
 	this.body.maxVelocity.x = 100;
 	this.body.maxVelocity.y = 50;
 
+	this.cachedVelocity = {};
+
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
 	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
 					+ 50, 100, this.body.velocity);
+
 	this.game.add.existing(this);
 
 	this._levelCompleteSignal = new Phaser.Signal;
@@ -88,6 +92,15 @@ Pokemon.prototype.hitBall = function() {
 
 };
 
+Pokemon.prototype.start = function() {
+	if (this.game.input.activePointer.isDown && this.x == this._x
+			&& this.y == this._y) {
+		this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
+						* 100)
+						+ 50, 100, this.body.velocity);
+	}
+};
+
 Pokemon.prototype.damage = function() {
 
 	this.health -= 1;
@@ -101,6 +114,24 @@ Pokemon.prototype.damage = function() {
 	}
 
 	return false;
+
+};
+
+Pokemon.prototype.pause = function(status) {
+
+	if (status == 'off') {
+		if (this.body) {
+			this.body.velocity.x = this.cachedVelocity.x;
+			this.body.velocity.y = this.cachedVelocity.y;
+		}
+	} else if (status == 'on') {
+		if (this.body) {
+			this.cachedVelocity.x = this.body.velocity.x;
+			this.cachedVelocity.y = this.body.velocity.y;
+			this.body.velocity.x = 0;
+			this.body.velocity.y = 0;
+		}
+	}
 
 };
 

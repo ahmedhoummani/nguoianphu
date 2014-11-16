@@ -22,18 +22,21 @@ var Ball = function(game, x, y, ball, pikachu) {
 	Phaser.Sprite.call(this, game, x, y, ball, pikachu);
 
 	// initialize your prefab here
-	var x = x, y = y;
+	this._x = x;
+	this._y = y;
 	this.pikachu = pikachu;
 	this.health = 3;
 
 	this.game.physics.arcade.enableBody(this);
 
+	this.body.setSize(42, 42, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
-	this.body.allowRotation = true;
 	this.anchor.setTo(.5, .5);
-	this.body.maxVelocity.x = 200;
-	this.body.maxVelocity.y = 200;
+	this.body.maxVelocity.x = 300;
+	this.body.maxVelocity.y = 300;
+
+	this.cachedVelocity = {};
 
 	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
 	// true);
@@ -51,10 +54,6 @@ Ball.prototype = Object.create(Phaser.Sprite.prototype);
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-
-	if (this.game.input.activePointer.isDown && this.body.velocity.y === 0) {
-		this.body.velocity.y = -200
-	}
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -81,6 +80,13 @@ Ball.prototype.hitPikachu = function() {
 
 };
 
+Ball.prototype.start = function() {
+	if (this.game.input.activePointer.isDown && this.x == this._x
+			&& this.y == this._y) {
+		this.body.velocity.y = -300
+	}
+};
+
 Ball.prototype.damage = function() {
 
 	this.health -= 1;
@@ -93,6 +99,24 @@ Ball.prototype.damage = function() {
 	}
 
 	return false;
+
+};
+
+Ball.prototype.pause = function(status) {
+
+	if (status == 'off') {
+		if (this.body) {
+			this.body.velocity.x = this.cachedVelocity.x;
+			this.body.velocity.y = this.cachedVelocity.y;
+		}
+	} else if (status == 'on') {
+		if (this.body) {
+			this.cachedVelocity.x = this.body.velocity.x;
+			this.cachedVelocity.y = this.body.velocity.y;
+			this.body.velocity.x = 0;
+			this.body.velocity.y = 0;
+		}
+	}
 
 };
 
@@ -531,7 +555,8 @@ var Pokemon = function(game, x, y, frame, ball) {
 	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball);
 
 	// initialize your prefab here
-	var x = x, y = y;
+	this._x = x;
+	this._y = y;
 	this.ball = ball;
 	this.health = 3;
 
@@ -555,12 +580,15 @@ var Pokemon = function(game, x, y, frame, ball) {
 	this.body.maxVelocity.x = 100;
 	this.body.maxVelocity.y = 50;
 
+	this.cachedVelocity = {};
+
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
 	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
 					+ 50, 100, this.body.velocity);
+
 	this.game.add.existing(this);
 
 	this._levelCompleteSignal = new Phaser.Signal;
@@ -615,6 +643,15 @@ Pokemon.prototype.hitBall = function() {
 
 };
 
+Pokemon.prototype.start = function() {
+	if (this.game.input.activePointer.isDown && this.x == this._x
+			&& this.y == this._y) {
+		this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
+						* 100)
+						+ 50, 100, this.body.velocity);
+	}
+};
+
 Pokemon.prototype.damage = function() {
 
 	this.health -= 1;
@@ -628,6 +665,24 @@ Pokemon.prototype.damage = function() {
 	}
 
 	return false;
+
+};
+
+Pokemon.prototype.pause = function(status) {
+
+	if (status == 'off') {
+		if (this.body) {
+			this.body.velocity.x = this.cachedVelocity.x;
+			this.body.velocity.y = this.cachedVelocity.y;
+		}
+	} else if (status == 'on') {
+		if (this.body) {
+			this.cachedVelocity.x = this.body.velocity.x;
+			this.cachedVelocity.y = this.body.velocity.y;
+			this.body.velocity.x = 0;
+			this.body.velocity.y = 0;
+		}
+	}
 
 };
 
@@ -828,6 +883,10 @@ Level.prototype = {
 		this.addGui();
 	},
 
+	update : function() {
+		this.ball.start();
+	},
+
 	render : function() {
 
 		this.game.debug.body(this.pikachu);
@@ -855,13 +914,15 @@ Level.prototype = {
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
 						- 45, "ballred", this.pikachu);
+
 	},
 	addPokemon : function() {
 
 		var frame = [0, 1, 2, 3, 4, 5];
 		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
 				this.ball);
-		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this)
+		this.pokemon.start();
+		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 
 	addGui : function() {
@@ -873,13 +934,16 @@ Level.prototype = {
 	},
 	pauseGame : function() {
 		this.gui.onPause();
+		this.ball.pause('on');
+		this.pokemon.pause('on');
 
 	},
 	resumeGame : function() {
 		this.gui.onResume();
+		this.ball.pause('off');
+		this.pokemon.pause('off');
 	},
 	shutdown : function() {
-
 		this.ball.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
