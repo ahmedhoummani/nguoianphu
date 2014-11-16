@@ -23,7 +23,7 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 + 30 + (30 * i), 30,
+		var life = this.lives.create(this.game.width / 2 + 50 + (30 * i), 30,
 				'pokemon', frame[0]);
 		life.scale.setTo(0.5, 0.5);
 		life.anchor.setTo(0.5, 0.5);

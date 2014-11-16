@@ -5,6 +5,8 @@ var SimpleButton = require('../prefabs/simplebutton');
 var Pikachu = require('../prefabs/pikachu');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
+var Ground = require('../prefabs/ground');
+var Pole = require('../prefabs/pole');
 
 'use strict';
 
@@ -29,7 +31,14 @@ Level.prototype = {
 
 		this.levels_num = 28;
 
-		this.game.add.text(50, 50, this._settings.levelNumber.toString());
+		// add ground
+		this.addGround();
+		
+		// add LevelText
+		this.addLevelText();
+
+		// add Pole
+		this.addPole();
 
 		// add pikachu
 		this.addPikachu();
@@ -53,6 +62,34 @@ Level.prototype = {
 		// this.game.debug.body(this.pokemon);
 	},
 
+	addLevelText : function() {
+
+		var titleStyle = {
+			font : "42px font",
+			fill : "#FBAF05",
+			align : "center",
+			stroke : "#FFFFFF",
+			strokeThickness : 8
+		};
+
+		var titleTexts = this._settings.levelNumber;
+
+		this.titleText = this.game.add.text(0, 0, titleTexts.toString(),
+				titleStyle);
+		this.titleText.anchor.set(.5, .5);
+		this.titleText.position.set(this.game.width / 2, 30);
+		this.titleText.setShadow(2, 2, "#FB1A05", 2);
+
+	},
+
+	levelFail : function() {
+		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.gui.onLevelFail();
+
+		this.pokemon.visible = !1;
+		this.pikachu.visible = !1;
+	},
+
 	levelComplete : function() {
 		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
 		this.saveLevelResult();
@@ -65,15 +102,25 @@ Level.prototype = {
 		window.localStorage.setItem(this._settings.levelNumber.toString(),
 				"true")
 	},
+	addGround : function() {
+		this.ground = new Ground(this.game, 0, this.game.height - 98,
+				this.game.width, 98);
 
+	},
+	addPole : function() {
+		this.pole = new Pole(this.game, 0, this.game.height - 31,
+				this.game.width, 31);
+
+	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
 				this.game.height - 80, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ball", this.pikachu,
+						- 45, "ball", this.pikachu, this.pole,
 				this._settings.levelNumber);
+		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
 	},
 	addPokemon : function() {

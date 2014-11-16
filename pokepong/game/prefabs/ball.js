@@ -1,12 +1,13 @@
 'use strict';
 
-var Ball = function(game, x, y, ball, pikachu, level) {
-	Phaser.Sprite.call(this, game, x, y, ball, pikachu, level);
+var Ball = function(game, x, y, ball, pikachu, pole, level) {
+	Phaser.Sprite.call(this, game, x, y, ball, pikachu, pole, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
+	this.pole = pole;
 
 	this.level = level;
 	if (this.level > 3) {
@@ -20,7 +21,7 @@ var Ball = function(game, x, y, ball, pikachu, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 30 - (30 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
 				'ball');
 		life.scale.setTo(0.5, 0.5);
 		life.anchor.setTo(0.5, 0.5);
@@ -47,6 +48,16 @@ var Ball = function(game, x, y, ball, pikachu, level) {
 
 	this.game.add.existing(this);
 
+	this._levelFailSignal = new Phaser.Signal;
+
+	Object.defineProperty(this, "levelFailSignal", {
+				get : function() {
+					return this._levelFailSignal
+				},
+				enumerable : !0,
+				configurable : !0
+			})
+
 };
 
 Ball.prototype = Object.create(Phaser.Sprite.prototype);
@@ -56,12 +67,11 @@ Ball.prototype.update = function() {
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
+	this.game.physics.arcade.collide(this, this.pole, this.damage, null, this);
 
 };
 
 Ball.prototype.hitPikachu = function() {
-
-	this.damage();
 
 	var diff = 0;
 
@@ -98,6 +108,7 @@ Ball.prototype.damage = function() {
 	}
 
 	if (this.health <= 0) {
+		this._levelFailSignal.dispatch();
 		this.alive = false;
 		this.kill();
 
