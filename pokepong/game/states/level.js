@@ -72,7 +72,7 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ballred", this.pikachu,
+						- 45, "ball", this.pikachu,
 				this._settings.levelNumber);
 
 	},

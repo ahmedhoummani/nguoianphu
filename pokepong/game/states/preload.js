@@ -69,7 +69,7 @@ Preload.prototype = {
 				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 
 		// Ball
-		this.load.image("ballred", "assets/graphics/ballred40.png");
+		this.load.image("ball", "assets/graphics/ballred40.png");
 		this.load.image("ballblue", "assets/graphics/ballblue40.png");
 		
 		// Pokemon

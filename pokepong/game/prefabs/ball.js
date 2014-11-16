@@ -7,8 +7,24 @@ var Ball = function(game, x, y, ball, pikachu, level) {
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
+
 	this.level = level;
+	if (this.level > 3) {
+		this.level *= .5;
+	} else {
+		this.level = 2;
+	}
+
 	this.health = 3;
+
+	this.lives = this.game.add.group();
+	for (var i = 0; i < this.health; i++) {
+
+		var life = this.lives.create(this.game.width / 2 - 30 - (30 * i), 30,
+				'ball');
+		life.scale.setTo(0.5, 0.5);
+		life.anchor.setTo(0.5, 0.5);
+	}
 
 	this.game.physics.arcade.enableBody(this);
 
@@ -45,6 +61,8 @@ Ball.prototype.update = function() {
 
 Ball.prototype.hitPikachu = function() {
 
+	this.damage();
+
 	var diff = 0;
 
 	if (this.pikachu.x > this.x) {
@@ -73,6 +91,11 @@ Ball.prototype.start = function() {
 Ball.prototype.damage = function() {
 
 	this.health -= 1;
+
+	var life = this.lives.getFirstAlive();
+	if (life) {
+		life.kill();
+	}
 
 	if (this.health <= 0) {
 		this.alive = false;

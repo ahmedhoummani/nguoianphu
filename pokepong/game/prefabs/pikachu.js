@@ -6,6 +6,11 @@ var Pikachu = function(game, x, y, level) {
 	// initialize your prefab here
 
 	this.level = level;
+	if (this.level > 3) {
+		this.level *= .5;
+	} else {
+		this.level = 2;
+	}
 
 	this.game.physics.arcade.enableBody(this);
 
