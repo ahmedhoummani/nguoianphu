@@ -19,6 +19,8 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	}
 
 	this.health = 3;
+	this.ghostUntil = 1;
+	this.ghostUntilTimer = 5000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -44,7 +46,9 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	this.notPause = !0;
 
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
+	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
 	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
+	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
 
 	this.game.add.existing(this);
 
@@ -69,19 +73,34 @@ Pokemon.prototype.constructor = Pokemon;
 
 Pokemon.prototype.update = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		if (this.body.velocity.x < 0) {
+
+			this.animations.play('ghostleft');
+
+		} else if (this.body.velocity.x > 0) {
+
+			this.animations.play('ghostright');
+		}
+	} else
+
 	if (this.body.velocity.x < 0) {
 
 		this.animations.play('left');
+		this.ghostUntil = 1;
 
 	} else if (this.body.velocity.x > 0) {
 
 		this.animations.play('right');
+		this.ghostUntil = 1;
 	}
 
 	if (this.notPause && this.y > (this.game.height - 200)) {
 
+		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(Math.random() * 10 * this.level);
+		this.body.velocity.y = -Math.floor(Math.random() * 100 * this.level);
+		this.body.velocity.x = Math.floor(Math.random() * 100 * this.level);
 
 	}
 
@@ -95,9 +114,15 @@ Pokemon.prototype.update = function() {
 
 Pokemon.prototype.hitBall = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		return;
+	}
+
 	this.damage();
 	var life = this.lives.getFirstAlive();
 	if (life) {
+		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
+		// this.play('ghost');
 		life.kill();
 	}
 

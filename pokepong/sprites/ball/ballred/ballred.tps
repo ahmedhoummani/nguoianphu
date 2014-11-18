@@ -22,7 +22,7 @@
         <key>dataFormat</key>
         <string>json-array</string>
         <key>textureFileName</key>
-        <filename>worm.png</filename>
+        <filename>ballred.png</filename>
         <key>flipPVR</key>
         <false/>
         <key>ditherType</key>
@@ -87,7 +87,7 @@
             <key>basic</key>
             <struct type="AlgorithmBasicSettings">
                 <key>sortBy</key>
-                <enum type="AlgorithmBasicSettings::SortBy">Name</enum>
+                <enum type="AlgorithmBasicSettings::SortBy">Best</enum>
                 <key>order</key>
                 <enum type="AlgorithmBasicSettings::Order">Ascending</enum>
             </struct>
@@ -99,7 +99,7 @@
             <key>packageName</key>
             <string>Texture</string>
             <key>javaFileName</key>
-            <filename>worm.java</filename>
+            <filename>ballred.java</filename>
             <key>wrap</key>
             <struct type="AndEngineWrap">
                 <key>s</key>
@@ -111,7 +111,7 @@
             <enum type="AndEngine::MagFilter">MagLinear</enum>
         </struct>
         <key>dataFileName</key>
-        <filename>worm.json</filename>
+        <filename>ballred.json</filename>
         <key>mainExtension</key>
         <string></string>
         <key>forceIdenticalLayout</key>
@@ -141,12 +141,11 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>1.png</filename>
-            <filename>2.png</filename>
-            <filename>3.png</filename>
-            <filename>4.png</filename>
-            <filename>5.png</filename>
-            <filename>6.png</filename>
+            <filename>01.png</filename>
+            <filename>02.png</filename>
+            <filename>03.png</filename>
+            <filename>04.png</filename>
+            <filename>05.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

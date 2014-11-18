@@ -18,8 +18,8 @@ window.onload = function () {
 },{"./states/boot":16,"./states/level":17,"./states/levelsmenu":18,"./states/menu":19,"./states/preload":20}],2:[function(require,module,exports){
 'use strict';
 
-var Ball = function(game, x, y, ball, pikachu, pole, level) {
-	Phaser.Sprite.call(this, game, x, y, ball, pikachu, pole, level);
+var Ball = function(game, x, y, pikachu, pole, level) {
+	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, pole, level);
 
 	// initialize your prefab here
 	this._x = x;
@@ -34,35 +34,35 @@ var Ball = function(game, x, y, ball, pikachu, pole, level) {
 		this.level = 2;
 	}
 
-	this.health = 3;
-
-	this.lives = this.game.add.group();
-	for (var i = 0; i < this.health; i++) {
-
-		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
-				'ball');
-		life.scale.setTo(0.5, 0.5);
-		life.anchor.setTo(0.5, 0.5);
-	}
-
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(42, 42, 0, 0);
+	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
+
 	this.body.maxVelocity.x = 100 * (this.level);
 	this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 
-	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
-	// true);
-	// this.animations.add('right', ['run1.png', 'run2.png', 'run3.png',
-	// 'run4.png'], 10, true);
-	// this.animations.add('left',
-	// ['run5.png', 'run6.png', 'run7.png', 'run8.png'], 10, true);
-	// this.animations.play('stand');
+	this.animations
+			.add('start', ['01.png', '02.png', '03.png', '04.png'], 2, true);
+	this.animations.add('ghost', ['05.png', '01.png', '05.png'], 2, true);
+	this.animations.play('start');
+
+	this.health = 3;
+	this.ghostUntil = 1;
+	this.ghostUntilTimer = 2000;
+
+	this.lives = this.game.add.group();
+	for (var i = 0; i < this.health; i++) {
+
+		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
+				'ballred', '01.png');
+		life.scale.setTo(0.5, 0.5);
+		life.anchor.setTo(0.5, 0.5);
+	}
 
 	this.game.add.existing(this);
 
@@ -82,6 +82,14 @@ Ball.prototype = Object.create(Phaser.Sprite.prototype);
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
+
+	if (this.ghostUntil > this.game.time.now) {
+		this.animations.play('ghost');
+
+	} else {
+		this.animations.play('start');
+		this.ghostUntil = 1;
+	}
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -118,10 +126,16 @@ Ball.prototype.start = function() {
 
 Ball.prototype.damage = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		return;
+	}
+
 	this.health -= 1;
 
 	var life = this.lives.getFirstAlive();
 	if (life) {
+		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
+		// this.play('ghost');
 		life.kill();
 	}
 
@@ -728,13 +742,13 @@ Pikachu.prototype.constructor = Pikachu;
 Pikachu.prototype.update = function() {
 
 	if (this.game.input.activePointer.isDown
-			&& this.game.physics.arcade.distanceToPointer(this) > 15
+			&& this.game.physics.arcade.distanceToPointer(this) > 20
 			&& this.notPause) {
 
-		if (this.x < this.game.input.x) {
+		if (this.x - this.game.input.x <  10) {
 			this.animations.play('right');
 			this.body.velocity.x = 100 * this.level;;
-		} else if (this.x > this.game.input.x) {
+		} else if (this.x - this.game.input.x > 10) {
 			this.animations.play('left');
 			this.body.velocity.x = -100 * this.level;
 		}
@@ -770,6 +784,8 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	}
 
 	this.health = 3;
+	this.ghostUntil = 1;
+	this.ghostUntilTimer = 5000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -795,7 +811,9 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	this.notPause = !0;
 
 	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
+	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
 	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
+	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
 
 	this.game.add.existing(this);
 
@@ -820,19 +838,34 @@ Pokemon.prototype.constructor = Pokemon;
 
 Pokemon.prototype.update = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		if (this.body.velocity.x < 0) {
+
+			this.animations.play('ghostleft');
+
+		} else if (this.body.velocity.x > 0) {
+
+			this.animations.play('ghostright');
+		}
+	} else
+
 	if (this.body.velocity.x < 0) {
 
 		this.animations.play('left');
+		this.ghostUntil = 1;
 
 	} else if (this.body.velocity.x > 0) {
 
 		this.animations.play('right');
+		this.ghostUntil = 1;
 	}
 
 	if (this.notPause && this.y > (this.game.height - 200)) {
 
+		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(Math.random() * 10 * this.level);
+		this.body.velocity.y = -Math.floor(Math.random() * 100 * this.level);
+		this.body.velocity.x = Math.floor(Math.random() * 100 * this.level);
 
 	}
 
@@ -846,9 +879,15 @@ Pokemon.prototype.update = function() {
 
 Pokemon.prototype.hitBall = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		return;
+	}
+
 	this.damage();
 	var life = this.lives.getFirstAlive();
 	if (life) {
+		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
+		// this.play('ghost');
 		life.kill();
 	}
 
@@ -1196,7 +1235,7 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ball", this.pikachu, this.pole,
+						- 45, this.pikachu, this.pole,
 				this._settings.levelNumber);
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
@@ -1662,7 +1701,7 @@ Preload.prototype = {
 
 		// ground
 		this.load.image("ground", "assets/graphics/border1.png");
-		
+
 		// pole
 		this.load.image("pole", "assets/graphics/pole.png");
 
@@ -1679,11 +1718,12 @@ Preload.prototype = {
 
 		// Ball
 		this.load.image("ball", "assets/graphics/ballred40.png");
-		this.load.image("ballblue", "assets/graphics/ballblue40.png");
+		this.load.atlas("ballred", "assets/graphics/ballred.png",
+				"assets/graphics/ballred.json");
 
 		// Pokemon
-		this.load.atlas("pokemon", "assets/graphics/worm.png",
-				"assets/graphics/worm.json");
+		this.load.atlas("pokemon", "assets/graphics/weedle.png",
+				"assets/graphics/weedle.json");
 
 		// Sound
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

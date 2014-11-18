@@ -41,13 +41,13 @@ Pikachu.prototype.constructor = Pikachu;
 Pikachu.prototype.update = function() {
 
 	if (this.game.input.activePointer.isDown
-			&& this.game.physics.arcade.distanceToPointer(this) > 15
+			&& this.game.physics.arcade.distanceToPointer(this) > 20
 			&& this.notPause) {
 
-		if (this.x < this.game.input.x) {
+		if (this.x - this.game.input.x <  10) {
 			this.animations.play('right');
 			this.body.velocity.x = 100 * this.level;;
-		} else if (this.x > this.game.input.x) {
+		} else if (this.x - this.game.input.x > 10) {
 			this.animations.play('left');
 			this.body.velocity.x = -100 * this.level;
 		}
