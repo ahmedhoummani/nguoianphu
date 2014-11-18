@@ -79,6 +79,9 @@ Preload.prototype = {
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 
+		// Pulse explosion
+		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
+
 		// Pokemon
 		this.load.atlas("pokemon", "assets/graphics/weedle.png",
 				"assets/graphics/weedle.json");

@@ -33,7 +33,7 @@ Level.prototype = {
 
 		// add ground
 		this.addGround();
-		
+
 		// add LevelText
 		this.addLevelText();
 
@@ -127,7 +127,7 @@ Level.prototype = {
 
 		var frame = [0, 1, 2, 3, 4, 5];
 		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
-				this.pikachu, this.ball, this._settings.levelNumber);
+				this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 

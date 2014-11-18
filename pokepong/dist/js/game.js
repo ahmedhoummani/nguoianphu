@@ -46,8 +46,8 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.cachedVelocity = {};
 
-	this.animations
-			.add('start', ['01.png', '02.png', '03.png', '04.png'], 2, true);
+	this.animations.add('start', ['01.png', '02.png', '03.png', '04.png'], 2,
+			true);
 	this.animations.add('ghost', ['05.png', '01.png', '05.png'], 2, true);
 	this.animations.play('start');
 
@@ -74,7 +74,17 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 				},
 				enumerable : !0,
 				configurable : !0
-			})
+			});
+
+	this.explosionPool = this.game.add.group();
+	this.explosionPool.enableBody = true;
+	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.setAll('anchor.x', 0.5);
+	this.explosionPool.setAll('anchor.y', 0.5);
+	this.explosionPool.forEach(function(explosion) {
+				explosion.animations.add('boom');
+			});
 
 };
 
@@ -131,7 +141,7 @@ Ball.prototype.damage = function() {
 	}
 
 	this.health -= 1;
-
+	this.explode();
 	var life = this.lives.getFirstAlive();
 	if (life) {
 		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
@@ -166,6 +176,21 @@ Ball.prototype.pause = function(status) {
 			this.body.velocity.y = 0;
 		}
 	}
+
+};
+
+Ball.prototype.explode = function() {
+
+	if (this.explosionPool.countDead() === 0) {
+		return;
+	}
+
+	var explosion = this.explosionPool.getFirstExists(false);
+	explosion.reset(this.x, this.y);
+	explosion.play('boom', 15, false, true);
+	// add the original sprite's velocity to the explosion
+	explosion.body.velocity.x = this.body.velocity.x;
+	explosion.body.velocity.y = this.body.velocity.y;
 
 };
 
@@ -765,15 +790,13 @@ module.exports = Pikachu;
 },{}],12:[function(require,module,exports){
 'use strict';
 
-var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
-	Phaser.Sprite
-			.call(this, game, x, y, 'pokemon', frame, pikachu, ball, level);
+var Pokemon = function(game, x, y, frame, ball, level) {
+	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 
-	this.pikachu = pikachu;
 	this.ball = ball;
 
 	this.level = level;
@@ -829,7 +852,17 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 				},
 				enumerable : !0,
 				configurable : !0
-			})
+			});
+
+	this.explosionPool = this.game.add.group();
+	this.explosionPool.enableBody = true;
+	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.setAll('anchor.x', 0.5);
+	this.explosionPool.setAll('anchor.y', 0.5);
+	this.explosionPool.forEach(function(explosion) {
+				explosion.animations.add('boom');
+			});
 
 };
 
@@ -884,6 +917,7 @@ Pokemon.prototype.hitBall = function() {
 	}
 
 	this.damage();
+	this.explode();
 	var life = this.lives.getFirstAlive();
 	if (life) {
 		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
@@ -926,6 +960,21 @@ Pokemon.prototype.pause = function(status) {
 			this.notPause = !1;
 		}
 	}
+
+};
+
+Pokemon.prototype.explode = function() {
+
+	if (this.explosionPool.countDead() === 0) {
+		return;
+	}
+
+	var explosion = this.explosionPool.getFirstExists(false);
+	explosion.reset(this.x, this.y);
+	explosion.play('boom', 15, false, true);
+	// add the original sprite's velocity to the explosion
+	explosion.body.velocity.x = this.body.velocity.x;
+	explosion.body.velocity.y = this.body.velocity.y;
 
 };
 
@@ -1150,7 +1199,7 @@ Level.prototype = {
 
 		// add ground
 		this.addGround();
-		
+
 		// add LevelText
 		this.addLevelText();
 
@@ -1244,7 +1293,7 @@ Level.prototype = {
 
 		var frame = [0, 1, 2, 3, 4, 5];
 		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
-				this.pikachu, this.ball, this._settings.levelNumber);
+				this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 
@@ -1720,6 +1769,9 @@ Preload.prototype = {
 		this.load.image("ball", "assets/graphics/ballred40.png");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
+
+		// Pulse explosion
+		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
 
 		// Pokemon
 		this.load.atlas("pokemon", "assets/graphics/weedle.png",

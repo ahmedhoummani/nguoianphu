@@ -1,14 +1,12 @@
 'use strict';
 
-var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
-	Phaser.Sprite
-			.call(this, game, x, y, 'pokemon', frame, pikachu, ball, level);
+var Pokemon = function(game, x, y, frame, ball, level) {
+	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 
-	this.pikachu = pikachu;
 	this.ball = ball;
 
 	this.level = level;
@@ -64,7 +62,17 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 				},
 				enumerable : !0,
 				configurable : !0
-			})
+			});
+
+	this.explosionPool = this.game.add.group();
+	this.explosionPool.enableBody = true;
+	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.setAll('anchor.x', 0.5);
+	this.explosionPool.setAll('anchor.y', 0.5);
+	this.explosionPool.forEach(function(explosion) {
+				explosion.animations.add('boom');
+			});
 
 };
 
@@ -119,6 +127,7 @@ Pokemon.prototype.hitBall = function() {
 	}
 
 	this.damage();
+	this.explode();
 	var life = this.lives.getFirstAlive();
 	if (life) {
 		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
@@ -161,6 +170,21 @@ Pokemon.prototype.pause = function(status) {
 			this.notPause = !1;
 		}
 	}
+
+};
+
+Pokemon.prototype.explode = function() {
+
+	if (this.explosionPool.countDead() === 0) {
+		return;
+	}
+
+	var explosion = this.explosionPool.getFirstExists(false);
+	explosion.reset(this.x, this.y);
+	explosion.play('boom', 15, false, true);
+	// add the original sprite's velocity to the explosion
+	explosion.body.velocity.x = this.body.velocity.x;
+	explosion.body.velocity.y = this.body.velocity.y;
 
 };
 
