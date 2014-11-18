@@ -125,8 +125,7 @@ Level.prototype = {
 	},
 	addPokemon : function() {
 
-		var frame = [0, 1, 2, 3, 4, 5];
-		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
 				this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},

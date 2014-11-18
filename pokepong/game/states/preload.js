@@ -83,7 +83,7 @@ Preload.prototype = {
 		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
 
 		// Pokemon
-		this.load.atlas("pokemon", "assets/graphics/weedle.png",
+		this.load.atlas("weedle", "assets/graphics/weedle.png",
 				"assets/graphics/weedle.json");
 
 		// Sound

@@ -60,7 +60,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
 				'ballred', '01.png');
-		life.scale.setTo(0.5, 0.5);
+		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
@@ -790,8 +790,34 @@ module.exports = Pikachu;
 },{}],12:[function(require,module,exports){
 'use strict';
 
-var Pokemon = function(game, x, y, frame, ball, level) {
-	Phaser.Sprite.call(this, game, x, y, 'pokemon', frame, ball, level);
+var Pokemon = function(game, x, y, ball, level) {
+
+	var my_pokemon;
+
+	switch (level) {
+		case 1 :
+			my_pokemon = 'weedle';
+			break;
+		case 2:
+			my_pokemon = 'weedle';
+			break;
+		case 3 :
+			my_pokemon = 'weedle';
+			break;
+		case 4 :
+			my_pokemon = 'weedle';
+			break;
+		case 5 :
+			my_pokemon = 'weedle';
+			break;
+		case 6 :
+			my_pokemon = 'weedle';
+			break;
+		default :
+			my_pokemon = 'weedle';
+	}
+
+	Phaser.Sprite.call(this, game, x, y, my_pokemon, ball, level);
 
 	// initialize your prefab here
 	this._x = x;
@@ -809,13 +835,14 @@ var Pokemon = function(game, x, y, frame, ball, level) {
 	this.health = 3;
 	this.ghostUntil = 1;
 	this.ghostUntilTimer = 5000;
+	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
 		var life = this.lives.create(this.game.width / 2 + 50 + (30 * i), 30,
-				'pokemon', frame[0]);
-		life.scale.setTo(0.5, 0.5);
+				my_pokemon, '01.png');
+		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
@@ -827,22 +854,22 @@ var Pokemon = function(game, x, y, frame, ball, level) {
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 100 * this.level;
-	this.body.maxVelocity.y = 50 * this.level;
+	this.body.maxVelocity.x = 150 * this.level;
+	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
 
-	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
+	this.animations.add('left', ['01.png', '02.png', '03.png'], 10, true);
 	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
-	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
+	this.animations.add('right', ['04.png', '05.png', '06.png'], 10, true);
 	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
 
 	this.game.add.existing(this);
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
-					+ 50, 100 * this.level, this.body.velocity);
+					+ 50, 150 * this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -1291,8 +1318,7 @@ Level.prototype = {
 	},
 	addPokemon : function() {
 
-		var frame = [0, 1, 2, 3, 4, 5];
-		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
 				this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
@@ -1774,7 +1800,7 @@ Preload.prototype = {
 		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
 
 		// Pokemon
-		this.load.atlas("pokemon", "assets/graphics/weedle.png",
+		this.load.atlas("weedle", "assets/graphics/weedle.png",
 				"assets/graphics/weedle.json");
 
 		// Sound

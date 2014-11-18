@@ -42,7 +42,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
 				'ballred', '01.png');
-		life.scale.setTo(0.5, 0.5);
+		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
