@@ -756,7 +756,7 @@ Levelstartboard.prototype.initText = function(b) {
 		stroke : "#FFFFFF",
 		strokeThickness : 12
 	}, d = new Phaser.Text(this.game, this.game.width / 2, this.game.height / 2
-					- 100, b, c);
+					+ 100, b, c);
 	d.anchor.set(.5, .5);
 	d.setShadow(2, 2, "#FB1A05", 2);
 	this.add(d);
