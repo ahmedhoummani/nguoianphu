@@ -6,11 +6,11 @@ window.onload = function () {
   var game = new Phaser.Game(640, 832, Phaser.CANVAS, 'init');
 
   // Game States
-  game.state.add('boot', require('./states/boot'), !1);
+  game.state.add('boot', require('./states/boot'));
   game.state.add('level', require('./states/level'));
   game.state.add('levelsmenu', require('./states/levelsmenu'));
   game.state.add('menu', require('./states/menu'));
-  game.state.add('preload', require('./states/preload'), !1);
+  game.state.add('preload', require('./states/preload'));
   
 
   game.state.start('boot');
@@ -501,7 +501,7 @@ Boot.prototype = {
 		this.setupStage();
 		this.detectWeakDevice();
 		this.game.input.maxPointers = 1;
-		this.game.state.start('preload',  !0, !1);
+		this.game.state.start('preload');
 	},
 	setupStage : function() {
 		var b = this.game.scale;
