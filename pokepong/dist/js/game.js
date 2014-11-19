@@ -45,6 +45,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.body.maxVelocity.y = 200 * (this.level);
 
 	this.cachedVelocity = {};
+	this.notPause = !0;
 
 	this.animations.add('start', ['01.png', '02.png', '03.png', '04.png'], 2,
 			true);
@@ -58,7 +59,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 100 - (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 30,
 				'ballred', '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
@@ -100,6 +101,14 @@ Ball.prototype.update = function() {
 		this.animations.play('start');
 		this.ghostUntil = 1;
 	}
+
+	// if (Math.abs(this.body.velocity.y) < 50 && this.notPause) {
+	// if (this.body.velocity.y > 0) {
+	// this.body.velocity.y += 100;
+	// } else {
+	// this.body.velocity.y -= -100;
+	// }
+	//	}
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -164,11 +173,13 @@ Ball.prototype.damage = function() {
 Ball.prototype.pause = function(status) {
 
 	if (status == 'off') {
+		this.notPause = !0;
 		if (this.body) {
 			this.body.velocity.x = this.cachedVelocity.x;
 			this.body.velocity.y = this.cachedVelocity.y;
 		}
 	} else if (status == 'on') {
+		this.notPause = !1;
 		if (this.body) {
 			this.cachedVelocity.x = this.body.velocity.x;
 			this.cachedVelocity.y = this.body.velocity.y;
@@ -750,27 +761,29 @@ Levelstartboard.prototype.addBackGround = function() {
 	a.endFill()
 };
 Levelstartboard.prototype.initPokemon = function(key, name, _icon) {
-	var icon = new Phaser.Image(this.game, this.game.width / 2,
-			this.game.height / 2 - 100, key, _icon), style = {
+	this.icon = new Phaser.Image(this.game, this.game.width / 2,
+			this.game.height / 2 - 100, key, _icon);
+	this.style = {
 		font : "76px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
 		strokeThickness : 12
-	}, text = new Phaser.Text(this.game, this.game.width / 2, this.game.height
-					/ 2 + 100, name, style);
-	icon.anchor.set(.5, .5)
-	text.anchor.set(.5, .5);
-	text.setShadow(2, 2, "#FB1A05", 2);
-	this.add(icon);
-	this.add(text);
+	};
+	this.text = new Phaser.Text(this.game, this.game.width / 2,
+			this.game.height / 2 + 100, name, this.style);
+	this.icon.anchor.set(.5, .5)
+	this.text.anchor.set(.5, .5);
+	this.text.setShadow(2, 2, "#FB1A05", 2);
+	this.add(this.icon);
+	this.add(this.text);
 
 };
 Levelstartboard.prototype.update = function() {
 
 	if (this.game.input.activePointer.isDown) {
-
 		this.hide();
+		this.destroy();
 	}
 
 };
@@ -806,6 +819,12 @@ Levelstartboard.prototype.hide = function() {
 Levelstartboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
+};
+
+Levelstartboard.prototype.destroy = function() {
+	this.board.destroy();
+	this.icon.destroy();
+	this.text.destroy();
 };
 
 module.exports = Levelstartboard;
@@ -1040,13 +1059,13 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	this.body.immovable = true;
+	// this.body.immovable = true;
 	this.body.maxVelocity.x = 150 * this.level;
 	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
-	
+
 	this.animations.add('left', this._level2pokemon.frame_left, 10, true);
 	this.animations.add('ghostleft', this._level2pokemon.frame_ghostleft, 10,
 			true);

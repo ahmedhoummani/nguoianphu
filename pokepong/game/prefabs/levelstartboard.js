@@ -36,27 +36,29 @@ Levelstartboard.prototype.addBackGround = function() {
 	a.endFill()
 };
 Levelstartboard.prototype.initPokemon = function(key, name, _icon) {
-	var icon = new Phaser.Image(this.game, this.game.width / 2,
-			this.game.height / 2 - 100, key, _icon), style = {
+	this.icon = new Phaser.Image(this.game, this.game.width / 2,
+			this.game.height / 2 - 100, key, _icon);
+	this.style = {
 		font : "76px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
 		strokeThickness : 12
-	}, text = new Phaser.Text(this.game, this.game.width / 2, this.game.height
-					/ 2 + 100, name, style);
-	icon.anchor.set(.5, .5)
-	text.anchor.set(.5, .5);
-	text.setShadow(2, 2, "#FB1A05", 2);
-	this.add(icon);
-	this.add(text);
+	};
+	this.text = new Phaser.Text(this.game, this.game.width / 2,
+			this.game.height / 2 + 100, name, this.style);
+	this.icon.anchor.set(.5, .5)
+	this.text.anchor.set(.5, .5);
+	this.text.setShadow(2, 2, "#FB1A05", 2);
+	this.add(this.icon);
+	this.add(this.text);
 
 };
 Levelstartboard.prototype.update = function() {
 
 	if (this.game.input.activePointer.isDown) {
-
 		this.hide();
+		this.destroy();
 	}
 
 };
@@ -92,6 +94,12 @@ Levelstartboard.prototype.hide = function() {
 Levelstartboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
+};
+
+Levelstartboard.prototype.destroy = function() {
+	this.board.destroy();
+	this.icon.destroy();
+	this.text.destroy();
 };
 
 module.exports = Levelstartboard;

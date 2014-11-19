@@ -43,13 +43,13 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	this.body.immovable = true;
+	// this.body.immovable = true;
 	this.body.maxVelocity.x = 150 * this.level;
 	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
-	
+
 	this.animations.add('left', this._level2pokemon.frame_left, 10, true);
 	this.animations.add('ghostleft', this._level2pokemon.frame_ghostleft, 10,
 			true);
