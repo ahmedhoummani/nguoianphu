@@ -3,7 +3,7 @@
 
 //global variables
 window.onload = function () {
-  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'init');
+  var game = new Phaser.Game(640, 832, Phaser.CANVAS, 'init');
 
   // Game States
   game.state.add('boot', require('./states/boot'));
@@ -481,6 +481,17 @@ function Boot() {
 }
 
 Boot.prototype = {
+
+	init : function() {
+			this.game.device.android
+					&& !this.game.device.chrome
+					&& (this.game.canvas.parentElement.style.overflow = "visible");
+			var a = {
+				font : "46px"
+			}, b = this.game.add.text(0, 0, "0", a);
+			b.destroy()
+	},
+
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
 		this.load.image('LoadingBar_Inner', 'assets/LoadingBar_Inner.png');
@@ -1050,9 +1061,11 @@ Preload.prototype = {
 				"assets/graphics/panda.json");
 
 		// Sound
+		this.game.device.webAudio && (
 		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-						"assets/audio/MainLoop.m4a"], !0);
+						"assets/audio/MainLoop.m4a"], !0),
 		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
+		)
 
 	},
 	loadUpdate : function() {
