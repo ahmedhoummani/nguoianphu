@@ -83,9 +83,11 @@ Preload.prototype = {
 				"assets/graphics/worm.json");
 
 		// Sound
-		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-						"assets/audio/MainLoop.m4a"], !0);
-		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
+		this.game.device.webAudio && (
+			this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+						"assets/audio/MainLoop.m4a"], !0),
+			this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
+		)
 
 	},
 	loadUpdate : function() {
