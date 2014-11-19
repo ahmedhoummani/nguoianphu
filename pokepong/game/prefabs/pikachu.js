@@ -46,10 +46,10 @@ Pikachu.prototype.update = function() {
 
 		if (this.x - this.game.input.x <  10) {
 			this.animations.play('right');
-			this.body.velocity.x = 100 * this.level;;
+			this.body.velocity.x = 200 * this.level;;
 		} else if (this.x - this.game.input.x > 10) {
 			this.animations.play('left');
-			this.body.velocity.x = -100 * this.level;
+			this.body.velocity.x = -200 * this.level;
 		}
 	} else {
 		this.animations.play('stand');

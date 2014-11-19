@@ -2,13 +2,21 @@
 
 var Pokemon = function(game, x, y, ball, level) {
 
-	var my_pokemon;
+	var my_pokemon,
+		frame_left = [], 
+		frame_ghostleft = [],
+		frame_right = [],
+		frame_ghostright = [];
 
 	switch (level) {
 		case 1 :
-			my_pokemon = 'weedle';
+			my_pokemon = 'weedle',
+			frame_left = ['01.png', '02.png', '03.png'], 
+			frame_ghostleft = ['07.png', '08.png', '09.png'],
+			frame_right = ['04.png', '05.png', '06.png'],
+			frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
-		case 2:
+		case 2 :
 			my_pokemon = 'weedle';
 			break;
 		case 3 :
@@ -70,10 +78,10 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.cachedVelocity = {};
 	this.notPause = !0;
 
-	this.animations.add('left', ['01.png', '02.png', '03.png'], 10, true);
-	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
-	this.animations.add('right', ['04.png', '05.png', '06.png'], 10, true);
-	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
+	this.animations.add('left', frame_left, 10, true);
+	this.animations.add('ghostleft', frame_ghostleft, 10, true);
+	this.animations.add('right', frame_right, 10, true);
+	this.animations.add('ghostright', frame_ghostright, 10, true);
 
 	this.game.add.existing(this);
 

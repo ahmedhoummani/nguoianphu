@@ -41,8 +41,8 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
 
-	this.body.maxVelocity.x = 100 * (this.level);
-	this.body.maxVelocity.y = 100 * (this.level);
+	this.body.maxVelocity.x = 200 * (this.level);
+	this.body.maxVelocity.y = 200 * (this.level);
 
 	this.cachedVelocity = {};
 
@@ -130,7 +130,7 @@ Ball.prototype.hitPikachu = function() {
 Ball.prototype.start = function() {
 	if (this.game.input.activePointer.isDown && this.x == this._x
 			&& this.y == this._y) {
-		this.body.velocity.y = -100 * this.level;
+		this.body.velocity.y = -200 * this.level;
 	}
 };
 
@@ -772,10 +772,10 @@ Pikachu.prototype.update = function() {
 
 		if (this.x - this.game.input.x <  10) {
 			this.animations.play('right');
-			this.body.velocity.x = 100 * this.level;;
+			this.body.velocity.x = 200 * this.level;;
 		} else if (this.x - this.game.input.x > 10) {
 			this.animations.play('left');
-			this.body.velocity.x = -100 * this.level;
+			this.body.velocity.x = -200 * this.level;
 		}
 	} else {
 		this.animations.play('stand');
@@ -792,13 +792,21 @@ module.exports = Pikachu;
 
 var Pokemon = function(game, x, y, ball, level) {
 
-	var my_pokemon;
+	var my_pokemon,
+		frame_left = [], 
+		frame_ghostleft = [],
+		frame_right = [],
+		frame_ghostright = [];
 
 	switch (level) {
 		case 1 :
-			my_pokemon = 'weedle';
+			my_pokemon = 'weedle',
+			frame_left = ['01.png', '02.png', '03.png'], 
+			frame_ghostleft = ['07.png', '08.png', '09.png'],
+			frame_right = ['04.png', '05.png', '06.png'],
+			frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
-		case 2:
+		case 2 :
 			my_pokemon = 'weedle';
 			break;
 		case 3 :
@@ -860,10 +868,10 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.cachedVelocity = {};
 	this.notPause = !0;
 
-	this.animations.add('left', ['01.png', '02.png', '03.png'], 10, true);
-	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
-	this.animations.add('right', ['04.png', '05.png', '06.png'], 10, true);
-	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
+	this.animations.add('left', frame_left, 10, true);
+	this.animations.add('ghostleft', frame_ghostleft, 10, true);
+	this.animations.add('right', frame_right, 10, true);
+	this.animations.add('ghostright', frame_ghostright, 10, true);
 
 	this.game.add.existing(this);
 

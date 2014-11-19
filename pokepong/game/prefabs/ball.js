@@ -23,8 +23,8 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
 
-	this.body.maxVelocity.x = 100 * (this.level);
-	this.body.maxVelocity.y = 100 * (this.level);
+	this.body.maxVelocity.x = 200 * (this.level);
+	this.body.maxVelocity.y = 200 * (this.level);
 
 	this.cachedVelocity = {};
 
@@ -112,7 +112,7 @@ Ball.prototype.hitPikachu = function() {
 Ball.prototype.start = function() {
 	if (this.game.input.activePointer.isDown && this.x == this._x
 			&& this.y == this._y) {
-		this.body.velocity.y = -100 * this.level;
+		this.body.velocity.y = -200 * this.level;
 	}
 };
 
