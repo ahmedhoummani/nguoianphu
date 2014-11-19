@@ -141,30 +141,25 @@
         </struct>
         <key>fileList</key>
         <array>
-            <filename>frame-01.gif</filename>
-            <filename>frame-02.gif</filename>
-            <filename>frame-03.gif</filename>
-            <filename>frame-04.gif</filename>
-            <filename>frame-05.gif</filename>
-            <filename>frame-06.gif</filename>
-            <filename>frame-07.gif</filename>
-            <filename>frame-08.gif</filename>
-            <filename>frame-09.gif</filename>
-            <filename>frame-10.gif</filename>
-            <filename>frame-11.gif</filename>
-            <filename>frame-12.gif</filename>
-            <filename>frame-13.gif</filename>
-            <filename>frame-14.gif</filename>
-            <filename>frame-15.gif</filename>
-            <filename>frame-16.gif</filename>
-            <filename>frame-17.gif</filename>
-            <filename>frame-18.gif</filename>
-            <filename>frame-19.gif</filename>
-            <filename>frame-20.gif</filename>
-            <filename>frame-21.gif</filename>
-            <filename>frame-22.gif</filename>
-            <filename>frame-23.gif</filename>
-            <filename>frame-24.gif</filename>
+            <filename>01.png</filename>
+            <filename>02.png</filename>
+            <filename>03.png</filename>
+            <filename>04.png</filename>
+            <filename>05.png</filename>
+            <filename>06.png</filename>
+            <filename>07.png</filename>
+            <filename>08.png</filename>
+            <filename>09.png</filename>
+            <filename>10.png</filename>
+            <filename>11.png</filename>
+            <filename>12.png</filename>
+            <filename>13.png</filename>
+            <filename>14.png</filename>
+            <filename>15.png</filename>
+            <filename>16.png</filename>
+            <filename>17.png</filename>
+            <filename>18.png</filename>
+            <filename>19.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

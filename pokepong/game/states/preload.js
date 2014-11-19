@@ -80,18 +80,24 @@ Preload.prototype = {
 				"assets/graphics/ballred.json");
 
 		// Pulse explosion
-		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
+		this.load.spritesheet("explosion", "assets/graphics/explosion.png",
+				128, 128);
 
 		// Pokemon
-		this.load.atlas("weedle", "assets/graphics/weedle.png",
-				"assets/graphics/weedle.json");
+
+		// weedle
+		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
+				"assets/graphics/pokemons/weedle.json");
+
+		// charizard
+		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
+				"assets/graphics/pokemons/charizard.json");
 
 		// Sound
-		this.game.device.webAudio && (
-			this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-						"assets/audio/MainLoop.m4a"], !0),
-			this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
-		)
+		this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+								"assets/audio/MainLoop.m4a"], !0), this.load
+						.audio("tap", ["assets/audio/TapSound.wav"], !0))
 
 	},
 	loadUpdate : function() {

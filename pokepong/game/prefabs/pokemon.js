@@ -17,7 +17,13 @@ var Pokemon = function(game, x, y, ball, level) {
 			frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2 :
-			my_pokemon = 'weedle';
+			my_pokemon = 'charizard';
+			frame_left = ['01.png', '02.png', '03.png','04.png',
+						'05.png', '06.png','07.png', '08.png'], 
+			frame_ghostleft = ['17.png', '18.png', '19.png' ],
+			frame_right = ['09.png', '010.png', '11.png', '12.png',
+						'13.png', '14.png', '15.png', '16.png'],
+			frame_ghostright = ['17.png', '18.png', '19.png'];
 			break;
 		case 3 :
 			my_pokemon = 'weedle';
@@ -58,7 +64,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 + 50 + (30 * i), 30,
+		var life = this.lives.create(this.game.width / 2 + 50 + (50 * i), 30,
 				my_pokemon, '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
@@ -66,7 +72,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(36, 40, 0, 0);
+	this.body.setSize(40, 40, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
