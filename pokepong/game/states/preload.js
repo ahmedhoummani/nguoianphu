@@ -59,7 +59,7 @@ Preload.prototype = {
 
 		// ground
 		this.load.image("ground", "assets/graphics/border1.png");
-		
+
 		// pole
 		this.load.image("pole", "assets/graphics/pole.png");
 
@@ -76,11 +76,15 @@ Preload.prototype = {
 
 		// Ball
 		this.load.image("ball", "assets/graphics/ballred40.png");
-		this.load.image("ballblue", "assets/graphics/ballblue40.png");
+		this.load.atlas("ballred", "assets/graphics/ballred.png",
+				"assets/graphics/ballred.json");
+
+		// Pulse explosion
+		this.load.spritesheet("explosion", "assets/graphics/explosion.png", 128, 128);
 
 		// Pokemon
-		this.load.atlas("pokemon", "assets/graphics/worm.png",
-				"assets/graphics/worm.json");
+		this.load.atlas("weedle", "assets/graphics/weedle.png",
+				"assets/graphics/weedle.json");
 
 		// Sound
 		this.game.device.webAudio && (

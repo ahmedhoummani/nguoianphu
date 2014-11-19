@@ -1,14 +1,38 @@
 'use strict';
 
-var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
-	Phaser.Sprite
-			.call(this, game, x, y, 'pokemon', frame, pikachu, ball, level);
+var Pokemon = function(game, x, y, ball, level) {
+
+	var my_pokemon;
+
+	switch (level) {
+		case 1 :
+			my_pokemon = 'weedle';
+			break;
+		case 2:
+			my_pokemon = 'weedle';
+			break;
+		case 3 :
+			my_pokemon = 'weedle';
+			break;
+		case 4 :
+			my_pokemon = 'weedle';
+			break;
+		case 5 :
+			my_pokemon = 'weedle';
+			break;
+		case 6 :
+			my_pokemon = 'weedle';
+			break;
+		default :
+			my_pokemon = 'weedle';
+	}
+
+	Phaser.Sprite.call(this, game, x, y, my_pokemon, ball, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 
-	this.pikachu = pikachu;
 	this.ball = ball;
 
 	this.level = level;
@@ -19,13 +43,16 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	}
 
 	this.health = 3;
+	this.ghostUntil = 1;
+	this.ghostUntilTimer = 5000;
+	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
 		var life = this.lives.create(this.game.width / 2 + 50 + (30 * i), 30,
-				'pokemon', frame[0]);
-		life.scale.setTo(0.5, 0.5);
+				my_pokemon, '01.png');
+		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
@@ -37,20 +64,22 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 100 * this.level;
-	this.body.maxVelocity.y = 50 * this.level;
+	this.body.maxVelocity.x = 150 * this.level;
+	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
 
-	this.animations.add('left', [frame[0], frame[1], frame[2]], 10, true);
-	this.animations.add('right', [frame[3], frame[4], frame[5]], 10, true);
+	this.animations.add('left', ['01.png', '02.png', '03.png'], 10, true);
+	this.animations.add('ghostleft', ['07.png', '08.png', '09.png'], 10, true);
+	this.animations.add('right', ['04.png', '05.png', '06.png'], 10, true);
+	this.animations.add('ghostright', ['10.png', '11.png', '12.png'], 10, true);
 
 	this.game.add.existing(this);
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
-					+ 50, 100 * this.level, this.body.velocity);
+					+ 50, 150 * this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -60,7 +89,17 @@ var Pokemon = function(game, x, y, frame, pikachu, ball, level) {
 				},
 				enumerable : !0,
 				configurable : !0
-			})
+			});
+
+	this.explosionPool = this.game.add.group();
+	this.explosionPool.enableBody = true;
+	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.setAll('anchor.x', 0.5);
+	this.explosionPool.setAll('anchor.y', 0.5);
+	this.explosionPool.forEach(function(explosion) {
+				explosion.animations.add('boom');
+			});
 
 };
 
@@ -69,19 +108,34 @@ Pokemon.prototype.constructor = Pokemon;
 
 Pokemon.prototype.update = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		if (this.body.velocity.x < 0) {
+
+			this.animations.play('ghostleft');
+
+		} else if (this.body.velocity.x > 0) {
+
+			this.animations.play('ghostright');
+		}
+	} else
+
 	if (this.body.velocity.x < 0) {
 
 		this.animations.play('left');
+		this.ghostUntil = 1;
 
 	} else if (this.body.velocity.x > 0) {
 
 		this.animations.play('right');
+		this.ghostUntil = 1;
 	}
 
 	if (this.notPause && this.y > (this.game.height - 200)) {
 
+		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(Math.random() * 10 * this.level);
+		this.body.velocity.y = -Math.floor(Math.random() * 100 * this.level);
+		this.body.velocity.x = Math.floor(Math.random() * 100 * this.level);
 
 	}
 
@@ -95,9 +149,16 @@ Pokemon.prototype.update = function() {
 
 Pokemon.prototype.hitBall = function() {
 
+	if (this.ghostUntil > this.game.time.now) {
+		return;
+	}
+
 	this.damage();
+	this.explode();
 	var life = this.lives.getFirstAlive();
 	if (life) {
+		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
+		// this.play('ghost');
 		life.kill();
 	}
 
@@ -136,6 +197,21 @@ Pokemon.prototype.pause = function(status) {
 			this.notPause = !1;
 		}
 	}
+
+};
+
+Pokemon.prototype.explode = function() {
+
+	if (this.explosionPool.countDead() === 0) {
+		return;
+	}
+
+	var explosion = this.explosionPool.getFirstExists(false);
+	explosion.reset(this.x, this.y);
+	explosion.play('boom', 15, false, true);
+	// add the original sprite's velocity to the explosion
+	explosion.body.velocity.x = this.body.velocity.x;
+	explosion.body.velocity.y = this.body.velocity.y;
 
 };
 

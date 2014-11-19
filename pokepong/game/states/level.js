@@ -33,7 +33,7 @@ Level.prototype = {
 
 		// add ground
 		this.addGround();
-		
+
 		// add LevelText
 		this.addLevelText();
 
@@ -118,16 +118,15 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, "ball", this.pikachu, this.pole,
+						- 45, this.pikachu, this.pole,
 				this._settings.levelNumber);
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
 	},
 	addPokemon : function() {
 
-		var frame = [0, 1, 2, 3, 4, 5];
-		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100, frame,
-				this.pikachu, this.ball, this._settings.levelNumber);
+		this.pokemon = new Pokemon(this.game, this.game.width / 2, 100,
+				this.ball, this._settings.levelNumber);
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 

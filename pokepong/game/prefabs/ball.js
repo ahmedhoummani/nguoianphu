@@ -1,7 +1,7 @@
 'use strict';
 
-var Ball = function(game, x, y, ball, pikachu, pole, level) {
-	Phaser.Sprite.call(this, game, x, y, ball, pikachu, pole, level);
+var Ball = function(game, x, y, pikachu, pole, level) {
+	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, pole, level);
 
 	// initialize your prefab here
 	this._x = x;
@@ -16,35 +16,35 @@ var Ball = function(game, x, y, ball, pikachu, pole, level) {
 		this.level = 2;
 	}
 
-	this.health = 3;
-
-	this.lives = this.game.add.group();
-	for (var i = 0; i < this.health; i++) {
-
-		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
-				'ball');
-		life.scale.setTo(0.5, 0.5);
-		life.anchor.setTo(0.5, 0.5);
-	}
-
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(42, 42, 0, 0);
+	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
+
 	this.body.maxVelocity.x = 100 * (this.level);
 	this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 
-	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
-	// true);
-	// this.animations.add('right', ['run1.png', 'run2.png', 'run3.png',
-	// 'run4.png'], 10, true);
-	// this.animations.add('left',
-	// ['run5.png', 'run6.png', 'run7.png', 'run8.png'], 10, true);
-	// this.animations.play('stand');
+	this.animations.add('start', ['01.png', '02.png', '03.png', '04.png'], 2,
+			true);
+	this.animations.add('ghost', ['05.png', '01.png', '05.png'], 2, true);
+	this.animations.play('start');
+
+	this.health = 3;
+	this.ghostUntil = 1;
+	this.ghostUntilTimer = 2000;
+
+	this.lives = this.game.add.group();
+	for (var i = 0; i < this.health; i++) {
+
+		var life = this.lives.create(this.game.width / 2 - 50 - (30 * i), 30,
+				'ballred', '01.png');
+		life.scale.setTo(0.7, 0.7);
+		life.anchor.setTo(0.5, 0.5);
+	}
 
 	this.game.add.existing(this);
 
@@ -56,7 +56,17 @@ var Ball = function(game, x, y, ball, pikachu, pole, level) {
 				},
 				enumerable : !0,
 				configurable : !0
-			})
+			});
+
+	this.explosionPool = this.game.add.group();
+	this.explosionPool.enableBody = true;
+	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
+	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.setAll('anchor.x', 0.5);
+	this.explosionPool.setAll('anchor.y', 0.5);
+	this.explosionPool.forEach(function(explosion) {
+				explosion.animations.add('boom');
+			});
 
 };
 
@@ -64,6 +74,14 @@ Ball.prototype = Object.create(Phaser.Sprite.prototype);
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
+
+	if (this.ghostUntil > this.game.time.now) {
+		this.animations.play('ghost');
+
+	} else {
+		this.animations.play('start');
+		this.ghostUntil = 1;
+	}
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -100,10 +118,16 @@ Ball.prototype.start = function() {
 
 Ball.prototype.damage = function() {
 
-	this.health -= 1;
+	if (this.ghostUntil > this.game.time.now) {
+		return;
+	}
 
+	this.health -= 1;
+	this.explode();
 	var life = this.lives.getFirstAlive();
 	if (life) {
+		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
+		// this.play('ghost');
 		life.kill();
 	}
 
@@ -134,6 +158,21 @@ Ball.prototype.pause = function(status) {
 			this.body.velocity.y = 0;
 		}
 	}
+
+};
+
+Ball.prototype.explode = function() {
+
+	if (this.explosionPool.countDead() === 0) {
+		return;
+	}
+
+	var explosion = this.explosionPool.getFirstExists(false);
+	explosion.reset(this.x, this.y);
+	explosion.play('boom', 15, false, true);
+	// add the original sprite's velocity to the explosion
+	explosion.body.velocity.x = this.body.velocity.x;
+	explosion.body.velocity.y = this.body.velocity.y;
 
 };
 
