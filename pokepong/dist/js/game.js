@@ -229,17 +229,17 @@ var Level2pokemon = function(a) {
 
 	this._levelNumber = a;
 
-	var pokemon, pokemon_icon, frame_left = [], frame_ghostleft = [], frame_right = [], frame_ghostright = [];
+	var pokemon, pokemon_name, pokemon_icon, frame_left = [], frame_ghostleft = [], frame_right = [], frame_ghostright = [];
 
 	switch (this._levelNumber) {
 		case 1 :
-			pokemon = 'weedle', pokemon_icon = 'weedle.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2 :
-			pokemon = 'charizard', pokemon_icon = 'charizard.png', frame_left = [
+			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard.png', frame_left = [
 					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
 					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
 					'19.png'], frame_right = ['09.png', '010.png', '11.png',
@@ -273,6 +273,14 @@ var Level2pokemon = function(a) {
 	Object.defineProperty(this, "pokemon", {
 				get : function() {
 					return pokemon
+				},
+				enumerable : !0,
+				configurable : !0
+			}),
+
+	Object.defineProperty(this, "pokemon_name", {
+				get : function() {
+					return pokemon_name
 				},
 				enumerable : !0,
 				configurable : !0
@@ -704,6 +712,8 @@ var Levelsettings = function(a) {
 module.exports = Levelsettings;
 
 },{}],11:[function(require,module,exports){
+var Level2pokemon = require('./level2pokemon');
+
 'use strict';
 
 var Levelstartboard = function(game, parent, level) {
@@ -711,6 +721,10 @@ var Levelstartboard = function(game, parent, level) {
 
 	this.levels_num = 28;
 	this.levelNumber = level;
+	this._level2pokemon = new Level2pokemon(this.levelNumber);
+	// this._level2pokemon.pokemon
+	// this._level2pokemon.pokemon_name
+	// this._level2pokemon.pokemon_icon
 
 	this.addBackGround();
 
@@ -718,7 +732,7 @@ var Levelstartboard = function(game, parent, level) {
 	this.board.position.set(this.game.width / 2 - this.board.width / 2,
 			this.game.height / 2 - this.board.height / 2);
 
-	this.initText();
+	this.initText(this._level2pokemon.pokemon_name);
 
 	this.exists = !1;
 	this.visible = !1;
@@ -734,8 +748,8 @@ Levelstartboard.prototype.addBackGround = function() {
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
 };
-Levelstartboard.prototype.initText = function() {
-	var b = "Let's go!", c = {
+Levelstartboard.prototype.initText = function(b) {
+	var c = {
 		font : "76px font",
 		fill : "#FBAF05",
 		align : "center",
@@ -792,7 +806,7 @@ Levelstartboard.prototype.onHideComplete = function() {
 
 module.exports = Levelstartboard;
 
-},{}],12:[function(require,module,exports){
+},{"./level2pokemon":4}],12:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var ToggleButton = require('./togglebutton');
 
@@ -982,45 +996,6 @@ var Level2pokemon = require('./level2pokemon');
 'use strict';
 
 var Pokemon = function(game, x, y, ball, level) {
-
-	// var my_pokemon,
-	// frame_left = [],
-	// frame_ghostleft = [],
-	// frame_right = [],
-	// frame_ghostright = [];
-	//
-	// switch (level) {
-	// case 1 :
-	// my_pokemon = 'weedle',
-	// frame_left = ['01.png', '02.png', '03.png'],
-	// frame_ghostleft = ['07.png', '08.png', '09.png'],
-	// frame_right = ['04.png', '05.png', '06.png'],
-	// frame_ghostright = ['10.png', '11.png', '12.png'];
-	// break;
-	// case 2 :
-	// my_pokemon = 'charizard';
-	// frame_left = ['01.png', '02.png', '03.png','04.png',
-	// '05.png', '06.png','07.png', '08.png'],
-	// frame_ghostleft = ['17.png', '18.png', '19.png' ],
-	// frame_right = ['09.png', '010.png', '11.png', '12.png',
-	// '13.png', '14.png', '15.png', '16.png'],
-	// frame_ghostright = ['17.png', '18.png', '19.png'];
-	// break;
-	// case 3 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 4 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 5 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 6 :
-	// my_pokemon = 'weedle';
-	// break;
-	// default :
-	// my_pokemon = 'weedle';
-	// }
 
 	this._level2pokemon = new Level2pokemon(level);
 
@@ -1553,7 +1528,7 @@ Level.prototype = {
 	},
 	addStartScreen : function() {
 
-		this.startScreen = new Levelstartboard(this.game,
+		this.startScreen = new Levelstartboard(this.game, this,
 				this._settings.levelNumber);
 
 		this.startScreen.show();

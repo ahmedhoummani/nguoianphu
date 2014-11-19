@@ -4,45 +4,6 @@ var Level2pokemon = require('./level2pokemon');
 
 var Pokemon = function(game, x, y, ball, level) {
 
-	// var my_pokemon,
-	// frame_left = [],
-	// frame_ghostleft = [],
-	// frame_right = [],
-	// frame_ghostright = [];
-	//
-	// switch (level) {
-	// case 1 :
-	// my_pokemon = 'weedle',
-	// frame_left = ['01.png', '02.png', '03.png'],
-	// frame_ghostleft = ['07.png', '08.png', '09.png'],
-	// frame_right = ['04.png', '05.png', '06.png'],
-	// frame_ghostright = ['10.png', '11.png', '12.png'];
-	// break;
-	// case 2 :
-	// my_pokemon = 'charizard';
-	// frame_left = ['01.png', '02.png', '03.png','04.png',
-	// '05.png', '06.png','07.png', '08.png'],
-	// frame_ghostleft = ['17.png', '18.png', '19.png' ],
-	// frame_right = ['09.png', '010.png', '11.png', '12.png',
-	// '13.png', '14.png', '15.png', '16.png'],
-	// frame_ghostright = ['17.png', '18.png', '19.png'];
-	// break;
-	// case 3 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 4 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 5 :
-	// my_pokemon = 'weedle';
-	// break;
-	// case 6 :
-	// my_pokemon = 'weedle';
-	// break;
-	// default :
-	// my_pokemon = 'weedle';
-	// }
-
 	this._level2pokemon = new Level2pokemon(level);
 
 	Phaser.Sprite.call(this, game, x, y, this._level2pokemon.pokemon, ball,

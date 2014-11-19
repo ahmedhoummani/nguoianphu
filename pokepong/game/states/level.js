@@ -140,7 +140,7 @@ Level.prototype = {
 	},
 	addStartScreen : function() {
 
-		this.startScreen = new Levelstartboard(this.game,
+		this.startScreen = new Levelstartboard(this.game, this,
 				this._settings.levelNumber);
 
 		this.startScreen.show();

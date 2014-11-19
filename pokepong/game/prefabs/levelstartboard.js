@@ -1,3 +1,5 @@
+var Level2pokemon = require('./level2pokemon');
+
 'use strict';
 
 var Levelstartboard = function(game, parent, level) {
@@ -5,6 +7,10 @@ var Levelstartboard = function(game, parent, level) {
 
 	this.levels_num = 28;
 	this.levelNumber = level;
+	this._level2pokemon = new Level2pokemon(this.levelNumber);
+	// this._level2pokemon.pokemon
+	// this._level2pokemon.pokemon_name
+	// this._level2pokemon.pokemon_icon
 
 	this.addBackGround();
 
@@ -12,7 +18,7 @@ var Levelstartboard = function(game, parent, level) {
 	this.board.position.set(this.game.width / 2 - this.board.width / 2,
 			this.game.height / 2 - this.board.height / 2);
 
-	this.initText();
+	this.initText(this._level2pokemon.pokemon_name);
 
 	this.exists = !1;
 	this.visible = !1;
@@ -28,8 +34,8 @@ Levelstartboard.prototype.addBackGround = function() {
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
 };
-Levelstartboard.prototype.initText = function() {
-	var b = "Let's go!", c = {
+Levelstartboard.prototype.initText = function(b) {
+	var c = {
 		font : "76px font",
 		fill : "#FBAF05",
 		align : "center",
