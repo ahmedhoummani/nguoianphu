@@ -151,14 +151,22 @@
 	"trimmed": true,
 	"spriteSourceSize": {"x":7,"y":7,"w":86,"h":86},
 	"sourceSize": {"w":100,"h":100}
+},
+{
+	"filename": "charizard_icon.png",
+	"frame": {"x":2,"y":760,"w":196,"h":154},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":0,"w":196,"h":154},
+	"sourceSize": {"w":200,"h":154}
 }],
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
 	"image": "charizard.png",
 	"format": "RGBA8888",
-	"size": {"w":228,"h":760},
+	"size": {"w":228,"h":916},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:b32c37bb0775598aa7508e0daef22f76$"
+	"smartupdate": "$TexturePacker:SmartUpdate:39430e7197edf0195618f2108e7458dd$"
 }
 }

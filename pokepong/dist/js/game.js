@@ -233,13 +233,13 @@ var Level2pokemon = function(a) {
 
 	switch (this._levelNumber) {
 		case 1 :
-			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2 :
-			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard.png', frame_left = [
+			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard_icon.png', frame_left = [
 					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
 					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
 					'19.png'], frame_right = ['09.png', '010.png', '11.png',
@@ -732,7 +732,8 @@ var Levelstartboard = function(game, parent, level) {
 	this.board.position.set(this.game.width / 2 - this.board.width / 2,
 			this.game.height / 2 - this.board.height / 2);
 
-	this.initText(this._level2pokemon.pokemon_name);
+	this.initPokemon(this._level2pokemon.pokemon,
+			this._level2pokemon.pokemon_name, this._level2pokemon.pokemon_icon);
 
 	this.exists = !1;
 	this.visible = !1;
@@ -748,18 +749,21 @@ Levelstartboard.prototype.addBackGround = function() {
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
 };
-Levelstartboard.prototype.initText = function(b) {
-	var c = {
+Levelstartboard.prototype.initPokemon = function(key, name, _icon) {
+	var icon = new Phaser.Image(this.game, this.game.width / 2,
+			this.game.height / 2 - 100, key, _icon), style = {
 		font : "76px font",
 		fill : "#FBAF05",
 		align : "center",
 		stroke : "#FFFFFF",
 		strokeThickness : 12
-	}, d = new Phaser.Text(this.game, this.game.width / 2, this.game.height / 2
-					+ 100, b, c);
-	d.anchor.set(.5, .5);
-	d.setShadow(2, 2, "#FB1A05", 2);
-	this.add(d);
+	}, text = new Phaser.Text(this.game, this.game.width / 2, this.game.height
+					/ 2 + 100, name, style);
+	icon.anchor.set(.5, .5)
+	text.anchor.set(.5, .5);
+	text.setShadow(2, 2, "#FB1A05", 2);
+	this.add(icon);
+	this.add(text);
 
 };
 Levelstartboard.prototype.update = function() {

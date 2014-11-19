@@ -8,13 +8,13 @@ var Level2pokemon = function(a) {
 
 	switch (this._levelNumber) {
 		case 1 :
-			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2 :
-			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard.png', frame_left = [
+			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard_icon.png', frame_left = [
 					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
 					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
 					'19.png'], frame_right = ['09.png', '010.png', '11.png',

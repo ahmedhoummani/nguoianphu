@@ -153,6 +153,7 @@
             <filename>10.png</filename>
             <filename>11.png</filename>
             <filename>12.png</filename>
+            <filename>weedle_icon.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>

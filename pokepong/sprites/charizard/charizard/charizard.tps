@@ -160,6 +160,7 @@
             <filename>17.png</filename>
             <filename>18.png</filename>
             <filename>19.png</filename>
+            <filename>charizard_icon.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
