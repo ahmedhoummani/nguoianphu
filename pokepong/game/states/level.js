@@ -1,3 +1,4 @@
+var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
 var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
@@ -49,6 +50,9 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
+
+		// add start screen
+		this.addStartScreen();
 	},
 
 	update : function() {
@@ -133,6 +137,13 @@ Level.prototype = {
 	addGui : function() {
 		this.gui = new LevelGUI(this.game, this._settings);
 		this.gui.pauseSignal.add(this.togglePause, this);
+	},
+	addStartScreen : function() {
+
+		this.startScreen = new Levelstartboard(this.game,
+				this._settings.levelNumber);
+
+		this.startScreen.show();
 	},
 	togglePause : function(a) {
 		"pause" === a ? this.pauseGame() : "resume" === a && this.resumeGame();
