@@ -123,11 +123,11 @@ Ball.prototype.hitPikachu = function() {
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
-		this.body.velocity.x += (50 * diff * this.level);
+		this.body.velocity.x += (100 * diff * this.level);
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x -= (-50 * diff * this.level);
+		this.body.velocity.x -= (-100 * diff * this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
@@ -139,7 +139,7 @@ Ball.prototype.hitPikachu = function() {
 Ball.prototype.start = function() {
 	if (this.game.input.activePointer.isDown && this.x == this._x
 			&& this.y == this._y) {
-		this.body.velocity.y = -200 * this.level;
+		this.body.velocity.y = -300 * this.level;
 	}
 };
 
@@ -1059,7 +1059,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	// this.body.immovable = true;
+	this.body.immovable = true;
 	this.body.maxVelocity.x = 150 * this.level;
 	this.body.maxVelocity.y = 100 * this.level;
 

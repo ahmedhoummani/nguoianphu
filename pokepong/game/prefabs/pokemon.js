@@ -43,7 +43,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
-	// this.body.immovable = true;
+	this.body.immovable = true;
 	this.body.maxVelocity.x = 150 * this.level;
 	this.body.maxVelocity.y = 100 * this.level;
 
