@@ -11,6 +11,7 @@ Preload.prototype = {
 
 	},
 	create : function() {
+		this.stage.backgroundColor = 93204;
 		this.game.state.start("menu", !0, !1, !0);
 	},
 	update : function() {
