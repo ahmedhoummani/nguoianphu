@@ -58,10 +58,13 @@ Preload.prototype = {
 				"assets/graphics/buttonsgroup.json");
 
 		// ground
-		this.load.image("ground", "assets/graphics/border1.png");
+		this.load.image("ground", "assets/graphics/stone.png");
 
 		// pole
 		this.load.image("pole", "assets/graphics/pole.png");
+		
+		// tree
+		this.load.image("tree", "assets/graphics/treereal.png");
 
 		// background
 		// level complete

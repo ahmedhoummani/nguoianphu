@@ -1,13 +1,15 @@
-var Levelstartboard = require('../prefabs/levelstartboard');
-var LevelSettings = require('../prefabs/levelsettings');
-var LevelResult = require('../prefabs/levelresult');
-var LevelGUI = require('../prefabs/levelgui');
-var SimpleButton = require('../prefabs/simplebutton');
 var Pikachu = require('../prefabs/pikachu');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
 var Pole = require('../prefabs/pole');
+var Objects = require('../prefabs/objects');
+
+var Levelstartboard = require('../prefabs/levelstartboard');
+var LevelSettings = require('../prefabs/levelsettings');
+var LevelResult = require('../prefabs/levelresult');
+var LevelGUI = require('../prefabs/levelgui');
+var SimpleButton = require('../prefabs/simplebutton');
 
 'use strict';
 
@@ -35,9 +37,6 @@ Level.prototype = {
 		// add ground
 		this.addGround();
 
-		// add LevelText
-		this.addLevelText();
-
 		// add Pole
 		this.addPole();
 
@@ -47,6 +46,12 @@ Level.prototype = {
 		this.addBall();
 		// add pokemon
 		this.addPokemon();
+
+		// add objects
+		this.addObjects();
+
+		// add LevelText
+		this.addLevelText();
 
 		// level gui menu
 		this.addGui();
@@ -107,8 +112,8 @@ Level.prototype = {
 				"true")
 	},
 	addGround : function() {
-		this.ground = new Ground(this.game, 0, this.game.height - 98,
-				this.game.width, 98);
+		this.ground = new Ground(this.game, 0, this.game.height - 64,
+				this.game.width, 64);
 
 	},
 	addPole : function() {
@@ -134,6 +139,18 @@ Level.prototype = {
 		this.pokemon.levelCompleteSignal.addOnce(this.levelComplete, this);
 	},
 
+	addObjects : function() {
+
+		this.objects = this.game.add.group();
+		this.objectGroup = this.objects.getFirstExists(false);
+
+		if (!this.objectGroup) {
+			this.objectGroup = new Objects(this.game, this.objects, this.ball,
+					"pokemon_type");
+		}
+		this.objectGroup.reset(100, 100);
+
+	},
 	addGui : function() {
 		this.gui = new LevelGUI(this.game, this._settings);
 		this.gui.pauseSignal.add(this.togglePause, this);
@@ -165,6 +182,8 @@ Level.prototype = {
 		this.ball.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
+		this.objects.destroy();
+		this.objectGroup.destroy();
 	}
 };
 module.exports = Level;
