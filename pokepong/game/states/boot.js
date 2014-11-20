@@ -21,7 +21,6 @@ Boot.prototype = {
 	create : function() {
 
 		this.setupStage();
-		// this.detectWeakDevice();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
 	},
@@ -39,21 +38,6 @@ Boot.prototype = {
 		b.setScreenSize(!0);
 		this.stage.disableVisibilityChange = !0;
 		this.stage.backgroundColor = 11193204;
-	},
-	detectWeakDevice : function() {
-		var b = !1;
-		if (this.game.device.desktop === !1) {
-			var c = detect.parse(window.navigator.userAgent);
-			this.game.device.iOS
-					&& (c.os.major < 7 && (b = !0), c.browser.family
-							.indexOf("Chrome") > -1
-							&& (b = !0)), this.game.device.android
-					&& (c.browser.family.indexOf("Android") > -1 && (b = !0), c.browser.family
-							.indexOf("Chrome Mobile") > -1
-							&& c.browser.major <= 18 && (b = !0)), this.game.device.windowsPhone
-					&& c.browser.family.indexOf("IE") > -1
-					&& (b = c.browser.major < 10);
-		}
 	},
 	onEnterIncorrectOrientation : function() {
 		document.getElementById("orientation").style.display = "block", document.body.style.marginBottom = "0px";
