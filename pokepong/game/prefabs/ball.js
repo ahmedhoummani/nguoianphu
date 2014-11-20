@@ -20,7 +20,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = true;
-	this.body.bounce.setTo(1, 1);
+	this.body.bounce.setTo(1, 2);
 	this.anchor.setTo(.5, .5);
 
 	this.body.maxVelocity.x = 200 * (this.level);
@@ -36,7 +36,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 2000;
+	this.ghostUntilTimer = 3000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {

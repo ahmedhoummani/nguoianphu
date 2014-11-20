@@ -38,7 +38,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = true;
-	this.body.bounce.setTo(1, 1);
+	this.body.bounce.setTo(1, 2);
 	this.anchor.setTo(.5, .5);
 
 	this.body.maxVelocity.x = 200 * (this.level);
@@ -54,7 +54,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 2000;
+	this.ghostUntilTimer = 3000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -257,20 +257,11 @@ var Level2pokemon = function(a) {
 					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
 					'17.png', '18.png', '19.png'];
 			break;
-		case 3 :
-			pokemon = 'weedle';
-			break;
-		case 4 :
-			pokemon = 'weedle';
-			break;
-		case 5 :
-			pokemon = 'weedle';
-			break;
-		case 6 :
-			pokemon = 'weedle';
-			break;
 		default :
-			pokemon = 'weedle';
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
+					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
+					'08.png', '09.png'], frame_right = ['04.png', '05.png',
+					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 	}
 
 	Object.defineProperty(this, "levelNumber", {
@@ -1077,7 +1068,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
-					+ 50, 150 * this.level, this.body.velocity);
+					+ 100, 200, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -1360,7 +1351,6 @@ Boot.prototype = {
 	create : function() {
 
 		this.setupStage();
-		// this.detectWeakDevice();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
 	},
@@ -1378,21 +1368,6 @@ Boot.prototype = {
 		b.setScreenSize(!0);
 		this.stage.disableVisibilityChange = !0;
 		this.stage.backgroundColor = 11193204;
-	},
-	detectWeakDevice : function() {
-		var b = !1;
-		if (this.game.device.desktop === !1) {
-			var c = detect.parse(window.navigator.userAgent);
-			this.game.device.iOS
-					&& (c.os.major < 7 && (b = !0), c.browser.family
-							.indexOf("Chrome") > -1
-							&& (b = !0)), this.game.device.android
-					&& (c.browser.family.indexOf("Android") > -1 && (b = !0), c.browser.family
-							.indexOf("Chrome Mobile") > -1
-							&& c.browser.major <= 18 && (b = !0)), this.game.device.windowsPhone
-					&& c.browser.family.indexOf("IE") > -1
-					&& (b = c.browser.major < 10);
-		}
 	},
 	onEnterIncorrectOrientation : function() {
 		document.getElementById("orientation").style.display = "block", document.body.style.marginBottom = "0px";
@@ -1736,7 +1711,8 @@ Menu.prototype = {
 
 		var titleTexts = "Poke Pong";
 
-		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), titleStyle);
+		this.titleText = this.game.add.text(0, 0, titleTexts.toString(),
+				titleStyle);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
 		this.titleText.setShadow(2, 2, "#FB1A05", 2);
@@ -1744,11 +1720,11 @@ Menu.prototype = {
 	},
 	addOtherImages : function() {
 
-		this.pikachu = this.game.add.sprite(this.game.width / 2, this.game.height
-						- 80, "pikachu_ball");
+		this.pikachu = this.game.add.sprite(this.game.width / 2,
+				this.game.height - 80, "pikachu_ball");
 		this.pikachu.anchor.set(.5, 1);
 		this.pikachu.angle = -2;
-		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5 ,6 ,7], 10, true);
+		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
 		this.pikachu.animations.play('ball');
 	},
 	addButtons : function() {
@@ -1772,12 +1748,6 @@ Menu.prototype = {
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
-//		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-//						+ d, this.playButton.y, "buttonsgroup", "button.png");
-//		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
-//		this.moreGamesButton.visible = !1;
-//		this.moreGamesButton.exists = !1;
-
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
 
 		this.buttons.forEach(function(a) {
@@ -1789,9 +1759,6 @@ Menu.prototype = {
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
 	},
-	// onMoreGamesClick : function() {
-	// window.open("http://play.nguoianphu.com", "_blank");
-	// },
 	initCredits : function() {
 
 		// credit background
@@ -1804,20 +1771,22 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px font",
+			font : "30px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
 			align : "center"
 		};
 
-		var creditTextContent = "Hello\n" + "Phaser is very good!\n"
-				+ "Let's go!";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n"
+				+ "Game made with Phaser JS Framework\n\n"
+				+ "Developed by Tuan Vo\n" + "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
-		this.creditText.anchor.set(.5, .5);
-		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
+		this.creditText.anchor.set(.5, 0);
+		this.creditText.position.set(this.game.width / 2,
+				this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
@@ -1925,10 +1894,9 @@ Menu.prototype = {
 				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 	onPandaAnimationComplete : function() {
-		 this.game.add
-				.tween(this.pikachu).to({
-							angle : 1
-						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+		this.game.add.tween(this.pikachu).to({
+					angle : 1
+				}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 
 	shutdown : function() {

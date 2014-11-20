@@ -54,7 +54,8 @@ Menu.prototype = {
 
 		var titleTexts = "Poke Pong";
 
-		this.titleText = this.game.add.text(0, 0, titleTexts.toString(), titleStyle);
+		this.titleText = this.game.add.text(0, 0, titleTexts.toString(),
+				titleStyle);
 		this.titleText.anchor.set(.5, .5);
 		this.titleText.position.set(this.game.width / 2, 130);
 		this.titleText.setShadow(2, 2, "#FB1A05", 2);
@@ -62,11 +63,11 @@ Menu.prototype = {
 	},
 	addOtherImages : function() {
 
-		this.pikachu = this.game.add.sprite(this.game.width / 2, this.game.height
-						- 80, "pikachu_ball");
+		this.pikachu = this.game.add.sprite(this.game.width / 2,
+				this.game.height - 80, "pikachu_ball");
 		this.pikachu.anchor.set(.5, 1);
 		this.pikachu.angle = -2;
-		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5 ,6 ,7], 10, true);
+		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
 		this.pikachu.animations.play('ball');
 	},
 	addButtons : function() {
@@ -90,12 +91,6 @@ Menu.prototype = {
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
-//		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-//						+ d, this.playButton.y, "buttonsgroup", "button.png");
-//		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
-//		this.moreGamesButton.visible = !1;
-//		this.moreGamesButton.exists = !1;
-
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
 
 		this.buttons.forEach(function(a) {
@@ -107,9 +102,6 @@ Menu.prototype = {
 		this.playButton.inputEnabled = !1;
 		this.game.state.start("levelsmenu");
 	},
-	// onMoreGamesClick : function() {
-	// window.open("http://play.nguoianphu.com", "_blank");
-	// },
 	initCredits : function() {
 
 		// credit background
@@ -122,20 +114,22 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px font",
+			font : "30px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
 			align : "center"
 		};
 
-		var creditTextContent = "Hello\n" + "Phaser is very good!\n"
-				+ "Let's go!";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n"
+				+ "Game made with Phaser JS Framework\n\n"
+				+ "Developed by Tuan Vo\n" + "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
-		this.creditText.anchor.set(.5, .5);
-		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
+		this.creditText.anchor.set(.5, 0);
+		this.creditText.position.set(this.game.width / 2,
+				this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
@@ -243,10 +237,9 @@ Menu.prototype = {
 				}, 600, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 	onPandaAnimationComplete : function() {
-		 this.game.add
-				.tween(this.pikachu).to({
-							angle : 1
-						}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+		this.game.add.tween(this.pikachu).to({
+					angle : 1
+				}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
 	},
 
 	shutdown : function() {

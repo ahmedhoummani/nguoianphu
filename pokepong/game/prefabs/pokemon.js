@@ -61,7 +61,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
 					* 100)
-					+ 50, 150 * this.level, this.body.velocity);
+					+ 100, 200, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 

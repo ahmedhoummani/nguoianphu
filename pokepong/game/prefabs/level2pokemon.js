@@ -21,20 +21,11 @@ var Level2pokemon = function(a) {
 					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
 					'17.png', '18.png', '19.png'];
 			break;
-		case 3 :
-			pokemon = 'weedle';
-			break;
-		case 4 :
-			pokemon = 'weedle';
-			break;
-		case 5 :
-			pokemon = 'weedle';
-			break;
-		case 6 :
-			pokemon = 'weedle';
-			break;
 		default :
-			pokemon = 'weedle';
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
+					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
+					'08.png', '09.png'], frame_right = ['04.png', '05.png',
+					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 	}
 
 	Object.defineProperty(this, "levelNumber", {
