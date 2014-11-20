@@ -1360,7 +1360,7 @@ Boot.prototype = {
 	create : function() {
 
 		this.setupStage();
-		this.detectWeakDevice();
+		// this.detectWeakDevice();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
 	},
