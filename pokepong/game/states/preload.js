@@ -63,9 +63,6 @@ Preload.prototype = {
 		// pole
 		this.load.image("pole", "assets/graphics/pole.png");
 
-		// tree
-		this.load.image("tree", "assets/graphics/treereal.png");
-
 		// background
 		// level complete
 		this.load.atlas("bggroup", "assets/graphics/bggroup.png",
@@ -88,6 +85,9 @@ Preload.prototype = {
 		this.load.spritesheet("explosion", "assets/graphics/explosion.png",
 				128, 128);
 
+		// tree
+		this.load.image("tree", "assets/graphics/treereal.png");
+		
 		// Pokemon
 
 		// weedle
