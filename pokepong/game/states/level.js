@@ -66,7 +66,7 @@ Level.prototype = {
 
 	render : function() {
 
-		// this.game.debug.body(this.pikachu);
+		 this.game.debug.body(this.pikachu);
 		// this.game.debug.body(this.ball);
 		// this.game.debug.body(this.pokemon);
 	},

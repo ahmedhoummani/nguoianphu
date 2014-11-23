@@ -14,7 +14,7 @@ var Pikachu = function(game, x, y, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.scale.setTo(.5, .5);
+	this.scale.setTo(.7, .7);
 	this.body.setSize(100, 100, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(0, 0);
