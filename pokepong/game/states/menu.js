@@ -207,7 +207,7 @@ Menu.prototype = {
 				this.onTitleAnimationComplete, this);
 
 		// tween pikachu
-		this.pikachu.scale.set(2.5, 2.5);
+		this.pikachu.scale.set(2, 2);
 		this.game.add.tween(this.pikachu.scale).to({
 					x : 3,
 					y : 3
