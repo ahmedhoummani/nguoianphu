@@ -29,9 +29,9 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.level = level;
 	if (this.level > 3) {
-		this.level *= .5;
+		this.level *= 1.1;
 	} else {
-		this.level = 2;
+		this.level = 3;
 	}
 
 	this.game.physics.arcade.enableBody(this);
@@ -41,8 +41,8 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.body.bounce.setTo(1, 2);
 	this.anchor.setTo(.5, .5);
 
-	this.body.maxVelocity.x = 200 * (this.level);
-	this.body.maxVelocity.y = 200 * (this.level);
+	this.body.maxVelocity.x = 100 * (this.level);
+	this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
@@ -54,7 +54,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 3000;
+	this.ghostUntilTimer = 5000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -108,7 +108,7 @@ Ball.prototype.update = function() {
 	// } else {
 	// this.body.velocity.y -= -100;
 	// }
-	//	}
+	// }
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -131,7 +131,8 @@ Ball.prototype.hitPikachu = function() {
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = 2 + Math.random() * 50 * this.level;
+		this.body.velocity.x = 2 + this.game.rnd.between(1,5) * 50 * this.level;
+		this.body.velocity.y -= 2 + this.game.rnd.between(1,5) * 50 * this.level;
 	}
 
 };
@@ -835,7 +836,7 @@ var Objects = function(game, parent, ball, pokemon_type) {
 
 	for (var i = 1; i <= this.numberOfTree; i++) {
 		var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
-				.between(100, this.game.height - 200);
+				.between(100, this.game.height / 2);
 		this.tree = new Tree(this.game, randomX, randomY, this.ball);
 		this.add(this.tree);
 
@@ -981,26 +982,25 @@ module.exports = Pauseboard;
 'use strict';
 
 var Pikachu = function(game, x, y, level) {
-	Phaser.Sprite.call(this, game, x, y, 'pikachu_waving', level);
+	Phaser.Sprite.call(this, game, x, y, 'pikachu100', level);
 
 	// initialize your prefab here
 
 	this.level = level;
-	if (this.level > 3) {
-		this.level *= .5;
-	} else {
-		this.level = 2;
-	}
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.scale.setTo(.7, .7);
-	this.body.setSize(100, 100, 0, 0);
+	this.body.setSize(100, 50, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(0, 0);
 	this.body.allowRotation = false;
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
+
+	this.angle = -8;
+	this.game.add.tween(this).to({
+				angle : 8
+			}, 500, Phaser.Easing.Linear.NONE, true, 0, Number.MAX_VALUE, true);
 
 	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
 	// true);
@@ -1009,8 +1009,8 @@ var Pikachu = function(game, x, y, level) {
 	// this.animations.add('left',
 	// ['run5.png', 'run6.png', 'run7.png', 'run8.png'], 10, true);
 
-	this.animations.add('stand', [0, 1, 2, 3, 4], 10, true);
-	this.animations.play('stand');
+	// this.animations.add('stand', [0, 1, 2, 3, 4], 10, true);
+	// this.animations.play('stand');
 
 	this.notPause = !0;
 
@@ -1035,10 +1035,13 @@ Pikachu.prototype.update = function() {
 	 * this.body.velocity.y = 0; }
 	 */
 
-	if (this.game.input.activePointer.isDown
-			&& this.game.physics.arcade.distanceToPointer(this) > 20
-			&& this.notPause) {
+	if (this.game.input.activePointer.isDown && this.notPause) {
 		this.x = this.game.input.x;
+		 this.scale.setTo(1.2, 1.2);
+
+	} else {
+		 this.scale.setTo(1, 1);
+
 	}
 
 };
@@ -1065,7 +1068,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.level = level;
 	if (this.level > 3) {
-		this.level *= .5;
+		this.level *= 1.1;
 	} else {
 		this.level = 2;
 	}
@@ -1107,9 +1110,9 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.add.existing(this);
 
-	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
-					* 100)
-					+ 100, 200, this.body.velocity);
+	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
+					.between(1, 5)
+					* 50), 200, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -1164,8 +1167,10 @@ Pokemon.prototype.update = function() {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(Math.random() * 100 * this.level);
-		this.body.velocity.x = Math.floor(Math.random() * 100 * this.level);
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 10
+				* this.level);
+		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
+				* this.level);
 
 	}
 
@@ -1510,11 +1515,11 @@ Level.prototype = {
 		// add LevelText
 		this.addLevelText();
 
-		// level gui menu
-		this.addGui();
-
 		// add start screen
 		this.addStartScreen();
+
+		// level gui menu
+		this.addGui();
 	},
 
 	update : function() {
@@ -1523,7 +1528,7 @@ Level.prototype = {
 
 	render : function() {
 
-		 this.game.debug.body(this.pikachu);
+		// this.game.debug.body(this.pikachu);
 		// this.game.debug.body(this.ball);
 		// this.game.debug.body(this.pokemon);
 	},
@@ -1813,7 +1818,7 @@ Menu.prototype = {
 		this.pikachu = this.game.add.sprite(this.game.width / 2,
 				this.game.height - 80, "pikachu_ball");
 		this.pikachu.anchor.set(.5, 1);
-		this.pikachu.angle = -2;
+		this.pikachu.angle = -5;
 		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
 		this.pikachu.animations.play('ball');
 	},
@@ -1868,15 +1873,14 @@ Menu.prototype = {
 			align : "center"
 		};
 
-		var creditTextContent = "www.NguoiAnPhu.com\n\n"
-				+ "Game made with Phaser JS Framework\n\n"
-				+ "Developed by Tuan Vo\n" + "vohungtuan@gmail.com";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n" + "Game made with\n"
+				+ "Phaser JS Framework\n\n" + "Developed by Tuan Vo\n"
+				+ "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
 		this.creditText.anchor.set(.5, 0);
-		this.creditText.position.set(this.game.width / 2,
-				this.game.height / 2);
+		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
@@ -1985,8 +1989,8 @@ Menu.prototype = {
 	},
 	onPandaAnimationComplete : function() {
 		this.game.add.tween(this.pikachu).to({
-					angle : 1
-				}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+					angle : 5
+				}, 1200, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 	},
 
 	shutdown : function() {
@@ -2076,9 +2080,11 @@ Preload.prototype = {
 		// this.load.atlas("pikachu", "assets/graphics/pikachu.png",
 		// "assets/graphics/pikachu.json");
 		this.load.spritesheet("pikachu_ball",
-				"assets/graphics/pikachu_play_ball41x80.png", 41, 80);
+				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 		this.load.spritesheet("pikachu_waving",
 				"assets/graphics/pikachu_waving108x139.png", 108, 139);
+		this.load.image("pikachu100",
+				"assets/graphics/pikachu100.png");
 
 		// Ball
 		this.load.image("ball", "assets/graphics/ballred40.png");
@@ -2091,7 +2097,7 @@ Preload.prototype = {
 
 		// tree
 		this.load.image("tree", "assets/graphics/treereal.png");
-		
+
 		// Pokemon
 
 		// weedle

@@ -17,7 +17,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.level = level;
 	if (this.level > 3) {
-		this.level *= .5;
+		this.level *= 1.1;
 	} else {
 		this.level = 2;
 	}
@@ -59,9 +59,9 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.add.existing(this);
 
-	this.game.physics.arcade.velocityFromRotation(Math.floor(Math.random()
-					* 100)
-					+ 100, 200, this.body.velocity);
+	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
+					.between(1, 5)
+					* 50), 200, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -116,8 +116,10 @@ Pokemon.prototype.update = function() {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(Math.random() * 100 * this.level);
-		this.body.velocity.x = Math.floor(Math.random() * 100 * this.level);
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 10
+				* this.level);
+		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
+				* this.level);
 
 	}
 

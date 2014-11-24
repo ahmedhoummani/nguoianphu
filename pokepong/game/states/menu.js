@@ -66,7 +66,7 @@ Menu.prototype = {
 		this.pikachu = this.game.add.sprite(this.game.width / 2,
 				this.game.height - 80, "pikachu_ball");
 		this.pikachu.anchor.set(.5, 1);
-		this.pikachu.angle = -2;
+		this.pikachu.angle = -5;
 		this.pikachu.animations.add('ball', [0, 1, 2, 3, 4, 5, 6, 7], 10, true);
 		this.pikachu.animations.play('ball');
 	},
@@ -121,15 +121,14 @@ Menu.prototype = {
 			align : "center"
 		};
 
-		var creditTextContent = "www.NguoiAnPhu.com\n\n"
-				+ "Game made with Phaser JS Framework\n\n"
-				+ "Developed by Tuan Vo\n" + "vohungtuan@gmail.com";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n" + "Game made with\n"
+				+ "Phaser JS Framework\n\n" + "Developed by Tuan Vo\n"
+				+ "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
 		this.creditText.anchor.set(.5, 0);
-		this.creditText.position.set(this.game.width / 2,
-				this.game.height / 2);
+		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
 		this.creditText.visible = !1;
@@ -238,8 +237,8 @@ Menu.prototype = {
 	},
 	onPandaAnimationComplete : function() {
 		this.game.add.tween(this.pikachu).to({
-					angle : 1
-				}, 1200, Phaser.Easing.Sinusoidal.Out, !0, 0, 1e4, !0);
+					angle : 5
+				}, 1200, Phaser.Easing.Linear.NONE, true, 0, 1000, true);
 	},
 
 	shutdown : function() {

@@ -12,7 +12,7 @@ var Objects = function(game, parent, ball, pokemon_type) {
 
 	for (var i = 1; i <= this.numberOfTree; i++) {
 		var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
-				.between(100, this.game.height - 200);
+				.between(100, this.game.height / 2);
 		this.tree = new Tree(this.game, randomX, randomY, this.ball);
 		this.add(this.tree);
 

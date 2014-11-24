@@ -11,9 +11,9 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.level = level;
 	if (this.level > 3) {
-		this.level *= .5;
+		this.level *= 1.1;
 	} else {
-		this.level = 2;
+		this.level = 3;
 	}
 
 	this.game.physics.arcade.enableBody(this);
@@ -23,8 +23,8 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 	this.body.bounce.setTo(1, 2);
 	this.anchor.setTo(.5, .5);
 
-	this.body.maxVelocity.x = 200 * (this.level);
-	this.body.maxVelocity.y = 200 * (this.level);
+	this.body.maxVelocity.x = 100 * (this.level);
+	this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
@@ -36,7 +36,7 @@ var Ball = function(game, x, y, pikachu, pole, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 3000;
+	this.ghostUntilTimer = 5000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -90,7 +90,7 @@ Ball.prototype.update = function() {
 	// } else {
 	// this.body.velocity.y -= -100;
 	// }
-	//	}
+	// }
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
@@ -113,7 +113,8 @@ Ball.prototype.hitPikachu = function() {
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = 2 + Math.random() * 50 * this.level;
+		this.body.velocity.x = 2 + this.game.rnd.between(1,5) * 50 * this.level;
+		this.body.velocity.y -= 2 + this.game.rnd.between(1,5) * 50 * this.level;
 	}
 
 };

@@ -53,11 +53,11 @@ Level.prototype = {
 		// add LevelText
 		this.addLevelText();
 
-		// level gui menu
-		this.addGui();
-
 		// add start screen
 		this.addStartScreen();
+
+		// level gui menu
+		this.addGui();
 	},
 
 	update : function() {
@@ -66,7 +66,7 @@ Level.prototype = {
 
 	render : function() {
 
-		 this.game.debug.body(this.pikachu);
+		// this.game.debug.body(this.pikachu);
 		// this.game.debug.body(this.ball);
 		// this.game.debug.body(this.pokemon);
 	},

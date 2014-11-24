@@ -72,9 +72,11 @@ Preload.prototype = {
 		// this.load.atlas("pikachu", "assets/graphics/pikachu.png",
 		// "assets/graphics/pikachu.json");
 		this.load.spritesheet("pikachu_ball",
-				"assets/graphics/pikachu_play_ball41x80.png", 41, 80);
+				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 		this.load.spritesheet("pikachu_waving",
 				"assets/graphics/pikachu_waving108x139.png", 108, 139);
+		this.load.image("pikachu100",
+				"assets/graphics/pikachu100.png");
 
 		// Ball
 		this.load.image("ball", "assets/graphics/ballred40.png");
@@ -87,7 +89,7 @@ Preload.prototype = {
 
 		// tree
 		this.load.image("tree", "assets/graphics/treereal.png");
-		
+
 		// Pokemon
 
 		// weedle
