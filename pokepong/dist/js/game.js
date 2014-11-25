@@ -911,6 +911,7 @@ Pauseboard.prototype.hide = function() {
 Pauseboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
+
 };
 
 module.exports = Pauseboard;
@@ -1701,12 +1702,12 @@ Menu.prototype = {
 
 	},
 	onFocusLost : function() {
-		this.game.tweens.pauseAll();
-		this.game.sound.mute = !0;
+		// this.game.tweens.pauseAll();
+		// this.game.sound.mute = !0;
 	},
 	onFocus : function() {
-		this.game.tweens.resumeAll();
-		this.game.sound.mute = !1;
+//		this.game.tweens.resumeAll();
+//		this.game.sound.mute = !1;
 	},
 	addBackground : function() {
 		this.game.add.image(0, 0, "bggroup", "bg.png");

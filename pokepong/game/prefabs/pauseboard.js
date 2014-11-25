@@ -113,6 +113,7 @@ Pauseboard.prototype.hide = function() {
 Pauseboard.prototype.onHideComplete = function() {
 	this.exists = !1;
 	this.visible = !1;
+
 };
 
 module.exports = Pauseboard;
