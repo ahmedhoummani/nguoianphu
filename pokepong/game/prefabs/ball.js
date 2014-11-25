@@ -61,7 +61,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.explosionPool = this.game.add.group();
 	this.explosionPool.enableBody = true;
 	this.explosionPool.physicsBodyType = Phaser.Physics.ARCADE;
-	this.explosionPool.createMultiple(3, 'explosion');
+	this.explosionPool.createMultiple(3, 'explosion_boom');
 	this.explosionPool.setAll('anchor.x', 0.5);
 	this.explosionPool.setAll('anchor.y', 0.5);
 	this.explosionPool.forEach(function(explosion) {
@@ -104,8 +104,8 @@ Ball.prototype.hitPikachu = function() {
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = this.game.rnd.between(1,5) * 50 * this.level;
-		this.body.velocity.y -= this.game.rnd.between(1,5) * 50 * this.level;
+		this.body.velocity.x = this.game.rnd.between(1, 5) * 50 * this.level;
+		this.body.velocity.y -= this.game.rnd.between(1, 5) * 50 * this.level;
 	}
 
 };
@@ -174,8 +174,8 @@ Ball.prototype.explode = function() {
 	explosion.reset(this.x, this.y);
 	explosion.play('boom', 15, false, true);
 	// add the original sprite's velocity to the explosion
-	explosion.body.velocity.x = this.body.velocity.x;
-	explosion.body.velocity.y = this.body.velocity.y;
+	// explosion.body.velocity.x = this.body.velocity.x;
+	// explosion.body.velocity.y = this.body.velocity.y;
 
 };
 
