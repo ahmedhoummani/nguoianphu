@@ -14,9 +14,9 @@ var Levelstartboard = function(game, parent, level) {
 
 	this.addBackGround();
 
-	this.board = this.game.add.image(0, 0, "bggroup", "creditbg.png", this);
-	this.board.position.set(this.game.width / 2 - this.board.width / 2,
-			this.game.height / 2 - this.board.height / 2);
+	this.startboard = this.game.add.image(0, 0, "bggroup", "creditbg.png", this);
+	this.startboard.position.set(this.game.width / 2 - this.startboard.width / 2,
+			this.game.height / 2 - this.startboard.height / 2);
 
 	this.initPokemon(this._level2pokemon.pokemon,
 			this._level2pokemon.pokemon_name, this._level2pokemon.pokemon_icon);
@@ -68,11 +68,11 @@ Levelstartboard.prototype.show = function() {
 	this.visible = !0;
 
 	this.alpha = 0;
-	this.board.y -= 200;
+	this.startboard.y -= 200;
 	this.game.add.tween(this).to({
 				alpha : 1
 			}, 200, Phaser.Easing.Linear.None, !0);
-	this.game.add.tween(this.board).to({
+	this.game.add.tween(this.startboard).to({
 				y : 200
 			}, 500, Phaser.Easing.Back.Out, !0).onComplete.addOnce(
 			this.onShowComplete, this);
@@ -85,7 +85,7 @@ Levelstartboard.prototype.hide = function() {
 	this.game.add.tween(this).to({
 				alpha : 0
 			}, 100, Phaser.Easing.Linear.None, !0, 400);
-	this.game.add.tween(this.board).to({
+	this.game.add.tween(this.startboard).to({
 				y : 500
 			}, 500, Phaser.Easing.Back.In, !0).onComplete.addOnce(
 			this.onHideComplete, this);
@@ -97,7 +97,7 @@ Levelstartboard.prototype.onHideComplete = function() {
 };
 
 Levelstartboard.prototype.destroy = function() {
-	this.board.destroy();
+	this.startboard.destroy();
 	this.icon.destroy();
 	this.text.destroy();
 };

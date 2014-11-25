@@ -9,8 +9,8 @@ var Levelcompleteboard = function(b, c, d) {
 	this.levelNumber = d;
 	this.addBackGround();
 	this.addButtons();
-	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
-			this)
+	this.completeboard = this.game.add.image(-10, 250, "bggroup",
+			"levelcomplete.png", this)
 
 };
 
@@ -51,14 +51,14 @@ Levelcompleteboard.prototype.addButtons = function() {
 Levelcompleteboard.prototype.show = function() {
 	var a = this;
 	this.visible = !0;
-	this.board.y -= 200;
-	this.board.alpha = 0;
+	this.completeboard.y -= 200;
+	this.completeboard.alpha = 0;
 	var b = 500;
-	this.game.add.tween(this.board).to({
+	this.game.add.tween(this.completeboard).to({
 				alpha : 1
 			}, 200, Phaser.Easing.Linear.None, !0), this.game.add
-			.tween(this.board).to({
-						y : this.board.y + 200
+			.tween(this.completeboard).to({
+						y : this.completeboard.y + 200
 					}, b, Phaser.Easing.Back.Out, !0);
 	var c = b;
 	this.buttons.forEach(function(d) {
