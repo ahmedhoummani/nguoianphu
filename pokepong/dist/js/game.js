@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":20,"./states/level":21,"./states/levelsmenu":22,"./states/menu":23,"./states/preload":24}],2:[function(require,module,exports){
+},{"./states/boot":19,"./states/level":20,"./states/levelsmenu":21,"./states/menu":22,"./states/preload":23}],2:[function(require,module,exports){
 'use strict';
 
 var Ball = function(game, x, y, pikachu, pole, level) {
@@ -409,7 +409,7 @@ Levelcompleteboard.prototype.show = function() {
 
 module.exports = Levelcompleteboard;
 
-},{"./simplebutton":17}],6:[function(require,module,exports){
+},{"./simplebutton":16}],6:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var ToggleButton = require('./togglebutton');
 
@@ -530,7 +530,7 @@ Levelfailboard.prototype.onShowComplete = function() {
 
 module.exports = Levelfailboard;
 
-},{"./simplebutton":17,"./togglebutton":18}],7:[function(require,module,exports){
+},{"./simplebutton":16,"./togglebutton":17}],7:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
 var LevelFailBoard = require('./levelfailboard');
@@ -611,7 +611,7 @@ Levelgui.prototype.onResume = function() {
 
 module.exports = Levelgui;
 
-},{"./levelcompleteboard":5,"./levelfailboard":6,"./pauseboard":13,"./simplebutton":17}],8:[function(require,module,exports){
+},{"./levelcompleteboard":5,"./levelfailboard":6,"./pauseboard":12,"./simplebutton":16}],8:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
@@ -822,43 +822,6 @@ Levelstartboard.prototype.destroy = function() {
 module.exports = Levelstartboard;
 
 },{"./level2pokemon":4}],12:[function(require,module,exports){
-var Tree = require('./tree');
-
-'use strict';
-
-var Objects = function(game, parent, ball, pokemon_type) {
-	Phaser.Group.call(this, game, "Object group", false, true, parent, ball,
-			pokemon_type);
-
-	this.ball = ball;
-	this.pokemon_type = pokemon_type;
-	this.numberOfTree = 3;
-
-	for (var i = 1; i <= this.numberOfTree; i++) {
-		var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
-				.between(100, this.game.height / 2);
-		this.tree = new Tree(this.game, randomX, randomY, this.ball);
-		this.add(this.tree);
-
-	}
-
-};
-
-Objects.prototype = Object.create(Phaser.Group.prototype);
-Objects.prototype.constructor = Objects;
-
-Objects.prototype.reset = function(x, y) {
-	this.exists = true;
-};
-
-Objects.prototype.destroy = function(x, y) {
-	this.numberOfTree = 0;
-	this.removeAll();
-};
-
-module.exports = Objects;
-
-},{"./tree":19}],13:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var ToggleButton = require('./togglebutton');
 
@@ -978,7 +941,7 @@ Pauseboard.prototype.onHideComplete = function() {
 
 module.exports = Pauseboard;
 
-},{"./simplebutton":17,"./togglebutton":18}],14:[function(require,module,exports){
+},{"./simplebutton":16,"./togglebutton":17}],13:[function(require,module,exports){
 'use strict';
 
 var Pikachu = function(game, x, y, level) {
@@ -1048,7 +1011,7 @@ Pikachu.prototype.update = function() {
 
 module.exports = Pikachu;
 
-},{}],15:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 var Level2pokemon = require('./level2pokemon');
 
 'use strict';
@@ -1252,7 +1215,7 @@ Pokemon.prototype.explode = function() {
 
 module.exports = Pokemon;
 
-},{"./level2pokemon":4}],16:[function(require,module,exports){
+},{"./level2pokemon":4}],15:[function(require,module,exports){
 'use strict';
 
 var Pole = function(game, x, y, width, height) {
@@ -1285,7 +1248,7 @@ Pole.prototype.update = function() {
 
 module.exports = Pole;
 
-},{}],17:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = function(b, c, d, e, f) {
@@ -1334,7 +1297,7 @@ Simplebutton.prototype.setCallbackDelay = function(a) {
 
 module.exports = Simplebutton;
 
-},{}],18:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = require('./simplebutton');
@@ -1373,7 +1336,7 @@ Togglebutton.prototype.switchTextures = function() {
 
 module.exports = Togglebutton;
 
-},{"./simplebutton":17}],19:[function(require,module,exports){
+},{"./simplebutton":16}],18:[function(require,module,exports){
 'use strict';
 
 var Tree = function(game, x, y, ball) {
@@ -1387,7 +1350,6 @@ var Tree = function(game, x, y, ball) {
 	this.body.allowRotation = false;
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
-
 
 };
 
@@ -1403,7 +1365,7 @@ Tree.prototype.hitBall = function() {
 
 module.exports = Tree;
 
-},{}],20:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 function Boot() {
@@ -1459,13 +1421,14 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],21:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 var Pikachu = require('../prefabs/pikachu');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
 var Pole = require('../prefabs/pole');
-var Objects = require('../prefabs/objects');
+// var Objects = require('../prefabs/objects');
+var Tree = require('../prefabs/tree');
 
 var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
@@ -1603,14 +1566,25 @@ Level.prototype = {
 
 	addObjects : function() {
 
-		this.objects = this.game.add.group();
-		this.objectGroup = this.objects.getFirstExists(false);
+		// this.objects = this.game.add.group();
+		// this.objectGroup = this.objects.getFirstExists(false);
+		//
+		// if (!this.objectGroup) {
+		// this.objectGroup = new Objects(this.game, this.objects, this.ball,
+		// "pokemon_type");
+		// }
+		// this.objectGroup.reset(100, 100);
 
-		if (!this.objectGroup) {
-			this.objectGroup = new Objects(this.game, this.objects, this.ball,
-					"pokemon_type");
+		this.numberOfTree = 3;
+		this.trees = this.game.add.group();
+
+		for (var i = 1; i <= this.numberOfTree; i++) {
+			var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
+					.between(100, this.game.height / 2);
+			this.tree = new Tree(this.game, randomX, randomY, this.ball);
+			this.trees.add(this.tree);
+
 		}
-		this.objectGroup.reset(100, 100);
 
 	},
 	addGui : function() {
@@ -1644,13 +1618,12 @@ Level.prototype = {
 		this.ball.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
-		this.objects.destroy();
-		this.objectGroup.destroy();
+		this.trees.destroy();
 	}
 };
 module.exports = Level;
 
-},{"../prefabs/ball":2,"../prefabs/ground":3,"../prefabs/levelgui":7,"../prefabs/levelresult":9,"../prefabs/levelsettings":10,"../prefabs/levelstartboard":11,"../prefabs/objects":12,"../prefabs/pikachu":14,"../prefabs/pokemon":15,"../prefabs/pole":16,"../prefabs/simplebutton":17}],22:[function(require,module,exports){
+},{"../prefabs/ball":2,"../prefabs/ground":3,"../prefabs/levelgui":7,"../prefabs/levelresult":9,"../prefabs/levelsettings":10,"../prefabs/levelstartboard":11,"../prefabs/pikachu":13,"../prefabs/pokemon":14,"../prefabs/pole":15,"../prefabs/simplebutton":16,"../prefabs/tree":18}],21:[function(require,module,exports){
 var LevelIcon = require('../prefabs/levelicon');
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
@@ -1749,7 +1722,7 @@ Levelsmenu.prototype = {
 };
 module.exports = Levelsmenu;
 
-},{"../prefabs/levelicon":8,"../prefabs/simplebutton":17,"../prefabs/togglebutton":18}],23:[function(require,module,exports){
+},{"../prefabs/levelicon":8,"../prefabs/simplebutton":16,"../prefabs/togglebutton":17}],22:[function(require,module,exports){
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
 
@@ -2005,7 +1978,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{"../prefabs/simplebutton":17,"../prefabs/togglebutton":18}],24:[function(require,module,exports){
+},{"../prefabs/simplebutton":16,"../prefabs/togglebutton":17}],23:[function(require,module,exports){
 'use strict';
 function Preload() {
 }

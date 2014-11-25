@@ -12,7 +12,6 @@ var Tree = function(game, x, y, ball) {
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
 
-
 };
 
 Tree.prototype = Object.create(Phaser.Sprite.prototype);

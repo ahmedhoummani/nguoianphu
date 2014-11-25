@@ -3,7 +3,8 @@ var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
 var Pole = require('../prefabs/pole');
-var Objects = require('../prefabs/objects');
+// var Objects = require('../prefabs/objects');
+var Tree = require('../prefabs/tree');
 
 var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
@@ -141,14 +142,25 @@ Level.prototype = {
 
 	addObjects : function() {
 
-		this.objects = this.game.add.group();
-		this.objectGroup = this.objects.getFirstExists(false);
+		// this.objects = this.game.add.group();
+		// this.objectGroup = this.objects.getFirstExists(false);
+		//
+		// if (!this.objectGroup) {
+		// this.objectGroup = new Objects(this.game, this.objects, this.ball,
+		// "pokemon_type");
+		// }
+		// this.objectGroup.reset(100, 100);
 
-		if (!this.objectGroup) {
-			this.objectGroup = new Objects(this.game, this.objects, this.ball,
-					"pokemon_type");
+		this.numberOfTree = 3;
+		this.trees = this.game.add.group();
+
+		for (var i = 1; i <= this.numberOfTree; i++) {
+			var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
+					.between(100, this.game.height / 2);
+			this.tree = new Tree(this.game, randomX, randomY, this.ball);
+			this.trees.add(this.tree);
+
 		}
-		this.objectGroup.reset(100, 100);
 
 	},
 	addGui : function() {
@@ -182,8 +194,7 @@ Level.prototype = {
 		this.ball.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
-		this.objects.destroy();
-		this.objectGroup.destroy();
+		this.trees.destroy();
 	}
 };
 module.exports = Level;
