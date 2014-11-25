@@ -58,10 +58,11 @@ Preload.prototype = {
 				"assets/graphics/buttonsgroup.json");
 
 		// ground
-		this.load.image("ground", "assets/graphics/stone.png");
+		this.load.image("ground", "assets/graphics/grass.png");
 
-		// pole
-		this.load.image("pole", "assets/graphics/pole.png");
+		// trap
+		this.load.spritesheet("saw_spin", "assets/graphics/spinning_saw.png",
+				70, 69);
 
 		// background
 		// level complete
@@ -75,8 +76,7 @@ Preload.prototype = {
 				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 		this.load.spritesheet("pikachu_waving",
 				"assets/graphics/pikachu_waving108x139.png", 108, 139);
-		this.load.image("pikachu100",
-				"assets/graphics/pikachu100.png");
+		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
 
 		// Ball
 		this.load.image("ball", "assets/graphics/ballred40.png");

@@ -1,13 +1,13 @@
 'use strict';
 
-var Ball = function(game, x, y, pikachu, pole, level) {
-	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, pole, level);
+var Ball = function(game, x, y, pikachu, trap, level) {
+	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, trap, level);
 
 	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
-	this.pole = pole;
+	this.trap = trap;
 
 	this.level = level;
 	if (this.level > 3) {
@@ -94,7 +94,7 @@ Ball.prototype.update = function() {
 
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
-	this.game.physics.arcade.collide(this, this.pole, this.damage, null, this);
+	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
 
 };
 

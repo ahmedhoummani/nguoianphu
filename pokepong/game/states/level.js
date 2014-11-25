@@ -2,15 +2,12 @@ var Pikachu = require('../prefabs/pikachu');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
-var Pole = require('../prefabs/pole');
-// var Objects = require('../prefabs/objects');
+var Trap = require('../prefabs/trap');
 var Tree = require('../prefabs/tree');
 
 var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
-var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
-var SimpleButton = require('../prefabs/simplebutton');
 
 'use strict';
 
@@ -38,8 +35,8 @@ Level.prototype = {
 		// add ground
 		this.addGround();
 
-		// add Pole
-		this.addPole();
+		// add traps
+		this.addTrap();
 
 		// add pikachu
 		this.addPikachu();
@@ -117,18 +114,25 @@ Level.prototype = {
 				this.game.width, 64);
 
 	},
-	addPole : function() {
-		this.pole = new Pole(this.game, 0, this.game.height - 31,
-				this.game.width, 31);
+	addTrap : function() {
+
+		this.numberOfTrap = 6;
+		this.traps = this.game.add.group();
+
+		for (var i = 0; i < this.numberOfTrap; i++) {
+			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 25);
+			this.traps.add(this.trap);
+
+		}
 
 	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 80, this._settings.levelNumber);
+				this.game.height - 100, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, this.pikachu, this.pole,
+						- 45, this.pikachu, this.traps,
 				this._settings.levelNumber);
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
@@ -195,6 +199,7 @@ Level.prototype = {
 		this.pikachu.destroy();
 		this.pokemon.destroy();
 		this.trees.destroy();
+		this.traps.destroy();
 	}
 };
 module.exports = Level;
