@@ -86,8 +86,8 @@ Preload.prototype = {
 		// explosion
 		this.load.spritesheet("explosion", "assets/graphics/explosion.png",
 				128, 128);
-		this.load.spritesheet("explosion_boom", "assets/graphics/explosion_boom.png",
-				64, 64);
+		this.load.spritesheet("explosion_boom",
+				"assets/graphics/explosion_boom.png", 64, 64);
 
 		// tree
 		this.load.image("tree", "assets/graphics/treereal.png");
@@ -102,6 +102,11 @@ Preload.prototype = {
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
+		// arcanine
+		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
+				"assets/graphics/pokemons/arcanine.json");
+
+				
 		// Sound
 		this.game.device.webAudio
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

@@ -27,10 +27,10 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.trap = trap;
 
 	this.level = level;
-	if (this.level > 3) {
+	if (this.level > 8) {
 		this.level *= 1.1;
 	} else {
-		this.level = 3;
+		this.level = 8;
 	}
 
 	this.game.physics.arcade.enableBody(this);
@@ -241,6 +241,13 @@ var Level2pokemon = function(a) {
 					'19.png'], frame_right = ['09.png', '010.png', '11.png',
 					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
 					'17.png', '18.png', '19.png'];
+			break;
+		case 3 :
+			pokemon = 'arcanine', pokemon_name = 'Arcanine', pokemon_icon = 'arcanine_icon.png', frame_left = [
+					'01.png', '01.png', '02.png', '02.png'], frame_ghostleft = [
+					'05.png', '05.png', '06.png', '06.png'], frame_right = [
+					'03.png', '03.png', '04.png', '04.png'], frame_ghostright = [
+					'07.png', '07.png', '08.png', '08.png'];
 			break;
 		default :
 			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
@@ -2004,8 +2011,8 @@ Preload.prototype = {
 		// explosion
 		this.load.spritesheet("explosion", "assets/graphics/explosion.png",
 				128, 128);
-		this.load.spritesheet("explosion_boom", "assets/graphics/explosion_boom.png",
-				64, 64);
+		this.load.spritesheet("explosion_boom",
+				"assets/graphics/explosion_boom.png", 64, 64);
 
 		// tree
 		this.load.image("tree", "assets/graphics/treereal.png");
@@ -2020,6 +2027,11 @@ Preload.prototype = {
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
+		// arcanine
+		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
+				"assets/graphics/pokemons/arcanine.json");
+
+				
 		// Sound
 		this.game.device.webAudio
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

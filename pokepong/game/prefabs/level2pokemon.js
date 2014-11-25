@@ -21,6 +21,13 @@ var Level2pokemon = function(a) {
 					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
 					'17.png', '18.png', '19.png'];
 			break;
+		case 3 :
+			pokemon = 'arcanine', pokemon_name = 'Arcanine', pokemon_icon = 'arcanine_icon.png', frame_left = [
+					'01.png', '01.png', '02.png', '02.png'], frame_ghostleft = [
+					'05.png', '05.png', '06.png', '06.png'], frame_right = [
+					'03.png', '03.png', '04.png', '04.png'], frame_ghostright = [
+					'07.png', '07.png', '08.png', '08.png'];
+			break;
 		default :
 			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',

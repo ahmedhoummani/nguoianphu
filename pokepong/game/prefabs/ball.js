@@ -9,10 +9,10 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.trap = trap;
 
 	this.level = level;
-	if (this.level > 3) {
+	if (this.level > 8) {
 		this.level *= 1.1;
 	} else {
-		this.level = 3;
+		this.level = 8;
 	}
 
 	this.game.physics.arcade.enableBody(this);
