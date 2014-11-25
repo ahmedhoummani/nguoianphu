@@ -21,7 +21,6 @@ window.onload = function () {
 var Ball = function(game, x, y, pikachu, trap, level) {
 	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, trap, level);
 
-	// initialize your prefab here
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
@@ -102,14 +101,6 @@ Ball.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	// if (Math.abs(this.body.velocity.y) < 50 && this.notPause) {
-	// if (this.body.velocity.y > 0) {
-	// this.body.velocity.y += 100;
-	// } else {
-	// this.body.velocity.y -= -100;
-	// }
-	// }
-
 	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
 			this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
@@ -127,12 +118,12 @@ Ball.prototype.hitPikachu = function() {
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x -= (-100 * diff * this.level);
+		this.body.velocity.x -= (100 * diff * this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = 2 + this.game.rnd.between(1,5) * 50 * this.level;
-		this.body.velocity.y -= 2 + this.game.rnd.between(1,5) * 50 * this.level;
+		this.body.velocity.x = this.game.rnd.between(1,5) * 50 * this.level;
+		this.body.velocity.y -= this.game.rnd.between(1,5) * 50 * this.level;
 	}
 
 };
@@ -213,10 +204,7 @@ module.exports = Ball;
 
 var Ground = function(game, x, y, width, height) {
 	Phaser.TileSprite.call(this, game, x, y, width, height, 'ground');
-
-	// initialize your prefab here
-	// this.autoScroll(-20, 20);
-	// this.fixedToCamera = true;
+	
 	this.game.add.existing(this);
 
 };
@@ -225,10 +213,6 @@ Ground.prototype = Object.create(Phaser.TileSprite.prototype);
 Ground.prototype.constructor = Ground;
 
 Ground.prototype.update = function() {
-
-	// write your prefab's specific update code here
-	// this.tilePosition.x = -this.game.camera.x;
-	// this.tilePosition.y = -this.game.camera.y;
 
 };
 
@@ -930,13 +914,11 @@ module.exports = Pauseboard;
 var Pikachu = function(game, x, y, level) {
 	Phaser.Sprite.call(this, game, x, y, 'pikachu100', level);
 
-	// initialize your prefab here
-
 	this.level = level;
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(100, 50, 0, 0);
+	this.body.setSize(100, 25, 0, 25);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(0, 0);
 	this.body.allowRotation = false;
@@ -948,16 +930,6 @@ var Pikachu = function(game, x, y, level) {
 				angle : 8
 			}, 500, Phaser.Easing.Linear.NONE, true, 0, Number.MAX_VALUE, true);
 
-	// this.animations.add('stand', ['1.png', '2.png', '3.png', '4.png'], 7,
-	// true);
-	// this.animations.add('right', ['run1.png', 'run2.png', 'run3.png',
-	// 'run4.png'], 10, true);
-	// this.animations.add('left',
-	// ['run5.png', 'run6.png', 'run7.png', 'run8.png'], 10, true);
-
-	// this.animations.add('stand', [0, 1, 2, 3, 4], 10, true);
-	// this.animations.play('stand');
-
 	this.notPause = !0;
 
 	this.game.add.existing(this);
@@ -968,18 +940,6 @@ Pikachu.prototype = Object.create(Phaser.Sprite.prototype);
 Pikachu.prototype.constructor = Pikachu;
 
 Pikachu.prototype.update = function() {
-
-	/*
-	 * if (this.game.input.activePointer.isDown &&
-	 * this.game.physics.arcade.distanceToPointer(this) > 20 && this.notPause) {
-	 * 
-	 * if (this.x - this.game.input.x < 10) { this.animations.play('right');
-	 * this.body.velocity.x = 200 * this.level; } else if (this.x -
-	 * this.game.input.x > 10) { this.animations.play('left');
-	 * this.body.velocity.x = -200 * this.level; } } else {
-	 * this.animations.play('stand'); this.body.velocity.x = 0;
-	 * this.body.velocity.y = 0; }
-	 */
 
 	if (this.game.input.activePointer.isDown && this.notPause) {
 		this.x = this.game.input.x;
@@ -1113,7 +1073,7 @@ Pokemon.prototype.update = function() {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 10
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 5
 				* this.level);
 		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
 				* this.level);
@@ -1525,7 +1485,7 @@ Level.prototype = {
 		this.traps = this.game.add.group();
 
 		for (var i = 0; i < this.numberOfTrap; i++) {
-			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 25);
+			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 30);
 			this.traps.add(this.trap);
 
 		}
@@ -1533,7 +1493,7 @@ Level.prototype = {
 	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 100, this._settings.levelNumber);
+				this.game.height - 110, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
@@ -1550,15 +1510,6 @@ Level.prototype = {
 	},
 
 	addObjects : function() {
-
-		// this.objects = this.game.add.group();
-		// this.objectGroup = this.objects.getFirstExists(false);
-		//
-		// if (!this.objectGroup) {
-		// this.objectGroup = new Objects(this.game, this.objects, this.ball,
-		// "pokemon_type");
-		// }
-		// this.objectGroup.reset(100, 100);
 
 		this.numberOfTree = 3;
 		this.trees = this.game.add.group();

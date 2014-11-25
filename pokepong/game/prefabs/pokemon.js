@@ -116,7 +116,7 @@ Pokemon.prototype.update = function() {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 10
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 5
 				* this.level);
 		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
 				* this.level);

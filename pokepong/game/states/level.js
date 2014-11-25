@@ -120,7 +120,7 @@ Level.prototype = {
 		this.traps = this.game.add.group();
 
 		for (var i = 0; i < this.numberOfTrap; i++) {
-			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 25);
+			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 30);
 			this.traps.add(this.trap);
 
 		}
@@ -128,7 +128,7 @@ Level.prototype = {
 	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 100, this._settings.levelNumber);
+				this.game.height - 110, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
@@ -145,15 +145,6 @@ Level.prototype = {
 	},
 
 	addObjects : function() {
-
-		// this.objects = this.game.add.group();
-		// this.objectGroup = this.objects.getFirstExists(false);
-		//
-		// if (!this.objectGroup) {
-		// this.objectGroup = new Objects(this.game, this.objects, this.ball,
-		// "pokemon_type");
-		// }
-		// this.objectGroup.reset(100, 100);
 
 		this.numberOfTree = 3;
 		this.trees = this.game.add.group();
