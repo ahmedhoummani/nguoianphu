@@ -54,8 +54,10 @@ Pauseboard.prototype.addButtons = function() {
 
 	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
 			"buttonsgroup", "menu.png");
+	
 	this.menuBtn.callback.add(function() {
-				a.game.state.start("levelsmenu")
+					a.menuBtn.inputEnabled = !1,
+					a.game.state.start("levelsmenu")
 			});
 
 	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,

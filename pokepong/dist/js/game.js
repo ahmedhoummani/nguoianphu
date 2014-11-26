@@ -558,8 +558,14 @@ Levelgui.prototype.initButtons = function() {
 	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png");
 	b.add(this.pauseButton);
+	
+	// delay 1 seconds
+	var timeDelay = 0;
 	this.pauseButton.callback.add(function() {
-				b._pauseSignal.dispatch("pause");
+			if (this.game.time.now > timeDelay){
+					b._pauseSignal.dispatch("pause"),
+					timeDelay = this.game.time.now + 1000
+				}
 			}, this)
 
 };
@@ -592,12 +598,14 @@ Levelgui.prototype.addPauseBoard = function() {
 			}, this);
 };
 Levelgui.prototype.onPause = function() {
-	this.pauseBoard.show();
+	this.pauseButton.inputEnabled = !1;
 	this.pauseButton.visible = !1;
+	this.pauseBoard.show();
 };
 Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 	this.pauseButton.visible = !0;
+	this.pauseButton.inputEnabled = !0;
 };
 
 module.exports = Levelgui;
@@ -852,8 +860,10 @@ Pauseboard.prototype.addButtons = function() {
 
 	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
 			"buttonsgroup", "menu.png");
+	
 	this.menuBtn.callback.add(function() {
-				a.game.state.start("levelsmenu")
+					a.menuBtn.inputEnabled = !1,
+					a.game.state.start("levelsmenu")
 			});
 
 	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,
