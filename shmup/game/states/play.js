@@ -39,7 +39,7 @@ Play.prototype = {
 
     });
 
-    this.nextEnemyAt = this.time.now + 5000;;
+    this.nextEnemyAt = this.time.now + 5000;
     this.enemyDelay = 4000;
     this.enemyInitialHealth = 2;
 
