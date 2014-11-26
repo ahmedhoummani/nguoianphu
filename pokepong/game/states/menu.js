@@ -100,7 +100,12 @@ Menu.prototype = {
 	hideAndStartGame : function() {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
-		this.game.state.start("levelsmenu");
+		
+		if ("true" === window.localStorage.getItem("1")){
+			this.game.state.start("levelsmenu");
+		} else {
+			this.game.state.start("level", !0, !1, 1);
+		}
 	},
 	initCredits : function() {
 
