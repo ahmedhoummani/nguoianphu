@@ -58,7 +58,9 @@ Preload.prototype = {
 				"assets/graphics/buttonsgroup.json");
 
 		// ground
-		this.load.image("ground", "assets/graphics/grass.png");
+		this.load.image("grass", "assets/graphics/grass.png");
+		this.load.image("sand", "assets/graphics/sand.png");
+		this.load.image("water", "assets/graphics/water.png");
 
 		// trap
 		this.load.spritesheet("saw_spin", "assets/graphics/spinning_saw.png",
@@ -89,8 +91,9 @@ Preload.prototype = {
 		this.load.spritesheet("explosion_boom",
 				"assets/graphics/explosion_boom.png", 64, 64);
 
-		// tree
+		// objects
 		this.load.image("tree", "assets/graphics/treereal.png");
+		this.load.image("island", "assets/graphics/island.png");
 
 		// Pokemon
 

@@ -1,7 +1,7 @@
 'use strict';
 
-var Ground = function(game, x, y, width, height) {
-	Phaser.TileSprite.call(this, game, x, y, width, height, 'ground');
+var Ground = function(game, x, y, width, height, ground) {
+	Phaser.TileSprite.call(this, game, x, y, width, height, ground);
 	
 	this.game.add.existing(this);
 

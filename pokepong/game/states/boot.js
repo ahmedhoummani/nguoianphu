@@ -5,15 +5,6 @@ function Boot() {
 
 Boot.prototype = {
 
-	init : function() {
-			this.game.device.android
-					&& !this.game.device.chrome
-					&& (this.game.canvas.parentElement.style.overflow = "visible");
-			var a = {
-				font : "46px"
-			}, b = this.game.add.text(0, 0, "0", a);
-			b.destroy()
-	},
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
 		this.load.image('LoadingBar_Inner', 'assets/LoadingBar_Inner.png');
@@ -43,10 +34,7 @@ Boot.prototype = {
 		document.getElementById("orientation").style.display = "block", document.body.style.marginBottom = "0px";
 	},
 	onLeaveIncorrectOrientation : function() {
-		document.getElementById("orientation").style.display = "none", document.body.style.marginBottom = "100px", this.game.device.android
-				&& !this.game.device.chrome
-				&& this.game.scale.setScreenSize(!0), this.game.time.events
-				.repeat(500, 3, this.game.scale.setScreenSize, this);
+		document.getElementById("orientation").style.display = "none", document.body.style.marginBottom = "100px";
 	}
 
 };

@@ -22,6 +22,8 @@ var Pokemon = function(game, x, y, ball, level) {
 		this.level = 2;
 	}
 
+	// this.pokemon_type = this._level2pokemon.pokemon_type;
+	
 	this.health = 3;
 	this.ghostUntil = 1;
 	this.ghostUntilTimer = 5000;

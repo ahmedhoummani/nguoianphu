@@ -4,10 +4,12 @@ var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
 var Trap = require('../prefabs/trap');
 var Tree = require('../prefabs/tree');
+var Island = require('../prefabs/island');
 
 var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
 var LevelGUI = require('../prefabs/levelgui');
+var Level2pokemon = require('../prefabs/level2pokemon');
 
 'use strict';
 
@@ -31,6 +33,7 @@ Level.prototype = {
 	create : function() {
 
 		this.levels_num = 28;
+		this._level2pokemon = new Level2pokemon(this._settings.levelNumber);
 
 		// add ground
 		this.addGround();
@@ -110,8 +113,9 @@ Level.prototype = {
 				"true")
 	},
 	addGround : function() {
-		this.ground = new Ground(this.game, 0, this.game.height - 64,
-				this.game.width, 64);
+
+		this.ground = new Ground(this.game, 0, 0,
+				this.game.width, this.game.height, this._level2pokemon.pokemon_type.toString());
 
 	},
 	addTrap : function() {
@@ -146,15 +150,19 @@ Level.prototype = {
 
 	addObjects : function() {
 
-		this.numberOfTree = 3;
-		this.trees = this.game.add.group();
+		this.numberOfObjects = 3;
+		this.objects = this.game.add.group();
 
-		for (var i = 1; i <= this.numberOfTree; i++) {
-			var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
-					.between(100, this.game.height / 2);
-			this.tree = new Tree(this.game, randomX, randomY, this.ball);
-			this.trees.add(this.tree);
-
+			for (var i = 1; i <= this.numberOfObjects; i++) {
+				var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
+						.between(100, this.game.height / 2);
+				if (this._level2pokemon.pokemon_type.toString() == "water") {
+					this.object = new Island(this.game, randomX, randomY, this.ball);
+				}
+				else {		
+					this.object = new Tree(this.game, randomX, randomY, this.ball);
+				}
+				this.objects.add(this.object);
 		}
 
 	},
@@ -189,8 +197,9 @@ Level.prototype = {
 		this.ball.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
-		this.trees.destroy();
+		this.objects.destroy();
 		this.traps.destroy();
+		this._level2pokemon = null;
 	}
 };
 module.exports = Level;

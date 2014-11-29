@@ -4,32 +4,32 @@ var Level2pokemon = function(a) {
 
 	this._levelNumber = a;
 
-	var pokemon, pokemon_name, pokemon_icon, frame_left = [], frame_ghostleft = [], frame_right = [], frame_ghostright = [];
+	var pokemon, pokemon_name, pokemon_type, pokemon_icon, frame_left = [], frame_ghostleft = [], frame_right = [], frame_ghostright = [];
 
 	switch (this._levelNumber) {
 		case 1 :
-			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_type = 'water', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2 :
-			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_icon = 'charizard_icon.png', frame_left = [
-					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
-					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
-					'19.png'], frame_right = ['09.png', '010.png', '11.png',
-					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
-					'17.png', '18.png', '19.png'];
-			break;
-		case 3 :
-			pokemon = 'arcanine', pokemon_name = 'Arcanine', pokemon_icon = 'arcanine_icon.png', frame_left = [
+			pokemon = 'arcanine', pokemon_name = 'Arcanine', pokemon_type = 'sand', pokemon_icon = 'arcanine_icon.png', frame_left = [
 					'01.png', '01.png', '02.png', '02.png'], frame_ghostleft = [
 					'05.png', '05.png', '06.png', '06.png'], frame_right = [
 					'03.png', '03.png', '04.png', '04.png'], frame_ghostright = [
 					'07.png', '07.png', '08.png', '08.png'];
 			break;
+		case 3 :
+			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_type = 'sand', pokemon_icon = 'charizard_icon.png', frame_left = [
+					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
+					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
+					'19.png'], frame_right = ['09.png', '010.png', '11.png',
+					'12.png', '13.png', '14.png', '15.png', '16.png'], frame_ghostright = [
+					'17.png', '18.png', '19.png'];			
+			break;
 		default :
-			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_icon = 'weedle_icon.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_type = 'grass', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
@@ -54,6 +54,14 @@ var Level2pokemon = function(a) {
 	Object.defineProperty(this, "pokemon_name", {
 				get : function() {
 					return pokemon_name
+				},
+				enumerable : !0,
+				configurable : !0
+			}),
+			
+	Object.defineProperty(this, "pokemon_type", {
+				get : function() {
+					return pokemon_type
 				},
 				enumerable : !0,
 				configurable : !0
