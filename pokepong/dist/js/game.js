@@ -258,7 +258,7 @@ var Level2pokemon = function(a) {
 
 	switch (this._levelNumber) {
 		case 1 :
-			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_type = 'water', pokemon_icon = 'weedle_icon.png', frame_left = [
+			pokemon = 'weedle', pokemon_name = 'Weedle', pokemon_type = 'grass', pokemon_icon = 'weedle_icon.png', frame_left = [
 					'01.png', '02.png', '03.png'], frame_ghostleft = ['07.png',
 					'08.png', '09.png'], frame_right = ['04.png', '05.png',
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
@@ -271,6 +271,12 @@ var Level2pokemon = function(a) {
 					'07.png', '07.png', '08.png', '08.png'];
 			break;
 		case 3 :
+			pokemon = 'gyarados', pokemon_name = 'Gyarados', pokemon_type = 'water', pokemon_icon = 'gyarados_icon.png', frame_left = [
+					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
+					'07.png', '08.png', '09.png', '10.png', '11.png', '12.png'], frame_ghostleft = ['25.png', '25.png', '26.png', '26.png'], frame_right = ['13.png', '14.png', '15.png', '16.png', '17.png', '18.png', '19.png', '20.png', '21.png', '22.png', '23.png', '24.png'], frame_ghostright = [
+					'27.png', '27.png', '28.png', '28.png'];			
+			break;
+		case 4 :
 			pokemon = 'charizard', pokemon_name = 'Charizard', pokemon_type = 'sand', pokemon_icon = 'charizard_icon.png', frame_left = [
 					'01.png', '02.png', '03.png', '04.png', '05.png', '06.png',
 					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png',
@@ -2077,14 +2083,20 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
+				
+		// arcanine
+		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
+				"assets/graphics/pokemons/arcanine.json");
+				
+		// gyarados
+		this.load.atlas("gyarados", "assets/graphics/pokemons/gyarados.png",
+				"assets/graphics/pokemons/gyarados.json");
 
 		// charizard
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
-		// arcanine
-		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
-				"assets/graphics/pokemons/arcanine.json");
+
 
 				
 		// Sound

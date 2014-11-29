@@ -100,14 +100,20 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
+				
+		// arcanine
+		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
+				"assets/graphics/pokemons/arcanine.json");
+				
+		// gyarados
+		this.load.atlas("gyarados", "assets/graphics/pokemons/gyarados.png",
+				"assets/graphics/pokemons/gyarados.json");
 
 		// charizard
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
-		// arcanine
-		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
-				"assets/graphics/pokemons/arcanine.json");
+
 
 				
 		// Sound
