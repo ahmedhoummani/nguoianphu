@@ -115,7 +115,6 @@
 <center>
 <h1>Play.NguoiAnPhu.com</h1>
 <div class="CSSTableGenerator" >
-                
                 <table >
                     <tr>
                         <td>
@@ -131,7 +130,6 @@
                             Windows Phone
                         </td>
                     </tr>
-					
 					<tr>
                         <td >
                             <b>Pokepong</b><br />
@@ -166,7 +164,6 @@
                         </td>
 						
                     </tr>
-					
                     <tr>
                         <td >
                             <b>Duck981</b><br />
@@ -182,11 +179,24 @@
 						<td>
                             <a href="duck981/duck981.xap">duck981.xap</a>
                         </td>
+                    </tr>
+					<tr>
+                        <td >
+
+                        </td>
+                        <td>
+                           
+                        </td>
+                        <td>
+                            
+                        </td>
 						
+						<td>
+                           
+                        </td>
                     </tr>
                 </table>
-				</div>
-				
+</div>		
 <div id="fb-root"></div>
 <div>Email: nguoianphu@gmail.com</div>
 <h2>Comments:</h2>
