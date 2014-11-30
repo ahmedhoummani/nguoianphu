@@ -2,3 +2,14 @@
 bower_components
 
 /basket/SPRITE
+/init_liquid/assets/Thumbs.db
+/init_liquid/assets/fonts/Thumbs.db
+/init_liquid/assets/graphics/Thumbs.db
+/init_liquid/assets/graphics/split/bg/Thumbs.db
+/init_liquid/assets/graphics/split/buttons/buttonsgroup/Thumbs.db
+/pokepong/sprites/ball/Thumbs.db
+/pokepong/sprites/balls/Thumbs.db
+/pokepong/sprites/bg/Thumbs.db
+/pokepong/sprites/pikachu/Thumbs.db
+/pokepong/sprites/pikachu_hello/Thumbs.db
+/pokepong/sprites/worm/.gitignore
