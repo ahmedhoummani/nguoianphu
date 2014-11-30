@@ -1,0 +1,111 @@
+{"frames": [
+
+{
+	"filename": "Cardinal0001.png",
+	"frame": {"x":338,"y":2,"w":46,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":45},
+	"sourceSize": {"w":46,"h":45},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0002.png",
+	"frame": {"x":386,"y":2,"w":46,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":45},
+	"sourceSize": {"w":46,"h":45},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0003.png",
+	"frame": {"x":434,"y":2,"w":46,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":45},
+	"sourceSize": {"w":46,"h":45},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0004.png",
+	"frame": {"x":50,"y":2,"w":46,"h":48},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":48},
+	"sourceSize": {"w":46,"h":48},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0005.png",
+	"frame": {"x":2,"y":2,"w":46,"h":50},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":50},
+	"sourceSize": {"w":46,"h":50},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0006.png",
+	"frame": {"x":98,"y":2,"w":46,"h":47},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":47},
+	"sourceSize": {"w":46,"h":47},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0007.png",
+	"frame": {"x":194,"y":2,"w":46,"h":46},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":46},
+	"sourceSize": {"w":46,"h":46},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0008.png",
+	"frame": {"x":242,"y":2,"w":46,"h":46},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":46},
+	"sourceSize": {"w":46,"h":46},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0009.png",
+	"frame": {"x":290,"y":2,"w":46,"h":46},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":46},
+	"sourceSize": {"w":46,"h":46},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0010.png",
+	"frame": {"x":482,"y":2,"w":46,"h":45},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":45},
+	"sourceSize": {"w":46,"h":45},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "Cardinal0011.png",
+	"frame": {"x":146,"y":2,"w":46,"h":47},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":46,"h":47},
+	"sourceSize": {"w":46,"h":47},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "Cardinal.png",
+	"format": "RGBA8888",
+	"size": {"w":530,"h":54},
+	"scale": "0.5",
+	"smartupdate": "$TexturePacker:SmartUpdate:af4a9e3580967a51b1dd86575ab82282:e86176ea6c99f3357998b43cee132512:8c3fb862c273bb66d7ba9f0c9cea6dae$"
+}
+}
