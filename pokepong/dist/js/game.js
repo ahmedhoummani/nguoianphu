@@ -706,16 +706,17 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
+	var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
+					.toString(), a);
 	b.anchor.set(.5, .5);
-	var c = this.game.add.renderTexture(this.width, this.height);
-	c.renderXY(this, .5 * this.width, .5 * this.height);
-	c
-			.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
-							* this.height)
-							- 1);
-	this.setTexture(c);
-	b.destroy();
+	// var c = this.game.add.renderTexture(this.width, this.height);
+	// c.renderXY(this, .5 * this.width, .5 * this.height);
+	// c
+	// .renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
+	// * this.height)
+	// - 1);
+	// this.setTexture(c);
+	// b.destroy();
 };
 
 module.exports = Levelicon;
@@ -1235,7 +1236,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	this._callback = new Phaser.Signal();
 	this.anchor.set(.5, .5);
 	this.inputEnabled = !0;
-	this.game.device.desktop && (this.input.useHandCursor = !0);
+	(this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
 				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add

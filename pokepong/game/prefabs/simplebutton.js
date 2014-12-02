@@ -11,7 +11,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	this._callback = new Phaser.Signal();
 	this.anchor.set(.5, .5);
 	this.inputEnabled = !0;
-	this.game.device.desktop && (this.input.useHandCursor = !0);
+	(this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
 				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
