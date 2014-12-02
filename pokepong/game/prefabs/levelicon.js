@@ -50,17 +50,17 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
+	// var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
+					// .toString(), a);
+	// b.anchor.set(.5, .5);
+	var b = this.game.add.text(0, 0, this._levelNumber
 					.toString(), a);
 	b.anchor.set(.5, .5);
-	// var c = this.game.add.renderTexture(this.width, this.height);
-	// c.renderXY(this, .5 * this.width, .5 * this.height);
-	// c
-	// .renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
-	// * this.height)
-	// - 1);
-	// this.setTexture(c);
-	// b.destroy();
+	var c = this.game.add.renderTexture(this.width, this.height);
+	c.renderXY(this, .5 * this.width, .5 * this.height);
+	c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+	this.setTexture(c);
+	b.destroy();
 };
 
 module.exports = Levelicon;
