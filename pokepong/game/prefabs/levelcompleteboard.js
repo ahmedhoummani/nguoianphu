@@ -106,11 +106,11 @@ Levelcompleteboard.prototype.show = function() {
 	this.game.add.tween(this.icon).to({
 				x : this.ballopening.x,
 				y : this.ballopening.y - 56
-			}, 1000, Phaser.Easing.Back.In, !0), this.game.add
+			}, 2000, Phaser.Easing.Back.In, !0), this.game.add
 			.tween(this.icon.scale).to({
 						x : .33,
 						y : .33
-					}, 1000, Phaser.Easing.Back.In, !0, 1000).onComplete
+					}, 1000, Phaser.Easing.Back.In, !0, 2000).onComplete
 			.addOnce(function() {
 						this.icon.kill();
 						this.ballopening.animations.play('close');

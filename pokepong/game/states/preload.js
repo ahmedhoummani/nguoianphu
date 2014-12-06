@@ -96,6 +96,16 @@ Preload.prototype = {
 		this.load.image("tree", "assets/graphics/treereal.png");
 		this.load.image("island", "assets/graphics/island.png");
 
+		// Sound
+		this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+								"assets/audio/MainLoop.m4a"], !0), this.load
+						.audio("tap", ["assets/audio/TapSound.wav"], !0));
+
+		// tutorial hand
+		this.load.atlas("hands", "assets/graphics/hands.png",
+				"assets/graphics/hands.json");
+
 		// Pokemon
 
 		// weedle
@@ -113,12 +123,6 @@ Preload.prototype = {
 		// charizard
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
-
-		// Sound
-		this.game.device.webAudio
-				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-								"assets/audio/MainLoop.m4a"], !0), this.load
-						.audio("tap", ["assets/audio/TapSound.wav"], !0))
 
 	},
 	loadUpdate : function() {

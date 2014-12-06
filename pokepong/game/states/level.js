@@ -10,6 +10,7 @@ var Levelstartboard = require('../prefabs/levelstartboard');
 var LevelSettings = require('../prefabs/levelsettings');
 var LevelGUI = require('../prefabs/levelgui');
 var Level2pokemon = require('../prefabs/level2pokemon');
+var Tutorialhand = require('../prefabs/tutorialhand');
 
 'use strict';
 
@@ -59,10 +60,36 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
+
+		// tutorial
+		if (this._settings.levelNumber == 1) {
+			this.addTutorial()
+		}
 	},
 
 	update : function() {
-		this.ball.start();
+
+		if (this._settings.levelNumber == 1
+				&& this.game.input.activePointer.isDown
+				&& this.tutorial.visible) {
+			// delay 4s
+			this.game.time.events.add(Phaser.Timer.SECOND * 4, function() {
+						this.tutorial.animations.stop();
+						this.game.add.tween(this.tutorial).to({
+									alpha : 0
+								}, 300, Phaser.Easing.Linear.None, !0).onComplete
+								.addOnce(function() {
+											this.tutorial.visible = !1;
+											this.tutorial.destroy();
+										}, this);
+						this.tutorialText.destroy();
+					}, this);
+
+		}
+
+		// start the ball
+		this.ball.start()
+
 	},
 
 	render : function() {
@@ -114,8 +141,8 @@ Level.prototype = {
 	},
 	addGround : function() {
 
-		this.ground = new Ground(this.game, 0, 0,
-				this.game.width, this.game.height, this._level2pokemon.pokemon_type.toString());
+		this.ground = new Ground(this.game, 0, 0, this.game.width,
+				this.game.height, this._level2pokemon.pokemon_type.toString());
 
 	},
 	addTrap : function() {
@@ -153,16 +180,15 @@ Level.prototype = {
 		this.numberOfObjects = 3;
 		this.objects = this.game.add.group();
 
-			for (var i = 1; i <= this.numberOfObjects; i++) {
-				var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
-						.between(100, this.game.height / 2);
-				if (this._level2pokemon.pokemon_type.toString() == "water") {
-					this.object = new Island(this.game, randomX, randomY, this.ball);
-				}
-				else {		
-					this.object = new Tree(this.game, randomX, randomY, this.ball);
-				}
-				this.objects.add(this.object);
+		for (var i = 1; i <= this.numberOfObjects; i++) {
+			var randomX = this.game.rnd.between(10, this.game.width - 10), randomY = this.game.rnd
+					.between(100, this.game.height / 2);
+			if (this._level2pokemon.pokemon_type.toString() == "water") {
+				this.object = new Island(this.game, randomX, randomY, this.ball);
+			} else {
+				this.object = new Tree(this.game, randomX, randomY, this.ball);
+			}
+			this.objects.add(this.object);
 		}
 
 	},
@@ -176,6 +202,29 @@ Level.prototype = {
 				this._settings.levelNumber);
 
 		this.startScreen.show();
+	},
+	addTutorial : function() {
+		this.tutorial = new Tutorialhand(this.game, this.game.width / 2,
+				this.game.height / 2, this.pikachu);
+		this.tutorial.visible = !0;
+
+		var tutorialStyle = {
+			font : "32px font",
+			fill : "#fff",
+			align : "center",
+			stroke : "#000",
+			strokeThickness : 2
+		};
+
+		var tutorialTexts = "Touch Pikachu to hit Ball\n"
+				+ "Avoid Ball collides to Circular Saw!";
+
+		this.tutorialText = this.game.add.text(0, 0, tutorialTexts.toString(),
+				tutorialStyle);
+		this.tutorialText.anchor.set(.5, .5);
+		this.tutorialText.position.set(this.game.width / 2, 200);
+		this.tutorialText.setShadow(2, 2, "#FB1A05", 2);
+
 	},
 	togglePause : function(a) {
 		"pause" === a ? this.pauseGame() : "resume" === a && this.resumeGame();
