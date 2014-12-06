@@ -15,7 +15,7 @@ window.onload = function () {
 
   game.state.start('boot');
 };
-},{"./states/boot":19,"./states/level":20,"./states/levelsmenu":21,"./states/menu":22,"./states/preload":23}],2:[function(require,module,exports){
+},{"./states/boot":20,"./states/level":21,"./states/levelsmenu":22,"./states/menu":23,"./states/preload":24}],2:[function(require,module,exports){
 'use strict';
 
 var Ball = function(game, x, y, pikachu, trap, level) {
@@ -202,6 +202,38 @@ module.exports = Ball;
 },{}],3:[function(require,module,exports){
 'use strict';
 
+var Ballopenning = function(game, x, y) {
+	Phaser.Sprite.call(this, game, x, y, 'ballopenning');
+
+	this.game.physics.arcade.enableBody(this);
+
+	// this.scale.setTo(.8, .8);
+	this.anchor.setTo(.5, .5);
+	this.body.bounce.setTo(1, 1);
+	this.body.allowRotation = false;
+	this.body.immovable = true;
+
+	this.animations.add('open', ['01.png', '02.png', '03.png', '04.png'], 4,
+			true);
+	this.animations.add('close', ['01.png', '02.png'], 2, true);
+	this.animations.play('open');
+
+	this.game.add.existing(this);
+
+};
+
+Ballopenning.prototype = Object.create(Phaser.Sprite.prototype);
+Ballopenning.prototype.constructor = Ballopenning;
+
+Ballopenning.prototype.update = function() {
+
+};
+
+module.exports = Ballopenning;
+
+},{}],4:[function(require,module,exports){
+'use strict';
+
 var Ground = function(game, x, y, width, height, ground) {
 	Phaser.TileSprite.call(this, game, x, y, width, height, ground);
 	
@@ -218,7 +250,7 @@ Ground.prototype.update = function() {
 
 module.exports = Ground;
 
-},{}],4:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 'use strict';
 
 var Island = function(game, x, y, ball) {
@@ -247,7 +279,7 @@ Island.prototype.hitBall = function() {
 
 module.exports = Island;
 
-},{}],5:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 'use strict';
 
 var Level2pokemon = function(a) {
@@ -367,8 +399,10 @@ var Level2pokemon = function(a) {
 
 module.exports = Level2pokemon;
 
-},{}],6:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
+var Level2pokemon = require('./level2pokemon');
+var Ballopenning = require('./ballopenning');
 
 'use strict';
 
@@ -377,10 +411,22 @@ var Levelcompleteboard = function(b, c, d) {
 
 	this.levels_num = 28;
 	this.levelNumber = d;
+
+	this._level2pokemon = new Level2pokemon(this.levelNumber);
+
 	this.addBackGround();
-	this.addButtons();
 	this.completeboard = this.game.add.image(-10, 250, "bggroup",
-			"levelcomplete.png", this)
+			"creditbg.png", this);
+	this.completeboard.position.set(this.game.width / 2
+					- this.completeboard.width / 2, this.game.height / 2
+					- this.completeboard.height / 2);
+
+	this.addBallopenning();
+
+	this.initPokemon(this._level2pokemon.pokemon,
+			this._level2pokemon.pokemon_name, this._level2pokemon.pokemon_icon);
+
+	this.addButtons();
 
 };
 
@@ -392,6 +438,22 @@ Levelcompleteboard.prototype.addBackGround = function() {
 	a.beginFill(0, .5);
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
+};
+Levelcompleteboard.prototype.addBallopenning = function() {
+	this.ballopenning = new Ballopenning(this.game, this.game.width / 2 + 200,
+			this.game.height / 2 - 100);
+
+	this.ballopenning.anchor.set(.5, .5)
+	this.add(this.ballopenning);
+
+};
+Levelcompleteboard.prototype.initPokemon = function(key, name, _icon) {
+	this.icon = new Phaser.Image(this.game, this.game.width / 2 - 100,
+			this.game.height / 2 - 100, key, _icon);
+
+	this.icon.anchor.set(.5, .5)
+	this.add(this.icon);
+
 };
 Levelcompleteboard.prototype.addButtons = function() {
 	var a = this, b = 550, c = 120, d = new SimpleButton(this.game,
@@ -438,12 +500,32 @@ Levelcompleteboard.prototype.show = function() {
 						function() {
 							d.visible = !0
 						}, a), c += 100
-			})
+			});
+
+	// move the pokemon icon to the openning ball
+	var d = Phaser.Math.distance(this.icon.x, this.icon.y, this.ballopenning.x,
+			this.ballopenning.y);
+	this.game.add.tween(this.icon).to({
+				x : this.ballopenning.x,
+				y : this.ballopenning.y - 56
+			}, 1000, Phaser.Easing.Back.In, !0), this.game.add
+			.tween(this.icon.scale).to({
+						x : .33,
+						y : .33
+					}, 1000, Phaser.Easing.Back.In, !0, 1000).onComplete
+			.addOnce(function() {
+						this.icon.kill();
+						this.ballopenning.animations.play('close');
+						this.ballopenning.position.set(this.game.width / 2,
+								this.game.height / 2 - this.ballopenning.height
+										/ 2);
+					}, this);
+
 };
 
 module.exports = Levelcompleteboard;
 
-},{"./simplebutton":15}],7:[function(require,module,exports){
+},{"./ballopenning":3,"./level2pokemon":6,"./simplebutton":16}],8:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var ToggleButton = require('./togglebutton');
 
@@ -564,7 +646,7 @@ Levelfailboard.prototype.onShowComplete = function() {
 
 module.exports = Levelfailboard;
 
-},{"./simplebutton":15,"./togglebutton":16}],8:[function(require,module,exports){
+},{"./simplebutton":16,"./togglebutton":17}],9:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
 var LevelFailBoard = require('./levelfailboard');
@@ -653,7 +735,7 @@ Levelgui.prototype.onResume = function() {
 
 module.exports = Levelgui;
 
-},{"./levelcompleteboard":6,"./levelfailboard":7,"./pauseboard":12,"./simplebutton":15}],9:[function(require,module,exports){
+},{"./levelcompleteboard":7,"./levelfailboard":8,"./pauseboard":13,"./simplebutton":16}],10:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
@@ -721,7 +803,7 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 
 module.exports = Levelicon;
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 var Levelsettings = function(a) {
@@ -740,7 +822,7 @@ var Levelsettings = function(a) {
 
 module.exports = Levelsettings;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 var Level2pokemon = require('./level2pokemon');
 
 'use strict';
@@ -847,7 +929,7 @@ Levelstartboard.prototype.destroy = function() {
 
 module.exports = Levelstartboard;
 
-},{"./level2pokemon":5}],12:[function(require,module,exports){
+},{"./level2pokemon":6}],13:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
 var ToggleButton = require('./togglebutton');
 
@@ -970,7 +1052,7 @@ Pauseboard.prototype.onHideComplete = function() {
 
 module.exports = Pauseboard;
 
-},{"./simplebutton":15,"./togglebutton":16}],13:[function(require,module,exports){
+},{"./simplebutton":16,"./togglebutton":17}],14:[function(require,module,exports){
 'use strict';
 
 var Pikachu = function(game, x, y, level) {
@@ -1016,7 +1098,7 @@ Pikachu.prototype.update = function() {
 
 module.exports = Pikachu;
 
-},{}],14:[function(require,module,exports){
+},{}],15:[function(require,module,exports){
 var Level2pokemon = require('./level2pokemon');
 
 'use strict';
@@ -1222,7 +1304,7 @@ Pokemon.prototype.explode = function() {
 
 module.exports = Pokemon;
 
-},{"./level2pokemon":5}],15:[function(require,module,exports){
+},{"./level2pokemon":6}],16:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = function(b, c, d, e, f) {
@@ -1271,7 +1353,7 @@ Simplebutton.prototype.setCallbackDelay = function(a) {
 
 module.exports = Simplebutton;
 
-},{}],16:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 var Simplebutton = require('./simplebutton');
@@ -1310,7 +1392,7 @@ Togglebutton.prototype.switchTextures = function() {
 
 module.exports = Togglebutton;
 
-},{"./simplebutton":15}],17:[function(require,module,exports){
+},{"./simplebutton":16}],18:[function(require,module,exports){
 'use strict';
 
 var Trap = function(game, x, y) {
@@ -1341,7 +1423,7 @@ Trap.prototype.update = function() {
 
 module.exports = Trap;
 
-},{}],18:[function(require,module,exports){
+},{}],19:[function(require,module,exports){
 'use strict';
 
 var Tree = function(game, x, y, ball) {
@@ -1378,7 +1460,7 @@ Tree.prototype.hitBall = function() {
 
 module.exports = Tree;
 
-},{}],19:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 function Boot() {
@@ -1422,7 +1504,7 @@ Boot.prototype = {
 
 module.exports = Boot;
 
-},{}],20:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 var Pikachu = require('../prefabs/pikachu');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
@@ -1629,7 +1711,7 @@ Level.prototype = {
 };
 module.exports = Level;
 
-},{"../prefabs/ball":2,"../prefabs/ground":3,"../prefabs/island":4,"../prefabs/level2pokemon":5,"../prefabs/levelgui":8,"../prefabs/levelsettings":10,"../prefabs/levelstartboard":11,"../prefabs/pikachu":13,"../prefabs/pokemon":14,"../prefabs/trap":17,"../prefabs/tree":18}],21:[function(require,module,exports){
+},{"../prefabs/ball":2,"../prefabs/ground":4,"../prefabs/island":5,"../prefabs/level2pokemon":6,"../prefabs/levelgui":9,"../prefabs/levelsettings":11,"../prefabs/levelstartboard":12,"../prefabs/pikachu":14,"../prefabs/pokemon":15,"../prefabs/trap":18,"../prefabs/tree":19}],22:[function(require,module,exports){
 var LevelIcon = require('../prefabs/levelicon');
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
@@ -1728,7 +1810,7 @@ Levelsmenu.prototype = {
 };
 module.exports = Levelsmenu;
 
-},{"../prefabs/levelicon":9,"../prefabs/simplebutton":15,"../prefabs/togglebutton":16}],22:[function(require,module,exports){
+},{"../prefabs/levelicon":10,"../prefabs/simplebutton":16,"../prefabs/togglebutton":17}],23:[function(require,module,exports){
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
 
@@ -1989,7 +2071,7 @@ Menu.prototype = {
 
 module.exports = Menu;
 
-},{"../prefabs/simplebutton":15,"../prefabs/togglebutton":16}],23:[function(require,module,exports){
+},{"../prefabs/simplebutton":16,"../prefabs/togglebutton":17}],24:[function(require,module,exports){
 'use strict';
 function Preload() {
 }
@@ -2073,7 +2155,8 @@ Preload.prototype = {
 		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
 
 		// Ball
-		this.load.image("ball", "assets/graphics/ballred40.png");
+		this.load.atlas("ballopenning", "assets/graphics/ballopenning.png",
+				"assets/graphics/ballopenning.json");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 
@@ -2092,11 +2175,11 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
-				
+
 		// arcanine
 		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
 				"assets/graphics/pokemons/arcanine.json");
-				
+
 		// gyarados
 		this.load.atlas("gyarados", "assets/graphics/pokemons/gyarados.png",
 				"assets/graphics/pokemons/gyarados.json");
@@ -2105,9 +2188,6 @@ Preload.prototype = {
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
-
-
-				
 		// Sound
 		this.game.device.webAudio
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

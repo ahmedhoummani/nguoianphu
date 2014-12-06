@@ -81,7 +81,8 @@ Preload.prototype = {
 		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
 
 		// Ball
-		this.load.image("ball", "assets/graphics/ballred40.png");
+		this.load.atlas("ballopenning", "assets/graphics/ballopenning.png",
+				"assets/graphics/ballopenning.json");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 
@@ -100,11 +101,11 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
-				
+
 		// arcanine
 		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
 				"assets/graphics/pokemons/arcanine.json");
-				
+
 		// gyarados
 		this.load.atlas("gyarados", "assets/graphics/pokemons/gyarados.png",
 				"assets/graphics/pokemons/gyarados.json");
@@ -113,9 +114,6 @@ Preload.prototype = {
 		this.load.atlas("charizard", "assets/graphics/pokemons/charizard.png",
 				"assets/graphics/pokemons/charizard.json");
 
-
-
-				
 		// Sound
 		this.game.device.webAudio
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",

@@ -1,4 +1,6 @@
 var SimpleButton = require('./simplebutton');
+var Level2pokemon = require('./level2pokemon');
+var Ballopenning = require('./ballopenning');
 
 'use strict';
 
@@ -7,10 +9,22 @@ var Levelcompleteboard = function(b, c, d) {
 
 	this.levels_num = 28;
 	this.levelNumber = d;
+
+	this._level2pokemon = new Level2pokemon(this.levelNumber);
+
 	this.addBackGround();
-	this.addButtons();
 	this.completeboard = this.game.add.image(-10, 250, "bggroup",
-			"levelcomplete.png", this)
+			"creditbg.png", this);
+	this.completeboard.position.set(this.game.width / 2
+					- this.completeboard.width / 2, this.game.height / 2
+					- this.completeboard.height / 2);
+
+	this.addBallopenning();
+
+	this.initPokemon(this._level2pokemon.pokemon,
+			this._level2pokemon.pokemon_name, this._level2pokemon.pokemon_icon);
+
+	this.addButtons();
 
 };
 
@@ -22,6 +36,22 @@ Levelcompleteboard.prototype.addBackGround = function() {
 	a.beginFill(0, .5);
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
+};
+Levelcompleteboard.prototype.addBallopenning = function() {
+	this.ballopenning = new Ballopenning(this.game, this.game.width / 2 + 200,
+			this.game.height / 2 - 100);
+
+	this.ballopenning.anchor.set(.5, .5)
+	this.add(this.ballopenning);
+
+};
+Levelcompleteboard.prototype.initPokemon = function(key, name, _icon) {
+	this.icon = new Phaser.Image(this.game, this.game.width / 2 - 100,
+			this.game.height / 2 - 100, key, _icon);
+
+	this.icon.anchor.set(.5, .5)
+	this.add(this.icon);
+
 };
 Levelcompleteboard.prototype.addButtons = function() {
 	var a = this, b = 550, c = 120, d = new SimpleButton(this.game,
@@ -68,7 +98,27 @@ Levelcompleteboard.prototype.show = function() {
 						function() {
 							d.visible = !0
 						}, a), c += 100
-			})
+			});
+
+	// move the pokemon icon to the openning ball
+	var d = Phaser.Math.distance(this.icon.x, this.icon.y, this.ballopenning.x,
+			this.ballopenning.y);
+	this.game.add.tween(this.icon).to({
+				x : this.ballopenning.x,
+				y : this.ballopenning.y - 56
+			}, 1000, Phaser.Easing.Back.In, !0), this.game.add
+			.tween(this.icon.scale).to({
+						x : .33,
+						y : .33
+					}, 1000, Phaser.Easing.Back.In, !0, 1000).onComplete
+			.addOnce(function() {
+						this.icon.kill();
+						this.ballopenning.animations.play('close');
+						this.ballopenning.position.set(this.game.width / 2,
+								this.game.height / 2 - this.ballopenning.height
+										/ 2);
+					}, this);
+
 };
 
 module.exports = Levelcompleteboard;
