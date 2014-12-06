@@ -35,10 +35,10 @@
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
-	"image": "ballopenning.png",
+	"image": "ballopening.png",
 	"format": "RGBA8888",
 	"size": {"w":242,"h":422},
 	"scale": "1",
-	"smartupdate": "$TexturePacker:SmartUpdate:ef3d7f7257f08036a52378b41974d3a5$"
+	"smartupdate": "$TexturePacker:SmartUpdate:9757b065cc3655cd77537781b5f29da9$"
 }
 }

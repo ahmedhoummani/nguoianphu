@@ -1,7 +1,7 @@
 'use strict';
 
-var Ballopenning = function(game, x, y) {
-	Phaser.Sprite.call(this, game, x, y, 'ballopenning');
+var Ballopening = function(game, x, y) {
+	Phaser.Sprite.call(this, game, x, y, 'ballopening');
 
 	this.game.physics.arcade.enableBody(this);
 
@@ -20,11 +20,11 @@ var Ballopenning = function(game, x, y) {
 
 };
 
-Ballopenning.prototype = Object.create(Phaser.Sprite.prototype);
-Ballopenning.prototype.constructor = Ballopenning;
+Ballopening.prototype = Object.create(Phaser.Sprite.prototype);
+Ballopening.prototype.constructor = Ballopening;
 
-Ballopenning.prototype.update = function() {
+Ballopening.prototype.update = function() {
 
 };
 
-module.exports = Ballopenning;
+module.exports = Ballopening;

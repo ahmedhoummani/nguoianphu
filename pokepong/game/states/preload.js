@@ -81,8 +81,8 @@ Preload.prototype = {
 		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
 
 		// Ball
-		this.load.atlas("ballopenning", "assets/graphics/ballopenning.png",
-				"assets/graphics/ballopenning.json");
+		this.load.atlas("ballopening", "assets/graphics/ballopening.png",
+				"assets/graphics/ballopening.json");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 

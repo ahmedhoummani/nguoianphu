@@ -1,6 +1,6 @@
 var SimpleButton = require('./simplebutton');
 var Level2pokemon = require('./level2pokemon');
-var Ballopenning = require('./ballopenning');
+var Ballopening = require('./ballopening');
 
 'use strict';
 
@@ -19,7 +19,7 @@ var Levelcompleteboard = function(b, c, d) {
 					- this.completeboard.width / 2, this.game.height / 2
 					- this.completeboard.height / 2);
 
-	this.addBallopenning();
+	this.addBallopening();
 
 	this.initPokemon(this._level2pokemon.pokemon,
 			this._level2pokemon.pokemon_name, this._level2pokemon.pokemon_icon);
@@ -37,12 +37,12 @@ Levelcompleteboard.prototype.addBackGround = function() {
 	a.drawRect(0, 0, this.game.width, this.game.height);
 	a.endFill()
 };
-Levelcompleteboard.prototype.addBallopenning = function() {
-	this.ballopenning = new Ballopenning(this.game, this.game.width / 2 + 200,
+Levelcompleteboard.prototype.addBallopening = function() {
+	this.ballopening = new Ballopening(this.game, this.game.width / 2 + 200,
 			this.game.height / 2 - 100);
 
-	this.ballopenning.anchor.set(.5, .5)
-	this.add(this.ballopenning);
+	this.ballopening.anchor.set(.5, .5)
+	this.add(this.ballopening);
 
 };
 Levelcompleteboard.prototype.initPokemon = function(key, name, _icon) {
@@ -101,11 +101,11 @@ Levelcompleteboard.prototype.show = function() {
 			});
 
 	// move the pokemon icon to the openning ball
-	var d = Phaser.Math.distance(this.icon.x, this.icon.y, this.ballopenning.x,
-			this.ballopenning.y);
+	var d = Phaser.Math.distance(this.icon.x, this.icon.y, this.ballopening.x,
+			this.ballopening.y);
 	this.game.add.tween(this.icon).to({
-				x : this.ballopenning.x,
-				y : this.ballopenning.y - 56
+				x : this.ballopening.x,
+				y : this.ballopening.y - 56
 			}, 1000, Phaser.Easing.Back.In, !0), this.game.add
 			.tween(this.icon.scale).to({
 						x : .33,
@@ -113,9 +113,9 @@ Levelcompleteboard.prototype.show = function() {
 					}, 1000, Phaser.Easing.Back.In, !0, 1000).onComplete
 			.addOnce(function() {
 						this.icon.kill();
-						this.ballopenning.animations.play('close');
-						this.ballopenning.position.set(this.game.width / 2,
-								this.game.height / 2 - this.ballopenning.height
+						this.ballopening.animations.play('close');
+						this.ballopening.position.set(this.game.width / 2,
+								this.game.height / 2 - this.ballopening.height
 										/ 2);
 					}, this);
 

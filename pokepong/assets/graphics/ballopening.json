@@ -35,7 +35,7 @@
 "meta": {
 	"app": "http://www.texturepacker.com",
 	"version": "1.0",
-	"image": "ballopenning.png",
+	"image": "ballopening.png",
 	"format": "RGBA8888",
 	"size": {"w":242,"h":422},
 	"scale": "1",
