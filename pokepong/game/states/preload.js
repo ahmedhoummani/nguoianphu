@@ -72,12 +72,8 @@ Preload.prototype = {
 				"assets/graphics/bggroup.json");
 
 		// Pikachu
-		// this.load.atlas("pikachu", "assets/graphics/pikachu.png",
-		// "assets/graphics/pikachu.json");
 		this.load.spritesheet("pikachu_ball",
 				"assets/graphics/pikachu_ball55x96.png", 55, 96);
-		this.load.spritesheet("pikachu_waving",
-				"assets/graphics/pikachu_waving108x139.png", 108, 139);
 		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
 
 		// Ball
