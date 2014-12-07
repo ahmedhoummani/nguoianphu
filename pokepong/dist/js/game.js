@@ -27,17 +27,29 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.trap = trap;
 
 	this.level = level;
-	if (this.level > 8) {
-		this.level *= 1.1;
+	
+	// Is the game running under Apache Cordova? PHONEGAP
+	if (this.game.device.cordova) {
+		if (this.level > 1) {
+			this.level *= 5;
+		} else {
+			this.level = 10;
+		}
+	
 	} else {
-		this.level = 5;
+		if (this.level > 1) {
+			this.level *= 3;
+		} else {
+			this.level = 5;
+		}
+	
 	}
 
 	this.game.physics.arcade.enableBody(this);
 
 	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = true;
-	this.body.bounce.setTo(1, 2);
+	this.body.bounce.setTo(2, 3);
 	this.anchor.setTo(.5, .5);
 
 	this.body.maxVelocity.x = 100 * (this.level);
@@ -265,10 +277,18 @@ Island.prototype = Object.create(Phaser.Sprite.prototype);
 Island.prototype.constructor = Island;
 
 Island.prototype.update = function() {
-	this.game.physics.arcade.collide(this, this.ball, null, null, this);
+	this.game.physics.arcade.collide(this, this.ball, this.hitBall, null, this);
 };
 
 Island.prototype.hitBall = function() {
+	
+	// avoid case: the ball doesn't come back
+	if (this.ball.body.velocity.x > 0){
+		this.ball.body.x += this.game.rnd.between(5,10);
+	} else if (this.ball.body.velocity.x < 0){
+		this.ball.body.x -= this.game.rnd.between(5, 10);
+	}
+
 };
 
 module.exports = Island;
@@ -782,17 +802,20 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	// var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
-					// .toString(), a);
-	// b.anchor.set(.5, .5);
-	var b = this.game.add.text(0, 0, this._levelNumber
-					.toString(), a);
-	b.anchor.set(.5, .5);
-	var c = this.game.add.renderTexture(this.width, this.height);
-	c.renderXY(this, .5 * this.width, .5 * this.height);
-	c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
-	this.setTexture(c);
-	b.destroy();
+	// Is the game running under Apache Cordova? PHONEGAP
+	if (this.game.device.cordova) {
+		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber.toString(), a);
+		b.anchor.set(.5, .5)
+	} else {
+		var b = this.game.add.text(0, 0, this._levelNumber
+						.toString(), a);
+		b.anchor.set(.5, .5);
+		var c = this.game.add.renderTexture(this.width, this.height);
+		c.renderXY(this, .5 * this.width, .5 * this.height);
+		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+		this.setTexture(c);
+		b.destroy();
+	}
 };
 
 module.exports = Levelicon;
@@ -1209,7 +1232,7 @@ Pokemon.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	if (this.notPause && this.y > (this.game.height - 200)) {
+	if (this.notPause && this.y > (this.game.height - 300)) {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
@@ -1445,9 +1468,9 @@ Tree.prototype.hitBall = function() {
 
 	// avoid case: the ball doesn't come back
 	if (this.ball.body.velocity.x > 0){
-		this.ball.body.velocity.x += this.game.rnd.between(5,10);
+		this.ball.body.x += this.game.rnd.between(5,10);
 	} else if (this.ball.body.velocity.x < 0){
-		this.ball.body.velocity.x -= this.game.rnd.between(5, 10);
+		this.ball.body.x -= this.game.rnd.between(5, 10);
 	}
 	
 };
@@ -1607,8 +1630,8 @@ Level.prototype = {
 		if (this._settings.levelNumber == 1
 				&& this.game.input.activePointer.isDown
 				&& this.tutorial.visible) {
-			// delay 4s
-			this.game.time.events.add(Phaser.Timer.SECOND * 4, function() {
+			// delay 5s
+			this.game.time.events.add(Phaser.Timer.SECOND * 5, function() {
 						this.tutorial.animations.stop();
 						this.game.add.tween(this.tutorial).to({
 									alpha : 0
@@ -1686,7 +1709,7 @@ Level.prototype = {
 		this.traps = this.game.add.group();
 
 		for (var i = 0; i < this.numberOfTrap; i++) {
-			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 30);
+			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 50);
 			this.traps.add(this.trap);
 
 		}
@@ -1694,7 +1717,7 @@ Level.prototype = {
 	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 110, this._settings.levelNumber);
+				this.game.height - 210, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
@@ -1758,7 +1781,7 @@ Level.prototype = {
 				tutorialStyle);
 		this.tutorialText.anchor.set(.5, .5);
 		this.tutorialText.position.set(this.game.width / 2, 200);
-		this.tutorialText.setShadow(2, 2, "#FB1A05", 2);
+		this.tutorialText.setShadow(2, 2, "#000", 2);
 
 	},
 	togglePause : function(a) {

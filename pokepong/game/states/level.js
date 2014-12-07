@@ -72,8 +72,8 @@ Level.prototype = {
 		if (this._settings.levelNumber == 1
 				&& this.game.input.activePointer.isDown
 				&& this.tutorial.visible) {
-			// delay 4s
-			this.game.time.events.add(Phaser.Timer.SECOND * 4, function() {
+			// delay 5s
+			this.game.time.events.add(Phaser.Timer.SECOND * 5, function() {
 						this.tutorial.animations.stop();
 						this.game.add.tween(this.tutorial).to({
 									alpha : 0
@@ -151,7 +151,7 @@ Level.prototype = {
 		this.traps = this.game.add.group();
 
 		for (var i = 0; i < this.numberOfTrap; i++) {
-			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 30);
+			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 50);
 			this.traps.add(this.trap);
 
 		}
@@ -159,7 +159,7 @@ Level.prototype = {
 	},
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
-				this.game.height - 110, this._settings.levelNumber);
+				this.game.height - 210, this._settings.levelNumber);
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
@@ -223,7 +223,7 @@ Level.prototype = {
 				tutorialStyle);
 		this.tutorialText.anchor.set(.5, .5);
 		this.tutorialText.position.set(this.game.width / 2, 200);
-		this.tutorialText.setShadow(2, 2, "#FB1A05", 2);
+		this.tutorialText.setShadow(2, 2, "#000", 2);
 
 	},
 	togglePause : function(a) {

@@ -25,9 +25,9 @@ Tree.prototype.hitBall = function() {
 
 	// avoid case: the ball doesn't come back
 	if (this.ball.body.velocity.x > 0){
-		this.ball.body.velocity.x += this.game.rnd.between(5,10);
+		this.ball.body.x += this.game.rnd.between(5,10);
 	} else if (this.ball.body.velocity.x < 0){
-		this.ball.body.velocity.x -= this.game.rnd.between(5, 10);
+		this.ball.body.x -= this.game.rnd.between(5, 10);
 	}
 	
 };

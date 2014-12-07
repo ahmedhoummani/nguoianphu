@@ -114,7 +114,7 @@ Pokemon.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	if (this.notPause && this.y > (this.game.height - 200)) {
+	if (this.notPause && this.y > (this.game.height - 300)) {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;

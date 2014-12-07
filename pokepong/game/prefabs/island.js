@@ -18,10 +18,18 @@ Island.prototype = Object.create(Phaser.Sprite.prototype);
 Island.prototype.constructor = Island;
 
 Island.prototype.update = function() {
-	this.game.physics.arcade.collide(this, this.ball, null, null, this);
+	this.game.physics.arcade.collide(this, this.ball, this.hitBall, null, this);
 };
 
 Island.prototype.hitBall = function() {
+	
+	// avoid case: the ball doesn't come back
+	if (this.ball.body.velocity.x > 0){
+		this.ball.body.x += this.game.rnd.between(5,10);
+	} else if (this.ball.body.velocity.x < 0){
+		this.ball.body.x -= this.game.rnd.between(5, 10);
+	}
+
 };
 
 module.exports = Island;
