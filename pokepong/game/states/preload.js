@@ -111,6 +111,10 @@ Preload.prototype = {
 		// arcanine
 		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
 				"assets/graphics/pokemons/arcanine.json");
+				
+		// steelix
+		this.load.atlas("steelix", "assets/graphics/pokemons/steelix.png",
+				"assets/graphics/pokemons/steelix.json");
 
 		// gyarados
 		this.load.atlas("gyarados", "assets/graphics/pokemons/gyarados.png",
