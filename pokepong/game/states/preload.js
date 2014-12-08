@@ -110,6 +110,10 @@ Preload.prototype = {
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
 				
+		// muk
+		this.load.atlas("muk", "assets/graphics/pokemons/muk.png",
+				"assets/graphics/pokemons/muk.json");
+				
 		// beedrill
 		this.load.atlas("beedrill", "assets/graphics/pokemons/beedrill.png",
 				"assets/graphics/pokemons/beedrill.json");
