@@ -109,6 +109,10 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
+				
+		// beedrill
+		this.load.atlas("beedrill", "assets/graphics/pokemons/beedrill.png",
+				"assets/graphics/pokemons/beedrill.json");
 
 		// arcanine
 		this.load.atlas("arcanine", "assets/graphics/pokemons/arcanine.png",
