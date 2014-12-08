@@ -38,9 +38,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	
 	} else {
 		if (this.level > 1) {
-			this.level *= 3;
+			this.level *= 2;
 		} else {
-			this.level = 5;
+			this.level = 4;
 		}
 	
 	}
@@ -126,11 +126,11 @@ Ball.prototype.hitPikachu = function() {
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
-		this.body.velocity.x += (100 * diff * this.level);
+		this.body.velocity.x -= (100 * diff * this.level);
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x -= (100 * diff * this.level);
+		this.body.velocity.x += (100 * diff * this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
@@ -1608,7 +1608,8 @@ Level.prototype = {
 		// add pikachu
 		this.addPikachu();
 		// draw a line below pikachu
-		var line = this.game.add.tileSprite(50, this.game.height - 165, this.game.width - 100, 10, 'line');
+		var line = this.game.add.tileSprite(50, this.game.height - 165,
+				this.game.width - 100, 10, 'line');
 		// add ball
 		this.addBall();
 		// add pokemon
@@ -1625,7 +1626,7 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
-		
+
 		// tutorial
 		if (this._settings.levelNumber == 1) {
 			this.addTutorial()
@@ -1775,13 +1776,13 @@ Level.prototype = {
 
 		var tutorialStyle = {
 			font : "32px font",
-			fill : "#fff",
+			fill : "#def",
 			align : "center",
-			stroke : "#000",
-			strokeThickness : 2
+			stroke : "#0f0",
+			strokeThickness : 1
 		};
 
-		var tutorialTexts = "Touch Pikachu to hit Ball\n"
+		var tutorialTexts = "Touch Pikachu to hit Ball\n\n"
 				+ "Avoid Ball collides to Circular Saw!";
 
 		this.tutorialText = this.game.add.text(0, 0, tutorialTexts.toString(),

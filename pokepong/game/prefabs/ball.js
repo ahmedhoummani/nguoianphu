@@ -20,9 +20,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	
 	} else {
 		if (this.level > 1) {
-			this.level *= 3;
+			this.level *= 2;
 		} else {
-			this.level = 5;
+			this.level = 4;
 		}
 	
 	}
@@ -108,11 +108,11 @@ Ball.prototype.hitPikachu = function() {
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
-		this.body.velocity.x += (100 * diff * this.level);
+		this.body.velocity.x -= (100 * diff * this.level);
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x -= (100 * diff * this.level);
+		this.body.velocity.x += (100 * diff * this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
