@@ -45,7 +45,7 @@ Level.prototype = {
 		// add pikachu
 		this.addPikachu();
 		// draw a line below pikachu
-		var line = this.game.add.tileSprite(50, this.game.height - 165,
+		this.line = this.game.add.tileSprite(50, this.game.height - 165,
 				this.game.width - 100, 10, 'line');
 		// add ball
 		this.addBall();
@@ -252,6 +252,7 @@ Level.prototype = {
 		this.objects.destroy();
 		this.traps.destroy();
 		this._level2pokemon = null;
+		this.line.destroy();
 	}
 };
 module.exports = Level;
