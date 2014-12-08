@@ -13,9 +13,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	// Is the game running under Apache Cordova? PHONEGAP
 	if (this.game.device.cordova) {
 		if (this.level > 1) {
-			this.level *= 5;
+			this.level *= 8;
 		} else {
-			this.level = 10;
+			this.level = 15;
 		}
 	
 	} else {
@@ -47,7 +47,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 5000;
+	this.ghostUntilTimer = 2000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {

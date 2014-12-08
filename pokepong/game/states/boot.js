@@ -7,8 +7,8 @@ Boot.prototype = {
 
 	init : function() {
 		
-		// phonegap hack for empty start up screen
-		this.game.add.text(100, 100, "Loading...");
+		// hack for empty start up screen
+		this.game.add.text(100, 100, "Please Reload it :(");
 	},
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');

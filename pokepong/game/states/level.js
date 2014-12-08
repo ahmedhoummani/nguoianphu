@@ -44,6 +44,8 @@ Level.prototype = {
 
 		// add pikachu
 		this.addPikachu();
+		// draw a line below pikachu
+		var line = this.game.add.tileSprite(50, this.game.height - 165, this.game.width - 100, 10, 'line');
 		// add ball
 		this.addBall();
 		// add pokemon
@@ -60,7 +62,7 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
-
+		
 		// tutorial
 		if (this._settings.levelNumber == 1) {
 			this.addTutorial()

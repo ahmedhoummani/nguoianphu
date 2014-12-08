@@ -31,9 +31,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	// Is the game running under Apache Cordova? PHONEGAP
 	if (this.game.device.cordova) {
 		if (this.level > 1) {
-			this.level *= 5;
+			this.level *= 8;
 		} else {
-			this.level = 10;
+			this.level = 15;
 		}
 	
 	} else {
@@ -65,7 +65,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 5000;
+	this.ghostUntilTimer = 2000;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -1149,7 +1149,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 5000;
+	this.ghostUntilTimer = 2000;
 	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();
@@ -1521,8 +1521,8 @@ Boot.prototype = {
 
 	init : function() {
 		
-		// phonegap hack for empty start up screen
-		this.game.add.text(100, 100, "Loading...");
+		// hack for empty start up screen
+		this.game.add.text(100, 100, "Please Reload it :(");
 	},
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
@@ -1607,6 +1607,8 @@ Level.prototype = {
 
 		// add pikachu
 		this.addPikachu();
+		// draw a line below pikachu
+		var line = this.game.add.tileSprite(50, this.game.height - 165, this.game.width - 100, 10, 'line');
 		// add ball
 		this.addBall();
 		// add pokemon
@@ -1623,7 +1625,7 @@ Level.prototype = {
 
 		// level gui menu
 		this.addGui();
-
+		
 		// tutorial
 		if (this._settings.levelNumber == 1) {
 			this.addTutorial()
@@ -2237,6 +2239,8 @@ Preload.prototype = {
 				"assets/graphics/buttonsgroup.json");
 
 		// ground
+		this.load.image("line", "assets/graphics/line.png");
+		
 		this.load.image("grass", "assets/graphics/grass.png");
 		this.load.image("sand", "assets/graphics/sand.png");
 		this.load.image("water", "assets/graphics/water.png");

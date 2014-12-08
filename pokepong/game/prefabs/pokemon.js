@@ -26,7 +26,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	
 	this.health = 3;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 5000;
+	this.ghostUntilTimer = 2000;
 	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();

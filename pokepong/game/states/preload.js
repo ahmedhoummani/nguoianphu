@@ -58,6 +58,8 @@ Preload.prototype = {
 				"assets/graphics/buttonsgroup.json");
 
 		// ground
+		this.load.image("line", "assets/graphics/line.png");
+		
 		this.load.image("grass", "assets/graphics/grass.png");
 		this.load.image("sand", "assets/graphics/sand.png");
 		this.load.image("water", "assets/graphics/water.png");
