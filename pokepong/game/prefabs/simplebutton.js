@@ -14,7 +14,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	(this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
-				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
+				!g.game.device.firefox && g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
 						.tween(g.scale).to({
 									x : .9,
 									y : .9

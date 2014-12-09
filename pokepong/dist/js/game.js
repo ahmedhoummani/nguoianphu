@@ -31,14 +31,14 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	// Is the game running under Apache Cordova? PHONEGAP
 	if (this.game.device.cordova) {
 		if (this.level > 1) {
-			this.level *= 8;
+			this.level += 14;
 		} else {
 			this.level = 15;
 		}
 	
 	} else {
 		if (this.level > 1) {
-			this.level *= 2;
+			this.level += 3;
 		} else {
 			this.level = 4;
 		}
@@ -785,7 +785,7 @@ var Levelicon = function(b, c, d, e, f) {
 	this.inputEnabled
 			&& (this.game.device.desktop && (this.input.useHandCursor = !0), this.events.onInputDown
 					.add(function() {
-						g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
+						!g.game.device.firefox && g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
 								.tween(g.scale).to({
 											x : .9,
 											y : .9
@@ -1358,7 +1358,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	(this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
-				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
+				!g.game.device.firefox && g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
 						.tween(g.scale).to({
 									x : .9,
 									y : .9
@@ -1623,7 +1623,7 @@ Level.prototype = {
 		// add pikachu
 		this.addPikachu();
 		// draw a line below pikachu
-		var line = this.game.add.tileSprite(50, this.game.height - 165,
+		this.line = this.game.add.tileSprite(50, this.game.height - 165,
 				this.game.width - 100, 10, 'line');
 		// add ball
 		this.addBall();
@@ -1830,6 +1830,7 @@ Level.prototype = {
 		this.objects.destroy();
 		this.traps.destroy();
 		this._level2pokemon = null;
+		this.line.destroy();
 	}
 };
 module.exports = Level;
@@ -1959,12 +1960,18 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		this.fromPreloader
+		!this.game.device.firefox && this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
+						
+		if (this.game.device.cordova) {
+			var b = this.game.add.text(100, 400, "cordova");
+		} else {
+			var b = this.game.add.text(100, 400, "Not cordova");
+		}
 
 	},
 	onFocusLost : function() {
@@ -2292,7 +2299,7 @@ Preload.prototype = {
 		this.load.image("island", "assets/graphics/island.png");
 
 		// Sound
-		this.game.device.webAudio
+		!this.game.device.firefox && this.game.device.webAudio
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
 								"assets/audio/MainLoop.m4a"], !0), this.load
 						.audio("tap", ["assets/audio/TapSound.wav"], !0));

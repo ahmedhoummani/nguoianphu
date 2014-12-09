@@ -13,7 +13,7 @@ var Levelicon = function(b, c, d, e, f) {
 	this.inputEnabled
 			&& (this.game.device.desktop && (this.input.useHandCursor = !0), this.events.onInputDown
 					.add(function() {
-						g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
+						!g.game.device.firefox && g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
 								.tween(g.scale).to({
 											x : .9,
 											y : .9

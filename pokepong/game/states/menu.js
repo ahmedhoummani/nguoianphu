@@ -23,12 +23,18 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		this.fromPreloader
+		!this.game.device.firefox && this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
+						
+		if (this.game.device.cordova) {
+			var b = this.game.add.text(100, 400, "cordova");
+		} else {
+			var b = this.game.add.text(100, 400, "Not cordova");
+		}
 
 	},
 	onFocusLost : function() {
