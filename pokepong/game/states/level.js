@@ -33,7 +33,9 @@ Level.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		// this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
+		
 		this._level2pokemon = new Level2pokemon(this._settings.levelNumber);
 
 		// add ground

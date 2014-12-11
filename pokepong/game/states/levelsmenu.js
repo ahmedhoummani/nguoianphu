@@ -9,7 +9,7 @@ Levelsmenu.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();

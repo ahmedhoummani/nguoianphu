@@ -23,17 +23,27 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		!this.game.device.firefox && this.fromPreloader
+		!this.game.device.firefox
+				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-						
-		if (this.game.device.cordova) {
-			var b = this.game.add.text(100, 400, "cordova");
-		} else {
-			var b = this.game.add.text(100, 400, "Not cordova");
+
+		// Is the game running under Apache Cordova Phonegap and Android OS
+		// older
+		// than 4.3?
+		if (this.game.global.phonegap) {
+			function getAndroidVersion(ua) {
+				ua = (ua || navigator.userAgent).toLowerCase();
+				var match = ua.match(/android\s([0-9\.]*)/);
+				return match ? match[1] : false;
+			};
+			// getAndroidVersion(); // "4.2.1"
+			// parseInt(getAndroidVersion()); // 4
+			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+			this.game.add.text(100, 200, andoidVersion.toString());
 		}
 
 	},
@@ -42,8 +52,8 @@ Menu.prototype = {
 		// this.game.sound.mute = !0;
 	},
 	onFocus : function() {
-//		this.game.tweens.resumeAll();
-//		this.game.sound.mute = !1;
+		// this.game.tweens.resumeAll();
+		// this.game.sound.mute = !1;
 	},
 	addBackground : function() {
 		this.game.add.image(0, 0, "bggroup", "bg.png");
@@ -106,8 +116,8 @@ Menu.prototype = {
 	hideAndStartGame : function() {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
-		
-		if ("true" === window.localStorage.getItem("1")){
+
+		if ("true" === window.localStorage.getItem("1")) {
 			this.game.state.start("levelsmenu");
 		} else {
 			this.game.state.start("level", !0, !1, 1);

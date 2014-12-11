@@ -1,10 +1,17 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-//global variables
 window.onload = function () {
   var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokepong');
 
+  // Global variables
+  // call them: this.game.global.phonegap
+  game.global = {
+  		levels_num: 28,
+		phonegap: false
+		
+	};
+	
   // Game States
   game.state.add('boot', require('./states/boot'));
   game.state.add('level', require('./states/level'));
@@ -29,18 +36,18 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.level = level;
 	
 	// Is the game running under Apache Cordova? PHONEGAP
-	if (this.game.device.cordova) {
+	if (this.game.global.phonegap) {
 		if (this.level > 1) {
-			this.level += 14;
+			this.level += 11;
 		} else {
-			this.level = 15;
+			this.level = 10;
 		}
 	
 	} else {
 		if (this.level > 1) {
-			this.level += 3;
+			this.level += 4;
 		} else {
-			this.level = 4;
+			this.level = 5;
 		}
 	
 	}
@@ -443,7 +450,7 @@ var Ballopening = require('./ballopening');
 var Levelcompleteboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Complete Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 
 	this._level2pokemon = new Level2pokemon(this.levelNumber);
@@ -568,7 +575,7 @@ var ToggleButton = require('./togglebutton');
 var Levelfailboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Fail Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 
 	this.addBackGround();
@@ -822,17 +829,29 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	// Is the game running under Apache Cordova? PHONEGAP
-	if (this.game.device.cordova) {
-		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber.toString(), a);
-		b.anchor.set(.5, .5)
-	} else {
-		var b = this.game.add.text(0, 0, this._levelNumber
+	// Is the game running under Apache Cordova Phonegap and Android OS older
+	// than 4.3?
+	function getAndroidVersion(ua) {
+		ua = (ua || navigator.userAgent).toLowerCase();
+		var match = ua.match(/android\s([0-9\.]*)/);
+		return match ? match[1] : false;
+	};
+	// getAndroidVersion(); // "4.2.1"
+	// parseInt(getAndroidVersion()); // 4
+	var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+
+	if (this.game.global.phonegap && andoidVersion < 4.3) {
+		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
 						.toString(), a);
+		b.anchor.set(.5, .5)
+
+	} else {
+		var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
 		b.anchor.set(.5, .5);
 		var c = this.game.add.renderTexture(this.width, this.height);
 		c.renderXY(this, .5 * this.width, .5 * this.height);
-		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height)
+						- 1);
 		this.setTexture(c);
 		b.destroy();
 	}
@@ -867,7 +886,7 @@ var Level2pokemon = require('./level2pokemon');
 var Levelstartboard = function(game, parent, level) {
 	Phaser.Group.call(this, game, parent.world, "Level Start Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = level;
 	this._level2pokemon = new Level2pokemon(this.levelNumber);
 	// this._level2pokemon.pokemon
@@ -1535,9 +1554,9 @@ function Boot() {
 Boot.prototype = {
 
 	init : function() {
-		
+
 		// hack for empty start up screen
-		this.game.add.text(100, 100, "Please Reload it :(");
+		this.game.add.text(100, 100, "Please reload it...");
 	},
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
@@ -1552,12 +1571,8 @@ Boot.prototype = {
 	setupStage : function() {
 		var b = this.game.scale;
 		b.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		// b.minWidth = .25 * this.game.world.width;
-		// b.minHeight = .25 * this.game.world.height;
-		// b.aspectRatio = this.game.world.width / this.game.world.width;
 		b.pageAlignHorizontally = !0;
 		b.pageAlignVertically = !0;
-		// this.game.device.desktop || b.forceOrientation(!1, !0);
 		b.enterIncorrectOrientation.add(this.onEnterIncorrectOrientation, this);
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);
@@ -1611,7 +1626,9 @@ Level.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		// this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
+		
 		this._level2pokemon = new Level2pokemon(this._settings.levelNumber);
 
 		// add ground
@@ -1847,7 +1864,7 @@ Levelsmenu.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();
@@ -1960,17 +1977,27 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		!this.game.device.firefox && this.fromPreloader
+		!this.game.device.firefox
+				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-						
-		if (this.game.device.cordova) {
-			var b = this.game.add.text(100, 400, "cordova");
-		} else {
-			var b = this.game.add.text(100, 400, "Not cordova");
+
+		// Is the game running under Apache Cordova Phonegap and Android OS
+		// older
+		// than 4.3?
+		if (this.game.global.phonegap) {
+			function getAndroidVersion(ua) {
+				ua = (ua || navigator.userAgent).toLowerCase();
+				var match = ua.match(/android\s([0-9\.]*)/);
+				return match ? match[1] : false;
+			};
+			// getAndroidVersion(); // "4.2.1"
+			// parseInt(getAndroidVersion()); // 4
+			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+			this.game.add.text(100, 200, andoidVersion.toString());
 		}
 
 	},
@@ -1979,8 +2006,8 @@ Menu.prototype = {
 		// this.game.sound.mute = !0;
 	},
 	onFocus : function() {
-//		this.game.tweens.resumeAll();
-//		this.game.sound.mute = !1;
+		// this.game.tweens.resumeAll();
+		// this.game.sound.mute = !1;
 	},
 	addBackground : function() {
 		this.game.add.image(0, 0, "bggroup", "bg.png");
@@ -2043,8 +2070,8 @@ Menu.prototype = {
 	hideAndStartGame : function() {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
-		
-		if ("true" === window.localStorage.getItem("1")){
+
+		if ("true" === window.localStorage.getItem("1")) {
 			this.game.state.start("levelsmenu");
 		} else {
 			this.game.state.start("level", !0, !1, 1);

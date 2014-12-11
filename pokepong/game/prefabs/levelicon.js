@@ -50,17 +50,29 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	// Is the game running under Apache Cordova? PHONEGAP
-	if (this.game.device.cordova) {
-		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber.toString(), a);
-		b.anchor.set(.5, .5)
-	} else {
-		var b = this.game.add.text(0, 0, this._levelNumber
+	// Is the game running under Apache Cordova Phonegap and Android OS older
+	// than 4.3?
+	function getAndroidVersion(ua) {
+		ua = (ua || navigator.userAgent).toLowerCase();
+		var match = ua.match(/android\s([0-9\.]*)/);
+		return match ? match[1] : false;
+	};
+	// getAndroidVersion(); // "4.2.1"
+	// parseInt(getAndroidVersion()); // 4
+	var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+
+	if (this.game.global.phonegap && andoidVersion < 4.3) {
+		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
 						.toString(), a);
+		b.anchor.set(.5, .5)
+
+	} else {
+		var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
 		b.anchor.set(.5, .5);
 		var c = this.game.add.renderTexture(this.width, this.height);
 		c.renderXY(this, .5 * this.width, .5 * this.height);
-		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height) - 1);
+		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height)
+						- 1);
 		this.setTexture(c);
 		b.destroy();
 	}

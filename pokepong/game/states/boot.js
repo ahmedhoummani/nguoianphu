@@ -6,9 +6,9 @@ function Boot() {
 Boot.prototype = {
 
 	init : function() {
-		
+
 		// hack for empty start up screen
-		this.game.add.text(100, 100, "Please Reload it :(");
+		this.game.add.text(100, 100, "Please reload it...");
 	},
 	preload : function() {
 		this.load.image('LoadingBar_Outer', 'assets/LoadingBar_Outer.png');
@@ -23,12 +23,8 @@ Boot.prototype = {
 	setupStage : function() {
 		var b = this.game.scale;
 		b.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		// b.minWidth = .25 * this.game.world.width;
-		// b.minHeight = .25 * this.game.world.height;
-		// b.aspectRatio = this.game.world.width / this.game.world.width;
 		b.pageAlignHorizontally = !0;
 		b.pageAlignVertically = !0;
-		// this.game.device.desktop || b.forceOrientation(!1, !0);
 		b.enterIncorrectOrientation.add(this.onEnterIncorrectOrientation, this);
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);

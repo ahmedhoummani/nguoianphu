@@ -6,7 +6,7 @@ var ToggleButton = require('./togglebutton');
 var Levelfailboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Fail Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 
 	this.addBackGround();

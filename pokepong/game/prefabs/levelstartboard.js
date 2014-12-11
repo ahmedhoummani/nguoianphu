@@ -5,7 +5,7 @@ var Level2pokemon = require('./level2pokemon');
 var Levelstartboard = function(game, parent, level) {
 	Phaser.Group.call(this, game, parent.world, "Level Start Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = level;
 	this._level2pokemon = new Level2pokemon(this.levelNumber);
 	// this._level2pokemon.pokemon

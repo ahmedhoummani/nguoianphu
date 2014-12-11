@@ -7,7 +7,7 @@ var Ballopening = require('./ballopening');
 var Levelcompleteboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Complete Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 
 	this._level2pokemon = new Level2pokemon(this.levelNumber);
