@@ -4,11 +4,28 @@
 window.onload = function () {
   var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokepong');
 
+		// Is the game running under Apache Cordova Phonegap and Android OS
+		// older
+		// than 4.3?
+			function getAndroidVersion(ua) {
+				ua = (ua || navigator.userAgent).toLowerCase();
+				var match = ua.match(/android\s([0-9\.]*)/);
+				return match ? match[1] : false;
+			};
+			// getAndroidVersion(); // "4.2.1"
+			// parseInt(getAndroidVersion()); // 4
+			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+			if (andoidVersion < 4.3){
+				var oldAndroid = true
+			} else {
+				var oldAndroid = false
+			}
   // Global variables
   // call them: this.game.global.phonegap
   game.global = {
   		levels_num: 28,
-		phonegap: false
+		phonegap: false,
+		old_android: oldAndroid
 		
 	};
 	
@@ -34,22 +51,11 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.trap = trap;
 
 	this.level = level;
-	
-	// Is the game running under Apache Cordova? PHONEGAP
-	if (this.game.global.phonegap) {
-		if (this.level > 1) {
-			this.level += 11;
-		} else {
-			this.level = 10;
-		}
-	
+
+	if (this.level > 1) {
+		this.level += 4;
 	} else {
-		if (this.level > 1) {
-			this.level += 4;
-		} else {
-			this.level = 5;
-		}
-	
+		this.level = 5;
 	}
 
 	this.game.physics.arcade.enableBody(this);
@@ -829,18 +835,7 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	// Is the game running under Apache Cordova Phonegap and Android OS older
-	// than 4.3?
-	function getAndroidVersion(ua) {
-		ua = (ua || navigator.userAgent).toLowerCase();
-		var match = ua.match(/android\s([0-9\.]*)/);
-		return match ? match[1] : false;
-	};
-	// getAndroidVersion(); // "4.2.1"
-	// parseInt(getAndroidVersion()); // 4
-	var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
-
-	if (this.game.global.phonegap && andoidVersion < 4.3) {
+	if (this.game.global.old_android) {
 		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
 						.toString(), a);
 		b.anchor.set(.5, .5)
@@ -1984,22 +1979,6 @@ Menu.prototype = {
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-
-		// Is the game running under Apache Cordova Phonegap and Android OS
-		// older
-		// than 4.3?
-		if (this.game.global.phonegap) {
-			function getAndroidVersion(ua) {
-				ua = (ua || navigator.userAgent).toLowerCase();
-				var match = ua.match(/android\s([0-9\.]*)/);
-				return match ? match[1] : false;
-			};
-			// getAndroidVersion(); // "4.2.1"
-			// parseInt(getAndroidVersion()); // 4
-			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
-			this.game.add.text(100, 200, andoidVersion.toString());
-		}
-
 	},
 	onFocusLost : function() {
 		// this.game.tweens.pauseAll();

@@ -30,22 +30,6 @@ Menu.prototype = {
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
 						.add(this.onFocusLost, this), this.game.onFocus.add(
 						this.onFocus, this));
-
-		// Is the game running under Apache Cordova Phonegap and Android OS
-		// older
-		// than 4.3?
-		if (this.game.global.phonegap) {
-			function getAndroidVersion(ua) {
-				ua = (ua || navigator.userAgent).toLowerCase();
-				var match = ua.match(/android\s([0-9\.]*)/);
-				return match ? match[1] : false;
-			};
-			// getAndroidVersion(); // "4.2.1"
-			// parseInt(getAndroidVersion()); // 4
-			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
-			this.game.add.text(100, 200, andoidVersion.toString());
-		}
-
 	},
 	onFocusLost : function() {
 		// this.game.tweens.pauseAll();

@@ -50,18 +50,7 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
-	// Is the game running under Apache Cordova Phonegap and Android OS older
-	// than 4.3?
-	function getAndroidVersion(ua) {
-		ua = (ua || navigator.userAgent).toLowerCase();
-		var match = ua.match(/android\s([0-9\.]*)/);
-		return match ? match[1] : false;
-	};
-	// getAndroidVersion(); // "4.2.1"
-	// parseInt(getAndroidVersion()); // 4
-	var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
-
-	if (this.game.global.phonegap && andoidVersion < 4.3) {
+	if (this.game.global.old_android) {
 		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
 						.toString(), a);
 		b.anchor.set(.5, .5)

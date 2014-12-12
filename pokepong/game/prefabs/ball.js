@@ -9,22 +9,11 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.trap = trap;
 
 	this.level = level;
-	
-	// Is the game running under Apache Cordova? PHONEGAP
-	if (this.game.global.phonegap) {
-		if (this.level > 1) {
-			this.level += 11;
-		} else {
-			this.level = 10;
-		}
-	
+
+	if (this.level > 1) {
+		this.level += 4;
 	} else {
-		if (this.level > 1) {
-			this.level += 4;
-		} else {
-			this.level = 5;
-		}
-	
+		this.level = 5;
 	}
 
 	this.game.physics.arcade.enableBody(this);
