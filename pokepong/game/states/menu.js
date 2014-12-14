@@ -23,7 +23,7 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		!this.game.device.firefox
+		this.game.global.enable_sound
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(

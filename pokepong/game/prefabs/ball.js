@@ -10,7 +10,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 
 	this.level = level;
 
-	if (this.level > 1) {
+	if (this.level > 5){
+		this.level = 10;
+	} else if (this.level > 1) {
 		this.level += 4;
 	} else {
 		this.level = 5;

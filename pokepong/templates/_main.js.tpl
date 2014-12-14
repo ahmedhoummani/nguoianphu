@@ -24,7 +24,8 @@ window.onload = function () {
   game.global = {
   		levels_num: 28,
 		phonegap: false,
-		old_android: oldAndroid
+		old_android: oldAndroid,
+		enable_sound: true
 		
 	};
 	

@@ -16,10 +16,10 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.ball = ball;
 
 	this.level = level;
-	if (this.level > 3) {
-		this.level *= 1.1;
+	if (this.level > 5) {
+		this.level = 6;
 	} else {
-		this.level = 2;
+		this.level = 4;
 	}
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;

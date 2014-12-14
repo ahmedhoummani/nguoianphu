@@ -95,8 +95,8 @@ Preload.prototype = {
 		this.load.image("island", "assets/graphics/island.png");
 
 		// Sound
-		!this.game.device.firefox && this.game.device.webAudio
-				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+		this.game.global.enable_sound && this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop1.ogg",
 								"assets/audio/MainLoop.m4a"], !0), this.load
 						.audio("tap", ["assets/audio/TapSound.wav"], !0));
 

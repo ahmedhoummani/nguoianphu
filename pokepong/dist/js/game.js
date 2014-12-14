@@ -25,7 +25,8 @@ window.onload = function () {
   game.global = {
   		levels_num: 28,
 		phonegap: false,
-		old_android: oldAndroid
+		old_android: oldAndroid,
+		enable_sound: true
 		
 	};
 	
@@ -52,7 +53,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 
 	this.level = level;
 
-	if (this.level > 1) {
+	if (this.level > 5){
+		this.level = 10;
+	} else if (this.level > 1) {
 		this.level += 4;
 	} else {
 		this.level = 5;
@@ -1168,10 +1171,10 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.ball = ball;
 
 	this.level = level;
-	if (this.level > 3) {
-		this.level *= 1.1;
+	if (this.level > 5) {
+		this.level = 6;
 	} else {
-		this.level = 2;
+		this.level = 4;
 	}
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;
@@ -1972,7 +1975,7 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		!this.game.device.firefox
+		this.game.global.enable_sound
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
@@ -2305,8 +2308,8 @@ Preload.prototype = {
 		this.load.image("island", "assets/graphics/island.png");
 
 		// Sound
-		!this.game.device.firefox && this.game.device.webAudio
-				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+		this.game.global.enable_sound && this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop1.ogg",
 								"assets/audio/MainLoop.m4a"], !0), this.load
 						.audio("tap", ["assets/audio/TapSound.wav"], !0));
 
