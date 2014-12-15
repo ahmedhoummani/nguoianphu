@@ -3,6 +3,11 @@ function Preload() {
 }
 
 Preload.prototype = {
+
+	init : function() {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
+	},
 	preload : function() {
 		// load everything here
 		this.initPreloadBar();

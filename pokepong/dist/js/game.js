@@ -1552,8 +1552,8 @@ function Boot() {
 Boot.prototype = {
 
 	init : function() {
-
-		// hack for empty start up screen
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.game.add.text(100, 100, "Please reload it...");
 	},
 	preload : function() {
@@ -1561,7 +1561,6 @@ Boot.prototype = {
 		this.load.image('LoadingBar_Inner', 'assets/LoadingBar_Inner.png');
 	},
 	create : function() {
-
 		this.setupStage();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
@@ -1574,7 +1573,7 @@ Boot.prototype = {
 		b.enterIncorrectOrientation.add(this.onEnterIncorrectOrientation, this);
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);
-		this.stage.disableVisibilityChange = !0;
+		
 		this.stage.backgroundColor = 11193204;
 	},
 	onEnterIncorrectOrientation : function() {
@@ -1618,12 +1617,14 @@ Object.defineProperty(this, "settings", {
 Level.prototype = {
 
 	init : function(b) {
-
+		// still load if unfocus
+		// levelsmenu overrides it :(
+		// this.stage.disableVisibilityChange = !0;
 		this._settings = new LevelSettings(b);
 	},
 
 	create : function() {
-
+	
 		// this.levels_num = 28;
 		this.levels_num = this.game.global.levels_num;
 		
@@ -1860,10 +1861,13 @@ function Levelsmenu() {
 }
 Levelsmenu.prototype = {
 
+	init : function() {
+		// still load if unfocus
+		// it override the state level
+		this.stage.disableVisibilityChange = !0;
+	},
 	create : function() {
-
 		this.levels_num = this.game.global.levels_num;
-
 		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();
 		this.initButtons();
@@ -1962,10 +1966,12 @@ function Menu() {
 Menu.prototype = {
 
 	init : function(a) {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.fromPreloader = a
 	},
 	create : function() {
-
+		// this.stage.disableVisibilityChange = !0;
 		// add menu object
 
 		this.addBackground();
@@ -2216,6 +2222,11 @@ function Preload() {
 }
 
 Preload.prototype = {
+
+	init : function() {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
+	},
 	preload : function() {
 		// load everything here
 		this.initPreloadBar();

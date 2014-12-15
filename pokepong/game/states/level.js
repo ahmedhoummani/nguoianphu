@@ -27,12 +27,14 @@ Object.defineProperty(this, "settings", {
 Level.prototype = {
 
 	init : function(b) {
-
+		// still load if unfocus
+		// levelsmenu overrides it :(
+		// this.stage.disableVisibilityChange = !0;
 		this._settings = new LevelSettings(b);
 	},
 
 	create : function() {
-
+	
 		// this.levels_num = 28;
 		this.levels_num = this.game.global.levels_num;
 		

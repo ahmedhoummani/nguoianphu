@@ -6,8 +6,8 @@ function Boot() {
 Boot.prototype = {
 
 	init : function() {
-
-		// hack for empty start up screen
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.game.add.text(100, 100, "Please reload it...");
 	},
 	preload : function() {
@@ -15,7 +15,6 @@ Boot.prototype = {
 		this.load.image('LoadingBar_Inner', 'assets/LoadingBar_Inner.png');
 	},
 	create : function() {
-
 		this.setupStage();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
@@ -28,7 +27,7 @@ Boot.prototype = {
 		b.enterIncorrectOrientation.add(this.onEnterIncorrectOrientation, this);
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);
-		this.stage.disableVisibilityChange = !0;
+		
 		this.stage.backgroundColor = 11193204;
 	},
 	onEnterIncorrectOrientation : function() {

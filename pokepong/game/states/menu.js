@@ -10,10 +10,12 @@ function Menu() {
 Menu.prototype = {
 
 	init : function(a) {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.fromPreloader = a
 	},
 	create : function() {
-
+		// this.stage.disableVisibilityChange = !0;
 		// add menu object
 
 		this.addBackground();
