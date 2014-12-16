@@ -10,6 +10,8 @@ function Menu() {
 Menu.prototype = {
 
 	init : function(a) {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.fromPreloader = a
 	},
 	create : function() {
@@ -23,7 +25,8 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		this.fromPreloader
+		this.game.global.enable_sound
+				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
@@ -32,12 +35,12 @@ Menu.prototype = {
 
 	},
 	onFocusLost : function() {
-		this.game.tweens.pauseAll();
-		this.game.sound.mute = !0;
+		// this.game.tweens.pauseAll();
+		// this.game.sound.mute = !0;
 	},
 	onFocus : function() {
-		this.game.tweens.resumeAll();
-		this.game.sound.mute = !1;
+		// this.game.tweens.resumeAll();
+		// this.game.sound.mute = !1;
 	},
 	addBackground : function() {
 		this.game.add.image(0, 0, "bggroup", "bg.png");
@@ -88,12 +91,6 @@ Menu.prototype = {
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
-//		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-//						+ d, this.playButton.y, "buttonsgroup", "button.png");
-//		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
-//		this.moreGamesButton.visible = !1;
-//		this.moreGamesButton.exists = !1;
-
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
 
 		this.buttons.forEach(function(a) {
@@ -103,11 +100,13 @@ Menu.prototype = {
 	hideAndStartGame : function() {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
+
+		if ("true" === window.localStorage.getItem("1")) {
 		this.game.state.start("levelsmenu");
+		} else {
+			this.game.state.start("level", !0, !1, 1);
+		}
 	},
-	// onMoreGamesClick : function() {
-	// window.open("http://play.nguoianphu.com", "_blank");
-	// },
 	initCredits : function() {
 
 		// credit background
@@ -120,19 +119,20 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px font",
+			font : "30px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
 			align : "center"
 		};
 
-		var creditTextContent = "Hello\n" + "Phaser is very good!\n"
-				+ "Let's go!";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n" + "Game made with\n"
+				+ "Phaser JS Framework\n\n" + "Developed by Tuan Vo\n"
+				+ "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
-		this.creditText.anchor.set(.5, .5);
+		this.creditText.anchor.set(.5, 0);
 		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 

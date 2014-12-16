@@ -3,6 +3,11 @@ function Preload() {
 }
 
 Preload.prototype = {
+
+	init : function() {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
+	},
 	preload : function() {
 		// load everything here
 		this.initPreloadBar();
@@ -67,11 +72,11 @@ Preload.prototype = {
 				"assets/graphics/panda.json");
 
 		// Sound
-		this.game.device.webAudio && (
-		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-						"assets/audio/MainLoop.m4a"], !0),
-		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
-		)
+		this.game.global.enable_sound && this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+								"assets/audio/MainLoop.m4a"], !0), this.load
+						.audio("tap", ["assets/audio/TapSound.wav"], !0));
+
 
 	},
 	loadUpdate : function() {

@@ -1,5 +1,4 @@
 var LevelSettings = require('../prefabs/levelsettings');
-var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
 var SimpleButton = require('../prefabs/simplebutton');
 
@@ -24,7 +23,8 @@ Level.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		// this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
 

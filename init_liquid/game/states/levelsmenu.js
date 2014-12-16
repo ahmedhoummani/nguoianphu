@@ -7,9 +7,13 @@ function Levelsmenu() {
 }
 Levelsmenu.prototype = {
 
+	init : function() {
+		// still load if unfocus
+		// it override the state level
+		this.stage.disableVisibilityChange = !0;
+	},
 	create : function() {
-
-		this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();

@@ -1,5 +1,6 @@
 var SimpleButton = require('./simplebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
+var LevelFailBoard = require('./levelfailboard');
 var PauseBoard = require('./pauseboard');
 
 'use strict';
@@ -9,6 +10,7 @@ var Levelgui = function(b, c) {
 
 	this._pauseSignal = new Phaser.Signal();
 	this.levelSettings = c;
+	this.initLevelFailBoard();
 	this.initLevelCompleteBoard();
 	this.initButtons();
 	this.addPauseBoard();
@@ -32,11 +34,26 @@ Levelgui.prototype.initButtons = function() {
 	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png");
 	b.add(this.pauseButton);
-	this.pauseButton.callback.add(
-					function() {
-						b._pauseSignal.dispatch("pause");
+	
+	// delay 1 seconds
+	var timeDelay = 0;
+	this.pauseButton.callback.add(function() {
+			if (this.game.time.now > timeDelay){
+					b._pauseSignal.dispatch("pause"),
+					timeDelay = this.game.time.now + 1000
+				}
 					}, this)
 
+};
+
+Levelgui.prototype.initLevelFailBoard = function() {
+	this.levelFailBoard = new LevelFailBoard(this.game, this,
+			this.levelSettings.levelNumber);
+	this.levelFailBoard.visible = !1
+};
+Levelgui.prototype.onLevelFail = function() {
+	this.pauseButton.visible = !1;
+	this.levelFailBoard.show()
 };
 
 Levelgui.prototype.initLevelCompleteBoard = function() {
@@ -52,18 +69,19 @@ Levelgui.prototype.onLevelComplete = function() {
 Levelgui.prototype.addPauseBoard = function() {
 	var a = this;
 	this.pauseBoard = new PauseBoard(this.game, this);
-	this.pauseBoard.resumeButton.callback
-					.add(function() {
+	this.pauseBoard.resumeButton.callback.add(function() {
 								a._pauseSignal.dispatch("resume");
 							}, this);
 };
 Levelgui.prototype.onPause = function() {
-	this.pauseBoard.show();
+	this.pauseButton.inputEnabled = !1;
 	this.pauseButton.visible = !1;
+	this.pauseBoard.show();
 };
 Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 	this.pauseButton.visible = !0;
+	this.pauseButton.inputEnabled = !0;
 };
 
 

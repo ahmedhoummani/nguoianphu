@@ -1,10 +1,35 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 'use strict';
 
-//global variables
 window.onload = function () {
-  var game = new Phaser.Game(640, 832, Phaser.CANVAS, 'init');
+  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'init');
 
+		// Is the game running under Apache Cordova Phonegap and Android OS
+		// older
+		// than 4.3?
+			function getAndroidVersion(ua) {
+				ua = (ua || navigator.userAgent).toLowerCase();
+				var match = ua.match(/android\s([0-9\.]*)/);
+				return match ? match[1] : false;
+			};
+			// getAndroidVersion(); // "4.2.1"
+			// parseInt(getAndroidVersion()); // 4
+			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+			if (andoidVersion < 4.3){
+				var oldAndroid = true
+			} else {
+				var oldAndroid = false
+			}
+  // Global variables
+  // call them: this.game.global.phonegap
+  game.global = {
+  		levels_num: 28,
+		phonegap: false,
+		old_android: oldAndroid,
+		enable_sound: true
+		
+	};
+	
   // Game States
   game.state.add('boot', require('./states/boot'));
   game.state.add('level', require('./states/level'));
@@ -23,12 +48,15 @@ var SimpleButton = require('./simplebutton');
 var Levelcompleteboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Complete Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 	this.addBackGround();
+	this.board = this.game.add.image(-10, 250, "bggroup", "creditbg.png",
+			this);
+	this.board.position.set(this.game.width / 2
+					- this.board.width / 2, this.game.height / 2
+					- this.board.height / 2);
 	this.addButtons();
-	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
-			this)
 
 };
 
@@ -93,7 +121,129 @@ module.exports = Levelcompleteboard;
 
 },{"./simplebutton":8}],3:[function(require,module,exports){
 var SimpleButton = require('./simplebutton');
+var ToggleButton = require('./togglebutton');
+
+'use strict';
+
+var Levelfailboard = function(b, c, d) {
+	Phaser.Group.call(this, b, c, "Level Fail Board");
+
+	this.levels_num = this.game.global.levels_num;
+	this.levelNumber = d;
+
+	this.addBackGround();
+
+	this.board = this.game.add.image(0, 0, "bggroup", "creditbg.png", this);
+	this.board.position.set(this.game.width / 2 - this.board.width / 2,
+			this.game.height / 2 - this.board.height / 2);
+
+	this.initText();
+	this.addButtons();
+
+	this.exists = !1;
+	this.visible = !1;
+
+};
+
+Levelfailboard.prototype = Object.create(Phaser.Group.prototype);
+Levelfailboard.prototype.constructor = Levelfailboard;
+
+Levelfailboard.prototype.addBackGround = function() {
+	var a = this.game.add.graphics(0, 0, this);
+	a.beginFill(0, .5);
+	a.drawRect(0, 0, this.game.width, this.game.height);
+	a.endFill()
+};
+Levelfailboard.prototype.initText = function() {
+	var b = "You Lost!", c = {
+		font : "76px font",
+		fill : "#FBAF05",
+		align : "center",
+		stroke : "#FFFFFF",
+		strokeThickness : 12
+	}, d = new Phaser.Text(this.game, this.game.width / 2, this.game.height / 2
+					- 100, b, c);
+	d.anchor.set(.5, .5);
+	d.setShadow(2, 2, "#FB1A05", 2);
+	this.add(d);
+
+};
+Levelfailboard.prototype.addButtons = function() {
+	var a = this, b = this.game.height / 2, c = 120;
+
+	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
+			"buttonsgroup", "menu.png");
+	this.menuBtn.callback.addOnce(function() {
+				a.game.state.start("levelsmenu")
+			}, this);
+
+	this.soundBtn = new ToggleButton(this.game, this.menuBtn.x - c, b,
+			"buttonsgroup", "sound.png", "mute.png"), this.soundBtn.callback
+			.add(function() {
+						a.game.sound.mute = !a.game.sound.mute;
+					}), this.game.sound.mute && this.soundBtn.switchTextures();
+
+	this.restartBtn = new SimpleButton(this.game, this.menuBtn.x + c, b,
+			"buttonsgroup", "restart.png");
+	this.restartBtn.callback.addOnce(function() {
+				a.game.state.start("level", !0, !1, a.levelNumber)
+			}, this);
+
+	this.buttons = [this.menuBtn, this.soundBtn, this.restartBtn];
+	this.buttons.forEach(function(b) {
+				a.add(b)
+			})
+};
+
+Levelfailboard.prototype.show = function() {
+	this.exists = !0;
+	this.visible = !0;
+
+	this.alpha = 0;
+	this.board.y -= 200;
+	this.game.add.tween(this).to({
+				alpha : 1
+			}, 200, Phaser.Easing.Linear.None, !0);
+	this.game.add.tween(this.board).to({
+				y : 200
+			}, 500, Phaser.Easing.Back.Out, !0).onComplete.addOnce(
+			this.onShowComplete, this);
+
+	var a = this, b = 500, c = b;
+	this.buttons.forEach(function(d) {
+				d.y -= 200;
+				d.visible = !1;
+				a.game.add.tween(d).to({
+							y : d.y + 200
+						}, b, Phaser.Easing.Back.Out, !0, c).onStart.addOnce(
+						function() {
+							d.visible = !0
+						}, a), c += 100
+			});
+};
+Levelfailboard.prototype.onShowComplete = function() {
+};
+// Levelfailboard.prototype.hide = function() {
+// this.game.add.tween(this).to({
+// alpha : 0
+// }, 100, Phaser.Easing.Linear.None, !0, 400);
+// this.game.add.tween(this.board).to({
+// y : 500
+// }, 500, Phaser.Easing.Back.In, !0).onComplete.addOnce(
+// this.onHideComplete, this);
+//
+// };
+// Levelfailboard.prototype.onHideComplete = function() {
+// this.exists = !1;
+// this.visible = !1;
+// };
+
+module.exports = Levelfailboard;
+
+},{"./simplebutton":8,"./togglebutton":9}],4:[function(require,module,exports){
+var SimpleButton = require('./simplebutton');
 var LevelCompleteBoard = require('./levelcompleteboard');
+var LevelFailBoard = require('./levelfailboard');
 var PauseBoard = require('./pauseboard');
 
 'use strict';
@@ -103,6 +253,7 @@ var Levelgui = function(b, c) {
 
 	this._pauseSignal = new Phaser.Signal();
 	this.levelSettings = c;
+	this.initLevelFailBoard();
 	this.initLevelCompleteBoard();
 	this.initButtons();
 	this.addPauseBoard();
@@ -126,11 +277,26 @@ Levelgui.prototype.initButtons = function() {
 	this.pauseButton = new SimpleButton(this.game, this.game.width - 60, c,
 			"buttonsgroup", "pause.png");
 	b.add(this.pauseButton);
-	this.pauseButton.callback.add(
-					function() {
-						b._pauseSignal.dispatch("pause");
+	
+	// delay 1 seconds
+	var timeDelay = 0;
+	this.pauseButton.callback.add(function() {
+			if (this.game.time.now > timeDelay){
+					b._pauseSignal.dispatch("pause"),
+					timeDelay = this.game.time.now + 1000
+				}
 					}, this)
 
+};
+
+Levelgui.prototype.initLevelFailBoard = function() {
+	this.levelFailBoard = new LevelFailBoard(this.game, this,
+			this.levelSettings.levelNumber);
+	this.levelFailBoard.visible = !1
+};
+Levelgui.prototype.onLevelFail = function() {
+	this.pauseButton.visible = !1;
+	this.levelFailBoard.show()
 };
 
 Levelgui.prototype.initLevelCompleteBoard = function() {
@@ -146,24 +312,25 @@ Levelgui.prototype.onLevelComplete = function() {
 Levelgui.prototype.addPauseBoard = function() {
 	var a = this;
 	this.pauseBoard = new PauseBoard(this.game, this);
-	this.pauseBoard.resumeButton.callback
-					.add(function() {
+	this.pauseBoard.resumeButton.callback.add(function() {
 								a._pauseSignal.dispatch("resume");
 							}, this);
 };
 Levelgui.prototype.onPause = function() {
-	this.pauseBoard.show();
+	this.pauseButton.inputEnabled = !1;
 	this.pauseButton.visible = !1;
+	this.pauseBoard.show();
 };
 Levelgui.prototype.onResume = function() {
 	this.pauseBoard.hide();
 	this.pauseButton.visible = !0;
+	this.pauseButton.inputEnabled = !0;
 };
 
 
 module.exports = Levelgui;
 
-},{"./levelcompleteboard":2,"./pauseboard":7,"./simplebutton":8}],4:[function(require,module,exports){
+},{"./levelcompleteboard":2,"./levelfailboard":3,"./pauseboard":7,"./simplebutton":8}],5:[function(require,module,exports){
 'use strict';
 
 var Levelicon = function(b, c, d, e, f) {
@@ -216,36 +383,24 @@ Levelicon.prototype.createUnlockedGraphics = function() {
 		fill : "#218DB7",
 		align : "center"
 	};
+	if (this.game.global.old_android) {
+		var b = this.game.add.text(this.x + 90, this.y + 145, this._levelNumber
+						.toString(), a);
+		b.anchor.set(.5, .5)
+
+	} else {
 	var b = this.game.add.text(0, 0, this._levelNumber.toString(), a);
 	b.anchor.set(.5, .5);
 	var c = this.game.add.renderTexture(this.width, this.height);
 	c.renderXY(this, .5 * this.width, .5 * this.height);
-	c
-			.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5
-							* this.height)
+		c.renderXY(b, Math.floor(.5 * this.width), Math.floor(.5 * this.height)
 							- 1);
 	this.setTexture(c);
 	b.destroy();
+	}
 };
 
 module.exports = Levelicon;
-
-},{}],5:[function(require,module,exports){
-'use strict';
-
-var Levelresult = function(a) {
-	this._levelNumber = a;
-	return Object.defineProperty(this, "levelNumber", {
-				get : function() {
-					return this._levelNumber
-				},
-				enumerable : !0,
-				configurable : !0
-			})
-
-};
-
-module.exports = Levelresult;
 
 },{}],6:[function(require,module,exports){
 'use strict';
@@ -323,7 +478,9 @@ Pauseboard.prototype.addButtons = function() {
 
 	this.menuBtn = new SimpleButton(this.game, this.game.width / 2, b,
 			"buttonsgroup", "menu.png");
+	
 	this.menuBtn.callback.add(function() {
+					a.menuBtn.inputEnabled = !1,
 				a.game.state.start("levelsmenu")
 			});
 
@@ -331,7 +488,7 @@ Pauseboard.prototype.addButtons = function() {
 			"buttonsgroup", "sound.png", "mute.png"), this.soundBtn.callback
 			.add(function() {
 						a.game.sound.mute = !a.game.sound.mute;
-					}), this.game.sound.mute && this.soundBtn.switchTextures(),
+					}), this.game.sound.mute && this.soundBtn.switchTextures();
 
 	this._resumeButton = new SimpleButton(this.game, this.menuBtn.x + c + .25,
 			b, "buttonsgroup", "restart.png"),
@@ -483,13 +640,9 @@ function Boot() {
 Boot.prototype = {
 
 	init : function() {
-			this.game.device.android
-					&& !this.game.device.chrome
-					&& (this.game.canvas.parentElement.style.overflow = "visible");
-			var a = {
-				font : "46px"
-			}, b = this.game.add.text(0, 0, "0", a);
-			b.destroy()
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
+		this.game.add.text(100, 100, "Please reload it...");
 	},
 
 	preload : function() {
@@ -499,48 +652,25 @@ Boot.prototype = {
 	create : function() {
 
 		this.setupStage();
-		// this.detectWeakDevice();
 		this.game.input.maxPointers = 1;
 		this.game.state.start('preload');
 	},
 	setupStage : function() {
 		var b = this.game.scale;
 		b.scaleMode = Phaser.ScaleManager.SHOW_ALL;
-		b.minWidth = .25 * this.game.world.width;
-		b.minHeight = .25 * this.game.world.height;
-		b.aspectRatio = this.game.world.width / this.game.world.width;
 		b.pageAlignHorizontally = !0;
 		b.pageAlignVertically = !0;
-		this.game.device.desktop || b.forceOrientation(!1, !0);
 		b.enterIncorrectOrientation.add(this.onEnterIncorrectOrientation, this);
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);
-		this.stage.disableVisibilityChange = !0;
+		
 		this.stage.backgroundColor = 11193204;
-	},
-	detectWeakDevice : function() {
-		var b = !1;
-		if (this.game.device.desktop === !1) {
-			var c = detect.parse(window.navigator.userAgent);
-			this.game.device.iOS
-					&& (c.os.major < 7 && (b = !0), c.browser.family
-							.indexOf("Chrome") > -1
-							&& (b = !0)), this.game.device.android
-					&& (c.browser.family.indexOf("Android") > -1 && (b = !0), c.browser.family
-							.indexOf("Chrome Mobile") > -1
-							&& c.browser.major <= 18 && (b = !0)), this.game.device.windowsPhone
-					&& c.browser.family.indexOf("IE") > -1
-					&& (b = c.browser.major < 10);
-		}
 	},
 	onEnterIncorrectOrientation : function() {
 		document.getElementById("orientation").style.display = "block", document.body.style.marginBottom = "0px";
 	},
 	onLeaveIncorrectOrientation : function() {
-		document.getElementById("orientation").style.display = "none", document.body.style.marginBottom = "100px", this.game.device.android
-				&& !this.game.device.chrome
-				&& this.game.scale.setScreenSize(!0), this.game.time.events
-				.repeat(500, 3, this.game.scale.setScreenSize, this);
+		document.getElementById("orientation").style.display = "none", document.body.style.marginBottom = "100px";
 	}
 
 };
@@ -549,7 +679,6 @@ module.exports = Boot;
 
 },{}],11:[function(require,module,exports){
 var LevelSettings = require('../prefabs/levelsettings');
-var LevelResult = require('../prefabs/levelresult');
 var LevelGUI = require('../prefabs/levelgui');
 var SimpleButton = require('../prefabs/simplebutton');
 
@@ -574,7 +703,8 @@ Level.prototype = {
 
 	create : function() {
 
-		this.levels_num = 28;
+		// this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.text(100, 100, this._settings.levelNumber.toString());
 
@@ -628,7 +758,7 @@ Level.prototype = {
 };
 module.exports = Level;
 
-},{"../prefabs/levelgui":3,"../prefabs/levelresult":5,"../prefabs/levelsettings":6,"../prefabs/simplebutton":8}],12:[function(require,module,exports){
+},{"../prefabs/levelgui":4,"../prefabs/levelsettings":6,"../prefabs/simplebutton":8}],12:[function(require,module,exports){
 var LevelIcon = require('../prefabs/levelicon');
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
@@ -638,9 +768,13 @@ function Levelsmenu() {
 }
 Levelsmenu.prototype = {
 
+	init : function() {
+		// still load if unfocus
+		// it override the state level
+		this.stage.disableVisibilityChange = !0;
+	},
 	create : function() {
-
-		this.levels_num = 28;
+		this.levels_num = this.game.global.levels_num;
 
 		this.game.add.image(0, 0, "bggroup", "bg.png");
 		this.initLevelIcons();
@@ -727,7 +861,7 @@ Levelsmenu.prototype = {
 };
 module.exports = Levelsmenu;
 
-},{"../prefabs/levelicon":4,"../prefabs/simplebutton":8,"../prefabs/togglebutton":9}],13:[function(require,module,exports){
+},{"../prefabs/levelicon":5,"../prefabs/simplebutton":8,"../prefabs/togglebutton":9}],13:[function(require,module,exports){
 var SimpleButton = require('../prefabs/simplebutton');
 var ToggleButton = require('../prefabs/togglebutton');
 
@@ -740,6 +874,8 @@ function Menu() {
 Menu.prototype = {
 
 	init : function(a) {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
 		this.fromPreloader = a
 	},
 	create : function() {
@@ -753,7 +889,8 @@ Menu.prototype = {
 		this.initCredits();
 		this.initAnimation();
 
-		this.fromPreloader
+		this.game.global.enable_sound
+				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
 						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
@@ -762,12 +899,12 @@ Menu.prototype = {
 
 	},
 	onFocusLost : function() {
-		this.game.tweens.pauseAll();
-		this.game.sound.mute = !0;
+		// this.game.tweens.pauseAll();
+		// this.game.sound.mute = !0;
 	},
 	onFocus : function() {
-		this.game.tweens.resumeAll();
-		this.game.sound.mute = !1;
+		// this.game.tweens.resumeAll();
+		// this.game.sound.mute = !1;
 	},
 	addBackground : function() {
 		this.game.add.image(0, 0, "bggroup", "bg.png");
@@ -818,12 +955,6 @@ Menu.prototype = {
 				});
 		this.game.sound.mute && this.soundButton.switchTextures();
 
-//		this.moreGamesButton = new SimpleButton(this.game, this.playButton.x
-//						+ d, this.playButton.y, "buttonsgroup", "button.png");
-//		this.moreGamesButton.callback.add(this.onMoreGamesClick, this);
-//		this.moreGamesButton.visible = !1;
-//		this.moreGamesButton.exists = !1;
-
 		this.buttons = [this.playButton, this.soundButton, this.creditsButton];
 
 		this.buttons.forEach(function(a) {
@@ -833,11 +964,13 @@ Menu.prototype = {
 	hideAndStartGame : function() {
 		this.playButton.input.enabled = !1;
 		this.playButton.inputEnabled = !1;
+
+		if ("true" === window.localStorage.getItem("1")) {
 		this.game.state.start("levelsmenu");
+		} else {
+			this.game.state.start("level", !0, !1, 1);
+		}
 	},
-	// onMoreGamesClick : function() {
-	// window.open("http://play.nguoianphu.com", "_blank");
-	// },
 	initCredits : function() {
 
 		// credit background
@@ -850,19 +983,20 @@ Menu.prototype = {
 
 		// credit text
 		var style = {
-			font : "45px font",
+			font : "30px font",
 			fill : "#fff",
 			stroke : "#000",
 			strokeThickness : 1,
 			align : "center"
 		};
 
-		var creditTextContent = "Hello\n" + "Phaser is very good!\n"
-				+ "Let's go!";
+		var creditTextContent = "www.NguoiAnPhu.com\n\n" + "Game made with\n"
+				+ "Phaser JS Framework\n\n" + "Developed by Tuan Vo\n"
+				+ "vohungtuan@gmail.com";
 
 		this.creditText = this.game.add.text(0, 0,
 				creditTextContent.toString(), style);
-		this.creditText.anchor.set(.5, .5);
+		this.creditText.anchor.set(.5, 0);
 		this.creditText.position.set(this.game.width / 2, this.game.height / 2);
 		this.creditText.setShadow(2, 2, "#666666", 2);
 
@@ -997,6 +1131,11 @@ function Preload() {
 }
 
 Preload.prototype = {
+
+	init : function() {
+		// still load if unfocus
+		this.stage.disableVisibilityChange = !0;
+	},
 	preload : function() {
 		// load everything here
 		this.initPreloadBar();
@@ -1061,11 +1200,11 @@ Preload.prototype = {
 				"assets/graphics/panda.json");
 
 		// Sound
-		this.game.device.webAudio && (
-		this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-						"assets/audio/MainLoop.m4a"], !0),
-		this.load.audio("tap", ["assets/audio/TapSound.wav"], !0)
-		)
+		this.game.global.enable_sound && this.game.device.webAudio
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
+								"assets/audio/MainLoop.m4a"], !0), this.load
+						.audio("tap", ["assets/audio/TapSound.wav"], !0));
+
 
 	},
 	loadUpdate : function() {

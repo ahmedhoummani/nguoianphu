@@ -5,12 +5,15 @@ var SimpleButton = require('./simplebutton');
 var Levelcompleteboard = function(b, c, d) {
 	Phaser.Group.call(this, b, c, "Level Complete Board");
 
-	this.levels_num = 28;
+	this.levels_num = this.game.global.levels_num;
 	this.levelNumber = d;
 	this.addBackGround();
+	this.board = this.game.add.image(-10, 250, "bggroup", "creditbg.png",
+			this);
+	this.board.position.set(this.game.width / 2
+					- this.board.width / 2, this.game.height / 2
+					- this.board.height / 2);
 	this.addButtons();
-	this.board = this.game.add.image(-10, 250, "bggroup", "levelcomplete.png",
-			this)
 
 };
 
