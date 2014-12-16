@@ -801,7 +801,7 @@ var Levelicon = function(b, c, d, e, f) {
 	this.inputEnabled
 			&& (this.game.device.desktop && (this.input.useHandCursor = !0), this.events.onInputDown
 					.add(function() {
-						!g.game.device.firefox && g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
+						g.game.sound.play("tap", .75), g.tint *= .995, g.game.add
 								.tween(g.scale).to({
 											x : .9,
 											y : .9
@@ -1372,10 +1372,10 @@ var Simplebutton = function(b, c, d, e, f) {
 	this._callback = new Phaser.Signal();
 	this.anchor.set(.5, .5);
 	this.inputEnabled = !0;
-	(this.input.useHandCursor = !0);
+	this.game.device.desktop && (this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
-				!g.game.device.firefox && g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
+				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
 						.tween(g.scale).to({
 									x : .9,
 									y : .9
