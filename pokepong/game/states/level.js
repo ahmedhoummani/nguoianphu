@@ -146,7 +146,9 @@ Level.prototype = {
 	},
 
 	levelFail : function() {
-		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+				this.game.global.enable_sound && this.game.sound.play("levelfail")
+			}, this);
 		this.gui.onLevelFail();
 
 		this.pokemon.visible = !1;
@@ -154,7 +156,9 @@ Level.prototype = {
 	},
 
 	levelComplete : function() {
-		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+			this.game.global.enable_sound && this.game.sound.play("levelcomplete")
+			}, this);
 		this.saveLevelResult();
 		this.gui.onLevelComplete();
 

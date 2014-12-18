@@ -137,8 +137,8 @@ Ball.prototype.update = function() {
 
 Ball.prototype.hitPikachu = function() {
 
+	this.game.global.enable_sound && this.game.sound.play("plop");
 	var diff = 0;
-
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
@@ -215,7 +215,7 @@ Ball.prototype.explode = function() {
 	if (this.explosionPool.countDead() === 0) {
 		return;
 	}
-
+	this.game.global.enable_sound && this.game.sound.play("player-explosion");
 	var explosion = this.explosionPool.getFirstExists(false);
 	explosion.reset(this.x, this.y);
 	explosion.play('boom', 15, false, true);
@@ -1346,7 +1346,7 @@ Pokemon.prototype.explode = function() {
 	if (this.explosionPool.countDead() === 0) {
 		return;
 	}
-
+	this.game.global.enable_sound && this.game.sound.play("explosion");
 	var explosion = this.explosionPool.getFirstExists(false);
 	explosion.reset(this.x, this.y);
 	explosion.play('boom', 15, false, true);
@@ -1375,7 +1375,7 @@ var Simplebutton = function(b, c, d, e, f) {
 	this.game.device.desktop && (this.input.useHandCursor = !0);
 	
 	this.inputEnabled && (this.events.onInputDown.add(function() {
-				g.game.device.webAudio && g.game.sound.play("tap"), g.game.add
+				g.game.global.enable_sound && g.game.sound.play("tap"), g.game.add
 						.tween(g.scale).to({
 									x : .9,
 									y : .9
@@ -1730,7 +1730,9 @@ Level.prototype = {
 	},
 
 	levelFail : function() {
-		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+				this.game.global.enable_sound && this.game.sound.play("levelfail")
+			}, this);
 		this.gui.onLevelFail();
 
 		this.pokemon.visible = !1;
@@ -1738,7 +1740,9 @@ Level.prototype = {
 	},
 
 	levelComplete : function() {
-		// this.game.device.webAudio && this.game.sound.play("levelcomplete");
+		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
+			this.game.global.enable_sound && this.game.sound.play("levelcomplete")
+			}, this);
 		this.saveLevelResult();
 		this.gui.onLevelComplete();
 
@@ -2333,10 +2337,18 @@ Preload.prototype = {
 		this.load.image("island", "assets/graphics/island.png");
 
 		// Sound
-		this.game.global.enable_sound && this.game.device.webAudio
+		this.game.global.enable_sound
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop1.ogg",
-								"assets/audio/MainLoop.m4a"], !0), this.load
-						.audio("tap", ["assets/audio/TapSound.wav"], !0));
+								"assets/audio/MainLoop.m4a"], !0),
+					this.load.audio("tap", ["assets/audio/TapSound.wav"], !0),
+					this.load.audio("explosion", ["assets/audio/explosion.ogg",
+								"assets/audio/explosion.wav"], !0),
+					this.load.audio("player-explosion", ["assets/audio/player-explosion.ogg",
+								"assets/audio/player-explosion.wav"], !0),
+					this.load.audio("levelfail", ["assets/audio/Game_Over.ogg"], !0),
+					this.load.audio("levelcomplete", ["assets/audio/LevelCompleteSound.wav"], !0),
+					this.load.audio("plop", ["assets/audio/plop.ogg"], !0)
+					);
 
 		// tutorial hand
 		this.load.atlas("hands", "assets/graphics/hands.png",

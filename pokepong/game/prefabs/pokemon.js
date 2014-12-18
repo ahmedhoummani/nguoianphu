@@ -191,7 +191,7 @@ Pokemon.prototype.explode = function() {
 	if (this.explosionPool.countDead() === 0) {
 		return;
 	}
-
+	this.game.global.enable_sound && this.game.sound.play("explosion");
 	var explosion = this.explosionPool.getFirstExists(false);
 	explosion.reset(this.x, this.y);
 	explosion.play('boom', 15, false, true);

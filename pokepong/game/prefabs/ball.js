@@ -94,8 +94,8 @@ Ball.prototype.update = function() {
 
 Ball.prototype.hitPikachu = function() {
 
+	this.game.global.enable_sound && this.game.sound.play("plop");
 	var diff = 0;
-
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
@@ -172,7 +172,7 @@ Ball.prototype.explode = function() {
 	if (this.explosionPool.countDead() === 0) {
 		return;
 	}
-
+	this.game.global.enable_sound && this.game.sound.play("player-explosion");
 	var explosion = this.explosionPool.getFirstExists(false);
 	explosion.reset(this.x, this.y);
 	explosion.play('boom', 15, false, true);
