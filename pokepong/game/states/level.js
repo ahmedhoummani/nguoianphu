@@ -48,6 +48,7 @@ Level.prototype = {
 
 		// add pikachu
 		this.addPikachu();
+		
 		// draw a line below pikachu
 		this.line = this.game.add.tileSprite(50, this.game.height - 165,
 				this.game.width - 100, 10, 'line');
@@ -79,12 +80,30 @@ Level.prototype = {
 		if (this._settings.levelNumber == 1
 				&& this.game.input.activePointer.isDown
 				&& this.tutorial.visible) {
-			// delay 5s
+				
+			this.tutorial.position.set(this.pikachu.x + 5, this.pikachu.y + 50);
+			// move to left - delay 2s
+			this.game.add.tween(this.tutorial).to({
+				x : this.game.width / 2 - 100
+			}, 1000, Phaser.Easing.Bounce.In, !0).onComplete
+				.addOnce(function() {
+				// move to right - delay 2s
+					this.game.add.tween(this.tutorial).to({
+						x : this.game.width / 2 + 100
+					}, 1000, Phaser.Easing.Bounce.Out, !0).onComplete
+						.addOnce(function() {
+							this.game.add.tween(this.tutorial).to({
+								x : this.game.width / 2
+							}, 500, Phaser.Easing.Bounce.In, !0)
+						}, this)
+				}, this);
+			
+			// tutorial delay 5s
 			this.game.time.events.add(Phaser.Timer.SECOND * 5, function() {
 						this.tutorial.animations.stop();
 						this.game.add.tween(this.tutorial).to({
 									alpha : 0
-								}, 300, Phaser.Easing.Linear.None, !0).onComplete
+								}, 300, Phaser.Easing.Back.Out, !0).onComplete
 								.addOnce(function() {
 											this.tutorial.visible = !1;
 											this.tutorial.destroy();
@@ -154,11 +173,11 @@ Level.prototype = {
 	},
 	addTrap : function() {
 
-		this.numberOfTrap = 6;
+		this.numberOfTrap = 3;
 		this.traps = this.game.add.group();
 
 		for (var i = 0; i < this.numberOfTrap; i++) {
-			this.trap = new Trap(this.game, 70 + i * 100, this.game.height - 50);
+			this.trap = new Trap(this.game, 120 + i * 200, this.game.height - 50);
 			this.traps.add(this.trap);
 
 		}
@@ -167,6 +186,7 @@ Level.prototype = {
 	addPikachu : function() {
 		this.pikachu = new Pikachu(this.game, this.game.width / 2,
 				this.game.height - 210, this._settings.levelNumber);
+	
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
@@ -223,13 +243,13 @@ Level.prototype = {
 			strokeThickness : 1
 		};
 
-		var tutorialTexts = "Touch Pikachu to hit Ball\n\n"
-				+ "Avoid Ball collides to Circular Saw!";
+		var tutorialTexts = "Avoid Ball hit to Circular Saw!\n\n" +
+							"touch Pikachu to defend Ball";
 
 		this.tutorialText = this.game.add.text(0, 0, tutorialTexts.toString(),
 				tutorialStyle);
 		this.tutorialText.anchor.set(.5, .5);
-		this.tutorialText.position.set(this.game.width / 2, 200);
+		this.tutorialText.position.set(this.game.width / 2, this.game.height - 100 );
 		this.tutorialText.setShadow(2, 2, "#000", 2);
 
 	},
