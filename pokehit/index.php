@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>pokepgun</title>
+	<title>Pokehit</title>
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="chrome=1, IE=9">
 	<meta name="format-detection" content="telephone=no">
@@ -42,7 +42,7 @@
     <script src="js/game.min.js" type="text/javascript"></script>
 </head>
 <body>
-    <div id="pokepgun"></div>
+    <div id="pokephit"></div>
     <div id="orientation"></div>
 </body>
 </html>

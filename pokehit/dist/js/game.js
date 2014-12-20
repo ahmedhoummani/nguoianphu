@@ -2,7 +2,7 @@
 'use strict';
 
 window.onload = function () {
-  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokepgun');
+  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokephit');
 
 		// Is the game running under Apache Cordova Phonegap and Android OS
 		// older
@@ -16,9 +16,11 @@ window.onload = function () {
 			// parseInt(getAndroidVersion()); // 4
 			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
 			if (andoidVersion < 4.3){
-				var oldAndroid = true
+				var oldAndroid = true;
+				var sound_on = false
 			} else {
-				var oldAndroid = false
+				var oldAndroid = false;
+				var sound_on = true
 			}
   // Global variables
   // call them: this.game.global.phonegap
@@ -26,7 +28,7 @@ window.onload = function () {
   		levels_num: 28,
 		phonegap: false,
 		old_android: oldAndroid,
-		enable_sound: true
+		enable_sound: sound_on
 		
 	};
 	
@@ -1627,7 +1629,7 @@ Level.prototype = {
 				&& this.game.input.activePointer.isDown
 				&& this.tutorial.visible) {
 			this.tutorialText.visible = !0;
-			this.tutorial.position.set(this.game.width / 2 + 100, this.game.height / 2 + 100);
+			this.tutorial.position.set(this.game.width / 2 + 100, this.game.height / 2 + 200);
 			
 			/*
 			// move to left - delay 2s
@@ -1985,9 +1987,7 @@ Menu.prototype = {
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
-						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
-						.add(this.onFocusLost, this), this.game.onFocus.add(
-						this.onFocus, this));
+						this.startMusic, this));
 	},
 	onFocusLost : function() {
 		// this.game.tweens.pauseAll();
@@ -2010,7 +2010,7 @@ Menu.prototype = {
 			strokeThickness : 12
 		};
 
-		var titleTexts = "Poke Gun";
+		var titleTexts = "Poke Hit";
 
 		this.titleText = this.game.add.text(0, 0, titleTexts.toString(),
 				titleStyle);

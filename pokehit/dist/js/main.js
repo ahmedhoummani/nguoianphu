@@ -1,7 +1,7 @@
 'use strict';
 
 window.onload = function () {
-  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokepgun');
+  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokephit');
 
 		// Is the game running under Apache Cordova Phonegap and Android OS
 		// older
@@ -15,9 +15,11 @@ window.onload = function () {
 			// parseInt(getAndroidVersion()); // 4
 			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
 			if (andoidVersion < 4.3){
-				var oldAndroid = true
+				var oldAndroid = true;
+				var sound_on = false
 			} else {
-				var oldAndroid = false
+				var oldAndroid = false;
+				var sound_on = true
 			}
   // Global variables
   // call them: this.game.global.phonegap
@@ -25,7 +27,7 @@ window.onload = function () {
   		levels_num: 28,
 		phonegap: false,
 		old_android: oldAndroid,
-		enable_sound: true
+		enable_sound: sound_on
 		
 	};
 	

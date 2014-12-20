@@ -87,7 +87,7 @@ Level.prototype = {
 				&& this.game.input.activePointer.isDown
 				&& this.tutorial.visible) {
 			this.tutorialText.visible = !0;
-			this.tutorial.position.set(this.game.width / 2 + 100, this.game.height / 2 + 100);
+			this.tutorial.position.set(this.game.width / 2 + 100, this.game.height / 2 + 200);
 			
 			/*
 			// move to left - delay 2s
