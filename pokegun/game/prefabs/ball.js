@@ -28,14 +28,14 @@ var Ball = function(game, x, y, pikachu, arrow, win, level) {
 	this.animations.add('ghost', ['05.png', '01.png', '05.png'], 2, true);
 	this.animations.play('start');
 
-	this.health = 3;
+	this.health = 4;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 45,
 				'ballred', '01.png');
-		life.scale.setTo(0.7, 0.7);
+		life.scale.setTo(0.9, 0.9);
 		life.anchor.setTo(0.5, 0.5);
 	}
 

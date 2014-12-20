@@ -46,17 +46,17 @@ window.onload = function () {
 var Arrow = function(game, x, y, level) {
 	Phaser.Sprite.call(this, game, x, y, 'arrow', level);
 
-	// this.level = level;
+	this.level = level;
 
 	this.game.physics.arcade.enableBody(this);
 
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
 
-	this.angle = -60;
+	this.angle = -80;
 	this.game.add.tween(this).to({
-				angle : 60
-			}, 1000, Phaser.Easing.Linear.NONE, true, 0, Number.MAX_VALUE, true);
+				angle : 80
+			}, 1500 - (this.level * 20), Phaser.Easing.Linear.NONE, true, 0, Number.MAX_VALUE, true);
 
 	this.game.add.existing(this);
 
@@ -106,14 +106,14 @@ var Ball = function(game, x, y, pikachu, arrow, win, level) {
 	this.animations.add('ghost', ['05.png', '01.png', '05.png'], 2, true);
 	this.animations.play('start');
 
-	this.health = 3;
+	this.health = 4;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 45,
 				'ballred', '01.png');
-		life.scale.setTo(0.7, 0.7);
+		life.scale.setTo(0.9, 0.9);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
@@ -1176,25 +1176,20 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.ball = ball;
 
 	this.level = level;
-	if (this.level > 5) {
-		this.level = 6;
-	} else {
-		this.level = 4;
-	}
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;
 	
-	this.health = 1;
+	this.health = 2;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 500;
+	this.ghostUntilTimer = 1000;
 	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 + 100 + (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 + 70 + (70 * i), 45,
 				this._level2pokemon.pokemon, '01.png');
-		life.scale.setTo(0.7, 0.7);
+		life.scale.setTo(0.8, 0.8);
 		life.anchor.setTo(0.5, 0.5);
 	}
 
@@ -1206,8 +1201,6 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 150 * this.level;
-	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
@@ -1223,7 +1216,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
 					.between(1, 5)
-					* 50), 200, this.body.velocity);
+					* 50), 200 + this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -1274,20 +1267,12 @@ Pokemon.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	if (this.notPause && this.y > (this.game.height - 300)) {
-
+	if (this.notPause && this.y > (this.game.height - 300 - this.level)) {
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 5
-				* this.level);
-		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
-				* this.level);
-
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(140, 150) + this.level);
+		this.body.velocity.x = Math.floor(this.game.rnd.between(140, 150) + this.level);
 	}
-
-	// if (this.game.physics.arcade.distanceBetween(this, this.ball) < 200) {
-	// this.game.physics.arcade.moveToObject(this, this.ball, -50);
-	// }
 
 	this.game.physics.arcade.collide(this, this.ball, this.hitBall, null, this);
 
@@ -1304,7 +1289,6 @@ Pokemon.prototype.hitBall = function() {
 	var life = this.lives.getFirstAlive();
 	if (life) {
 		this.ghostUntil = this.game.time.now + this.ghostUntilTimer;
-		// this.play('ghost');
 		life.kill();
 	}
 
@@ -1318,10 +1302,8 @@ Pokemon.prototype.damage = function() {
 		this._levelCompleteSignal.dispatch();
 		this.alive = false;
 		this.kill();
-
 		return true;
 	}
-
 	return false;
 
 };
