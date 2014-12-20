@@ -1,36 +1,26 @@
 'use strict';
 
-var Ball = function(game, x, y, pikachu, level) {
-	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, level);
+var Ball = function(game, x, y, pikachu, arrow, win, level) {
+	Phaser.Sprite.call(this, game, x, y, 'ballred', pikachu, arrow, level);
 
 	this._x = x;
 	this._y = y;
 	this.pikachu = pikachu;
-	// this.trap = trap;
+	this.arrow = arrow;
 
 	this.level = level;
 
-	if (this.level > 5){
-		this.level = 10;
-	} else if (this.level > 1) {
-		this.level += 4;
-	} else {
-		this.level = 5;
-	}
-
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(32, 32, 0, 0);
+	this.body.setSize(40, 40, 0, 0);
 	this.body.collideWorldBounds = !1;
 	
-	this.body.bounce.setTo(2, 2);
+	this.body.bounce.setTo(1, 1);
 	this.anchor.setTo(.5, .5);
-
-	// this.body.maxVelocity.x = 100 * (this.level);
-	// this.body.maxVelocity.y = 100 * (this.level);
 
 	this.cachedVelocity = {};
 	this.startRun = !0;
+	this.win = win;
 	this.notPause = !0;
 
 	this.animations.add('start', ['01.png', '02.png', '03.png', '04.png'], 2,
@@ -77,35 +67,18 @@ Ball.prototype = Object.create(Phaser.Sprite.prototype);
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
+	this.game.physics.arcade.collide(this, this.pikachu, null, null, this);
 			
 	if (!this.game.world.bounds.contains(this.x, this.y)){
-		this.damage();
-		this.position.set(this.pikachu.x - 10 , this.pikachu.y + 40);
+		var win = this.damage();
+		
+		this.position.set(this.game.width / 2,
+				this.game.height - 120);
 		this.startRun = !0;
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-	}
-
-};
-
-Ball.prototype.hitPikachu = function() {
-
-	this.game.global.enable_sound && this.game.sound.play("plop");
-	var diff = 0;
-	if (this.pikachu.x > this.x) {
-		// If ball is in the left hand side on the racket
-		diff = this.pikachu.x - this.x;
-		this.body.velocity.x -= (100 * diff * this.level);
-	} else if (this.pikachu.x < this.x) {
-		// If ball is in the right hand side on the racket
-		diff = this.x - this.pikachu.x;
-		this.body.velocity.x += (100 * diff * this.level);
-	} else {
-		// The ball hit the center of the racket, let's add a little bit of a
-		// tragic accident(random) of his movement
-		this.body.velocity.x = this.game.rnd.between(1, 5) * 50 * this.level;
-		this.body.velocity.y -= this.game.rnd.between(1, 5) * 50 * this.level;
+		
+		if (win) {this.arrow.visible = !0}
 	}
 
 };
@@ -114,8 +87,8 @@ Ball.prototype.start = function() {
 
 	if (this.alive && this.startRun) {
 		this.startRun = !1;
-		// alert("fuck");
-		this.body.velocity.y = -300 * this.level;
+		this.arrow.visible = !1;
+		this.game.physics.arcade.velocityFromAngle(this.arrow.angle - 90, 500 + this.level, this.body.velocity);
 	}
 };
 
@@ -127,15 +100,13 @@ Ball.prototype.damage = function() {
 	if (life) {
 		life.kill();
 	}
-
 	if (this.health <= 0) {
 		this._levelFailSignal.dispatch();
-		this.alive = false;
 		this.kill();
+		return false;
+	} else {
 		return true;
 	}
-	return false;
-
 };
 
 Ball.prototype.pause = function(status) {

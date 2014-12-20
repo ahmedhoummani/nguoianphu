@@ -1,4 +1,5 @@
 var Pikachu = require('../prefabs/pikachu');
+var Arrow = require('../prefabs/arrow');
 var Ball = require('../prefabs/ball');
 var Pokemon = require('../prefabs/pokemon');
 var Ground = require('../prefabs/ground');
@@ -49,9 +50,14 @@ Level.prototype = {
 		// add pikachu
 		this.addPikachu();
 		
+		// add arrow
+		this.addArrow();
+		
 		// draw a line below pikachu
 		// this.line = this.game.add.tileSprite(50, this.game.height - 165,
 				// this.game.width - 100, 10, 'line');
+		
+		this.win = !1;
 		// add ball
 		this.addBall();
 		// add pokemon
@@ -101,8 +107,8 @@ Level.prototype = {
 				}, this);
 			*/
 			
-			// tutorial delay 5s
-			this.game.time.events.add(Phaser.Timer.SECOND * 5, function() {
+			// tutorial delay 3s
+			this.game.time.events.add(Phaser.Timer.SECOND * 3, function() {
 						this.tutorial.animations.stop();
 						this.game.add.tween(this.tutorial).to({
 									alpha : 0
@@ -124,6 +130,12 @@ Level.prototype = {
 		// this.game.debug.body(this.pikachu);
 		// this.game.debug.body(this.ball);
 		// this.game.debug.body(this.pokemon);
+		// this.game.debug.body(this.arrow);
+		// this.game.debug.spriteInfo(this.arrow, 32, 100,  "#000");
+		// this.game.debug.spriteInfo(this.ball, 32, 200,  "#000");
+		
+		// this.game.debug.text('this.arrow.body.angularVelocity: ' + this.arrow.body.angularVelocity, 32, 300, null,"22px font");
+		// this.game.debug.text('this.ball.body.angularVelocity: ' + this.ball.body.angularVelocity, 32, 330, null,"22px font");
 	},
 
 	addLevelText : function() {
@@ -147,22 +159,28 @@ Level.prototype = {
 	},
 
 	levelFail : function() {
+		if (this.win){
+			return
+		}
 		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 				this.game.global.enable_sound && this.game.sound.play("levelfail")
 			}, this);
 		this.gui.onLevelFail();
 
+		// this.arrow.kill();
 		this.pokemon.visible = !1;
 		this.pikachu.visible = !1;
 	},
 
 	levelComplete : function() {
+		this.win = !0;
 		this.game.time.events.add(Phaser.Timer.SECOND * 1, function() {
 			this.game.global.enable_sound && this.game.sound.play("levelcomplete")
 			}, this);
 		this.saveLevelResult();
 		this.gui.onLevelComplete();
 
+		this.arrow.destroy();
 		this.ball.visible = !1;
 		this.pikachu.visible = !1;
 	},
@@ -189,12 +207,18 @@ Level.prototype = {
 
 	},
 	addPikachu : function() {
-		this.pikachu = new Pikachu(this.game, this.game.width / 2,
+		this.pikachu = new Pikachu(this.game, this.game.width / 2 + 10,
 				this.game.height - 50, this._settings.levelNumber);
 	
 	},
+	addArrow : function() {
+		this.arrow = new Arrow(this.game, this.game.width / 2,
+				this.game.height - 150, this._settings.levelNumber);
+	
+	},
 	addBall : function() {
-		this.ball = new Ball(this.game, this.pikachu.x - 10 , this.pikachu.y + 10, this.pikachu, this._settings.levelNumber);
+		this.ball = new Ball(this.game, this.game.width / 2,
+				this.game.height - 120, this.pikachu, this.arrow, this.win, this._settings.levelNumber);
 		
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
@@ -208,7 +232,7 @@ Level.prototype = {
 
 	addObjects : function() {
 
-		this.numberOfObjects = 3;
+		this.numberOfObjects = 5;
 		this.objects = this.game.add.group();
 
 		for (var i = 1; i <= this.numberOfObjects; i++) {
@@ -276,6 +300,7 @@ Level.prototype = {
 	},
 	shutdown : function() {
 		this.ball.destroy();
+		// this.arrow.destroy();
 		this.pikachu.destroy();
 		this.pokemon.destroy();
 		this.objects.destroy();

@@ -24,15 +24,15 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;
 	
-	this.health = 3;
+	this.health = 1;
 	this.ghostUntil = 1;
-	this.ghostUntilTimer = 2000;
+	this.ghostUntilTimer = 500;
 	var frame = [0, 1, 2, 3, 4, 5];
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 + 50 + (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 + 100 + (50 * i), 30,
 				this._level2pokemon.pokemon, '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
@@ -40,7 +40,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(40, 40, 0, 0);
+	this.body.setSize(52, 52, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;

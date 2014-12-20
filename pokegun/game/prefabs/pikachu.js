@@ -7,16 +7,16 @@ var Pikachu = function(game, x, y, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(100, 25, 0, 25);
+	// this.body.setSize(100, 25, 0, 25);
 	this.body.collideWorldBounds = true;
-	this.body.bounce.setTo(0, 0);
+	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
 
-	this.angle = -40;
+	this.angle = -10;
 	this.game.add.tween(this).to({
-				angle : 40
+				angle : 10
 			}, 1000, Phaser.Easing.Linear.NONE, true, 0, Number.MAX_VALUE, true);
 
 	this.notPause = !0;
@@ -31,9 +31,7 @@ Pikachu.prototype.constructor = Pikachu;
 Pikachu.prototype.update = function() {
 
 	if (this.game.input.activePointer.isDown && this.notPause) {
-		// this.x = this.game.input.x;
 		 this.scale.setTo(1.2, 1.2);
-
 	} else {
 		 this.scale.setTo(1, 1);
 
