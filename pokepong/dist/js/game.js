@@ -86,7 +86,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 45,
 				'ballred', '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
@@ -1187,7 +1187,7 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 + 50 + (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 + 40 + (70 * i), 45,
 				this._level2pokemon.pokemon, '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);
@@ -1201,8 +1201,6 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.body.allowRotation = false;
 	this.anchor.setTo(.5, .5);
 	this.body.immovable = true;
-	this.body.maxVelocity.x = 150 * this.level;
-	this.body.maxVelocity.y = 100 * this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
@@ -1273,10 +1271,8 @@ Pokemon.prototype.update = function() {
 
 		this.body.velocity.x = 0;
 		this.body.velocity.y = 0;
-		this.body.velocity.y = -Math.floor(this.game.rnd.between(1, 5) * 5
-				* this.level);
-		this.body.velocity.x = Math.floor(this.game.rnd.between(1, 5) * 5
-				* this.level);
+		this.body.velocity.y = -Math.floor(this.game.rnd.between(140, 150) + this.level);
+		this.body.velocity.x = Math.floor(this.game.rnd.between(140, 150) + this.level);
 
 	}
 
@@ -2003,9 +1999,7 @@ Menu.prototype = {
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
-						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
-						.add(this.onFocusLost, this), this.game.onFocus.add(
-						this.onFocus, this));
+						this.startMusic, this));
 	},
 	onFocusLost : function() {
 		// this.game.tweens.pauseAll();

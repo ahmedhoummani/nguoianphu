@@ -43,7 +43,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
 
-		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 30,
+		var life = this.lives.create(this.game.width / 2 - 70 - (50 * i), 45,
 				'ballred', '01.png');
 		life.scale.setTo(0.7, 0.7);
 		life.anchor.setTo(0.5, 0.5);

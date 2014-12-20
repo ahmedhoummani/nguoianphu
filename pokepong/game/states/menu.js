@@ -29,9 +29,7 @@ Menu.prototype = {
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
-						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
-						.add(this.onFocusLost, this), this.game.onFocus.add(
-						this.onFocus, this));
+						this.startMusic, this));
 	},
 	onFocusLost : function() {
 		// this.game.tweens.pauseAll();
