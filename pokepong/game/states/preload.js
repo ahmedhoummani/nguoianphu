@@ -122,6 +122,9 @@ Preload.prototype = {
 		// weedle
 		this.load.atlas("weedle", "assets/graphics/pokemons/weedle.png",
 				"assets/graphics/pokemons/weedle.json");
+		// goldfish
+		this.load.atlas("goldfish", "assets/graphics/pokemons/goldfish.png",
+				"assets/graphics/pokemons/goldfish.json");
 				
 		// muk
 		this.load.atlas("muk", "assets/graphics/pokemons/muk.png",

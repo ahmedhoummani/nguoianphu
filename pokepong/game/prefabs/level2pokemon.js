@@ -17,10 +17,14 @@ var Level2pokemon = function(a) {
 					'06.png'], frame_ghostright = ['10.png', '11.png', '12.png'];
 			break;
 		case 2:
+			pokemon = 'goldfish', pokemon_name = 'Goldfish', pokemon_type = 'water', pokemon_icon = 'goldfish_icon.png', frame_left = [
+					'01.png', '02.png', '02.png', '03.png', '04.png', '04.png', '05.png', '05.png', '06.png',
+					'07.png', '08.png'], frame_ghostleft = ['17.png', '18.png'], frame_right = ['09.png', '10.png', '11.png', '11.png', '12.png', '12.png', '13.png', '14.png', '14.png', '15.png', '16.png'], frame_ghostright = ['19.png', '20.png'];
+			break;
 		case 9:
 		case 16:
 		case 23 :
-			pokemon = 'muk', pokemon_name = 'Muk', pokemon_type = 'sand', pokemon_icon = 'muk_icon.png', frame_left = [
+			pokemon = 'muk', pokemon_name = 'Grimer', pokemon_type = 'sand', pokemon_icon = 'muk_icon.png', frame_left = [
 					'01.png', '02.png', '03.png', '04.png', '04.png'], frame_ghostleft = [
 					'09.png', '09.png', '10.png', '10.png'], frame_right = [
 					'05.png', '06.png',
