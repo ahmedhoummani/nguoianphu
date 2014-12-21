@@ -16,9 +16,11 @@ window.onload = function () {
 			// parseInt(getAndroidVersion()); // 4
 			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
 			if (andoidVersion < 4.3){
-				var oldAndroid = true
+				var oldAndroid = true;
+				var sound_on = false
 			} else {
-				var oldAndroid = false
+				var oldAndroid = false;
+				var sound_on = true
 			}
   // Global variables
   // call them: this.game.global.phonegap
@@ -26,7 +28,7 @@ window.onload = function () {
   		levels_num: 28,
 		phonegap: false,
 		old_android: oldAndroid,
-		enable_sound: true
+		enable_sound: sound_on
 		
 	};
 	
@@ -893,9 +895,7 @@ Menu.prototype = {
 				&& this.fromPreloader
 				&& (this.soundButton.input.enabled = !1, this.soundButton
 						.switchTextures(), this.game.input.onTap.addOnce(
-						this.startMusic, this), this.stage.disableVisibilityChange = !1, this.game.onBlur
-						.add(this.onFocusLost, this), this.game.onFocus.add(
-						this.onFocus, this));
+						this.startMusic, this));
 
 	},
 	onFocusLost : function() {

@@ -143,7 +143,6 @@
         <array>
             <filename>bg.png</filename>
             <filename>creditbg.png</filename>
-            <filename>levelcomplete.png</filename>
         </array>
         <key>ignoreFileList</key>
         <array/>
