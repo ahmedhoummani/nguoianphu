@@ -164,7 +164,7 @@ Ball.prototype.update = function() {
 };
 
 Ball.prototype.start = function() {
-
+	this.game.global.enable_sound && this.game.sound.play("plop");
 	if (this.alive && this.startRun) {
 		this.startRun = !1;
 		this.arrow.visible = !1;
