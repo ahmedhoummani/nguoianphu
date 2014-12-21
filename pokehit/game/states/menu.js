@@ -15,7 +15,7 @@ Menu.prototype = {
 		this.fromPreloader = a
 	},
 	create : function() {
-		// this.stage.disableVisibilityChange = !0;
+
 		// add menu object
 
 		this.addBackground();
