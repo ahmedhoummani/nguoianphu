@@ -101,8 +101,7 @@ Preload.prototype = {
 
 		// Sound
 		this.game.global.enable_sound
-				&& (this.load.audio("main_loop", ["assets/audio/MainLoop1.ogg",
-								"assets/audio/MainLoop.m4a"], !0),
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg"], !0),
 					this.load.audio("tap", ["assets/audio/TapSound.wav"], !0),
 					this.load.audio("explosion", ["assets/audio/explosion.ogg",
 								"assets/audio/explosion.wav"], !0),
@@ -125,6 +124,9 @@ Preload.prototype = {
 		// goldfish
 		this.load.atlas("goldfish", "assets/graphics/pokemons/goldfish.png",
 				"assets/graphics/pokemons/goldfish.json");
+		// dewgong
+		this.load.atlas("dewgong", "assets/graphics/pokemons/dewgong.png",
+				"assets/graphics/pokemons/dewgong.json");
 				
 		// muk
 		this.load.atlas("muk", "assets/graphics/pokemons/muk.png",

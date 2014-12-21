@@ -10,9 +10,7 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 
 	this.level = level;
 
-	if (this.level > 5){
-		this.level = 10;
-	} else if (this.level > 1) {
+	if (this.level > 1) {
 		this.level += 4;
 	} else {
 		this.level = 5;
@@ -25,8 +23,8 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.body.bounce.setTo(2, 3);
 	this.anchor.setTo(.5, .5);
 
-	this.body.maxVelocity.x = 100 * (this.level);
-	this.body.maxVelocity.y = 100 * (this.level);
+	this.body.maxVelocity.x = 500 + this.level;
+	this.body.maxVelocity.y = 500 + this.level;
 
 	this.cachedVelocity = {};
 	this.notPause = !0;
@@ -99,16 +97,16 @@ Ball.prototype.hitPikachu = function() {
 	if (this.pikachu.x > this.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
-		this.body.velocity.x -= (100 * diff * this.level);
+		this.body.velocity.x -= (100 * diff + this.level);
 	} else if (this.pikachu.x < this.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
-		this.body.velocity.x += (100 * diff * this.level);
+		this.body.velocity.x += (100 * diff + this.level);
 	} else {
 		// The ball hit the center of the racket, let's add a little bit of a
 		// tragic accident(random) of his movement
-		this.body.velocity.x = this.game.rnd.between(1, 5) * 50 * this.level;
-		this.body.velocity.y -= this.game.rnd.between(1, 5) * 50 * this.level;
+		this.body.velocity.x = this.game.rnd.between(10, 15) * this.level;
+		this.body.velocity.y -= this.game.rnd.between(10, 15) * this.level;
 	}
 
 };
