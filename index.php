@@ -136,7 +136,7 @@
 							<img src="pokehit/icon.png" />
                         </td>
                         <td>
-                            <a href="pokehit">Desktop</a>
+                            <a href="pokehit">Online</a>
                         </td>
                         <td>
                             <a href="pokehit/pokehit.apk">pokehit.apk</a>
@@ -153,7 +153,7 @@
 							<img src="pokepong/icon.png" />
                         </td>
                         <td>
-                            <a href="pokepong">Desktop</a>
+                            <a href="pokepong">Online</a>
                         </td>
                         <td>
                             <a href="pokepong/pokepong.apk">pokepong.apk</a>
@@ -170,7 +170,7 @@
 							<img src="shmup/icon.png" />
                         </td>
                         <td>
-                            <a href="shmup">Desktop</a>
+                            <a href="shmup">Online</a>
                         </td>
                         <td>
                             <a href="shmup/shmup.apk">shmup.apk</a>
@@ -187,7 +187,7 @@
 							<img src="duck981/icon.png" />
                         </td>
                         <td>
-                            <a href="duck981">Desktop</a>
+                            <a href="duck981">Online</a>
                         </td>
                         <td>
                             <a href="duck981/duck981.apk">duck981.apk</a>
