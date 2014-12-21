@@ -1,13 +1,15 @@
 <?php ?>
 <html>
 <head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="keywords" content="play nguoianphu, nguoianphu, play tuan nguoi an phu, pokepong, pokehit, duck981, shmup" />
 <title>play.nguoianphu.com</title>
 <link href="favicon.ico" rel="shortcut icon">
 <style>
 .CSSTableGenerator {
 	margin:20px;padding:0px;
-	width:70%;
-	// height:70%;
+	width:90%;
 	box-shadow: 10px 10px 5px #888888;
 	border:1px solid #000000;
 	
@@ -30,7 +32,6 @@
     border-collapse: collapse;
         border-spacing: 0;
 	width:100%;
-//	height:100%;
 	margin:0px;padding:0px;
 }.CSSTableGenerator tr:last-child td:last-child {
 	-moz-border-radius-bottomright:14px;
@@ -54,7 +55,6 @@
 	
 }
 .CSSTableGenerator tr:nth-child(odd){ 
-// background-color:#aad4ff;
 
 }
 .CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
@@ -129,6 +129,23 @@
 						<td>
                             Windows Phone
                         </td>
+                    </tr>
+					<tr>
+                        <td >
+                            <b>Pokehit</b><br />
+							<img src="pokehit/icon.png" />
+                        </td>
+                        <td>
+                            <a href="pokehit">Desktop</a>
+                        </td>
+                        <td>
+                            <a href="pokehit/pokehit.apk">pokehit.apk</a>
+                        </td>
+						
+						<td>
+                            <a href="pokehit/pokehit.xap">pokehit.xap</a>
+                        </td>
+						
                     </tr>
 					<tr>
                         <td >

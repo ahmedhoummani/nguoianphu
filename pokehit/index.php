@@ -44,5 +44,6 @@
 <body>
     <div id="pokephit"></div>
     <div id="orientation"></div>
+	<?php include_once "../footer.php"; ?>
 </body>
 </html>
