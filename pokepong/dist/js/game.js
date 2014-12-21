@@ -16,9 +16,11 @@ window.onload = function () {
 			// parseInt(getAndroidVersion()); // 4
 			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
 			if (andoidVersion < 4.3){
-				var oldAndroid = true
+				var oldAndroid = true;
+				var sound_on = false
 			} else {
-				var oldAndroid = false
+				var oldAndroid = false;
+				var sound_on = true
 			}
   // Global variables
   // call them: this.game.global.phonegap
@@ -26,7 +28,7 @@ window.onload = function () {
   		levels_num: 28,
 		phonegap: false,
 		old_android: oldAndroid,
-		enable_sound: true
+		enable_sound: sound_on
 		
 	};
 	
@@ -1692,10 +1694,9 @@ Level.prototype = {
 					}, this);
 
 		}
-
-		// start the ball
-		this.ball.start()
-
+		if (!this.startScreen.visible) {
+			this.game.input.onDown.add(this.ball.start, this.ball);
+		}
 	},
 
 	render : function() {
@@ -1985,7 +1986,7 @@ Menu.prototype = {
 		this.fromPreloader = a
 	},
 	create : function() {
-		// this.stage.disableVisibilityChange = !0;
+
 		// add menu object
 
 		this.addBackground();

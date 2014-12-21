@@ -112,10 +112,9 @@ Level.prototype = {
 					}, this);
 
 		}
-
-		// start the ball
-		this.ball.start()
-
+		if (!this.startScreen.visible) {
+			this.game.input.onDown.add(this.ball.start, this.ball);
+		}
 	},
 
 	render : function() {
