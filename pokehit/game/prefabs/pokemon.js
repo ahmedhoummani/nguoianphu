@@ -16,6 +16,9 @@ var Pokemon = function(game, x, y, ball, level) {
 	this.ball = ball;
 
 	this.level = level;
+	if (this.game.global.phonegap){
+		this.level *= 10;
+	}
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;
 	
@@ -35,7 +38,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(52, 52, 0, 0);
+	this.body.setSize(55, 55, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
@@ -56,7 +59,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
 					.between(1, 5)
-					* 50), 200 + this.level, this.body.velocity);
+					* 50), 300 + this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 

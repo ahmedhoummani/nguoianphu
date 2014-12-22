@@ -9,10 +9,13 @@ var Ball = function(game, x, y, pikachu, arrow, win, level) {
 	this.arrow = arrow;
 
 	this.level = level;
+	if (this.game.global.phonegap){
+		this.level *= 10;
+	}
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(40, 40, 0, 0);
+	this.body.setSize(32, 32, 0, 0);
 	this.body.collideWorldBounds = !1;
 	
 	this.body.bounce.setTo(1, 1);
@@ -67,7 +70,7 @@ Ball.prototype = Object.create(Phaser.Sprite.prototype);
 Ball.prototype.constructor = Ball;
 
 Ball.prototype.update = function() {
-	this.game.physics.arcade.collide(this, this.pikachu, null, null, this);
+	// this.game.physics.arcade.collide(this, this.pikachu, null, null, this);
 			
 	if (!this.game.world.bounds.contains(this.x, this.y)){
 		var win = this.damage();
@@ -88,7 +91,7 @@ Ball.prototype.start = function() {
 	if (this.alive && this.startRun) {
 		this.startRun = !1;
 		this.arrow.visible = !1;
-		this.game.physics.arcade.velocityFromAngle(this.arrow.angle - 90, 500 + this.level, this.body.velocity);
+		this.game.physics.arcade.velocityFromAngle(this.arrow.angle - 90, 700 + this.level, this.body.velocity);
 	}
 };
 
