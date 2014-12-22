@@ -82,7 +82,8 @@ Preload.prototype = {
 		this.load.spritesheet("pikachu_ball",
 				"assets/graphics/pikachu_ball55x96.png", 55, 96);
 		this.load.image("pikachu100", "assets/graphics/pikachu100.png");
-		this.load.image("arrow", "assets/graphics/aimArrow.png");
+		// this.load.image("arrow", "assets/graphics/aimArrow.png");
+		this.load.image("arrow", "assets/graphics/crossbow.png");
 
 		// Ball
 		this.load.atlas("ballopening", "assets/graphics/ballopening.png",

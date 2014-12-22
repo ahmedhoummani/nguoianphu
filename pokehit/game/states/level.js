@@ -213,7 +213,7 @@ Level.prototype = {
 	},
 	addArrow : function() {
 		this.arrow = new Arrow(this.game, this.game.width / 2,
-				this.game.height - 150, this._settings.levelNumber);
+				this.game.height - 200, this._settings.levelNumber);
 	
 	},
 	addBall : function() {
