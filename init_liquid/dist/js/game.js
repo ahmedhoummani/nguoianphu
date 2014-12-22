@@ -4,9 +4,22 @@
 window.onload = function () {
   var game = new Phaser.Game(640, 832, Phaser.AUTO, 'init');
 
-		// Is the game running under Apache Cordova Phonegap and Android OS
-		// older
-		// than 4.3?
+		// Is the game running under Apache Cordova Phonegap?
+		// Is the it Android Native Browser?
+		function isAndroidBrowser() {
+			var objAgent = navigator.userAgent;
+			var objfullVersion  = ''+parseFloat(navigator.appVersion);
+			var objOffsetVersion=objAgent.indexOf("Chrome");
+			if (objOffsetVersion != -1) {
+				objfullVersion = objAgent.substring(objOffsetVersion+7, objOffsetVersion+9);
+				if (objfullVersion < 19) {
+					return true;
+				}
+			}
+			return false;
+		}
+		var inAppBrowser = isAndroidBrowser();
+		// Is Android OS older than 4.3?
 			function getAndroidVersion(ua) {
 				ua = (ua || navigator.userAgent).toLowerCase();
 				var match = ua.match(/android\s([0-9\.]*)/);
@@ -16,19 +29,17 @@ window.onload = function () {
 			// parseInt(getAndroidVersion()); // 4
 			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
 			if (andoidVersion < 4.3){
-				var oldAndroid = true;
-				var sound_on = false
+			var oldAndroid = true	
 			} else {
-				var oldAndroid = false;
-				var sound_on = true
+			var oldAndroid = false
 			}
   // Global variables
   // call them: this.game.global.phonegap
   game.global = {
   		levels_num: 28,
-		phonegap: false,
+		phonegap: inAppBrowser,
 		old_android: oldAndroid,
-		enable_sound: sound_on
+		enable_sound: !inAppBrowser
 		
 	};
 	
@@ -1201,9 +1212,8 @@ Preload.prototype = {
 
 		// Sound
 		this.game.global.enable_sound && this.game.device.webAudio
-				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg",
-								"assets/audio/MainLoop.m4a"], !0), this.load
-						.audio("tap", ["assets/audio/TapSound.wav"], !0));
+				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg"], !0), this.load
+						.audio("tap", ["assets/audio/TapSound.ogg"], !0));
 
 
 	},
