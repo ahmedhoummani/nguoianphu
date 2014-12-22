@@ -71,6 +71,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	} else {
 		this.level = 5;
 	}
+	if (this.game.global.phonegap){
+		this.level *= 10;
+	}	
 
 	this.game.physics.arcade.enableBody(this);
 
@@ -139,7 +142,7 @@ Ball.prototype.update = function() {
 		this.animations.play('start');
 		this.ghostUntil = 1;
 	}
-
+	this.playSound = !1;
 	this.game.physics.arcade.overlap(this, this.pikachu, this.overPikachu, null, this);
 	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
@@ -168,6 +171,11 @@ Ball.prototype.hitPikachu = function() {
 };
 
 Ball.prototype.overPikachu = function() {
+		if (!this.playSound){
+			this.playSound = !0;
+			this.game.global.enable_sound && this.game.sound.play("plop")
+		}
+
 		// this.body.velocity.y = 0;
 		this.body.velocity.y = -Math.abs(this.body.velocity.y) * this.level;
 		var diff = 0;
@@ -1320,7 +1328,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
 					.between(1, 5)
-					* 50), 200 + this.level, this.body.velocity);
+					* 50), 300 + this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -2420,7 +2428,6 @@ Preload.prototype = {
 		// Ball
 		this.load.atlas("ballopening", "assets/graphics/ballopening.png",
 				"assets/graphics/ballopening.json");
-		this.load.image("ballred40", "assets/graphics/ballred40.png");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 

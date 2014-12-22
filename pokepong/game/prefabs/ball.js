@@ -86,7 +86,7 @@ Ball.prototype.update = function() {
 		this.animations.play('start');
 		this.ghostUntil = 1;
 	}
-
+	this.playSound = !1;
 	this.game.physics.arcade.overlap(this, this.pikachu, this.overPikachu, null, this);
 	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
@@ -115,6 +115,11 @@ Ball.prototype.hitPikachu = function() {
 };
 
 Ball.prototype.overPikachu = function() {
+		if (!this.playSound){
+			this.playSound = !0;
+			this.game.global.enable_sound && this.game.sound.play("plop")
+		}
+
 		// this.body.velocity.y = 0;
 		this.body.velocity.y = -Math.abs(this.body.velocity.y) * this.level;
 		var diff = 0;
