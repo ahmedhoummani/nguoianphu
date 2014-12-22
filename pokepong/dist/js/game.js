@@ -96,6 +96,8 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	this.health = 3;
 	this.ghostUntil = 1;
 	this.ghostUntilTimer = 2000;
+	// delay 1 seconds
+	this.timeDelay = 0;
 
 	this.lives = this.game.add.group();
 	for (var i = 0; i < this.health; i++) {
@@ -142,40 +144,16 @@ Ball.prototype.update = function() {
 		this.animations.play('start');
 		this.ghostUntil = 1;
 	}
-	this.playSound = !1;
 	this.game.physics.arcade.overlap(this, this.pikachu, this.overPikachu, null, this);
-	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
 
 };
 
-Ball.prototype.hitPikachu = function() {
-
-	this.game.global.enable_sound && this.game.sound.play("plop");
-	var diff = 0;
-	if (this.x < this.pikachu.x) {
-		// If ball is in the left hand side on the racket
-		diff = this.pikachu.x - this.x;
-		this.body.velocity.x -= (100 * diff * this.level);
-	} else if (this.x > this.pikachu.x) {
-		// If ball is in the right hand side on the racket
-		diff = this.x - this.pikachu.x;
-		this.body.velocity.x += (100 * diff * this.level);
-	} else {
-		// The ball hit the center of the racket, let's add a little bit of a
-		// tragic accident(random) of his movement
-		this.body.velocity.x = this.game.rnd.between(10, 15) * this.level;
-		this.body.velocity.y -= this.game.rnd.between(10, 15) * this.level;
-	}
-
-};
-
 Ball.prototype.overPikachu = function() {
-		if (!this.playSound){
-			this.playSound = !0;
-			this.game.global.enable_sound && this.game.sound.play("plop")
+		if (this.game.time.now > this.timeDelay){
+					this.game.global.enable_sound && this.game.sound.play("plop");
+					this.timeDelay = this.game.time.now + 1000
 		}
-
 		// this.body.velocity.y = 0;
 		this.body.velocity.y = -Math.abs(this.body.velocity.y) * this.level;
 		var diff = 0;
