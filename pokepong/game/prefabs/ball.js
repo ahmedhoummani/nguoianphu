@@ -15,6 +15,9 @@ var Ball = function(game, x, y, pikachu, trap, level) {
 	} else {
 		this.level = 5;
 	}
+	if (this.game.global.phonegap){
+		this.level *= 10;
+	}	
 
 	this.game.physics.arcade.enableBody(this);
 
@@ -84,8 +87,8 @@ Ball.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
-			this);
+	this.game.physics.arcade.overlap(this, this.pikachu, this.overPikachu, null, this);
+	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
 
 };
@@ -94,11 +97,11 @@ Ball.prototype.hitPikachu = function() {
 
 	this.game.global.enable_sound && this.game.sound.play("plop");
 	var diff = 0;
-	if (this.pikachu.x > this.x) {
+	if (this.x < this.pikachu.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
 		this.body.velocity.x -= (100 * diff * this.level);
-	} else if (this.pikachu.x < this.x) {
+	} else if (this.x > this.pikachu.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
 		this.body.velocity.x += (100 * diff * this.level);
@@ -109,6 +112,21 @@ Ball.prototype.hitPikachu = function() {
 		this.body.velocity.y -= this.game.rnd.between(10, 15) * this.level;
 	}
 
+};
+
+Ball.prototype.overPikachu = function() {
+		// this.body.velocity.y = 0;
+		this.body.velocity.y = -Math.abs(this.body.velocity.y) * this.level;
+		var diff = 0;
+		if (this.x < this.pikachu.x) {
+			// If ball is in the left hand side on the racket
+			diff = this.pikachu.x - this.x;
+			this.body.velocity.x += (100 * diff * this.level);
+		} else if (this.x > this.pikachu.x) {
+			// If ball is in the right hand side on the racket
+			diff = this.x - this.pikachu.x;
+			this.body.velocity.x -= (100 * diff * this.level);
+		}
 };
 
 Ball.prototype.start = function() {

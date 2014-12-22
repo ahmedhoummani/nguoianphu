@@ -4,31 +4,42 @@
 window.onload = function () {
   var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokepong');
 
-		// Is the game running under Apache Cordova Phonegap and Android OS
-		// older
-		// than 4.3?
-			function getAndroidVersion(ua) {
-				ua = (ua || navigator.userAgent).toLowerCase();
-				var match = ua.match(/android\s([0-9\.]*)/);
-				return match ? match[1] : false;
-			};
-			// getAndroidVersion(); // "4.2.1"
-			// parseInt(getAndroidVersion()); // 4
-			var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
-			if (andoidVersion < 4.3){
-				var oldAndroid = true;
-				var sound_on = false
-			} else {
-				var oldAndroid = false;
-				var sound_on = true
+		// Is the game running under Apache Cordova Phonegap?
+		// Is the it Android Native Browser?
+		function isAndroidBrowser() {
+			var objAgent = navigator.userAgent;
+			var objfullVersion  = ''+parseFloat(navigator.appVersion);
+			var objOffsetVersion=objAgent.indexOf("Chrome");
+			if (objOffsetVersion != -1) {
+				objfullVersion = objAgent.substring(objOffsetVersion+7, objOffsetVersion+9);
+				if (objfullVersion < 19) {
+					return true;
+				}
+			}
+			return false;
+		}
+		var inAppBrowser = isAndroidBrowser();
+		// Is Android OS older than 4.3?
+		function getAndroidVersion(ua) {
+			ua = (ua || navigator.userAgent).toLowerCase();
+			var match = ua.match(/android\s([0-9\.]*)/);
+			return match ? match[1] : false;
+		};
+		// getAndroidVersion(); // "4.2.1"
+		// parseInt(getAndroidVersion()); // 4
+		var andoidVersion = parseFloat(getAndroidVersion()); // 4.2
+		if (andoidVersion < 4.3){
+			var oldAndroid = true	
+		} else {
+			var oldAndroid = false
 			}
   // Global variables
   // call them: this.game.global.phonegap
   game.global = {
   		levels_num: 28,
-		phonegap: false,
+		phonegap: inAppBrowser,
 		old_android: oldAndroid,
-		enable_sound: sound_on
+		enable_sound: !inAppBrowser
 		
 	};
 	
@@ -129,8 +140,8 @@ Ball.prototype.update = function() {
 		this.ghostUntil = 1;
 	}
 
-	this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null,
-			this);
+	this.game.physics.arcade.overlap(this, this.pikachu, this.overPikachu, null, this);
+	// this.game.physics.arcade.collide(this, this.pikachu, this.hitPikachu, null, this);
 	this.game.physics.arcade.collide(this, this.trap, this.damage, null, this);
 
 };
@@ -139,11 +150,11 @@ Ball.prototype.hitPikachu = function() {
 
 	this.game.global.enable_sound && this.game.sound.play("plop");
 	var diff = 0;
-	if (this.pikachu.x > this.x) {
+	if (this.x < this.pikachu.x) {
 		// If ball is in the left hand side on the racket
 		diff = this.pikachu.x - this.x;
 		this.body.velocity.x -= (100 * diff * this.level);
-	} else if (this.pikachu.x < this.x) {
+	} else if (this.x > this.pikachu.x) {
 		// If ball is in the right hand side on the racket
 		diff = this.x - this.pikachu.x;
 		this.body.velocity.x += (100 * diff * this.level);
@@ -154,6 +165,21 @@ Ball.prototype.hitPikachu = function() {
 		this.body.velocity.y -= this.game.rnd.between(10, 15) * this.level;
 	}
 
+};
+
+Ball.prototype.overPikachu = function() {
+		// this.body.velocity.y = 0;
+		this.body.velocity.y = -Math.abs(this.body.velocity.y) * this.level;
+		var diff = 0;
+		if (this.x < this.pikachu.x) {
+			// If ball is in the left hand side on the racket
+			diff = this.pikachu.x - this.x;
+			this.body.velocity.x += (100 * diff * this.level);
+		} else if (this.x > this.pikachu.x) {
+			// If ball is in the right hand side on the racket
+			diff = this.x - this.pikachu.x;
+			this.body.velocity.x -= (100 * diff * this.level);
+		}
 };
 
 Ball.prototype.start = function() {
@@ -1191,9 +1217,9 @@ var Pikachu = function(game, x, y, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(100, 25, 0, 25);
+	this.body.setSize(100, 100, 0, 0);
 	this.body.collideWorldBounds = true;
-	this.body.bounce.setTo(0, 0);
+	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
 	this.body.immovable = true;
 	this.anchor.setTo(.5, .5);
@@ -1251,6 +1277,9 @@ var Pokemon = function(game, x, y, ball, level) {
 	} else {
 		this.level = 4;
 	}
+	if (this.game.global.phonegap){
+		this.level *= 10;
+	}
 
 	// this.pokemon_type = this._level2pokemon.pokemon_type;
 	
@@ -1270,7 +1299,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.enableBody(this);
 
-	this.body.setSize(40, 40, 0, 0);
+	this.body.setSize(55, 55, 0, 0);
 	this.body.collideWorldBounds = true;
 	this.body.bounce.setTo(1, 1);
 	this.body.allowRotation = false;
@@ -1291,7 +1320,7 @@ var Pokemon = function(game, x, y, ball, level) {
 
 	this.game.physics.arcade.velocityFromRotation(Math.floor(this.game.rnd
 					.between(1, 5)
-					* 50), 200, this.body.velocity);
+					* 50), 200 + this.level, this.body.velocity);
 
 	this._levelCompleteSignal = new Phaser.Signal;
 
@@ -1848,7 +1877,7 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, this.pikachu, this.traps,
+						- 80, this.pikachu, this.traps,
 				this._settings.levelNumber);
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
@@ -2391,6 +2420,7 @@ Preload.prototype = {
 		// Ball
 		this.load.atlas("ballopening", "assets/graphics/ballopening.png",
 				"assets/graphics/ballopening.json");
+		this.load.image("ballred40", "assets/graphics/ballred40.png");
 		this.load.atlas("ballred", "assets/graphics/ballred.png",
 				"assets/graphics/ballred.json");
 
@@ -2407,13 +2437,11 @@ Preload.prototype = {
 		// Sound
 		this.game.global.enable_sound
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg"], !0),
-					this.load.audio("tap", ["assets/audio/TapSound.wav"], !0),
-					this.load.audio("explosion", ["assets/audio/explosion.ogg",
-								"assets/audio/explosion.wav"], !0),
-					this.load.audio("player-explosion", ["assets/audio/player-explosion.ogg",
-								"assets/audio/player-explosion.wav"], !0),
+					this.load.audio("tap", ["assets/audio/TapSound.ogg"], !0),
+					this.load.audio("explosion", ["assets/audio/explosion.ogg"], !0),
+					this.load.audio("player-explosion", ["assets/audio/player-explosion.ogg"], !0),
 					this.load.audio("levelfail", ["assets/audio/Game_Over.ogg"], !0),
-					this.load.audio("levelcomplete", ["assets/audio/LevelCompleteSound.wav"], !0),
+					this.load.audio("levelcomplete", ["assets/audio/LevelCompleteSound.ogg"], !0),
 					this.load.audio("plop", ["assets/audio/plop.ogg"], !0)
 					);
 

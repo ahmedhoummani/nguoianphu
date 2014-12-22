@@ -102,13 +102,11 @@ Preload.prototype = {
 		// Sound
 		this.game.global.enable_sound
 				&& (this.load.audio("main_loop", ["assets/audio/MainLoop.ogg"], !0),
-					this.load.audio("tap", ["assets/audio/TapSound.wav"], !0),
-					this.load.audio("explosion", ["assets/audio/explosion.ogg",
-								"assets/audio/explosion.wav"], !0),
-					this.load.audio("player-explosion", ["assets/audio/player-explosion.ogg",
-								"assets/audio/player-explosion.wav"], !0),
+					this.load.audio("tap", ["assets/audio/TapSound.ogg"], !0),
+					this.load.audio("explosion", ["assets/audio/explosion.ogg"], !0),
+					this.load.audio("player-explosion", ["assets/audio/player-explosion.ogg"], !0),
 					this.load.audio("levelfail", ["assets/audio/Game_Over.ogg"], !0),
-					this.load.audio("levelcomplete", ["assets/audio/LevelCompleteSound.wav"], !0),
+					this.load.audio("levelcomplete", ["assets/audio/LevelCompleteSound.ogg"], !0),
 					this.load.audio("plop", ["assets/audio/plop.ogg"], !0)
 					);
 

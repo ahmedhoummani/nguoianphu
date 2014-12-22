@@ -193,7 +193,7 @@ Level.prototype = {
 	},
 	addBall : function() {
 		this.ball = new Ball(this.game, this.game.width / 2, this.pikachu.y
-						- 45, this.pikachu, this.traps,
+						- 80, this.pikachu, this.traps,
 				this._settings.levelNumber);
 		this.ball.levelFailSignal.addOnce(this.levelFail, this);
 
