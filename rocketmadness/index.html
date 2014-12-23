@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="UTF-8">
+<title>Rocket Madness</title>
+<script src="src/phaser213.js"></script>
+<script src="src/Boot.js"></script>
+<script src="src/Preload.js"></script>
+<script src="src/mainMenu.js"></script>
+<script src="src/Game.js"></script>
+<script src="src/fading.js"></script>
+<script src="src/restart.js"></script>
+<script src="src/instructions.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+	    window.onload = function() {
+		
+	        var game = new Phaser.Game(320, 480, Phaser.AUTO, 'game');
+			musicON = true;
+			game.state.add('Boot',Game.Boot);
+			game.state.add('Preload',Game.Preload);
+			game.state.add('MainMenu',Game.MainMenu);
+			game.state.add('Instruction',Game.Instructions);	
+			game.state.add('InGame',Game.InGame);
+			game.state.add('Restart',Game.Restart);
+			
+			game.state.start('Boot');      
+	    };
+</script>
+<div id="game"></div>
+</body>
+</html>
