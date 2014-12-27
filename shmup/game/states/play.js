@@ -182,6 +182,35 @@ Play.prototype = {
     this.pauseButton.anchor.setTo(0.5, 0.5);
     this.pauseButton.inputEnabled = true;
     //    this.pauseButton.input.useHandCursor = true;
+	
+	 var swipeCoordX,
+        swipeCoordY,
+        swipeCoordX2,
+        swipeCoordY2,
+        swipeMinDistance = 10;
+
+    this.game.input.onDown.add(function(pointer) {
+        swipeCoordX = pointer.clientX;
+        swipeCoordY = pointer.clientY;    
+    }, this);
+
+    this.game.input.onUp.add(function(pointer) {
+        swipeCoordX2 = pointer.clientX;
+        swipeCoordY2 = pointer.clientY;
+        if(swipeCoordX2 < swipeCoordX - swipeMinDistance){
+            console.log("left");
+			this.player.body.velocity.x = -swipeCoordX2;
+        }else if(swipeCoordX2 > swipeCoordX + swipeMinDistance){
+            console.log("right");
+			this.player.body.velocity.x = swipeCoordX2;
+        }else if(swipeCoordY2 < swipeCoordY - swipeMinDistance){
+            console.log("up");
+			this.player.body.velocity.y = -swipeCoordY2;
+        }else if(swipeCoordY2 > swipeCoordY + swipeMinDistance){
+            console.log("down");
+			this.player.body.velocity.y = swipeCoordY2;
+        }
+    }, this);   
 
 
   },
@@ -205,7 +234,7 @@ Play.prototype = {
 		return;
       }
 
-      this.physics.arcade.moveToPointer(this.player, this.player.speed);
+      // this.physics.arcade.moveToPointer(this.player, this.player.speed);
     }
 
     //      this.player.body.velocity.x = (this.input.activePointer.position.x - this.input.activePointer.positionDown.x) * 2;
@@ -352,6 +381,9 @@ Play.prototype = {
         this.player, this.bossPool, this.playerHit, null, this
       );
     }
+	
+  
+	
 
   },
 
