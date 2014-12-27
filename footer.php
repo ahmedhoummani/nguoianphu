@@ -1,4 +1,5 @@
 <?php ?>
+<div style="width:100%; text-align: center"><div style="display: inline-block; width:50%; margin: 0 auto"><a href="http://Play.nguoiAnPhu.com"><b>play.NguoiAnPhu.com</b></a></div></div>
 <!-- Start of StatCounter Code for Default Guide -->
 <script type="text/javascript">
 var sc_project=9866399; 
