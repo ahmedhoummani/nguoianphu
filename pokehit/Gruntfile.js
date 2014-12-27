@@ -79,7 +79,30 @@ module.exports = function (grunt) {
                     'dist/js/game.min.js': ['dist/js/game.js']
                 }
             }
-    }
+    },
+	jscrambler: {
+		main: {
+		  options: {
+			keys: {
+			  accessKey: '',
+			  secretKey: ''
+			}
+		  },
+		  files: [
+			{src: ['dist/js/game.min.js'], dest: 'dist/js/game.min.cr.js'},
+		  ]
+		}
+	},
+	obfuscator: {
+		files: [
+		  'dist/js/game.min.js'
+		],
+		entry: 'dist/js/game.min.js',
+		out: 'dist/js/game.min.ob.js',
+		strings: false,
+		root: __dirname
+	}
+	
   });
   
   grunt.loadNpmTasks('grunt-contrib-uglify');
