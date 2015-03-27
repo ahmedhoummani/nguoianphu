@@ -1,0 +1,47 @@
+- name: paragraphs
+  button_text: "Paragraphs & Headings"
+  file: paragraphs.html
+- name: bold
+  icon_class: fa-bold
+  icon_label: Bold
+  file: bold.html
+- name: italic
+  icon_class: fa-italic
+  icon_label: Italic
+  file: italic.html
+- name: underline
+  icon_class: fa-underline
+  icon_label: Underline
+  file: underline.html
+- name: strikethrough
+  icon_class: fa-strikethrough
+  icon_label: Strikethrough
+  file: strikethrough.html
+- name: link
+  icon_class: fa-link
+  icon_label: Links
+  file: link.html
+- name: image
+  icon_class: fa-picture-o
+  icon_label: Images
+  file: image.html
+- name: blockquote
+  icon_class: fa-quote-left
+  icon_label: Quote
+  file: blockquote.html
+- name: ul
+  icon_class: fa-list-ul
+  icon_label: Bulleted List
+  file: ul.html
+- name: ol
+  icon_class: fa-list-ol
+  icon_label: Numbered List
+  file: ol.html
+- name: hr
+  icon_class: fa-minus
+  icon_label: Horizontal Line
+  file: hr.html
+- name: code
+  icon_class: fa-code
+  icon_label: Code
+  file: code.html
