@@ -1,0 +1,9 @@
+general:
+  build_dir: pokepong
+
+dependencies:
+  override:
+    - npm install -g bower
+test:
+  post:
+    - grunt
