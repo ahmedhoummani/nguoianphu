@@ -4,8 +4,14 @@ general:
 dependencies:
   override:
     - cd pokehit && npm install -g bower
+    - cd pokepong && npm install -g bower
 test:
   post:
     - cd pokehit && npm install
     - cd pokehit && grunt build
+    - mkdir -p $CIRCLE_ARTIFACTS/pokehit/
     - cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokehit/
+    - cd pokepong && npm install
+    - cd pokepong && grunt build
+    - mkdir -p $CIRCLE_ARTIFACTS/pokepong/
+    - cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokepong/
