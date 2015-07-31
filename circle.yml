@@ -5,6 +5,7 @@ dependencies:
   override:
     - cd pokehit && npm install -g bower
     - cd pokepong && npm install -g bower
+
 test:
   post:
   # pokehit
@@ -17,3 +18,14 @@ test:
     - cd pokepong && grunt build
     - mkdir -p $CIRCLE_ARTIFACTS/pokepong/
     - cp -fr pokepong/dist/* $CIRCLE_ARTIFACTS/pokepong/
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - git config --global user.email nguoiaphu@gmail.com
+      - git config --global user.name nguoiaphu
+      - git status
+      - git add --all
+      - git commit -m "Update (`date '+%F %T %Z'`) [ci skip]"
+      - git push origin master
