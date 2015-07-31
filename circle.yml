@@ -7,4 +7,5 @@ dependencies:
 test:
   post:
     - npm install
-    - grunt
+    - grunt build
+    - cp -fr dist/* $CIRCLE_ARTIFACTS/
