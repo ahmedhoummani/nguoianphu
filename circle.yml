@@ -7,11 +7,13 @@ dependencies:
     - cd pokepong && npm install -g bower
 test:
   post:
+  # pokehit
     - cd pokehit && npm install
     - cd pokehit && grunt build
     - mkdir -p $CIRCLE_ARTIFACTS/pokehit/
     - cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokehit/
+# pokepong
     - cd pokepong && npm install
     - cd pokepong && grunt build
     - mkdir -p $CIRCLE_ARTIFACTS/pokepong/
-    - cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokepong/
+    - cp -fr pokepong/dist/* $CIRCLE_ARTIFACTS/pokepong/
