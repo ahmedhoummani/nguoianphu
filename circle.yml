@@ -1,11 +1,11 @@
 general:
-  build_dir: pokepong
+  #build_dir: pokepong
 
 dependencies:
   override:
-    - npm install -g bower
+    - cd pokehit && npm install -g bower
 test:
   post:
-    - npm install
-    - grunt build
-    - cp -fr dist/* $CIRCLE_ARTIFACTS/
+    - cd pokehit && npm install
+    - cd pokehit && grunt build
+    - cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokehit/
