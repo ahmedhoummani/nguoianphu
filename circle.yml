@@ -6,4 +6,5 @@ dependencies:
     - npm install -g bower
 test:
   post:
+    - npm install
     - grunt
