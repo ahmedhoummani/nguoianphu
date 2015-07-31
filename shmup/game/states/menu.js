@@ -41,7 +41,7 @@ Menu.prototype = {
       fill: '#ffffff',
       align: 'center'
     };
-    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 30, 'Air War', style);
+    this.titleText = this.game.add.text(this.game.width/2, this.game.height/2 - 30, 'Air War 2015', style);
     this.titleText.anchor.setTo(0.5, 0.5);
 
     this.instructionsText = this.game.add.text(this.game.width/2, this.game.height/2 + 0, 'Click anywhere to play', {
