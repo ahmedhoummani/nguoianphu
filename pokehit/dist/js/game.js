@@ -2,7 +2,7 @@
 'use strict';
 
 window.onload = function () {
-  var game = new Phaser.Game(640, 832, Phaser.AUTO, 'pokephit');
+  var game = new Phaser.Game(640, 832, Phaser.AUTO, '');
 
 		// Is the game running under Apache Cordova Phonegap?
 		// Is the it Android Native Browser?
