@@ -1,0 +1,90 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta content="https://raw.githubusercontent.com/chibicode/chibi-og-images/master/images/images.001.jpg" property="og:image">
+    <title>Markdown Cheatsheet: Toolbar Style</title>
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet">
+    <link href='http://fonts.googleapis.com/css?family=Inconsolata' rel='stylesheet' type='text/css'>
+    <link href="{{ site.baseurl }}css/bootstrap.min.css" rel="stylesheet" type='text/css'>
+    <link href="{{ site.baseurl }}css/github.css" rel="stylesheet" type='text/css'>
+    <link href="{{ site.baseurl }}css/app.css" rel="stylesheet" type='text/css'>
+
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="navbar navbar-default navbar-fixed-top js-navbar hidden-xs">
+      <div class="container">
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <ul class="nav navbar-nav">
+              {% for section in site.data.sections %}
+                <li class="js-button js-button-{{ section.name }}">
+                  <a href="#" class="js-button-clicktarget" data-section="{{ section.name }}" data-is-navbar="true" data-toggle="tooltip" data-placement="bottom" title="{{ section.icon_label }}">
+                    {% if section.button_text %}
+                      {{ section.button_text }}
+                    {% else %}
+                      <i class="fa {{ section.icon_class }}"></i>
+                    {% endif %}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="row">
+        <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3 text-center">
+          <p><a href="{{ site.baseurl }}"><img class="markdown-logo" src="{{ site.baseurl }}img/markdown-mark.svg" alt="Markdown"></a></p>
+          <h1 class="h3"><strong>Markdown Cheatsheet:</strong><br>Toolbar Style</h1>
+          <p class="text-muted">An intuitive <a href="http://daringfireball.net/projects/markdown/" target="_blank">markdown</a> cheatsheet. Uses a toolbar similar to the ones used by MS Word, Google Docs, Evernote, Wordpress, etc.</p>
+          <p>To get started, <strong>click</strong> on one of the buttons below ↓</p>
+        </div>
+        <div class="col-sm-12 col-md-10 col-md-offset-1 text-center">
+          <div class="btn-group js-toolbar">
+            {% for section in site.data.sections %}
+              <button type="button" class="btn btn-default js-button js-button-clicktarget js-button-{{ section.name }}" data-section="{{ section.name }}" data-toggle="tooltip" title="{{ section.icon_label }}">
+                {% if section.button_text %}
+                  {{ section.button_text }}
+                {% else %}
+                  <i class="fa {{ section.icon_class }}"></i>
+                {% endif %}
+              </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="markdown-sections js-sections">
+        {% for section in site.data.sections %}
+        <div class="js-section js-section-{{ section.name }} markdown-section">
+          {% include {{section.file}} %}
+        </div>
+        {% endfor %}
+      </div>
+      <footer class="text-center text-muted">
+        <div class="row">
+          <div class="col-sm-12 col-md-10 col-md-offset-1">
+            <p>Created by <a href="http://twitter.com/chibicode">@chibicode</a>, a designer at <a href="https://www.edsurge.com">EdSurge</a>.</p>
+            <p><iframe src="http://ghbtns.com/github-btn.html?user=chibicode&amp;repo=markdown-toolbar-cheatsheet&amp;type=watch&amp&amp;size=large&amp;count=true"
+              allowtransparency="true" frameborder="0" scrolling="0" width="77" height="30"></iframe></p>
+          </div>
+        </div>
+      </footer>
+    </div>
+    <div class="github-fork-ribbon-wrapper right fixed hidden-xs" style="width: 150px;height: 150px;position: fixed;overflow: hidden;top: 0;z-index: 9999;pointer-events: none;right: 0;"><div class="github-fork-ribbon" style="position: absolute;padding: 2px 0;background-color: #333;background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.15));-webkit-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);-moz-box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);box-shadow: 0 2px 3px 0 rgba(0, 0, 0, 0.5);z-index: 9999;pointer-events: auto;top: 42px;right: -43px;-webkit-transform: rotate(45deg);-moz-transform: rotate(45deg);-ms-transform: rotate(45deg);-o-transform: rotate(45deg);transform: rotate(45deg);"><a href="https://github.com/chibicode/markdown-toolbar-cheatsheet" style="font: 700 13px &quot;Helvetica Neue&quot;, Helvetica, Arial, sans-serif;color: #fff;text-decoration: none;text-shadow: 0 -1px rgba(0, 0, 0, 0.5);text-align: center;width: 200px;line-height: 20px;display: inline-block;padding: 2px 0;border-width: 1px 0;border-style: dotted;border-color: rgba(255, 255, 255, 0.7);">Fork me on GitHub</a></div></div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+    <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <script src="{{ site.baseurl }}js/waypoints.min.js"></script>
+    <script src="{{ site.baseurl }}js/fastclick.min.js"></script>
+    <script src="{{ site.baseurl }}js/app.js"></script>
+  </body>
+</html>

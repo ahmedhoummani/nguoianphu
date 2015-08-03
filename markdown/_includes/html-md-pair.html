@@ -1,0 +1,35 @@
+<div class="row">
+  <div class="col-sm-10 col-md-8 col-md-offset-1">
+    {% if include.title %}
+    <h2 class="h4"><strong>{{ include.title }}</strong></h2>
+    {% endif %}
+    {% capture s %}{% include {{include.file}} %}{% endcapture %}
+    {{ s | split:'<!--break-->' | first | markdownify }}
+  </div>
+</div>
+<div class="row">
+  <div class="col-sm-6 col-md-5 col-md-offset-1">
+    <div class="panel panel-info">
+      <div class="panel-heading">
+        Markdown
+      </div>
+      <div class="panel-body">
+        <pre>{% capture s %}{% include {{include.file}} %}{% endcapture %}{{ s | split:'<!--break-->' | last }}</pre></p>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-6 col-md-5">
+    <div class="panel panel-success">
+      <div class="panel-heading">
+        Result
+      </div>
+      <div class="panel-body">
+        {% if include.html_file %}
+          {% include {{include.html_file}} %}
+        {% else %}
+          {{ s | split:'<!--break-->' | last | markdownify }}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,37 @@
+general:
+  #build_dir: pokepong
+
+dependencies:
+  override:
+    - cd pokehit && npm install -g bower
+    - cd pokepong && npm install -g bower
+    - cd shmup && npm install -g bower
+
+test:
+  post:
+  # pokehit
+    - cd pokehit && npm install
+    - cd pokehit && grunt build
+    #- mkdir -p $CIRCLE_ARTIFACTS/pokehit/
+    #- cp -fr pokehit/dist/* $CIRCLE_ARTIFACTS/pokehit/
+# pokepong
+    - cd pokepong && npm install
+    - cd pokepong && grunt build
+    #- mkdir -p $CIRCLE_ARTIFACTS/pokepong/
+    #- cp -fr pokepong/dist/* $CIRCLE_ARTIFACTS/pokepong/
+# shmup
+    - cd shmup && npm install
+    - cd shmup && grunt build
+    #- mkdir -p $CIRCLE_ARTIFACTS/shmup/
+    #- cp -fr shmup/dist/* $CIRCLE_ARTIFACTS/shmup/
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - git config --global user.email nguoiaphu@gmail.com
+      - git config --global user.name nguoiaphu
+      - git status
+      - git add --all
+      - git commit -m "Update (`date '+%F %T %Z'`) [ci skip]" || true
+      - git push origin master || true
