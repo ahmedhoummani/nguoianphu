@@ -677,7 +677,8 @@ Boot.prototype = {
 		b.leaveIncorrectOrientation.add(this.onLeaveIncorrectOrientation, this);
 		b.setScreenSize(!0);
 		
-		this.stage.backgroundColor = 11193204;
+		// this.stage.backgroundColor = 11193204;
+		this.stage.backgroundColor = 87654321;
 	},
 	onEnterIncorrectOrientation : function() {
 		document.getElementById("orientation").style.display = "block", document.body.style.marginBottom = "0px";
