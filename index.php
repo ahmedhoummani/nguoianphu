@@ -132,6 +132,23 @@
                     </tr>
 					<tr>
                         <td >
+                            <b>Match Pairs Memory Game</b><br />
+							<img src="memory/icon.png" />
+                        </td>
+                        <td>
+                            <a href="memory">Online</a>
+                        </td>
+                        <td>
+                            
+                        </td>
+					
+						<td>
+                            
+                        </td>
+						
+                    </tr>
+					<tr>
+                        <td >
                             <b>Pokehit</b><br />
 							<img src="pokehit/icon.png" />
                         </td>

@@ -1,0 +1,20 @@
+{"frames": [
+
+{
+	"filename": "popupBg.png",
+	"frame": {"x":2,"y":2,"w":504,"h":316},
+	"rotated": false,
+	"trimmed": true,
+	"spriteSourceSize": {"x":3,"y":1,"w":504,"h":316},
+	"sourceSize": {"w":512,"h":322}
+}],
+"meta": {
+	"app": "http://www.texturepacker.com",
+	"version": "1.0",
+	"image": "popup.png",
+	"format": "RGBA8888",
+	"size": {"w":508,"h":320},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:eecb71da190c5d1a5af189da8abd1c3b$"
+}
+}
