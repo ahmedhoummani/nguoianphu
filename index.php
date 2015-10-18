@@ -132,6 +132,23 @@
                     </tr>
 					<tr>
                         <td >
+                            <b>Mua Lan - Lion Dance</b><br />
+							<img src="mualan/icon.png" />
+                        </td>
+                        <td>
+                            <a href="mualan">Online</a>
+                        </td>
+                        <td>
+                            
+                        </td>
+					
+						<td>
+                            
+                        </td>
+						
+                    </tr>
+					<tr>
+                        <td >
                             <b>Match Pairs Memory Game</b><br />
 							<img src="memory/icon.png" />
                         </td>

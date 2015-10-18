@@ -1,0 +1,30 @@
+{"frames": [
+
+{
+	"filename": "lion-walk-01.png",
+	"frame": {"x":2,"y":2,"w":80,"h":99},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":99},
+	"sourceSize": {"w":80,"h":99},
+	"pivot": {"x":0.5,"y":0.5}
+},
+{
+	"filename": "lion-walk-02.png",
+	"frame": {"x":2,"y":103,"w":80,"h":155},
+	"rotated": false,
+	"trimmed": false,
+	"spriteSourceSize": {"x":0,"y":0,"w":80,"h":155},
+	"sourceSize": {"w":80,"h":155},
+	"pivot": {"x":0.5,"y":0.5}
+}],
+"meta": {
+	"app": "http://www.codeandweb.com/texturepacker",
+	"version": "1.0",
+	"image": "lions.png",
+	"format": "RGBA8888",
+	"size": {"w":84,"h":260},
+	"scale": "1",
+	"smartupdate": "$TexturePacker:SmartUpdate:2613489e772d64811bfc214dc482f9e4:4b3e00d01f8e8e30f651ef02fa8af463:8eabe7a7a8bb223f353be7085da9773e$"
+}
+}
